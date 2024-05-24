@@ -24,7 +24,30 @@ import java.util.List;
  */
 public class ShopController extends HttpServlet {
    
+    ProductDAO productDAO = new ProductDAO();
+    CategoryDAO categoryDAO = new CategoryDAO();
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException {
+        List<Product> listProduct = productDAO.findAll();
+        List<Category> listCategory = categoryDAO.findAll();
+        
+        HttpSession session = request.getSession();
+        session.setAttribute("listProduct", listProduct);
+        session.setAttribute("listCategory", listCategory);
+        request.getRequestDispatcher("view/homepage/shop.jsp").forward(request, response);
+    } 
+
     
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException {
+        
+    }
+
+
+
+
     
 
     
