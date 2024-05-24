@@ -37,7 +37,8 @@ public class ShopController extends HttpServlet {
         session.setAttribute("listCategory", listCategory);
         request.getRequestDispatcher("view/homepage/shop.jsp").forward(request, response);
     } 
-
+    //test
+    //update
     
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
