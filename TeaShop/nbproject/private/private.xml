@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/E:/swp391/TeaShop/web/view/homepage/testimonial.jsp</file>
+            <file>file:/E:/swp391/TeaShop/web/view/homepage/shop.jsp</file>
+            <file>file:/E:/swp391/TeaShop/web/WEB-INF/web.xml</file>
+            <file>file:/E:/swp391/TeaShop/src/java/dal/implement/ProductDAO.java</file>
+            <file>file:/E:/swp391/TeaShop/web/view/homepage/contact.jsp</file>
+            <file>file:/E:/swp391/TeaShop/web/css/bootstrap.min.css</file>
+            <file>file:/E:/swp391/TeaShop/web/view/homepage/404.jsp</file>
+            <file>file:/E:/swp391/TeaShop/web/scss/bootstrap/scss/_functions.scss</file>
+            <file>file:/E:/swp391/TeaShop/src/java/controller/ShopController.java</file>
+            <file>file:/E:/swp391/TeaShop/web/view/homepage/cart.jsp</file>
+            <file>file:/E:/swp391/TeaShop/web/view/common/homePage/footer-start.jsp</file>
+            <file>file:/E:/swp391/TeaShop/web/view/homepage/product-detail.jsp</file>
+            <file>file:/E:/swp391/TeaShop/src/java/dal/GenericDAO.java</file>
+            <file>file:/E:/swp391/TeaShop/web/view/homepage/home.jsp</file>
+            <file>file:/E:/swp391/TeaShop/src/java/dal/DBContext.java</file>
+            <file>file:/E:/swp391/TeaShop/web/view/homepage/chackout.jsp</file>
+            <file>file:/E:/swp391/TeaShop/src/java/entity/Category.java</file>
+            <file>file:/E:/swp391/TeaShop/src/java/entity/Product.java</file>
+            <file>file:/E:/swp391/TeaShop/src/java/dal/implement/CategoryDAO.java</file>
+        </group>
+    </open-files>
+</project-private>
