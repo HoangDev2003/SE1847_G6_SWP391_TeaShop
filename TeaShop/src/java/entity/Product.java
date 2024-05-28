@@ -8,6 +8,7 @@ package entity;
  *
  * @author HoangNX
  */
+import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -30,5 +31,5 @@ public class Product {
     public String image;
     public int price;
     public float discount;      
-    
+    public Date create_at;
 }

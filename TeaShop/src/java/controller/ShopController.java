@@ -5,8 +5,8 @@
 
 package controller;
 
-import dal.implement.CategoryDAO;
-import dal.implement.ProductDAO;
+import dal.CategoryDAO;
+import dal.ProductDAO;
 import entity.Category;
 import entity.PageControl;
 import entity.Product;
@@ -71,6 +71,10 @@ public class ShopController extends HttpServlet {
         String actionSearch = request.getParameter("search") == null
                                                     ? "default" 
                                                     :request.getParameter("search");
+        //get sort
+        String sort = request.getParameter("sort") == null 
+                      ? "product_id" 
+                      : request.getParameter("sort");
         //get list product dao
         List<Product> listProduct;
         //get request URL
@@ -81,20 +85,19 @@ public class ShopController extends HttpServlet {
             case "category":
                 String categoryId = request.getParameter("category_id");
                 totalRecord = productDAO.findTotalRecordByCategoryId(categoryId);
-                listProduct = productDAO.findProductByCategoryId(categoryId, page);
-                
-                pageControl.setUrlPattern(requestURL + "?search=category&category_id=" + categoryId + "&");
+                listProduct = productDAO.findProductByCategoryId(categoryId, page, sort);
+                pageControl.setUrlPattern(requestURL + "?search=category&category_id=" + categoryId + "&sort=" + sort + "&");
                 break;
             case "searchByName":
                 String keyword = request.getParameter("keyword");
                 totalRecord = productDAO.findTotalRecordByName(keyword);
-                listProduct = productDAO.findProductByName(keyword, page);
-                pageControl.setUrlPattern(requestURL + "?search=searchByName&keyword=" + keyword + "&");
+                listProduct = productDAO.findProductByName(keyword, page, sort);
+                pageControl.setUrlPattern(requestURL + "?search=searchByName&keyword=" + keyword + "&sort=" + sort + "&");
                 break;
             default:
-             totalRecord = productDAO.findTotalRecord();
-             listProduct = productDAO.findByPage(page);
-             pageControl.setUrlPattern(requestURL + "?");
+            totalRecord = productDAO.findTotalRecord();
+            listProduct = productDAO.findByPage(page, sort);
+            pageControl.setUrlPattern(requestURL + "?sort=" + sort + "&");
         }
         
       
@@ -107,12 +110,5 @@ public class ShopController extends HttpServlet {
         pageControl.setTotalPage(totalPage);
         pageControl.setTotalRecord(totalRecord);
         return listProduct;
-    }
-
-
-
-
-    
-
-    
+    }  
 }
