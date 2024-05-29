@@ -29,7 +29,8 @@
         <link href="lib/lightbox/css/lightbox.min.css" rel="stylesheet">
         <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
 
-
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
         <!-- Customized Bootstrap Stylesheet -->
         <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
 
@@ -43,6 +44,22 @@
                 window.location.search = urlParams.toString();
             }
         </script>
+
+        <style>
+            .product-card {
+                transition: transform 0.3s, box-shadow 0.3s;
+            }
+            .product-card:hover {
+                transform: translateY(-10px);
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            }
+            .product-card img {
+                transition: transform 0.3s;
+            }
+            .product-card:hover img {
+                transform: scale(1.1);
+            }
+        </style>
     </head>
 
     <body>
@@ -145,13 +162,13 @@
 
 
         <!-- Fruits Shop Start-->
-          <div class="container-fluid fruite py-5">
-        <div class="container py-5">            
-            <div class="row g-4">
-                <div class="col-lg-12">
-                    <h1 class="mb-4"></h1>
-                    <div class="row g-4">
-                        <div class="col-xl-3">
+        <div class="container-fluid fruite py-5">
+            <div class="container py-5">            
+                <div class="row g-4">
+                    <div class="col-lg-12">
+                        <h1 class="mb-4"></h1>
+                        <div class="row g-4">
+                            <div class="col-xl-3">
                                 <form action="shop" method="GET">
                                     <div class="input-group w-100 mx-auto d-flex">
 
@@ -191,71 +208,33 @@
                                             </c:forEach>
                                         </div>
                                     </div>
-                                  
-                                    <div class="col-lg-12">
-                                        <h4 class="mb-3">Featured products</h4>
-                                        <div class="d-flex align-items-center justify-content-start">
-                                            <div class="rounded me-4" style="width: 100px; height: 100px;">
-                                                <img src="${pageContext.request.contextPath}/img/featur-1.jpg" class="img-fluid rounded" alt="">
-                                            </div>
-                                            <div>
-                                                <h6 class="mb-2">Big Banana</h6>
-                                                <div class="d-flex mb-2">
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star"></i>
+
+                                    <div class="container">
+                                        <div class="col-lg-12">
+                                            <h4 class="mb-3">Sản phẩm nổi bật</h4>
+                                            <c:forEach items="${listSpecialProduct}" var="special">
+                                                <div class="d-flex align-items-center mb-4 p-3 border rounded shadow-sm product-card">
+                                                    <div class="rounded me-4" style="width: 100px; height: 100px; overflow: hidden;">
+                                                        <img src="${special.image}" class="img-fluid rounded" alt="${special.product_name}">
+                                                    </div>
+                                                    <div>
+                                                        <h6 class="mb-2">${special.product_name}</h6>
+                                                        <div class="d-flex mb-2 text-warning">
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+                                                        </div>
+                                                        <div class="d-flex mb-2">
+                                                            <h5 class="fw-bold me-2">${special.price}</h5>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div class="d-flex mb-2">
-                                                    <h5 class="fw-bold me-2">2.99 $</h5>
-                                                    <h5 class="text-danger text-decoration-line-through">4.11 $</h5>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex align-items-center justify-content-start">
-                                            <div class="rounded me-4" style="width: 100px; height: 100px;">
-                                                <img src="${pageContext.request.contextPath}/img/featur-2.jpg" class="img-fluid rounded" alt="">
-                                            </div>
-                                            <div>
-                                                <h6 class="mb-2">Big Banana</h6>
-                                                <div class="d-flex mb-2">
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star"></i>
-                                                </div>
-                                                <div class="d-flex mb-2">
-                                                    <h5 class="fw-bold me-2">2.99 $</h5>
-                                                    <h5 class="text-danger text-decoration-line-through">4.11 $</h5>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex align-items-center justify-content-start">
-                                            <div class="rounded me-4" style="width: 100px; height: 100px;">
-                                                <img src="${pageContext.request.contextPath}/img/featur-3.jpg" class="img-fluid rounded" alt="">
-                                            </div>
-                                            <div>
-                                                <h6 class="mb-2">Big Banana</h6>
-                                                <div class="d-flex mb-2">
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star"></i>
-                                                </div>
-                                                <div class="d-flex mb-2">
-                                                    <h5 class="fw-bold me-2">2.99 $</h5>
-                                                    <h5 class="text-danger text-decoration-line-through">4.11 $</h5>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex justify-content-center my-4">
-                                            <a href="#" class="btn border border-secondary px-4 py-3 rounded-pill text-primary w-100">Vew More</a>
+                                            </c:forEach>
                                         </div>
                                     </div>
-                                  
+
                                 </div>
                             </div>
                             <div class="col-lg-9">
@@ -265,7 +244,9 @@
 
                                             <div class="rounded position-relative fruite-item">
                                                 <div class="fruite-img">
-                                                    <img src="${p.image}" class="img-fluid w-100 rounded-top" alt="">
+                                                    <a href="product-details?id=${p.product_id}">
+                                                        <img src="${p.image}" class="img-fluid w-100 rounded-top" alt="">
+                                                    </a>
                                                 </div>
                                                 <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">Fruits</div>
                                                 <div class="p-4 border border-secondary border-top-0 rounded-bottom">
@@ -307,9 +288,9 @@
         <jsp:include page="../common/homePage/footer-start.jsp"></jsp:include>
             <!-- Footer End -->
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+            <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
             <!-- JavaScript Libraries -->
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>

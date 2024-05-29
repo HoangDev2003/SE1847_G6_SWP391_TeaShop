@@ -301,4 +301,45 @@ public class ProductDAO extends DBContext {
 
     }
 
+    public List<Product> specialProduct() {
+        List<Product> list = new ArrayList<>();
+        //ket noi duoc voi database
+        connection = getConnection();
+        //co cau lenh de goi xuong database
+        String sql = "SELECT *\n"
+                + "  FROM [dbo].[Product]\n"
+                + "  WHERE product_id IN (21, 13, 1);";
+        try {
+            //Tạo đối tượng PrepareStatement
+            PreparedStatement statement = connection.prepareStatement(sql);
+            //thuc thi cau lenh o tren => tra ve ket qua
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                Product product = new Product();
+
+                int product_id = resultSet.getInt("product_id");
+                String product_name = resultSet.getString("product_name");
+                int category_id = resultSet.getInt("category_id");
+                String image = resultSet.getString("image");
+                int price = resultSet.getInt("price");
+                float discount = resultSet.getFloat("price");
+                Date create_at = resultSet.getDate("create_at");
+                product.setProduct_id(product_id);
+                product.setProduct_name(product_name);
+                product.setCategory_id(category_id);
+                product.setImage(image);
+                product.setPrice(price);
+                product.setDiscount(discount);
+                product.setCreate_at(create_at);
+                //add to collections
+                list.add(product);
+            }
+            
+        } catch (SQLException ex) {
+            System.out.println("Error " + ex.getMessage());
+        }
+
+        return list;
+    }
+
 }

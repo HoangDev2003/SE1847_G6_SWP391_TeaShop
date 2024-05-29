@@ -37,12 +37,13 @@ public class ShopController extends HttpServlet {
         
         List<Category> listCategory = categoryDAO.findAll();
         
-       
+        List<Product> listSpecialProduct = productDAO.specialProduct();
         
         HttpSession session = request.getSession();
         request.setAttribute("pageControl", pageControl);
         session.setAttribute("listProduct", listProduct);
         session.setAttribute("listCategory", listCategory);
+        session.setAttribute("listSpecialProduct", listSpecialProduct);
         request.getRequestDispatcher("view/homepage/shop.jsp").forward(request, response);
     } 
 
