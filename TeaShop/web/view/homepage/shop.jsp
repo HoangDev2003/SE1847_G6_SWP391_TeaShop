@@ -185,7 +185,7 @@
                                     <label for="sort">Sắp xếp theo:</label>
                                     <select name="sort" id="sort" onchange="sortBy()" class="border-0 form-select-sm bg-light me-3">
                                         <option value="product_id" <c:if test="${param.sort == null || param.sort == 'product_id'}">selected</c:if>>None</option>
-                                        <option value="create_at" <c:if test="${param.sort == 'create_at'}">selected</c:if>>Ngày tạo</option>
+                                        <option value="create_at" <c:if test="${param.sort == 'create_at'}">selected</c:if>>Sản phẩm mới nhất</option>
                                         </select>
                                     </div>
                                 </div>
