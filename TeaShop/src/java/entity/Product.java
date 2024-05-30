@@ -27,9 +27,12 @@ import lombok.ToString;
 public class Product {
     public int product_id;
     public String product_name;
-    public int category_id;
+    public Category category;
     public String image;
     public int price;
     public float discount;      
     public Date create_at;
+    public String description;
+    
+    
 }
