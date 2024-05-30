@@ -1,9 +1,3 @@
-<%-- 
-    Document   : shop
-    Created on : May 19, 2024, 9:51:00 PM
-    Author     : HoangPC
---%>
-
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -100,12 +94,11 @@
                         <div class="navbar-nav mx-auto">
                             <a href="home.jsp" class="nav-item nav-link">Home</a>
                             <a href="${pageContext.request.contextPath}/shop" class="nav-item nav-link active">Shop</a>
-                            <a href="product-detail.jsp" class="nav-item nav-link">Shop Detail</a>
                             <div class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                                 <div class="dropdown-menu m-0 bg-secondary rounded-0">
                                     <a href="cart.jsp" class="dropdown-item">Cart</a>
-                                    <a href="chackout.jsp" class="dropdown-item">Chackout</a>
+                                    <a href="chackout.jsp" class="dropdown-item">Checkout</a>
                                     <a href="testimonial.jsp" class="dropdown-item">Testimonial</a>
                                     <a href="404.jsp" class="dropdown-item">404 Page</a>
                                 </div>

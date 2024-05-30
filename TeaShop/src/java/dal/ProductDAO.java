@@ -4,6 +4,7 @@
  */
 package dal;
 
+import entity.Category;
 import entity.Product;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -21,6 +24,7 @@ public class ProductDAO extends DBContext {
 
     public List<Product> findAll() {
         List<Product> list = new ArrayList<>();
+        Category category = null;
         //ket noi duoc voi database
         connection = getConnection();
         //co cau lenh de goi xuong database
@@ -35,14 +39,14 @@ public class ProductDAO extends DBContext {
 
                 int product_id = resultSet.getInt("product_id");
                 String product_name = resultSet.getString("product_name");
-                int category_id = resultSet.getInt("category_id");
+                category = ((new CategoryDAO()).getCategoryById(resultSet.getInt("category_id")));
                 String image = resultSet.getString("image");
                 int price = resultSet.getInt("price");
                 float discount = resultSet.getFloat("price");
                 Date create_at = resultSet.getDate("create_at");
                 product.setProduct_id(product_id);
                 product.setProduct_name(product_name);
-                product.setCategory_id(category_id);
+                product.setCategory(category);
                 product.setImage(image);
                 product.setPrice(price);
                 product.setDiscount(discount);
@@ -101,7 +105,7 @@ public class ProductDAO extends DBContext {
                 Date create_at = resultSet.getDate("create_at");
                 product.setProduct_id(product_id);
                 product.setProduct_name(product_name);
-                product.setCategory_id(category_id);
+                product.setCategory((new CategoryDAO()).getCategoryById(category_id));
                 product.setImage(image);
                 product.setPrice(price);
                 product.setDiscount(discount);
@@ -119,6 +123,7 @@ public class ProductDAO extends DBContext {
 
     public List<Product> findProductByName(String keyword, int page, String sort) {
         List<Product> list = new ArrayList<>();
+        Category category = null;
         //ket noi duoc voi database
         connection = getConnection();
         //co cau lenh de goi xuong database
@@ -143,14 +148,14 @@ public class ProductDAO extends DBContext {
 
                 int product_id = resultSet.getInt("product_id");
                 String product_name = resultSet.getString("product_name");
-                int category_id = resultSet.getInt("category_id");
+                category = ((new CategoryDAO()).getCategoryById(resultSet.getInt("category_id")));
                 String image = resultSet.getString("image");
                 int price = resultSet.getInt("price");
                 float discount = resultSet.getFloat("price");
                 Date create_at = resultSet.getDate("create_at");
                 product.setProduct_id(product_id);
                 product.setProduct_name(product_name);
-                product.setCategory_id(category_id);
+                product.setCategory(category);
                 product.setImage(image);
                 product.setPrice(price);
                 product.setDiscount(discount);
@@ -172,6 +177,7 @@ public class ProductDAO extends DBContext {
         //ket noi duoc voi database
         connection = getConnection();
         //co cau lenh de goi xuong database
+        Category category = null;
         String sql = "SELECT *\n"
                 + "  FROM [dbo].[Product]\n"
                 + getSortQuery(sort)
@@ -191,14 +197,14 @@ public class ProductDAO extends DBContext {
 
                 int product_id = resultSet.getInt("product_id");
                 String product_name = resultSet.getString("product_name");
-                int category_id = resultSet.getInt("category_id");
+                category = ((new CategoryDAO()).getCategoryById(resultSet.getInt("category_id")));
                 String image = resultSet.getString("image");
                 int price = resultSet.getInt("price");
                 float discount = resultSet.getFloat("price");
                 Date create_at = resultSet.getDate("create_at");
                 product.setProduct_id(product_id);
                 product.setProduct_name(product_name);
-                product.setCategory_id(category_id);
+                product.setCategory(category);
                 product.setImage(image);
                 product.setPrice(price);
                 product.setDiscount(discount);
@@ -300,11 +306,12 @@ public class ProductDAO extends DBContext {
         return total;
 
     }
-
-    public List<Product> specialProduct() {
+    
+     public List<Product> specialProduct() {
         List<Product> list = new ArrayList<>();
         //ket noi duoc voi database
         connection = getConnection();
+        Category category = null;
         //co cau lenh de goi xuong database
         String sql = "SELECT *\n"
                 + "  FROM [dbo].[Product]\n"
@@ -316,17 +323,17 @@ public class ProductDAO extends DBContext {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 Product product = new Product();
-
+                
                 int product_id = resultSet.getInt("product_id");
                 String product_name = resultSet.getString("product_name");
-                int category_id = resultSet.getInt("category_id");
+                category = ((new CategoryDAO()).getCategoryById(resultSet.getInt("category_id")));
                 String image = resultSet.getString("image");
                 int price = resultSet.getInt("price");
                 float discount = resultSet.getFloat("price");
                 Date create_at = resultSet.getDate("create_at");
                 product.setProduct_id(product_id);
                 product.setProduct_name(product_name);
-                product.setCategory_id(category_id);
+                product.setCategory(category);
                 product.setImage(image);
                 product.setPrice(price);
                 product.setDiscount(discount);
@@ -341,5 +348,46 @@ public class ProductDAO extends DBContext {
 
         return list;
     }
+
+    public Product getProductsById(int productId) {
+        connection = getConnection();
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        Product product = null;
+        Category category = null;
+        String sql = "select * from [Product] where product_id = ?";
+        try {
+            stm = connection.prepareStatement(sql);
+            stm.setInt(1, productId);
+            rs = stm.executeQuery();
+            while (rs.next()) {
+                int product_id = rs.getInt("product_id");
+                String product_name = rs.getString("product_name");
+                category = ((new CategoryDAO()).getCategoryById(rs.getInt("category_id")));
+                String image = rs.getString("image");
+                int price = rs.getInt("price");
+                Date create_at = rs.getDate("create_at");
+                float discount = rs.getFloat("discount");
+                String description = rs.getString("description");
+                
+                product = new Product(product_id, product_name, category, image, price, discount, create_at, description);
+            }
+            return product;
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+     
+    public static void main(String[] args) {
+        int productId = 2;
+        ProductDAO productDAO = new ProductDAO();
+        Product product = productDAO.getProductsById(productId);
+        System.out.println(product);
+        
+    }
+   
 
 }
