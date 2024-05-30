@@ -28,35 +28,43 @@ public class OrderInformationController extends HttpServlet {
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
      *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @param request The servlet request object containing the client's
+     * request.
+     * @param response The servlet response object to send the response back to
+     * the client.
+     * @throws ServletException if a servlet-specific error occurs.
+     * @throws IOException if an I/O error occurs.
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        HttpSession session = request.getSession(true); // Get or create the session
+
         try (PrintWriter out = response.getWriter()) {
-            int orderId = Integer.parseInt(request.getParameter("order_id"));
+            int orderId = Integer.parseInt(request.getParameter("order_id")); // Get order ID from request parameter
             OrderDetailsDAO orderDetailsDAO = new OrderDetailsDAO();
             OrdersDAO orderDAO = new OrdersDAO();
-            HttpSession session = request.getSession();
 
-            // Assuming you want to retrieve orders for a specific account ID
+            // Retrieve information related to the order
             List<String[]> infoList = orderDetailsDAO.getinfo(orderId);
             Orders orderInfo = orderDAO.findByOrderId(orderId);
             String[] accInfo = orderDetailsDAO.accInfo(orderId);
-            // Forward the request to the JSP page
+
+            // Calculate the total order amount
             int totalOrderAmount = 0;
-            for (Object[] item : infoList) {
-                int price = Integer.parseInt(item[4].toString());
-                int quantity = Integer.parseInt(item[5].toString());
-                totalOrderAmount += price * quantity;
+            for (String[] item : infoList) {
+                int price = Integer.parseInt(item[4]); // Convert price to integer
+                int quantity = Integer.parseInt(item[5]); // Convert quantity to integer
+                totalOrderAmount += price * quantity; // Calculate total order amount
             }
+
+            // Set the attributes to be accessed in the JSP page
             request.setAttribute("totalOrderAmount", totalOrderAmount);
-            session.setAttribute("infoList", infoList);
-            session.setAttribute("accInfo", accInfo);
-            session.setAttribute("orderInfo", orderInfo);
+            request.setAttribute("infoList", infoList);
+            request.setAttribute("accInfo", accInfo);
+            request.setAttribute("orderInfo", orderInfo);
+
+            // Forward the request to the order information JSP page for display
             request.getRequestDispatcher("view/orders/order-information.jsp").forward(request, response);
         }
     }
