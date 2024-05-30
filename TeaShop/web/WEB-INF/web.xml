@@ -4,8 +4,32 @@
         <servlet-name>ShopController</servlet-name>
         <servlet-class>controller.ShopController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>HomeController</servlet-name>
+        <servlet-class>controller.HomeController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>BlogController</servlet-name>
+        <servlet-class>controller.BlogController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>BlogDetailController</servlet-name>
+        <servlet-class>controller.BlogDetailController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ShopController</servlet-name>
         <url-pattern>/shop</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>HomeController</servlet-name>
+        <url-pattern>/home</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BlogController</servlet-name>
+        <url-pattern>/blog</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BlogDetailController</servlet-name>
+        <url-pattern>/blogdetail</url-pattern>
     </servlet-mapping>
 </web-app>
