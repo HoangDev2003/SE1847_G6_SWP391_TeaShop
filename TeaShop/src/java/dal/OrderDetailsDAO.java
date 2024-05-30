@@ -5,97 +5,131 @@
 package dal;
 
 import dal.DBContext;
-import entity.OrderDetails;
+import entity.Orders;
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.Date;
 
 /**
  *
- * @author HoangNX
+ * @author HuyTD
  */
-public class OrderDetailsDAO extends DBContext {
+public class OrdersDAO extends DBContext {
 
-    public List<OrderDetails> findByOrderId(int orderId) {
-        List<OrderDetails> orderDetailsList = new ArrayList<>();
-        connection = getConnection();
-        String sql = "SELECT * FROM OrderDetails WHERE order_id = ?";
+    /**
+     * Finds orders by account ID.
+     *
+     * @param accountId The ID of the account for which to retrieve orders.
+     * @return A list of orders associated with the given account ID.
+     */
+    public List<Orders> findByAccountId(int accountId) {
+        List<Orders> ordersList = new ArrayList<>();
+        Connection connection = getConnection(); // Obtain database connection
+        String sql = "SELECT * FROM Orders WHERE account_id = ?";
+        
         try {
             PreparedStatement pre = connection.prepareStatement(
                     sql,
                     ResultSet.TYPE_SCROLL_SENSITIVE,
                     ResultSet.CONCUR_READ_ONLY);
-            pre.setInt(1, orderId);
+            pre.setInt(1, accountId); // Set the account ID parameter
             ResultSet rs = pre.executeQuery();
+            
             while (rs.next()) {
-                OrderDetails orderDetails = new OrderDetails();
-                orderDetails.order_details_id = rs.getInt("order_details_id");
-                orderDetails.product_id = rs.getInt("product_id");
-                orderDetails.order_id = rs.getInt("order_id");
-                orderDetails.quantity = rs.getInt("quantity");
-                orderDetails.topping_id = rs.getInt("topping_id");
-                orderDetailsList.add(orderDetails);
+                Orders order = new Orders();
+                order.order_id = rs.getInt("order_id");
+                order.account_id = rs.getInt("account_id");
+                order.status = rs.getInt("status");
+                order.total_amount = rs.getInt("total_amount");
+                String orderDateString = rs.getString("order_date");
+
+                // Parse the date string into a Date object
+                SimpleDateFormat dbDateFormat = new SimpleDateFormat("yyyy-MM-dd"); // Assuming the date from DB is in this format
+                Date date = dbDateFormat.parse(orderDateString);
+
+                // Format the Date object into dd/MM/yyyy format
+                SimpleDateFormat displayDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                String formattedDate = displayDateFormat.format(date);
+
+                // Set the formatted date to the order object
+                order.order_date = formattedDate;
+                order.note = rs.getString("note");
+                ordersList.add(order); // Add the order to the list
             }
+            rs.close(); // Close ResultSet
+            pre.close(); // Close PreparedStatement
         } catch (SQLException ex) {
-            Logger.getLogger(OrderDetailsDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(OrdersDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) { // Catch any parsing exceptions
+            Logger.getLogger(OrdersDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close(); // Close the database connection
+                }
+            } catch (SQLException e) {
+                Logger.getLogger(OrdersDAO.class.getName()).log(Level.SEVERE, null, e);
+            }
         }
-        return orderDetailsList;
+        return ordersList; // Return the list of orders
     }
 
-    public List<String[]> getinfo(int orderId) {
-        List<String[]> infoList = new ArrayList<>();
-        connection = getConnection();
-        String sql = "SELECT order_details_id, image, product_name, category_name, price, quantity, topping_name FROM OrderDetails od "
-                + "JOIN Product p ON od.product_id=p.product_id "
-                + "JOIN Topping t ON od.topping_id=t.topping_id "
-                + "JOIN Category c ON p.category_id=c.category_id WHERE order_id = ?";
+    /**
+     * Finds an order by order ID.
+     *
+     * @param orderId The ID of the order to retrieve.
+     * @return The order associated with the given order ID, or null if not found.
+     */
+    public Orders findByOrderId(int orderId) {
+        Orders order = null;
+        Connection connection = getConnection(); // Obtain database connection
+        String sql = "SELECT * FROM Orders WHERE order_id = ?";
+        
         try {
-            PreparedStatement pre = connection.prepareStatement(
-                    sql,
-                    ResultSet.TYPE_SCROLL_SENSITIVE,
-                    ResultSet.CONCUR_READ_ONLY);
-            pre.setInt(1, orderId);
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setInt(1, orderId); // Set the order ID parameter
             ResultSet rs = pre.executeQuery();
-            while (rs.next()) {
-                String[] info = new String[7];
-                info[0] = rs.getString("order_details_id");
-                info[1] = rs.getString("image");
-                info[2] = rs.getString("product_name");
-                info[3] = rs.getString("category_name");
-                info[4] = rs.getString("price");
-                info[5] = rs.getString("quantity");
-                info[6] = rs.getString("topping_name");
-                infoList.add(info);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(OrderDetailsDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return infoList;
-    }
 
-    public String[] accInfo(int orderId) {
-        String[] info = new String[4];
-        connection = getConnection();
-        String sql = "select full_name, gender, email, phone_number from Orders o join Accounts a on o.account_id=a.account_id where order_id = ?";
-        try {
-            PreparedStatement pre = connection.prepareStatement(
-                    sql,
-                    ResultSet.TYPE_SCROLL_SENSITIVE,
-                    ResultSet.CONCUR_READ_ONLY);
-            pre.setInt(1, orderId);
-            ResultSet rs = pre.executeQuery();
             if (rs.next()) {
-                info[0] = rs.getString("full_name");
-                info[1] = rs.getString("gender");
-                info[2] = rs.getString("email");
-                info[3] = rs.getString("phone_number");
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(OrderDetailsDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
+                order = new Orders();
+                order.order_id = rs.getInt("order_id");
+                order.account_id = rs.getInt("account_id");
+                order.status = rs.getInt("status");
+                order.total_amount = rs.getInt("total_amount");
+                String orderDateString = rs.getString("order_date");
 
-        return info;
+                // Parse the date string into a Date object
+                SimpleDateFormat dbDateFormat = new SimpleDateFormat("yyyy-MM-dd"); // Assuming the date from DB is in this format
+                Date date = dbDateFormat.parse(orderDateString);
+
+                // Format the Date object into dd/MM/yyyy format
+                SimpleDateFormat displayDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                String formattedDate = displayDateFormat.format(date);
+
+                // Set the formatted date to the order object
+                order.order_date = formattedDate;
+                order.note = rs.getString("note");
+            }
+
+            rs.close(); // Close ResultSet
+            pre.close(); // Close PreparedStatement
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception ex) { // Catch any parsing exceptions
+            Logger.getLogger(OrdersDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close(); // Close the database connection
+                }
+            } catch (SQLException e) {
+                Logger.getLogger(OrdersDAO.class.getName()).log(Level.SEVERE, null, e);
+            }
+        }
+        return order; // Return the order object
     }
 }
