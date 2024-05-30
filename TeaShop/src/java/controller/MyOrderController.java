@@ -32,21 +32,28 @@ public class MyOrderController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+    // Set the content type of the response to HTML with UTF-8 encoding
     response.setContentType("text/html;charset=UTF-8");
+    
+    // Retrieve or create a session associated with the request
+    HttpSession session = request.getSession(true);
+    
     try (PrintWriter out = response.getWriter()) {
+        // Create an instance of OrdersDAO to interact with the database
         OrdersDAO ordersDAO = new OrdersDAO();
-        HttpSession session = request.getSession();
         
-        // Assuming you want to retrieve orders for a specific account ID
-        int accountId = 1; // Replace with dynamic value as needed
+        // Retrieve the account ID stored in the session
+        int accountId = (int) session.getAttribute("accountId");
+        
+        // Retrieve the list of orders associated with the account ID
         List<Orders> listOrders = ordersDAO.findByAccountId(accountId);
         
-        // Store the list of orders in the session
-        session.setAttribute("listOrders", listOrders);
+        // Set the list of orders as a request attribute for access in the JSP page
+        request.setAttribute("listOrders", listOrders);
         
-        // Forward the request to the JSP page
+        // Forward the request to the "my-order.jsp" page for rendering
         request.getRequestDispatcher("view/orders/my-order.jsp").forward(request, response);
     }
 }
