@@ -87,18 +87,22 @@ public class BlogDAO extends DBContext {
         List<Blog> blog = new ArrayList<>();
         String sql = "select * from Blog where blog_name LIKE ? OR content LIKE ? OR created_at LIKE ? ";
         PreparedStatement pre;
+        connection = getConnection();
+        if (sql.isEmpty())
+        {        
+            return blog;   
+        }else{   
         try {
             pre = connection.prepareStatement(sql);
-            pre.setString(1, "%" + search + "%");
+            pre.setString(1, "%" + search + "%");   
             pre.setString(2, "%" + search + "%");
             pre.setString(3, "%" + search + "%");
-
             ResultSet resultSet = pre.executeQuery();
             while (resultSet.next()) {
                 //public int id, account_id;
                 //public String  content, img , blog_name ,created_at;
                 int id = resultSet.getInt("id");
-                int account_id = resultSet.getInt("acount_id");
+                int account_id = resultSet.getInt("account_id");
                 String content = resultSet.getString("content");
                 String img = resultSet.getString("img");
                 String blog_name = resultSet.getString("blog_name");
@@ -106,11 +110,13 @@ public class BlogDAO extends DBContext {
 
                 Blog pr = new Blog(id, account_id, content, img, blog_name, created_at);
                 blog.add(pr);
+                
             }
         } catch (SQLException ex) {
             System.out.println(ex);
         }
-        return blog;
+        
+        }return blog;
     }
 
 // chỉnh sửa định dạng
@@ -119,26 +125,26 @@ public class BlogDAO extends DBContext {
         return newFormatter.format(dateValue);
     }
 
-    public static void main(String[] args) {
-
-        String name = "";
-        BlogDAO dao = new BlogDAO();
-        ProductDAO daa = new ProductDAO();
+//    public static void main(String[] args) {
+//
+//        String name = "";
+//        BlogDAO dao = new BlogDAO();
+//        ProductDAO daa = new ProductDAO();
 //        List<Blog> allblog = dao.findAll();
 //        List<Product> allpro = daa.findAll();
 //        List<Object> parameters = new ArrayList<>();
 //        
-        
-            String bid = "1";
-          
-            
-            int id=Integer.parseInt(bid);
-            Blog blog = dao.getBlogById(id);
+//        
+//            String bid = "1";
+//          
+//            
+//            int id=Integer.parseInt(bid);
+//            Blog blog = dao.getBlogById(id);
 //    protected List<T> queryGenericDAO(Class<T> clazz, String sql, Map<String, Object> parameterHashmap) {
 //  Define the SQL query to fetch products by name
 //    
-        System.out.println(blog);
-        
+//        System.out.println(blog);
+//        
 //     Create a HashMap to store parameters
 //    Map<String, Object> parameterMap = new HashMap<>();
 //    parameterMap.put("name", name);
@@ -146,7 +152,7 @@ public class BlogDAO extends DBContext {
 //        int categoryIdToUpdate = 1; // Thay thế bằng ID của danh mục bạn muốn cập nhật
 //        String sql = "SELECT * FROM products WHERE id = " + categoryIdToUpdate;
 ////        Blog categoryToUpdate = (Blog) dao.queryGenericDAO(Blog.class,sql, parameterMap);
-
+//
 //        if (categoryToUpdate != null) {
 //            // Cập nhật thuộc tính danh mục
 //            
@@ -159,5 +165,5 @@ public class BlogDAO extends DBContext {
 //        for (Blog category1 : allblog) {
 //            System.out.println(category1);
 //        }
-    }
+//    }
 }
