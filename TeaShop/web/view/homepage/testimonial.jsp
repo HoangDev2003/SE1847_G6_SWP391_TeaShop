@@ -68,9 +68,9 @@
                     </button>
                     <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                         <div class="navbar-nav mx-auto">
-                            <a href="home.jsp" class="nav-item nav-link">Home</a>
-                            <a href="shop.jsp" class="nav-item nav-link">Shop</a>
-                            <a href="product-detail.jsp" class="nav-item nav-link">Shop Detail</a>
+                            <a href="home" class="nav-item nav-link">Home</a>
+                            <a href="shop" class="nav-item nav-link">Shop</a>
+                            <a href="product-details" class="nav-item nav-link">Shop Detail</a>
                             <div class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">Pages</a>
                                 <div class="dropdown-menu m-0 bg-secondary rounded-0">

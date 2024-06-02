@@ -92,8 +92,10 @@
                     </button>
                     <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                         <div class="navbar-nav mx-auto">
-                            <a href="home.jsp" class="nav-item nav-link">Home</a>
+                            <a href="${pageContext.request.contextPath}/home" class="nav-item nav-link">Home</a>
+                            <a href ="${pageContext.request.contextPath}/blog" class="nav-item nav-link">Blog</a>
                             <a href="${pageContext.request.contextPath}/shop" class="nav-item nav-link active">Shop</a>
+                            
                             <div class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                                 <div class="dropdown-menu m-0 bg-secondary rounded-0">
@@ -143,13 +145,9 @@
 
 
         <!-- Single Page Header start -->
-        <div class="container-fluid page-header py-5">
-            <h1 class="text-center text-white display-6">Shop</h1>
-            <ol class="breadcrumb justify-content-center mb-0">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item"><a href="#">Pages</a></li>
-                <li class="breadcrumb-item active text-white">Shop</li>
-            </ol>
+        <div class="container-fluid page-header bg-primary py-5">
+            <h1 class="text-center text-white display-6">Shop </h1>
+           
         </div>
         <!-- Single Page Header End -->
 
@@ -188,7 +186,7 @@
                                     <div class="row g-4">
                                         <div class="col-lg-12">
                                             <div class="mb-3">
-                                                <h4>Categories</h4>
+                                                <h4>Loại sản phẩm</h4>
                                             <c:forEach items="${listCategory}" var="cate">
                                                 <ul class="list-unstyled fruite-categorie">
                                                     <li>
