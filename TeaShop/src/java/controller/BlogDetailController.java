@@ -33,8 +33,6 @@ public class BlogDetailController extends HttpServlet {
             try{
             int id=Integer.parseInt(bid);
             Blog blog = dao.getBlogById(id);
-         
-            
             request.setAttribute("blog", blog);
             request.getRequestDispatcher("view/homepage/blogDetail.jsp").forward(request, response);
           }catch(NumberFormatException e){
