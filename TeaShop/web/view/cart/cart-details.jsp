@@ -71,7 +71,7 @@
                     <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                         <div class="navbar-nav mx-auto">
                             <a href="home.jsp" class="nav-item nav-link">Home</a>
-                            <a href="shop.jsp" class="nav-item nav-link">Shop</a>
+                            <a href="shop" class="nav-item nav-link">Shop</a>
                             <a href="product-detail.jsp" class="nav-item nav-link">Shop Detail</a>
                             <div class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">Pages</a>
@@ -241,34 +241,40 @@
                             </div>
                             <div class="col-lg-6">
                                 <div class="row g-4 justify-content-center"> 
-                                    <c:forEach var="index" begin="0" end="${fn:length(cartInfo)-1}">
+                                    <c:forEach var="cartItem" items="${cartInfo}" varStatus="status">
                                         <div class="col-md-12 col-lg-12 col-xl-12 mb-4">
                                             <div class="p-4 border border-secondary rounded">
                                                 <div class="row">
                                                     <div class="col-md-4 col-lg-4 col-xl-4">
-                                                        <p><img src="${cartInfo[index][4]}" class="img-fluid w-100" alt="" width="50" height="50"></p>
+                                                        <p><img src="${cartItem.product.image}" class="img-fluid w-100" alt="" width="50" height="50"></p>
                                                     </div>
                                                     <div class="col-md-8 col-lg-8 col-xl-8">
-                                                        <p>ID sản phẩm: ${cartInfo[index][0]}</p>
-                                                        <p>Tên sản phẩm: ${cartInfo[index][1]}</p>
-                                                        <p>Giá tiền: ${cartInfo[index][2]} đồng</p>
-                                                        <form action="CartDetails" method="post" id="form-${index}">
+                                                        <p>ID sản phẩm: ${cartItem.product.product_id}</p>
+                                                        <p>Tên sản phẩm: ${cartItem.product.product_name}</p>
+                                                        <p>Giá tiền: ${cartItem.product.price} đồng</p>
+                                                        <form action="CartDetails" method="post" id="form-${status.index}">
                                                             <p>Số lượng: 
-                                                                <input type="number" name="quantity" value="${cartInfo[index][3]}" onchange="document.getElementById('form-${index}').submit()">
-                                                                <input type="hidden" name="product_id" value="${cartInfo[index][0]}">
+                                                                <input type="number" name="quantity" value="${cartItem.quantity}" onchange="document.getElementById('form-${status.index}').submit()">
+                                                                <input type="hidden" name="product_id" value="${cartItem.product.product_id}">
+                                                                <input type="hidden" name="service" value="updateQuantity">
                                                             </p>
+                                                        </form>
+                                                        
+                                                        <form action="CartDetails" method="post" id="topping-form-${status.index}">
                                                             <p>Topping: 
-                                                                <select name="topping">
+                                                                <select name="topping_name" onchange="document.getElementById('topping-form-${status.index}').submit()">
                                                                     <option value="none">Không topping</option>
                                                                     <c:forEach var="topping" items="${toppingList}">
-                                                                        <option value="${topping}">${topping}</option>
+                                                                        <option value="${topping}" <c:if test="${cartItem.topping.topping_name == topping}">selected</c:if>>${topping}</option>
                                                                     </c:forEach>
                                                                 </select>
+                                                                <input type="hidden" name="product_id" value="${cartItem.product.product_id}">
+                                                                <input type="hidden" name="service" value="updateTopping">
                                                             </p>
-                                                            <p>Tổng tiền: ${cartInfo[index][2] * cartInfo[index][3]} đồng</p>
-                                                            <input type="hidden" name="service" value="update">
                                                         </form>
-                                                        <p><a href="CartDetails?service=delete&product_id=${cartInfo[index][0]}" class="btn border border-secondary rounded-pill px-3 text-primary">Xóa sản phẩm</a></p>
+                                                        <p>Tổng tiền: ${cartItem.product.price * cartItem.quantity} đồng</p>
+
+                                                        <p><a href="CartDetails?service=delete&product_id=${cartItem.product.product_id}" class="btn border border-secondary rounded-pill px-3 text-primary">Xóa sản phẩm</a></p>
                                                     </div>
                                                 </div>
                                             </div>

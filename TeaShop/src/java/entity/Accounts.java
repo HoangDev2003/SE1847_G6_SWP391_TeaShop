@@ -22,11 +22,12 @@ public class Accounts {
     private String address;
     private String phone_number;
     private Date created_at;
+    private String full_name;
 
     public Accounts() {
     }
 
-    public Accounts(int account_id, String user_name, String pass_word, int role_id, String email, int status_id, String gender, String address, String phone_number, Date created_at) {
+    public Accounts(int account_id, String user_name, String pass_word, int role_id, String email, int status_id, String gender, String address, String phone_number, Date created_at, String full_name) {
         this.account_id = account_id;
         this.user_name = user_name;
         this.pass_word = pass_word;
@@ -37,6 +38,17 @@ public class Accounts {
         this.address = address;
         this.phone_number = phone_number;
         this.created_at = created_at;
+        this.full_name = full_name;
+    }
+
+    
+
+    public String getFull_name() {
+        return full_name;
+    }
+
+    public void setFull_name(String full_name) {
+        this.full_name = full_name;
     }
 
    

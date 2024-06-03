@@ -26,4 +26,7 @@ import lombok.ToString;
 
 public class OrderDetails {
     public int order_details_id, product_id, order_id, quantity, topping_id;
+    public Product product;
+    public Category category;
+    public Topping topping;
 }

@@ -1,6 +1,6 @@
 <%-- 
     Document   : order-information
-    Created on : May 25, 2024, 10:06:22 AM
+    Created on : May 26, 2024, 08:07:46 AM
     Author     : HuyTD
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -251,28 +251,29 @@
                                                 </div>
 
                                                 <div class="col-md-6 col-lg-6 col-xl-6">
-                                                    <p>Họ vầ tên: ${accInfo[0]}</p>
-                                                    <p>Giới tính: ${accInfo[1]}</p>
-                                                    <p>Email: ${accInfo[2]}</p>
-                                                    <p>Số điện thoại: ${accInfo[3]}</p>
+                                                    <p>Họ vầ tên: ${accInfo.full_name}</p>
+                                                    <p>Giới tính: ${accInfo.gender}</p>
+                                                    <p>Email: ${accInfo.email}</p>
+                                                    <p>Số điện thoại: ${accInfo.phone_number}</p>
                                                 </div>
                                             </div>
 
                                             <h4>Danh sách sản phẩm</h4>
-                                            <c:forEach var="index" begin="0" end="${fn:length(infoList)-1}">
+                                            <c:forEach var="item" items="${infoList}">
                                                 <div class="col-md-12 col-lg-12 col-xl-12 mb-4">
                                                     <div class="p-4 border border-secondary rounded">
                                                         <div class="row">
                                                             <div class="col-md-4 col-lg-4 col-xl-4">
-                                                                <p><img src="${infoList[index][1]}" class="img-fluid w-100" alt="" width="50" height="50"></p>
+                                                                <p><img src="${item.product.image}" class="img-fluid w-100" alt="" width="50" height="50"></p>
                                                             </div>
                                                             <div class="col-md-8 col-lg-8 col-xl-8">
-                                                                <p>Tên sản phẩm: ${infoList[index][2]}</p>
-                                                                <p>Category: ${infoList[index][3]}</p>
-                                                                <p>Giá tiền: ${infoList[index][4]} đồng</p>
-                                                                <p>Số lượng: ${infoList[index][5]}</p>
-                                                                <p>Topping: ${infoList[index][6]}</p>
-                                                                <p>Tổng tiền: ${infoList[index][4]*infoList[index][5]} đồng</p>
+                                                                <p>Tên sản phẩm: ${item.product.product_name}</p>
+                                                                <p>Category: ${item.category.category_name}</p>
+                                                                <p>Giá tiền: ${item.product.price} đồng</p>
+                                                                <p>Số lượng: ${item.quantity}</p>
+                                                                <p>Topping: ${item.topping.topping_name}</p>
+                                                                <p>Tổng tiền: ${item.product.price*item.quantity} đồng</p>
+                                                                <p><a href="CartDetails?service=add2cart2&order_id=${orderInfo.order_id}&product_id=${item.product.product_id}&quantity=${item.quantity}&topping_name=${item.topping.topping_name}" class="btn border border-secondary rounded-pill px-3 text-primary">Mua lại sản phẩm</a></p>
                                                             </div>
                                                         </div>
                                                     </div>

@@ -6,6 +6,8 @@ package controller;
 
 import dal.OrderDetailsDAO;
 import dal.OrdersDAO;
+import entity.Accounts;
+import entity.OrderDetails;
 import entity.Orders;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -46,15 +48,15 @@ public class OrderInformationController extends HttpServlet {
             OrdersDAO orderDAO = new OrdersDAO();
 
             // Retrieve information related to the order
-            List<String[]> infoList = orderDetailsDAO.getinfo(orderId);
+            List<OrderDetails> infoList = orderDetailsDAO.getinfo(orderId);
             Orders orderInfo = orderDAO.findByOrderId(orderId);
-            String[] accInfo = orderDetailsDAO.accInfo(orderId);
+            Accounts accInfo = orderDetailsDAO.accInfo(orderId);
 
             // Calculate the total order amount
             int totalOrderAmount = 0;
-            for (String[] item : infoList) {
-                int price = Integer.parseInt(item[4]); // Convert price to integer
-                int quantity = Integer.parseInt(item[5]); // Convert quantity to integer
+            for (OrderDetails item : infoList) {
+                int price = item.product.price; // Convert price to integer
+                int quantity = item.quantity; // Convert quantity to integer
                 totalOrderAmount += price * quantity; // Calculate total order amount
             }
 

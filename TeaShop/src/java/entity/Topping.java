@@ -6,7 +6,7 @@ package entity;
 
 /**
  *
- * @author HuyTD
+ * @author HoangNX
  */
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,8 +24,11 @@ import lombok.ToString;
 @Getter
 @Setter
 
-public class CartDetails {
-    public int product_id, quantity, topping_id;
-    public Product product;
-    public Topping topping;
+/**
+ *
+ * @author This PC
+ */
+public class Topping {
+    public int topping_id;
+    public String topping_name;
 }
