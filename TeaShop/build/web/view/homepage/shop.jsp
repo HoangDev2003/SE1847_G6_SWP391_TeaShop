@@ -245,7 +245,7 @@
 
                                                     <div class="d-flex justify-content-between flex-lg-wrap">
                                                         <p class="text-dark fs-5 fw-bold mb-0">${p.price}</p>
-                                                        <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Mua ngay</a>
+                                                        <a href="CartDetails?service=add2cart&product_id=${p.product_id}" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Mua ngay</a>
                                                     </div>
                                                 </div>
                                             </div>

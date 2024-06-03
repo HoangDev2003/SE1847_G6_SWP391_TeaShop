@@ -63,29 +63,34 @@
             </div>
             <div class="container px-0">
                 <nav class="navbar navbar-light bg-white navbar-expand-xl">
-                    <a href="index.html" class="navbar-brand"><h1 class="text-primary display-6">Fruitables</h1></a>
+                    <a href="index.html" class="navbar-brand"><h1 class="text-primary display-6"></h1></a>
+                    <h1 class="text-primary display-6">Dreamy Coffee</h1>
+
                     <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                         <span class="fa fa-bars text-primary"></span>
+
+
                     </button>
                     <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                         <div class="navbar-nav mx-auto">
-                            <a href="home.jsp" class="nav-item nav-link">Home</a>
-                            <a href="shop.jsp" class="nav-item nav-link">Shop</a>
-                            <a href="product-detail.jsp" class="nav-item nav-link">Shop Detail</a>
+                            <a href="${pageContext.request.contextPath}/home" class="nav-item nav-link">Home</a>
+                            <a href ="${pageContext.request.contextPath}/blog" class="nav-item nav-link">Blog</a>
+                            <a href="${pageContext.request.contextPath}/shop" class="nav-item nav-link active">Shop</a>
+                            
                             <div class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">Pages</a>
+                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                                 <div class="dropdown-menu m-0 bg-secondary rounded-0">
                                     <a href="cart.jsp" class="dropdown-item">Cart</a>
-                                    <a href="chackout.jsp" class="dropdown-item">Chackout</a>
+                                    <a href="chackout.jsp" class="dropdown-item">Checkout</a>
                                     <a href="testimonial.jsp" class="dropdown-item">Testimonial</a>
-                                    <a href="404.jsp" class="dropdown-item active">404 Page</a>
+                                    <a href="404.jsp" class="dropdown-item">404 Page</a>
                                 </div>
                             </div>
                             <a href="contact.jsp" class="nav-item nav-link">Contact</a>
                         </div>
                         <div class="d-flex m-3 me-0">
                             <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
-                            <a href="#" class="position-relative me-4 my-auto">
+                            <a href="CartDetails?service=showcart" class="position-relative me-4 my-auto">
                                 <i class="fa fa-shopping-bag fa-2x"></i>
                                 <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">3</span>
                             </a>
@@ -101,141 +106,78 @@
 
         <!-- order-information Start-->
         <div class="container-fluid fruite py-5">
-            <div class="container py-5">
-                <h1 class="mb-4">Order Information</h1>
+            <div class="container py-5">            
                 <div class="row g-4">
                     <div class="col-lg-12">
+                        <h1 class="mb-4"></h1>
                         <div class="row g-4">
                             <div class="col-xl-3">
-                                <div class="input-group w-100 mx-auto d-flex">
-                                    <input type="search" class="form-control p-3" placeholder="keywords" aria-describedby="search-icon-1">
-                                    <span id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></span>
-                                </div>
+                                <form action="shop" method="GET">
+                                    <div class="input-group w-100 mx-auto d-flex">
+
+                                        <input type="hidden" name="search" value="searchByName">
+                                        <input type="text" class="form-control p-3" name="keyword" placeholder="keywords" aria-describedby="search-icon-1">
+                                        <span id="search-icon-1" class="input-group-text p-3" onclick="return this.closest('form').submit()"><i class="fa fa-search"></i></span>
+                                    </div>
+                                </form>
+
                             </div>
                             <div class="col-6"></div>
                             <div class="col-xl-3">
                                 <div class="bg-light ps-3 py-3 rounded d-flex justify-content-between mb-4">
-                                    <label for="fruits">Default Sorting:</label>
-                                    <select id="fruits" name="fruitlist" class="border-0 form-select-sm bg-light me-3" form="fruitform">
-                                        <option value="volvo">Nothing</option>
-                                        <option value="saab">Popularity</option>
-                                        <option value="opel">Organic</option>
-                                        <option value="audi">Fantastic</option>
-                                    </select>
+                                    <label for="sort">Sắp xếp theo:</label>
+                                    <select name="sort" id="sort" onchange="sortBy()" class="border-0 form-select-sm bg-light me-3">
+                                        <option value="product_id" <c:if test="${param.sort == null || param.sort == 'product_id'}">selected</c:if>>None</option>
+                                        <option value="create_at" <c:if test="${param.sort == 'create_at'}">selected</c:if>>Sản phẩm mới nhất</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row g-4">
-                            <div class="col-lg-3">
-                                <div class="row g-4">
-                                    <div class="col-lg-12">
-                                        <div class="mb-3">
-                                            <h4>Categories</h4>
+                            <div class="row g-4">
+                                <div class="col-lg-3">
+                                    <div class="row g-4">
+                                        <div class="col-lg-12">
+                                            <div class="mb-3">
+                                                <h4>Loại sản phẩm</h4>
+                                            <c:forEach items="${listCategory}" var="cate">
+                                                <ul class="list-unstyled fruite-categorie">
+                                                    <li>
+                                                        <div class="d-flex justify-content-between fruite-name">
+                                                            <a href="shop?search=category&category_id=${cate.category_id}"><i class="fas fa-apple-alt me-2"></i>${cate.category_name}</a>
+
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </c:forEach>
                                         </div>
                                     </div>
-                                    <div class="col-lg-12">
-                                        <div class="mb-3">
-                                            <h4 class="mb-2">Price</h4>
-                                            <input type="range" class="form-range w-100" id="rangeInput" name="rangeInput" min="0" max="500" value="0" oninput="amount.value=rangeInput.value">
-                                            <output id="amount" name="amount" min-velue="0" max-value="500" for="rangeInput">0</output>
+
+                                    <div class="container">
+                                        <div class="col-lg-12">
+                                            <h4 class="mb-3">Sản phẩm nổi bật</h4>
+                                            <c:forEach items="${listSpecialProduct}" var="special">
+                                                <div class="d-flex align-items-center mb-4 p-3 border rounded shadow-sm product-card">
+                                                    <div class="rounded me-4" style="width: 100px; height: 100px; overflow: hidden;">
+                                                        <img src="${special.image}" class="img-fluid rounded" alt="${special.product_name}">
+                                                    </div>
+                                                    <div>
+                                                        <h6 class="mb-2">${special.product_name}</h6>
+                                                        <div class="d-flex mb-2 text-warning">
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+                                                        </div>
+                                                        <div class="d-flex mb-2">
+                                                            <h5 class="fw-bold me-2">${special.price}</h5>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </c:forEach>
                                         </div>
                                     </div>
-                                    <div class="col-lg-12">
-                                        <div class="mb-3">
-                                            <h4>Additional</h4>
-                                            <div class="mb-2">
-                                                <input type="radio" class="me-2" id="Categories-1" name="Categories-1" value="Beverages">
-                                                <label for="Categories-1"> Organic</label>
-                                            </div>
-                                            <div class="mb-2">
-                                                <input type="radio" class="me-2" id="Categories-2" name="Categories-1" value="Beverages">
-                                                <label for="Categories-2"> Fresh</label>
-                                            </div>
-                                            <div class="mb-2">
-                                                <input type="radio" class="me-2" id="Categories-3" name="Categories-1" value="Beverages">
-                                                <label for="Categories-3"> Sales</label>
-                                            </div>
-                                            <div class="mb-2">
-                                                <input type="radio" class="me-2" id="Categories-4" name="Categories-1" value="Beverages">
-                                                <label for="Categories-4"> Discount</label>
-                                            </div>
-                                            <div class="mb-2">
-                                                <input type="radio" class="me-2" id="Categories-5" name="Categories-1" value="Beverages">
-                                                <label for="Categories-5"> Expired</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <h4 class="mb-3">Featured products</h4>
-                                        <div class="d-flex align-items-center justify-content-start">
-                                            <div class="rounded me-4" style="width: 100px; height: 100px;">
-                                                <img src="${pageContext.request.contextPath}/img/featur-1.jpg" class="img-fluid rounded" alt="">
-                                            </div>
-                                            <div>
-                                                <h6 class="mb-2">Big Banana</h6>
-                                                <div class="d-flex mb-2">
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star"></i>
-                                                </div>
-                                                <div class="d-flex mb-2">
-                                                    <h5 class="fw-bold me-2">2.99 $</h5>
-                                                    <h5 class="text-danger text-decoration-line-through">4.11 $</h5>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex align-items-center justify-content-start">
-                                            <div class="rounded me-4" style="width: 100px; height: 100px;">
-                                                <img src="${pageContext.request.contextPath}/img/featur-2.jpg" class="img-fluid rounded" alt="">
-                                            </div>
-                                            <div>
-                                                <h6 class="mb-2">Big Banana</h6>
-                                                <div class="d-flex mb-2">
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star"></i>
-                                                </div>
-                                                <div class="d-flex mb-2">
-                                                    <h5 class="fw-bold me-2">2.99 $</h5>
-                                                    <h5 class="text-danger text-decoration-line-through">4.11 $</h5>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex align-items-center justify-content-start">
-                                            <div class="rounded me-4" style="width: 100px; height: 100px;">
-                                                <img src="${pageContext.request.contextPath}/img/featur-3.jpg" class="img-fluid rounded" alt="">
-                                            </div>
-                                            <div>
-                                                <h6 class="mb-2">Big Banana</h6>
-                                                <div class="d-flex mb-2">
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star"></i>
-                                                </div>
-                                                <div class="d-flex mb-2">
-                                                    <h5 class="fw-bold me-2">2.99 $</h5>
-                                                    <h5 class="text-danger text-decoration-line-through">4.11 $</h5>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex justify-content-center my-4">
-                                            <a href="#" class="btn border border-secondary px-4 py-3 rounded-pill text-primary w-100">Vew More</a>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <div class="position-relative">
-                                            <img src="${pageContext.request.contextPath}/img/caph.jpg" class="img-fluid w-100 rounded" alt="">
-                                            <div class="position-absolute" style="top: 50%; right: 10px; transform: translateY(-50%);">
-                                                <h3 class="text-secondary fw-bold">Fresh <br> Fruits <br> Banner</h3>
-                                            </div>
-                                        </div>
-                                    </div>
+
                                 </div>
                             </div>
                             <div class="col-lg-9">
