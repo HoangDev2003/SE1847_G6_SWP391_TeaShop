@@ -5,10 +5,14 @@
 
 package controller;
 
+import dal.BlogDAO;
 import dal.CategoryDAO;
 import dal.ProductDAO;
+import dal.SliderDAO;
+import entity.Blog;
 import entity.Category;
 import entity.Product;
+import entity.Slider;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -27,14 +31,18 @@ import java.util.Random;
 public class HomeController extends HttpServlet {
    
     ProductDAO productDAO = new ProductDAO();
-    
+    BlogDAO bd = new BlogDAO();
+    SliderDAO sl= new SliderDAO();
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        List<Product> listProducts = productDAO.findAll();
-
-        HttpSession session = request.getSession();
-        session.setAttribute("listProducts", listProducts);
+        List<Product> listSpecialProduct = productDAO.specialProduct();
+        List<Blog> topBog = bd.getTop3Newest();
+        List<Slider> listSlide= sl.getAll();
         
+        HttpSession session = request.getSession();
+        session.setAttribute("listSpecialProduct", listSpecialProduct);
+        session.setAttribute("topBog", topBog);
+        request.setAttribute("listslider", listSlide);
        request.getRequestDispatcher("view/homepage/home.jsp").forward(request, response);
     } 
 

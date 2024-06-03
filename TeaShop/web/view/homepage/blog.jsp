@@ -41,8 +41,7 @@
         </div>
         <!-- Spinner End -->
 
-
-        <!-- Navbar start -->
+<!-- Navbar start -->
         <div class="container-fluid fixed-top">
 
             <div class="container topbar bg-primary d-none d-lg-block">
@@ -79,7 +78,7 @@
                             <a href="contact.jsp" class="nav-item nav-link">Contact</a>
                         </div>
                         <div class="d-flex m-3 me-0">
-                            <a href="#" class="position-relative me-4 my-auto">
+                            <a href="cart" class="position-relative me-4 my-auto">
                                 <i class="fa fa-shopping-bag fa-2x"></i>
                                 <!--                                <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">3</span>-->
                             </a>
@@ -92,14 +91,15 @@
             </div>
         </div>
         <!-- Navbar end -->
-
-
-
-
+        
         <!-- Single Page Header start -->
         <div class="container-fluid page-header bg-primary py-5">
             <h1 class="text-center text-white display-6">Blog </h1>
-           
+            <!--            <ol class="breadcrumb justify-content-center mb-0">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item"><a href="#"> </a></li>
+                            <li class="breadcrumb-item active text-white">Shop Detail</li>
+                        </ol>-->
         </div>
         <!-- Single Page Header End -->
 
@@ -107,13 +107,14 @@
         <!-- Blog Start-->
         <div class="container-fluid fruite py-5">
             <div class="container py-5">
-                <!--   Search  :           
-                <div class="position-relative mx-auto">
-                                            <input class="form-control border-2 border-secondary w-75 py-3 px-4 rounded-pill" type="number" placeholder="Search">
-                                            <button type="submit" class="btn btn-primary border-2 border-secondary py-3 px-4 position-absolute rounded-pill text-center h-100" style="top: 0; right: 25%;">Submit Now</button>
-                                        </div>
-                -->
+                <form  action="blog" method="get">             
+                    <div class="position-relative mx-auto">
+                        <input class="form-control border-2 border-secondary w-75 py-3 px-4" type="text" name="search" placeholder="Search" required >
+                        <button type="submit" class="btn btn-primary border-2 border-secondary py-3 px-4 position-absolute rounded-pill text-center h-100" style="top: 0; right: 25%;">Search</button>
+                    </div>
+                </form>
                 <h1 class="mb-4">Tin Tức & Sự Kiện</h1>
+
                 <div class="row g-4">
                     <div class="col-lg-12">
 
@@ -124,13 +125,28 @@
                                     <div class="row g-4">
                                         <div class="col-lg-12">
                                             <div class="mb-3">
+                                                <h4>Loại Bài Đăng</h4>
+                                                <c:forEach items="${listCategory}" var="cate">
+                                                    <ul class="list-styled fruite-categorie">
+                                                        <li>
+                                                            <div class="d-flex justify-content-between fruite-name">
+                                                                <a href="blogdetail?bid=${cate.getCategoryID()}"><i class="fas fa-alt me-2"></i>${cate.getCategoryName()}</a>
+
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </c:forEach>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="mb-3">
                                                 <h4>Bài viết mới</h4>
-                                                <c:forEach items="${listBlog}" var="b">
+                                                <c:forEach items="${topblog}" var="b">
+
                                                     <ul class="list-styled fruite-categorie">
                                                         <li>
                                                             <div class="d-flex justify-content-between fruite-name">
                                                                 <a href="blogdetail?bid=${b.getId()}"><i class="fas fa-alt me-2"></i>${b.getBlog_name()}</a>
-
                                                             </div>
                                                             <i class="fas fa-alt me-2"></i>${b.getCreated_at()}
                                                         </li>
@@ -165,7 +181,7 @@
 
                                             </div>
                                         </c:forEach>
-                                        
+
                                     </div>
                                 </div>
                             </div>

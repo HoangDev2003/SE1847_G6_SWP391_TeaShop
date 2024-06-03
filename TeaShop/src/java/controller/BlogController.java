@@ -2,13 +2,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-
 package controller;
 
+import dal.BlogCategoryDAO;
 import dal.BlogDAO;
 import dal.CategoryDAO;
 import dal.ProductDAO;
 import entity.Blog;
+import entity.BlogCategory;
 import entity.Category;
 import entity.Product;
 
@@ -26,35 +27,60 @@ import java.util.List;
  * @author ADMIN
  */
 public class BlogController extends HttpServlet {
-   
-
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
+    /**
      * Handles the HTTP <code>GET</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-     
     BlogDAO blogDAO = new BlogDAO();
-   
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-         request.setCharacterEncoding("UTF-8");
-        List<Blog> listBlog = blogDAO.findAll();
-      
-        
-        HttpSession session = request.getSession();
-        session.setAttribute("listBlog", listBlog);
-    
-       request.getRequestDispatcher("view/homepage/blog.jsp").forward(request, response);
-    } 
+    BlogCategoryDAO blogCategoryDao = new BlogCategoryDAO();
 
-    /** 
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+        PrintWriter out = response.getWriter();
+
+        HttpSession session = request.getSession();
+        String search = request.getParameter("search");
+        try {
+            List<BlogCategory> CategoryBlog = blogCategoryDao.getAll();
+            BlogDAO topblogs= new BlogDAO();
+             List<Blog> topblog = topblogs.getTop3Newest();
+            session.setAttribute("listCategory", CategoryBlog);
+            session.setAttribute("topblog", topblog);
+
+            //nếu không tim kiem
+            if (search == null) {
+                List<Blog> listBlog = blogDAO.findAll();
+                session.setAttribute("listBlog", listBlog);
+                request.getRequestDispatcher("view/homepage/blog.jsp").forward(request, response);
+            } else {
+                List<Blog> searchBlog = blogDAO.getBlogBySearch(search);
+                //nếu tìm không thấy thì hiển thị "Không có dữ liệu hiển thị"
+                if (searchBlog.isEmpty()) {
+                    request.setAttribute("error", "Không có dữ liệu hiển thị");
+                    request.getRequestDispatcher("view/homepage/blogDetail.jsp").forward(request, response);
+                } else {
+//nếu tìm thấy
+                    session.setAttribute("listBlog", searchBlog);
+                    request.getRequestDispatcher("view/homepage/blog.jsp").forward(request, response);
+                }
+            }
+
+        } catch (Exception e) {
+            out.print(e);
+        }
+
+    }
+
+    /**
      * Handles the HTTP <code>POST</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -62,12 +88,13 @@ public class BlogController extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        
+            throws ServletException, IOException {
+
     }
 
-    /** 
+    /**
      * Returns a short description of the servlet.
+     *
      * @return a String containing servlet description
      */
     @Override

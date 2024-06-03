@@ -111,20 +111,16 @@
         <!-- Single Blog Start -->
         <div class="container-fluid py-5 mt-5">
             <div class="container py-5">
+                <c:set var="b" value="${requestScope.error}"/>
+                        <h4 style="color: red"> ${error}</h4>
                 <div class="">
                     <c:set var="b" value="${requestScope.blog}"/>
 
-
-
-
                     <div class=" border rounded">
-                        <a href="#">
-                            <img src=${b.getImg()} class="img-fluid rounded" alt="Image"/>
+                        <a href="">
+                            <img src="${b.getImg()}" class="img-fluid" rounded alt=""/>
                         </a>
                     </div>
-
-
-
                     <h4 class="fw-bold mb-3">${b.getBlog_name()}</h4>
 
                     <pre class="mb-4 pre">${b.getContent()}</pre>
@@ -137,7 +133,71 @@
             </div>
         </div>
         <!-- Single Blog End -->
+<!-- Tastimonial Start -->
+        <div class="container-fluid testimonial py-5">
+            <div class="container py-5">
+                <div class="testimonial-header text-center">
+<!--                    <div class="container topbar bg-primary d-none d-lg-block">
+                        <div class="d-flex justify-content-between">
+                            <div class="top-info ps-2">
+                                <h4 class="text-primary">FEEDBACK </h4>
+                            </div>
 
+                        </div>
+                    </div>-->
+
+                    <h1 class="display-5 mb-5 text-dark">Khách hàng của chúng tôi nói!!</h1>
+                </div>
+                <div class="owl-carousel testimonial-carousel">
+                    <div class="testimonial-item img-border-radius bg-light rounded p-4 ">
+                        <div class="position-relative ">
+                            <i class="fa fa-quote-right fa-2x text-secondary position-absolute " style="bottom: 30px; right: 0;"></i>
+
+                            <div class="d-flex align-items-center flex-nowrap ">
+                                <div class="bg-secondary rounded">
+                                    <img src="img/clien1.jpg" class="img-fluid rounded" style="width: 100px; height: 100px;" alt="">
+                                </div>
+                                <div class="ms-4 d-block">
+                                    <h4 class="text-dark">N.X Hoàng</h4>
+                                    <p class="m-0 pb-3">Giao hàng nhanh, nước ngon ạ</p>
+                                    <div class="d-flex pe-5">
+                                        <i class="fas fa-star text-primary"></i>
+                                        <i class="fas fa-star text-primary"></i>
+                                        <i class="fas fa-star text-primary"></i>
+                                        <i class="fas fa-star text-primary"></i>
+                                        <i class="fas fa-star"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-item img-border-radius bg-light rounded p-4">
+                        <div class="position-relative">
+                            <i class="fa fa-quote-right fa-2x text-secondary position-absolute" style="bottom: 30px; right: 0;"></i>
+
+                            <div class="d-flex align-items-center flex-nowrap">
+                                <div class="bg-secondary rounded">
+                                    <img src="img/clien2.jpg" class="img-fluid rounded" style="width: 100px; height: 100px;" alt="">
+                                </div>
+                                <div class="ms-4 d-block">
+                                    <h4 class="text-dark">P.X Hoà</h4>
+                                    <p class="m-0 pb-3">Nước ngon , dịch vụ tốt xứng đáng 6 sao nếu có</p>
+                                    <div class="d-flex pe-5">
+                                        <i class="fas fa-star text-primary"></i>
+                                        <i class="fas fa-star text-primary"></i>
+                                        <i class="fas fa-star text-primary"></i>
+                                        <i class="fas fa-star text-primary"></i>
+                                        <i class="fas fa-star text-primary"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- Tastimonial End -->
 
         <!-- Footer Start -->
         <jsp:include page="../common/homePage/footer-start.jsp"></jsp:include>
