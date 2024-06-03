@@ -45,7 +45,7 @@ public class MyOrderController extends HttpServlet {
         OrdersDAO ordersDAO = new OrdersDAO();
         
         // Retrieve the account ID stored in the session
-        int accountId = 1;
+        int accountId = (int) session.getAttribute("accountId");
         
         // Retrieve the list of orders associated with the account ID
         List<Orders> listOrders = ordersDAO.findByAccountId(accountId);
