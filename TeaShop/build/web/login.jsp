@@ -97,8 +97,8 @@
                                 </div>
 
 
-                                <h4 style="color: green"></h4> 
-                                <h4 style="color: red"></h4>
+                                <h4 style="color: green">${Notification}</h4> 
+                                <h4 style="color: red">${error}</h4>
                             </form>
 
                         </div>

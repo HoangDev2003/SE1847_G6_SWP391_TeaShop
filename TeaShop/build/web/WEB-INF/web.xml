@@ -4,6 +4,18 @@
         <servlet-name>ShopController</servlet-name>
         <servlet-class>controller.ShopController</servlet-class>
     </servlet>
+     <servlet>
+        <servlet-name>AuthorizationController</servlet-name>
+        <servlet-class>controller.AuthorizationController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>VerifyAccountController</servlet-name>
+        <servlet-class>controller.VerifyAccountController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>NewResetPasswordController</servlet-name>
+        <servlet-class>controller.NewResetPasswordController</servlet-class>
+    </servlet>
     <servlet>
         <servlet-name>ProductDetailController</servlet-name>
         <servlet-class>controller.ProductDetailController</servlet-class>
@@ -87,5 +99,17 @@
     <servlet-mapping>
         <servlet-name>ResetPasswordController</servlet-name>
         <url-pattern>/resetpass</url-pattern>
+    </servlet-mapping>
+     <servlet-mapping>
+        <servlet-name>AuthorizationController</servlet-name>
+        <url-pattern>/author</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>VerifyAccountController</servlet-name>
+        <url-pattern>/verifyaccount</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>NewResetPasswordController</servlet-name>
+        <url-pattern>/newresetpass</url-pattern>
     </servlet-mapping>
 </web-app>

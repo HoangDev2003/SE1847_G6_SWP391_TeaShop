@@ -5,23 +5,19 @@
 package controller;
 
 import dal.AccountDAO;
-import entity.Accounts;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
 /**
  *
  * @author Huyen Tranq
  */
-public class LoginController extends HttpServlet {
+public class NewResetPasswordController extends HttpServlet {
 
-    private static final String LOGIN_JSP = "login.jsp";
-    private static final String FAILED_ATTEMPTS = "failedAttempts";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,13 +32,14 @@ public class LoginController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet LoginController</title>");
+            out.println("<title>Servlet NewResetPasswordController</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet LoginController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet NewResetPasswordController at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -60,7 +57,21 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher(LOGIN_JSP).forward(request, response);
+        String expiresParam = request.getParameter("expires");
+        if (expiresParam != null) {
+            long expirationTimeMillis = Long.parseLong(expiresParam);
+            long currentTimeMillis = System.currentTimeMillis();
+
+            if (currentTimeMillis > expirationTimeMillis) {
+                request.setAttribute("error", "The password reset link has expired!");
+                request.getRequestDispatcher("resetpass.jsp").forward(request, response);
+            } else {
+                response.sendRedirect("newpass.jsp");
+            }
+        } else {
+            // Không có tham số expires, xử lý theo logic mặc định
+            response.getWriter().println("Invalid URL.");
+        }
     }
 
     /**
@@ -74,43 +85,7 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-
-        HttpSession session = request.getSession();
-        Integer failedAttempts = (Integer) session.getAttribute(FAILED_ATTEMPTS);
-        if (failedAttempts == null) {
-            failedAttempts = 0;
-        }
-        // xu ly yeu cau
-        AccountDAO dao = new AccountDAO();
-        Accounts a = dao.login(email, password);
-        if (a == null) {
-            failedAttempts++;
-            session.setAttribute(FAILED_ATTEMPTS, failedAttempts);
-            if (failedAttempts >= 1) {
-                request.setAttribute("showForgotPassword", true);
-            }
-            request.setAttribute("mess", "Your Email or Password is incorrect!");
-            request.getRequestDispatcher(LOGIN_JSP).forward(request, response);
-
-        } else {
-            if (a.getStatus_id() == 2) {
-                request.setAttribute("mess", "Your account is inactive!");
-                request.getRequestDispatcher(LOGIN_JSP).forward(request, response);
-            } else {
-                session.setAttribute(FAILED_ATTEMPTS, 0);
-                session.setAttribute("acc", a);
-                int roleId = a.getRole_id();
-                switch (roleId) {
-                    case 2:
-                        request.getRequestDispatcher("view/homepage/home.jsp").forward(request, response);
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
+        processRequest(request, response);
     }
 
     /**

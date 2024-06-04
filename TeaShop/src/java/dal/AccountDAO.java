@@ -35,6 +35,7 @@ public class AccountDAO extends DBContext {
                 + "a.address,\n"
                 + "a.phone_number\n"
                 + "a.created_at,\n"
+                + "a.full_name\n"
                 + "FROM Accounts a\n"
                 + "JOIN AccountStatuses acs ON a.status_id = acs.status_id\n"
                 + "JOIN Role r ON a.role_id = r.role_id;";
@@ -65,7 +66,7 @@ public class AccountDAO extends DBContext {
             if (resultSet.next()) {
                 return new Accounts(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getInt(4),
                         resultSet.getString(5), resultSet.getInt(6), resultSet.getString(7),
-                        resultSet.getString(8), resultSet.getString(9), resultSet.getDate(10));
+                        resultSet.getString(8), resultSet.getString(9), resultSet.getDate(10), resultSet.getString(11));
             }
         } catch (Exception e) {
             e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
@@ -84,13 +85,29 @@ public class AccountDAO extends DBContext {
             while (resultSet.next()) {
                 return new Accounts(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getInt(4),
                         resultSet.getString(5), resultSet.getInt(6), resultSet.getString(7),
-                        resultSet.getString(8), resultSet.getString(9), resultSet.getDate(10));
+                        resultSet.getString(8), resultSet.getString(9), resultSet.getDate(10), resultSet.getString(11));
             }
         } catch (Exception e) {
             e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
         }
         return null;
     }
+      public Accounts checkAccountName(String user_name) {
+        String query = "select * from Accounts where user_name = ? ";
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(query);
+            statement.setString(1, user_name);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                return new Accounts(user_name);
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
+        }
+        return null;
+    }
+
 
     public void Signup(String user_name, String pass_word, String email, String gender, String address, String phone_number) {
         String query = "   INSERT INTO [dbo].[Accounts]\n"
@@ -126,10 +143,26 @@ public class AccountDAO extends DBContext {
             e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
         }
     }
+     public boolean changePass(String email, String newpass) {
+        String query = "UPDATE Accounts SET pass_word = ? WHERE email = ? ";
+        boolean rowUpdated = false;
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(query);
+            statement.setString(1, newpass);
+            statement.setString(2, email);
+            rowUpdated = statement.executeUpdate() > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
+        }
+        return rowUpdated;
+    }
+
 
     public static void main(String[] args) {
         AccountDAO dao = new AccountDAO();
-        dao.Signup("trangg", "123", "haha@gmail.com", "Female", "Ha Noi", "0779231026");
+       dao.login("huientranq@gmail.com","trang123");
 
     }
 }

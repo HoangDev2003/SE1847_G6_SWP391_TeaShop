@@ -30,13 +30,23 @@
 
                         <div class="signin-form">
                             <h2 class="form-title">Reset Password</h2>
-                          
+                            <form action="resetpass" method="post">
+
                                 <div class="form-group">
                                     <label for="newpass"><i class="zmdi zmdi-lock"></i></label>
-                                    <input type="text" name="newpass" id="newpass" placeholder="Password" value="${pass}" readonly=""/>
-                                    <a href="login.jsp">Back</a>
+                                    <input type="password" name="newpass" id="newpass" placeholder="Password" required/>
                                 </div>
-                                                    
+                                <div class="form-group">
+                                    <label for="re_newpass"><i class="zmdi zmdi-lock-outline"></i></label>
+                                    <input type="password" name="re_newpass" id="re_newpass" placeholder="Repeat your password" required/>
+                                </div>
+                                <div class="form-group form-button">
+                                    <input type="submit" class="form-submit" value="Confirm"/>
+                                </div>    
+                                <h4 style="color: green">${Notification}</h4>
+                                <h4 style="color: red">${error}</h4>
+                            </form>
+
                         </div>
                     </div>
                 </div>

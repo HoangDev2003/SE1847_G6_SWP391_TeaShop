@@ -1,8 +1,3 @@
-<%-- 
-    Document   : singUp
-    Created on : Oct 25, 2023, 1:56:14 AM
-    Author     : pc
---%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
@@ -29,12 +24,13 @@
                     <h2 class="form-title">Sign up</h2>
                     <form action="signup" method="POST" class="register-form" id="register-form">
                         <div class="form-group">
+                           
                             <label for="email"><i class="zmdi zmdi-email"></i></label>
                             <input type="email" name="email" value="${email}" id="email" placeholder="Email" required />
                         </div>
                         <div class="form-group">
                             <label for="pass"><i class="zmdi zmdi-lock"></i></label>
-                            <input type="password" name="pass" value="${pass}" id="pass" placeholder="Password" required/>
+                          <input type="password" name="pass" value="${pass}" id="pass" placeholder="Password" required/>
                         </div>
                         <div class="form-group">
                             <label for="re_pass"><i class="zmdi zmdi-lock-outline"></i></label>
@@ -51,7 +47,7 @@
 
                         <div class="form-group">
                             <label for="address"><i class="zmdi zmdi-home"></i></label>
-                            <input type="text" name="address" value="${address}" id="address" placeholder="Address" required/>
+                           <input type="text" name="address" value="${address}" id="address" placeholder="Address" required/>
                         </div>
                         <div>
                             Gender:<input id="rd" type="radio" name="gender" value="1" ${gender == 1 ? "checked" : ""} required="">Male

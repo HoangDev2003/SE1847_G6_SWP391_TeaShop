@@ -27,8 +27,8 @@ public class Email {
 
     // email: quangtuan3903@gmail.com
     // password: ctkb ailk wesw uwcy
-    final static String from = "quangtuan3903@gmail.com";
-    final static String password = "ctkbailkweswuwcy";
+    final static String from = "tranghthhe171368@fpt.edu.vn";
+    final static String password = "tpjohsxrbncilqvp";
 
     public static boolean sendEmail(String to, String tieuDe, String noiDung) {
         // Properties : khai bÃ¡o cÃ¡c thuá»™c tÃ­nh
@@ -90,4 +90,5 @@ public class Email {
         Email.sendEmail("huientranq@gmail.com", System.currentTimeMillis() + "", "Nội dung");
 
     }
+    
 }

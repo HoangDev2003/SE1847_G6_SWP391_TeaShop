@@ -41,6 +41,9 @@ public class Accounts {
         this.full_name = full_name;
     }
 
+      public Accounts(String user_name) {
+        this.user_name = user_name;
+    }
     
 
     public String getFull_name() {
