@@ -151,7 +151,7 @@ public class OrderDetailsDAO extends DBContext {
     public List<OrderDetails> getinfo(int orderId) {
         List<OrderDetails> infoList = new ArrayList<>();
         Connection connection = getConnection(); // Obtain database connection
-        String sql = "SELECT order_details_id, image, product_name, category_id, price, quantity, topping_id FROM OrderDetails od "
+        String sql = "SELECT order_details_id, p.product_id, image, product_name, category_id, price, quantity, topping_id FROM OrderDetails od "
                 + "JOIN Product p ON od.product_id=p.product_id WHERE order_id = ?";
 
         try {
