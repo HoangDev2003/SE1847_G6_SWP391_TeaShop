@@ -58,29 +58,13 @@ public class CartDetailsController extends HttpServlet {
 
             // Handle different service requests
             if (service.equals("add2cart")) {
-                String product_id = request.getParameter("product_id");
-                CartDetails cartItem = (CartDetails) session.getAttribute("cartItem" + product_id);
-                if (cartItem == null) {
-                    cartItem = new CartDetails();
-                    cartItem.product = new Product();
-                    cartItem.topping = new Topping();
-                    CartDetails cartInfo = cartDetailsDAO.getInfo(Integer.parseInt(product_id));
-                    cartItem.product.setProduct_id(cartInfo.product.getProduct_id());
-                    cartItem.product.setProduct_name(cartInfo.product.getProduct_name());
-                    cartItem.product.setImage(cartInfo.product.getImage());
-                    cartItem.product.setPrice(cartInfo.product.getPrice());
-                    cartItem.setQuantity(1);
-                    cartItem.topping.setTopping_name(null);
-
-                    session.setAttribute("cartItem" + product_id, cartItem);
-                }
-                response.sendRedirect("shop");
-            }
-            if (service.equals("add2cart2")) {
                 String order_id = request.getParameter("order_id");
                 String product_id = request.getParameter("product_id");
                 String quantity = request.getParameter("quantity");
                 String topping_name = request.getParameter("topping_name");
+                String link_id = request.getParameter("link_id");
+                String link = null;
+                
                 CartDetails cartItem = (CartDetails) session.getAttribute("cartItem" + product_id);
                 if (cartItem == null) {
                     cartItem = new CartDetails();
@@ -91,7 +75,11 @@ public class CartDetailsController extends HttpServlet {
                     cartItem.product.setProduct_name(cartInfo.product.getProduct_name());
                     cartItem.product.setImage(cartInfo.product.getImage());
                     cartItem.product.setPrice(cartInfo.product.getPrice());
-                    cartItem.setQuantity(Integer.parseInt(quantity));
+                    int intQuantity = 1;
+                    if (!(quantity == null || quantity.isEmpty())) {
+                        intQuantity = Integer.parseInt(quantity);
+                    }
+                    cartItem.setQuantity(intQuantity);
                     if (topping_name == null || topping_name.isEmpty()) {
                         topping_name = null;
                     } else {
@@ -100,7 +88,15 @@ public class CartDetailsController extends HttpServlet {
 
                     session.setAttribute("cartItem" + product_id, cartItem);
                 }
-                response.sendRedirect("OrderInformation?order_id=" + order_id);
+                
+                switch (link_id) {
+                    case "1" -> link = "shop";
+                    case "2" -> link = "OrderInformation?order_id=" + order_id;
+                    case "3" -> link = "home";
+                    case "4" -> link = "product-details?id=" + product_id;
+                    default -> link = "login.jsp";              
+                }
+                response.sendRedirect(link);
             }
             if (service.equals("updateQuantity")) {
                 // Update cart item quantity

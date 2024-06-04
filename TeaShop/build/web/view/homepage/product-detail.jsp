@@ -166,7 +166,7 @@
                                         </button>
                                     </div>
                                 </div>
-                                <a href="CartDetails?service=add2cart&product_id=${product.product_id}" class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"></i>Mua ngay</a>
+                                <a href="CartDetails?service=add2cart&product_id=${product.product_id}&link_id=4" class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"></i>Mua ngay</a>
                             </div>
                             <div class="col-lg-12">
                                 <nav>
