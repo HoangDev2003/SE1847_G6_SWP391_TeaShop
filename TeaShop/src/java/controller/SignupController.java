@@ -89,8 +89,37 @@ public class SignupController extends HttpServlet {
         String phone_number = request.getParameter("phone_number");
         String address = request.getParameter("address");
         String gender = request.getParameter("gender");
+        
+        
+        // Kiểm tra số điện thoại không hợp lệ
+        if (phone_number == null || !phone_number.matches("0\\d{9}")) {
+            // Số điện thoại không hợp lệ
+            request.setAttribute("mess", "Your Phone Number must begin with 0 and contains 10 numbers");
+            request.setAttribute("email", email);
+            request.setAttribute("pass", pass_word);
+            request.setAttribute("re_pass", re_pass);
+            request.setAttribute("user", user_name);
+            request.setAttribute("phone_number", phone_number);
+            request.setAttribute("address", address);
+            request.setAttribute("gender", gender);
+            request.getRequestDispatcher(SIGNUP_JSP).forward(request, response);
+        }
 
         // check password
+        if (pass_word.length() < 8 || pass_word.length() > 32) {
+            // pass_word không hợp lệ
+            request.setAttribute("mess", "Password must have 8 - 32 chars");
+            request.setAttribute("email", email);
+            request.setAttribute("pass", pass_word);
+            request.setAttribute("re_pass", re_pass);
+            request.setAttribute("user", user_name);
+            request.setAttribute("phone_number", phone_number);
+            request.setAttribute("address", address);
+            request.setAttribute("gender", gender);
+            request.getRequestDispatcher(SIGNUP_JSP).forward(request, response);
+        }
+
+        //Check password and repassword
         if (pass_word != null && !(pass_word.equals(re_pass))) {
             request.setAttribute("mess", "Password and Re-enter Password are not the same!");
             request.setAttribute("email", email);
