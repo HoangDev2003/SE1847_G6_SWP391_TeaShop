@@ -101,6 +101,8 @@ public class LoginController extends HttpServlet {
             } else {
                 session.setAttribute(FAILED_ATTEMPTS, 0);
                 session.setAttribute("acc", a);
+                int accountId = dao.getAccountIdByEmail(email);
+                session.setAttribute("accountId", accountId);
                 int roleId = a.getRole_id();
                 switch (roleId) {
                     case 2:

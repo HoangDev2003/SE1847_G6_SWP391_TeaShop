@@ -158,6 +158,23 @@ public class AccountDAO extends DBContext {
         }
         return rowUpdated;
     }
+     public int getAccountIdByEmail(String email) {
+        String query = "SELECT account_id FROM Accounts where email= ?";
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(query);
+            statement.setString(1, email);
+
+            resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                int accountId = resultSet.getInt(1);
+                return accountId;
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
+        }
+        return 0;
+    }
 
 
     public static void main(String[] args) {
