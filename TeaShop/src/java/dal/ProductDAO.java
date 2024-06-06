@@ -65,7 +65,7 @@ public class ProductDAO extends DBContext {
     private String getSortQuery(String sort) {
         switch (sort) {
             case "create_at":
-                return " ORDER BY create_at";
+                return " ORDER BY create_at DESC";
             case "product_id":
             default:
                 return " ORDER BY product_id";
