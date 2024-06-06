@@ -215,7 +215,7 @@
                                                                 <p>Số lượng: ${item.quantity}</p>
                                                                 <p>Topping: ${item.topping.topping_name}</p>
                                                                 <p>Tổng tiền: ${item.product.price*item.quantity} đồng</p>
-                                                                <p><a href="CartDetails?service=add2cart2&order_id=${orderInfo.order_id}&product_id=${item.product.product_id}&quantity=${item.quantity}&topping_name=${item.topping.topping_name}" class="btn border border-secondary rounded-pill px-3 text-primary">Mua lại sản phẩm</a></p>
+                                                                <p><a href="CartDetails?service=add2cart&order_id=${orderInfo.order_id}&product_id=${item.product.product_id}&quantity=${item.quantity}&topping_name=${item.topping.topping_name}&link_id=2" class="btn border border-secondary rounded-pill px-3 text-primary">Mua lại sản phẩm</a></p>
                                                             </div>
                                                         </div>
                                                     </div>
