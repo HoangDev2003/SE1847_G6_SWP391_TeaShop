@@ -140,7 +140,7 @@ public class SignupController extends HttpServlet {
                 session.setAttribute("address", address);
                 session.setAttribute("gender", gender);
                 Email e = new Email();
-                String verifyLink = "http://localhost:9999/TeaShop/verifyaccount"; // Thay đổi URL theo link xác nhận 
+                String verifyLink = "http://localhost:8080/TeaShop/verifyaccount"; // Thay đổi URL theo link xác nhận 
 
                 String emailContent = "<!DOCTYPE html>\n"
                         + "<html>\n"

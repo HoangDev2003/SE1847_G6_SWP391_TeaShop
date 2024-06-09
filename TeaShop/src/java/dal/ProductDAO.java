@@ -172,6 +172,54 @@ public class ProductDAO extends DBContext {
 
     }
 
+    public List<Product> findProductByPriceRange(int priceFrom, int priceTo, int page, String sort) {
+        List<Product> list = new ArrayList<>();
+        connection = getConnection();
+        Category category = null;
+        String sql = "SELECT  *\n"
+                + "  FROM [TeaShop].[dbo].[Product]\n"
+                + "  Where price >= ? AND price <= ?"
+                + getSortQuery(sort)
+                + "  OFFSET ? ROWS \n" //(Page - 1) * numberRecord/page
+                + "  FETCH NEXT ? ROWS ONLY\n"; //numberRecord/page;
+        try {
+            //Tạo đối tượng PrepareStatement
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, priceFrom);
+            statement.setInt(2, priceTo);
+            statement.setInt(3, (page - 1) * 6);
+            statement.setInt(4, 6);
+            //thuc thi cau lenh o tren => tra ve ket qua
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                Product product = new Product();
+
+                int product_id = resultSet.getInt("product_id");
+                String product_name = resultSet.getString("product_name");
+                category = ((new CategoryDAO()).getCategoryById(resultSet.getInt("category_id")));
+                String image = resultSet.getString("image");
+                int price = resultSet.getInt("price");
+                float discount = resultSet.getFloat("price");
+                Date create_at = resultSet.getDate("create_at");
+                product.setProduct_id(product_id);
+                product.setProduct_name(product_name);
+                product.setCategory(category);
+                product.setImage(image);
+                product.setPrice(price);
+                product.setDiscount(discount);
+                product.setCreate_at(create_at);
+                //add to collections
+                list.add(product);
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("Error " + ex.getMessage());
+        }
+
+        return list;
+    }
+
     public List<Product> findByPage(int page, String sort) {
         List<Product> list = new ArrayList<>();
         //ket noi duoc voi database
@@ -280,6 +328,35 @@ public class ProductDAO extends DBContext {
 
     }
 
+    public int findTotalRecordByPriceRange(int priceFrom, int priceTo) {
+        int total = 0;
+        //ket noi duoc voi database
+        connection = getConnection();
+        //co cau lenh de goi xuong database
+        String sql = "SELECT  count(*)\n"
+                + "  FROM [TeaShop].[dbo].[Product]\n"
+                + "  Where price >= ? AND price <= ?";
+        try {
+            //Tạo đối tượng PrepareStatement
+            PreparedStatement statement = connection.prepareStatement(sql);
+            // Set the parameters
+
+            statement.setInt(1, priceFrom);
+            statement.setInt(2, priceTo);
+            //thuc thi cau lenh o tren => tra ve ket qua
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                total = resultSet.getInt(1);
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("Error " + ex.getMessage());
+
+        }
+        return total;
+    }
+
     public int findTotalRecord() {
         int total = 0;
         //ket noi duoc voi database
@@ -306,8 +383,8 @@ public class ProductDAO extends DBContext {
         return total;
 
     }
-    
-     public List<Product> specialProduct() {
+
+    public List<Product> specialProduct() {
         List<Product> list = new ArrayList<>();
         //ket noi duoc voi database
         connection = getConnection();
@@ -323,7 +400,7 @@ public class ProductDAO extends DBContext {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 Product product = new Product();
-                
+
                 int product_id = resultSet.getInt("product_id");
                 String product_name = resultSet.getString("product_name");
                 category = ((new CategoryDAO()).getCategoryById(resultSet.getInt("category_id")));
@@ -341,7 +418,7 @@ public class ProductDAO extends DBContext {
                 //add to collections
                 list.add(product);
             }
-            
+
         } catch (SQLException ex) {
             System.out.println("Error " + ex.getMessage());
         }
@@ -369,7 +446,7 @@ public class ProductDAO extends DBContext {
                 Date create_at = rs.getDate("create_at");
                 float discount = rs.getFloat("discount");
                 String description = rs.getString("description");
-                
+
                 product = new Product(product_id, product_name, category, image, price, discount, create_at, description);
             }
             return product;
@@ -380,14 +457,13 @@ public class ProductDAO extends DBContext {
         }
         return null;
     }
-     
+
     public static void main(String[] args) {
         int productId = 2;
         ProductDAO productDAO = new ProductDAO();
         Product product = productDAO.getProductsById(productId);
         System.out.println(product);
-        
+
     }
-   
 
 }

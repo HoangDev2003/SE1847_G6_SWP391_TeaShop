@@ -23,8 +23,7 @@
         <link href="lib/lightbox/css/lightbox.min.css" rel="stylesheet">
         <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
 
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
         <!-- Customized Bootstrap Stylesheet -->
         <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
 
@@ -52,6 +51,9 @@
             }
             .product-card:hover img {
                 transform: scale(1.1);
+            }
+            .selected {
+                color: orange; /* Màu cam */
             }
         </style>
     </head>
@@ -95,7 +97,7 @@
                             <a href="${pageContext.request.contextPath}/home" class="nav-item nav-link">Home</a>
                             <a href ="${pageContext.request.contextPath}/blog" class="nav-item nav-link">Blog</a>
                             <a href="${pageContext.request.contextPath}/shop" class="nav-item nav-link active">Shop</a>
-                            
+
                             <div class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                                 <div class="dropdown-menu m-0 bg-secondary rounded-0">
@@ -147,7 +149,7 @@
         <!-- Single Page Header start -->
         <div class="container-fluid page-header bg-primary py-5">
             <h1 class="text-center text-white display-6">Shop </h1>
-           
+
         </div>
         <!-- Single Page Header End -->
 
@@ -191,15 +193,37 @@
                                                 <ul class="list-unstyled fruite-categorie">
                                                     <li>
                                                         <div class="d-flex justify-content-between fruite-name">
-                                                            <a href="shop?search=category&category_id=${cate.category_id}"><i class="fas fa-apple-alt me-2"></i>${cate.category_name}</a>
-
+                                                            <a href="shop?search=category&category_id=${cate.category_id}" class="${param.category_id == cate.category_id ? 'selected' : ''}">
+                                                                <i class="fas fa-apple-alt me-2"></i>${cate.category_name}
+                                                            </a>
                                                         </div>
                                                     </li>
                                                 </ul>
                                             </c:forEach>
                                         </div>
                                     </div>
+                                    <div class="col-lg-12">
+                                        <div class="mb-3">
+                                            <h4 class="mb-2">Khoảng Giá</h4>
+<!--                                            <form action="shop" method="GET">
+                                    <div class="input-group w-100 mx-auto d-flex">
 
+                                        <input type="hidden" name="search" value="searchByName">
+                                        <input type="text" class="form-control p-3" name="keyword" placeholder="keywords" aria-describedby="search-icon-1">
+                                        <span id="search-icon-1" class="input-group-text p-3" onclick="return this.closest('form').submit()"><i class="fa fa-search"></i></span>
+                                    </div>
+                                </form>-->
+                                            <div class="input-group">
+                                                <form action="shop" method="GET">
+                                                <input type="hidden" name="search" value="searchByPriceRange">
+                                                <input type="number" class="form-control" id="priceFrom" name="priceFrom" placeholder="Từ">
+                                                <span class="input-group-text">-</span>
+                                                <input type="number" class="form-control" id="priceTo" name="priceTo" placeholder="Đến">
+                                                <span type="submit" class="btn btn-success" onclick="return this.closest('form').submit()">Áp Dụng</span>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="container">
                                         <div class="col-lg-12">
                                             <h4 class="mb-3">Sản phẩm nổi bật</h4>
@@ -218,7 +242,7 @@
                                                             <i class="fa fa-star"></i>
                                                         </div>
                                                         <div class="d-flex mb-2">
-                                                            <h5 class="fw-bold me-2">${special.price}</h5>
+                                                            <h5 class="fw-bold me-2">${special.price} đ</h5>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -244,7 +268,7 @@
                                                     <h4>${p.product_name}</h4>
 
                                                     <div class="d-flex justify-content-between flex-lg-wrap">
-                                                        <p class="text-dark fs-5 fw-bold mb-0">${p.price}</p>
+                                                        <p class="text-dark fs-5 fw-bold mb-0">${p.price} đ</p>
                                                         <a href="CartDetails?service=add2cart&product_id=${p.product_id}&link_id=1" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Mua ngay</a>
                                                     </div>
                                                 </div>
@@ -254,15 +278,19 @@
                                     </c:forEach>
                                     <div class="col-12">
                                         <div class="pagination d-flex justify-content-center mt-5">
-                                            <a href="#" class="rounded">&laquo;</a>
+                                            
                                             <c:forEach begin="1" end="${pageControl.totalPage}" var="pageNumber">
-
-                                                <!--                                        <a href="#" class="active rounded">1</a>-->
-                                                <!--                                        <a href="#" class="rounded">2</a>-->
-                                                <a href="${pageControl.urlPattern}page=${pageNumber}" class="rounded">${pageNumber}</a>
-
+                                                <c:set var="currentPage" value="${pageControl.page}" />
+                                                <c:choose>
+                                                    <c:when test="${currentPage eq pageNumber}">
+                                                        <a href="#" class="active rounded">${pageNumber}</a>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <a href="${pageControl.urlPattern}page=${pageNumber}" class="rounded">${pageNumber}</a>
+                                                    </c:otherwise>
+                                                </c:choose>
                                             </c:forEach>
-                                            <a href="#" class="rounded">&raquo;</a>
+                                          
                                         </div>
                                     </div>
                                 </div>

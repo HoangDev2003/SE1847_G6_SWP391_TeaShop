@@ -76,7 +76,7 @@ public class ResetPasswordController extends HttpServlet {
 
             Email e = new Email();
             long expirationTimeMillis = System.currentTimeMillis() + (1 * 60 * 1000);
-            String verifyLink = "http://localhost:9999/TeaShop/newresetpass?expires=" + expirationTimeMillis; // Thay đổi URL theo link xác nhận của bạn
+            String verifyLink = "http://localhost:8080/TeaShop/newresetpass?expires=" + expirationTimeMillis; // Thay đổi URL theo link xác nhận của bạn
 
             String emailContent = "<!DOCTYPE html>\n"
                     + "<html>\n"
