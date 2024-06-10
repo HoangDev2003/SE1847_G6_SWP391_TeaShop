@@ -49,7 +49,7 @@ public class ShopController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
     }
 
     private List<Product> findProductDoGet(HttpServletRequest request, PageControl pageControl) {
@@ -93,11 +93,26 @@ public class ShopController extends HttpServlet {
                 pageControl.setUrlPattern(requestURL + "?search=searchByName&keyword=" + keyword + "&sort=" + sort + "&");
                 break;
             case "searchByPriceRange":
+                try {
                 int priceFrom = Integer.parseInt(request.getParameter("priceFrom"));
                 int priceTo = Integer.parseInt(request.getParameter("priceTo"));
-                totalRecord = productDAO.findTotalRecordByPriceRange(priceFrom,priceTo);
-                listProduct = productDAO.findProductByPriceRange(priceFrom, priceTo, page, sort);
-                pageControl.setUrlPattern(requestURL + "?search=searchByPriceRange&priceFrom=" + priceFrom + "&priceTo=" + priceTo + "&sort=" + sort + "&");
+
+                if (priceFrom < 0 || priceTo < 0 || priceFrom > priceTo) {
+                    request.setAttribute("priceErrorMessage", "Vui lòng điền khoảng giá phù hợp.");
+                    totalRecord = productDAO.findTotalRecord();
+                    listProduct = productDAO.findByPage(page, sort);
+                    pageControl.setUrlPattern(requestURL + "?sort=" + sort + "&");
+                } else {
+                    totalRecord = productDAO.findTotalRecordByPriceRange(priceFrom, priceTo);
+                    listProduct = productDAO.findProductByPriceRange(priceFrom, priceTo, page, sort);
+                    pageControl.setUrlPattern(requestURL + "?search=searchByPriceRange&priceFrom=" + priceFrom + "&priceTo=" + priceTo + "&sort=" + sort + "&");
+                }
+                } catch (NumberFormatException e) {
+                request.setAttribute("priceErrorMessage", "Vui lòng điền khoảng giá phù hợp.");
+                totalRecord = productDAO.findTotalRecord();
+                listProduct = productDAO.findByPage(page, sort);
+                pageControl.setUrlPattern(requestURL + "?sort=" + sort + "&");
+                }
                 break;
             default:
                 totalRecord = productDAO.findTotalRecord();

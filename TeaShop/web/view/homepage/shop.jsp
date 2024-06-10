@@ -55,6 +55,10 @@
             .selected {
                 color: orange; /* Màu cam */
             }
+            .error-message {
+                color: red;
+                font-weight: bold;
+            }
         </style>
     </head>
 
@@ -179,6 +183,8 @@
                                     <select name="sort" id="sort" onchange="sortBy()" class="border-0 form-select-sm bg-light me-3">
                                         <option value="product_id" <c:if test="${param.sort == null || param.sort == 'product_id'}">selected</c:if>>None</option>
                                         <option value="create_at" <c:if test="${param.sort == 'create_at'}">selected</c:if>>Sản phẩm mới nhất</option>
+                                        <option value="reduced_price" <c:if test="${param.sort == 'reduced_price'}">selected</c:if>>Cao đến Thấp</option>
+                                        <option value="increase_price" <c:if test="${param.sort == 'increase_price'}">selected</c:if>>Thấp đến Cao</option>
                                         </select>
                                     </div>
                                 </div>
@@ -205,23 +211,19 @@
                                     <div class="col-lg-12">
                                         <div class="mb-3">
                                             <h4 class="mb-2">Khoảng Giá</h4>
-<!--                                            <form action="shop" method="GET">
-                                    <div class="input-group w-100 mx-auto d-flex">
 
-                                        <input type="hidden" name="search" value="searchByName">
-                                        <input type="text" class="form-control p-3" name="keyword" placeholder="keywords" aria-describedby="search-icon-1">
-                                        <span id="search-icon-1" class="input-group-text p-3" onclick="return this.closest('form').submit()"><i class="fa fa-search"></i></span>
-                                    </div>
-                                </form>-->
                                             <div class="input-group">
                                                 <form action="shop" method="GET">
-                                                <input type="hidden" name="search" value="searchByPriceRange">
-                                                <input type="number" class="form-control" id="priceFrom" name="priceFrom" placeholder="Từ">
-                                                <span class="input-group-text">-</span>
-                                                <input type="number" class="form-control" id="priceTo" name="priceTo" placeholder="Đến">
-                                                <span type="submit" class="btn btn-success" onclick="return this.closest('form').submit()">Áp Dụng</span>
+                                                    <input type="hidden" name="search" value="searchByPriceRange">
+                                                    <input type="number" class="form-control" id="priceFrom" name="priceFrom" placeholder="Từ">
+                                                    <span class="input-group-text">-</span>
+                                                    <input type="number" class="form-control" id="priceTo" name="priceTo" placeholder="Đến">
+                                                    <span type="submit" class="btn btn-success" onclick="return this.closest('form').submit()">Áp Dụng</span>
                                                 </form>
                                             </div>
+                                            <c:if test="${not empty priceErrorMessage}">
+                                                <div class="error-message">${priceErrorMessage}</div>
+                                            </c:if>
                                         </div>
                                     </div>
                                     <div class="container">
@@ -278,7 +280,7 @@
                                     </c:forEach>
                                     <div class="col-12">
                                         <div class="pagination d-flex justify-content-center mt-5">
-                                            
+
                                             <c:forEach begin="1" end="${pageControl.totalPage}" var="pageNumber">
                                                 <c:set var="currentPage" value="${pageControl.page}" />
                                                 <c:choose>
@@ -290,7 +292,7 @@
                                                     </c:otherwise>
                                                 </c:choose>
                                             </c:forEach>
-                                          
+
                                         </div>
                                     </div>
                                 </div>

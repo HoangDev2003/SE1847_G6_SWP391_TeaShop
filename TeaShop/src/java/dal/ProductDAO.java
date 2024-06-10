@@ -67,6 +67,11 @@ public class ProductDAO extends DBContext {
             case "create_at":
                 return " ORDER BY create_at DESC";
             case "product_id":
+                return " ORDER BY product_id";
+            case "reduced_price":
+                return "ORDER BY price DESC";
+            case "increase_price":
+                return "ORDER BY price ASC";
             default:
                 return " ORDER BY product_id";
         }
