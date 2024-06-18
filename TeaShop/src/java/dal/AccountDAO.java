@@ -52,6 +52,30 @@ public class AccountDAO extends DBContext {
         return list;
     }
 
+    public Accounts getAccountByAccountID(int id) {
+        Accounts accounts = new Accounts();
+        connection = getConnection();
+        String sql = "SELECT *\n"
+                + "  FROM [dbo].[Accounts]\n"
+                + "  Where account_id = ?";
+        try {
+            
+            statement = connection.prepareStatement(sql);
+            statement.setInt(1, id);
+            
+            resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                return new Accounts(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getInt(4),
+                        resultSet.getString(5), resultSet.getInt(6), resultSet.getString(7),
+                        resultSet.getString(8), resultSet.getString(9), resultSet.getDate(10), resultSet.getString(11));
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
+        }
+        return accounts;
+    }
+
     public Accounts login(String email, String password) {
 
         String query = "SELECT * FROM Accounts WHERE email = ? AND pass_word = ?";
@@ -92,7 +116,8 @@ public class AccountDAO extends DBContext {
         }
         return null;
     }
-      public Accounts checkAccountName(String user_name) {
+
+    public Accounts checkAccountName(String user_name) {
         String query = "select * from Accounts where user_name = ? ";
         try {
             connection = getConnection();
@@ -108,7 +133,6 @@ public class AccountDAO extends DBContext {
         return null;
     }
 
-
     public void Signup(String user_name, String pass_word, String email, String gender, String address, String phone_number) {
         String query = "   INSERT INTO [dbo].[Accounts]\n"
                 + "           ([user_name]\n"
@@ -122,7 +146,7 @@ public class AccountDAO extends DBContext {
                 + "           ,[created_at])\n"
                 + "     VALUES\n"
                 + "           (?,?,?,?,?,?,?,?,?)";
-               
+
         try {
             LocalDate curDate = java.time.LocalDate.now();
             String date = curDate.toString();
@@ -143,7 +167,8 @@ public class AccountDAO extends DBContext {
             e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
         }
     }
-     public boolean changePass(String email, String newpass) {
+
+    public boolean changePass(String email, String newpass) {
         String query = "UPDATE Accounts SET pass_word = ? WHERE email = ? ";
         boolean rowUpdated = false;
         try {
@@ -158,7 +183,8 @@ public class AccountDAO extends DBContext {
         }
         return rowUpdated;
     }
-     public int getAccountIdByEmail(String email) {
+
+    public int getAccountIdByEmail(String email) {
         String query = "SELECT account_id FROM Accounts where email= ?";
         try {
             connection = getConnection();
@@ -176,10 +202,9 @@ public class AccountDAO extends DBContext {
         return 0;
     }
 
-
     public static void main(String[] args) {
         AccountDAO dao = new AccountDAO();
-       dao.login("huientranq@gmail.com","trang123");
+        dao.login("huientranq@gmail.com", "trang123");
 
     }
 }

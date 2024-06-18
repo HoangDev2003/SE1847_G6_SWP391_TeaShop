@@ -134,7 +134,7 @@ public class ProductDAO extends DBContext {
         //co cau lenh de goi xuong database
         String sql = "SELECT *\n"
                 + "  FROM [dbo].[Product]\n"
-                + "  Where product_name like ?"
+                + "  Where product_name like ?\n"
                 + getSortQuery(sort)
                 + "  OFFSET ? ROWS \n" //(Page - 1) * numberRecord/page
                 + "  FETCH NEXT ? ROWS ONLY\n"; //numberRecord/page;
@@ -183,7 +183,7 @@ public class ProductDAO extends DBContext {
         Category category = null;
         String sql = "SELECT  *\n"
                 + "  FROM [TeaShop].[dbo].[Product]\n"
-                + "  Where price >= ? AND price <= ?"
+                + "  Where price >= ? AND price <= ?\n"
                 + getSortQuery(sort)
                 + "  OFFSET ? ROWS \n" //(Page - 1) * numberRecord/page
                 + "  FETCH NEXT ? ROWS ONLY\n"; //numberRecord/page;

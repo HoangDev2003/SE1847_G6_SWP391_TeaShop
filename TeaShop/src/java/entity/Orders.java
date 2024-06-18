@@ -26,6 +26,9 @@ import lombok.ToString;
 
 public class Orders {
 
-    public int order_id, account_id, status, total_amount;
+    public int order_id, total_amount;
     public String order_date, note;
+    public Status status;
+    public Product product;
+    public Accounts account;
 }

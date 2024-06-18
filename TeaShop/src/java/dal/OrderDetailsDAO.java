@@ -246,5 +246,53 @@ public class OrderDetailsDAO extends DBContext {
 
         return info; // Return the account information object
     }
+    public List<OrderDetails> getAllOrderDetails() {
+        List<OrderDetails> list = new ArrayList<>();
+        String query = "SELECT od.order_details_id, od.product_id, od.order_id, od.quantity, od.topping_id, " +
+                       "p.product_name, c.category_name, t.topping_name " +
+                       "FROM OrderDetails od " +
+                       "JOIN Product p ON od.product_id = p.product_id " +
+                       "JOIN Category c ON p.category_id = c.category_id " +
+                       "LEFT JOIN Topping t ON od.topping_id = t.topping_id";
+        
+        try {
+            Connection connection = getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+            
+            while (resultSet.next()) {
+                OrderDetails orderDetails = new OrderDetails();
+                orderDetails.setOrder_details_id(resultSet.getInt("order_details_id"));
+                orderDetails.setProduct_id(resultSet.getInt("product_id"));
+                orderDetails.setOrder_id(resultSet.getInt("order_id"));
+                orderDetails.setQuantity(resultSet.getInt("quantity"));
+                orderDetails.setTopping_id(resultSet.getInt("topping_id"));
+                
+                Product product = new Product();
+                product.setProduct_name(resultSet.getString("product_name"));
+                orderDetails.setProduct(product);
+                
+                Category category = new Category();
+                category.setCategory_name(resultSet.getString("category_name"));
+                orderDetails.setCategory(category);
+                
+                if (resultSet.getString("topping_name") != null) {
+                    Topping topping = new Topping();
+                    topping.setTopping_name(resultSet.getString("topping_name"));
+                    orderDetails.setTopping(topping);
+                }
+                
+                list.add(orderDetails);
+            }
+            
+            resultSet.close();
+            statement.close();
+            connection.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        
+        return list;
+    }
 
 }

@@ -4,7 +4,7 @@
         <servlet-name>ShopController</servlet-name>
         <servlet-class>controller.ShopController</servlet-class>
     </servlet>
-     <servlet>
+    <servlet>
         <servlet-name>AuthorizationController</servlet-name>
         <servlet-class>controller.AuthorizationController</servlet-class>
     </servlet>
@@ -43,6 +43,10 @@
     <servlet>
         <servlet-name>OrderInformation</servlet-name>
         <servlet-class>controller.OrderInformationController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ShippingController</servlet-name>
+        <servlet-class>controller.ShippingController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ShopController</servlet-name>
@@ -100,7 +104,7 @@
         <servlet-name>ResetPasswordController</servlet-name>
         <url-pattern>/resetpass</url-pattern>
     </servlet-mapping>
-     <servlet-mapping>
+    <servlet-mapping>
         <servlet-name>AuthorizationController</servlet-name>
         <url-pattern>/author</url-pattern>
     </servlet-mapping>
@@ -111,5 +115,9 @@
     <servlet-mapping>
         <servlet-name>NewResetPasswordController</servlet-name>
         <url-pattern>/newresetpass</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ShippingController</servlet-name>
+        <url-pattern>/ship</url-pattern>
     </servlet-mapping>
 </web-app>

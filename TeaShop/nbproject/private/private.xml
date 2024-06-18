@@ -3,16 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/E:/New%20folder/SE1847_G6_SWP391_TeaShop/SE1847_G6_SWP391_TeaShop/TeaShop/src/java/entity/Product.java</file>
-            <file>file:/E:/New%20folder/SE1847_G6_SWP391_TeaShop/SE1847_G6_SWP391_TeaShop/TeaShop/src/java/controller/ResetPasswordController.java</file>
+            <file>file:/E:/New%20folder/SE1847_G6_SWP391_TeaShop/SE1847_G6_SWP391_TeaShop/TeaShop/web/view/dashboard/shipper/order-list.jsp</file>
+            <file>file:/E:/New%20folder/SE1847_G6_SWP391_TeaShop/SE1847_G6_SWP391_TeaShop/TeaShop/src/java/entity/Accounts.java</file>
             <file>file:/E:/New%20folder/SE1847_G6_SWP391_TeaShop/SE1847_G6_SWP391_TeaShop/TeaShop/src/java/controller/ShopController.java</file>
-            <file>file:/E:/New%20folder/SE1847_G6_SWP391_TeaShop/SE1847_G6_SWP391_TeaShop/TeaShop/src/java/controller/SignupController.java</file>
-            <file>file:/E:/New%20folder/SE1847_G6_SWP391_TeaShop/SE1847_G6_SWP391_TeaShop/TeaShop/src/java/controller/VerifyAccountController.java</file>
-            <file>file:/E:/New%20folder/SE1847_G6_SWP391_TeaShop/SE1847_G6_SWP391_TeaShop/TeaShop/src/java/dal/CategoryDAO.java</file>
+            <file>file:/E:/New%20folder/SE1847_G6_SWP391_TeaShop/SE1847_G6_SWP391_TeaShop/TeaShop/src/java/dal/OrdersDAO.java</file>
             <file>file:/E:/New%20folder/SE1847_G6_SWP391_TeaShop/SE1847_G6_SWP391_TeaShop/TeaShop/web/view/homepage/shop.jsp</file>
-            <file>file:/E:/New%20folder/SE1847_G6_SWP391_TeaShop/SE1847_G6_SWP391_TeaShop/TeaShop/src/java/controller/CartDetailsController.java</file>
-            <file>file:/E:/New%20folder/SE1847_G6_SWP391_TeaShop/SE1847_G6_SWP391_TeaShop/TeaShop/src/java/controller/LoginController.java</file>
+            <file>file:/E:/New%20folder/SE1847_G6_SWP391_TeaShop/SE1847_G6_SWP391_TeaShop/TeaShop/src/java/dal/StatusDAO.java</file>
             <file>file:/E:/New%20folder/SE1847_G6_SWP391_TeaShop/SE1847_G6_SWP391_TeaShop/TeaShop/src/java/dal/ProductDAO.java</file>
+            <file>file:/E:/New%20folder/SE1847_G6_SWP391_TeaShop/SE1847_G6_SWP391_TeaShop/TeaShop/src/java/controller/ShippingController.java</file>
         </group>
     </open-files>
 </project-private>
