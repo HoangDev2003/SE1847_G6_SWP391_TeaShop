@@ -196,7 +196,7 @@
         <td class="order py-2 align-middle white-space-nowrap">
             <a href="${pageContext.request.contextPath}/app/e-commerce/orders/order-details.html">
                 <strong>#${lo.order_id}</strong>
-            </a> bởi <strong>${lo.account.full_name}</strong><br />
+            </a> bởi <strong>${lo.account.full_name}</strong><br/>
         </td>
         <td class="date py-2 align-middle">${lo.order_date}</td>
         <td class="date py-2 align-middle">${lo.account.phone_number}</td>

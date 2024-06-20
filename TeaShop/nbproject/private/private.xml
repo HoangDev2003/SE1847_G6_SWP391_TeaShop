@@ -3,14 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/E:/New%20folder/SE1847_G6_SWP391_TeaShop/SE1847_G6_SWP391_TeaShop/TeaShop/web/view/dashboard/shipper/order-list.jsp</file>
-            <file>file:/E:/New%20folder/SE1847_G6_SWP391_TeaShop/SE1847_G6_SWP391_TeaShop/TeaShop/src/java/entity/Accounts.java</file>
-            <file>file:/E:/New%20folder/SE1847_G6_SWP391_TeaShop/SE1847_G6_SWP391_TeaShop/TeaShop/src/java/controller/ShopController.java</file>
-            <file>file:/E:/New%20folder/SE1847_G6_SWP391_TeaShop/SE1847_G6_SWP391_TeaShop/TeaShop/src/java/dal/OrdersDAO.java</file>
-            <file>file:/E:/New%20folder/SE1847_G6_SWP391_TeaShop/SE1847_G6_SWP391_TeaShop/TeaShop/web/view/homepage/shop.jsp</file>
-            <file>file:/E:/New%20folder/SE1847_G6_SWP391_TeaShop/SE1847_G6_SWP391_TeaShop/TeaShop/src/java/dal/StatusDAO.java</file>
-            <file>file:/E:/New%20folder/SE1847_G6_SWP391_TeaShop/SE1847_G6_SWP391_TeaShop/TeaShop/src/java/dal/ProductDAO.java</file>
-            <file>file:/E:/New%20folder/SE1847_G6_SWP391_TeaShop/SE1847_G6_SWP391_TeaShop/TeaShop/src/java/controller/ShippingController.java</file>
+            <file>file:/D:/SWP391/SE1847_G6_SWP391_TeaShop/SE1847_G6_SWP391_TeaShop/TeaShop/web/view/dashboard/admin/categoryManagement.jsp</file>
+            <file>file:/D:/SWP391/SE1847_G6_SWP391_TeaShop/SE1847_G6_SWP391_TeaShop/TeaShop/web/view/common/homePage/footer-start.jsp</file>
+            <file>file:/D:/SWP391/SE1847_G6_SWP391_TeaShop/SE1847_G6_SWP391_TeaShop/TeaShop/web/view/dashboard/admin/chartsAdmin.jsp</file>
+            <file>file:/D:/SWP391/SE1847_G6_SWP391_TeaShop/SE1847_G6_SWP391_TeaShop/TeaShop/web/view/homepage/product-detail.jsp</file>
+            <file>file:/D:/SWP391/SE1847_G6_SWP391_TeaShop/SE1847_G6_SWP391_TeaShop/TeaShop/web/view/dashboard/admin/dashboardAdmin.jsp</file>
+            <file>file:/D:/SWP391/SE1847_G6_SWP391_TeaShop/SE1847_G6_SWP391_TeaShop/TeaShop/web/view/common/admin/sidebarAdmin.jsp</file>
+            <file>file:/D:/SWP391/SE1847_G6_SWP391_TeaShop/SE1847_G6_SWP391_TeaShop/TeaShop/web/view/dashboard/admin/productManagement.jsp</file>
         </group>
     </open-files>
 </project-private>
