@@ -105,6 +105,9 @@ public class LoginController extends HttpServlet {
                 session.setAttribute("accountId", accountId);
                 int roleId = a.getRole_id();
                 switch (roleId) {
+                    case 1:
+                        request.getRequestDispatcher("view/dashboard/admin/dashboardAdmin.jsp").forward(request, response);
+                        break;
                     case 2:
                         request.getRequestDispatcher("view/homepage/home.jsp").forward(request, response);
                         break;

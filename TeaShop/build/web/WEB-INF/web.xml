@@ -48,6 +48,26 @@
         <servlet-name>ShippingController</servlet-name>
         <servlet-class>controller.ShippingController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CustomerManager</servlet-name>
+        <servlet-class>controller.CustomerManager</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EditCustomer</servlet-name>
+        <servlet-class>controller.EditCustomer</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteController</servlet-name>
+        <servlet-class>controller.DeleteController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddUserController</servlet-name>
+        <servlet-class>controller.AddUserController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SearchUserController</servlet-name>
+        <servlet-class>controller.SearchUserController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ShopController</servlet-name>
         <url-pattern>/shop</url-pattern>
@@ -119,5 +139,21 @@
     <servlet-mapping>
         <servlet-name>ShippingController</servlet-name>
         <url-pattern>/ship</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditCustomer</servlet-name>
+        <url-pattern>/editcustomer</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteController</servlet-name>
+        <url-pattern>/delete</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddUserController</servlet-name>
+        <url-pattern>/adduser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SearchUserController</servlet-name>
+        <url-pattern>/searchUser</url-pattern>
     </servlet-mapping>
 </web-app>

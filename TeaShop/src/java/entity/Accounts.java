@@ -16,6 +16,8 @@ public class Accounts {
     private String user_name;
     private String pass_word;
     private int role_id;
+    private String role_name;
+    private String status_name;
     private String email;
     private int status_id;
     private String gender;
@@ -23,11 +25,12 @@ public class Accounts {
     private String phone_number;
     private Date created_at;
     private String full_name;
+    private String avartar;
 
     public Accounts() {
     }
 
-    public Accounts(int account_id, String user_name, String pass_word, int role_id, String email, int status_id, String gender, String address, String phone_number, Date created_at, String full_name) {
+    public Accounts(int account_id, String user_name, String pass_word, int role_id, String email, int status_id, String gender, String address, String phone_number, Date created_at, String full_name, String avartar) {
         this.account_id = account_id;
         this.user_name = user_name;
         this.pass_word = pass_word;
@@ -39,8 +42,35 @@ public class Accounts {
         this.phone_number = phone_number;
         this.created_at = created_at;
         this.full_name = full_name;
+        this.avartar = avartar;
     }
 
+    public Accounts(int account_id, String user_name, String role_name,String email, String status_name,  String gender, String address, String phone_number, Date created_at) {
+        this.account_id = account_id;
+        this.user_name = user_name;
+        this.role_name = role_name;
+        this.email = email;
+        this.status_name = status_name;
+        this.gender = gender;
+        this.address = address;
+        this.phone_number = phone_number;
+        this.created_at = created_at;
+    }
+
+    public Accounts(int account_id, String user_name, String role_name, String email, String status_name,String gender, String address, String phone_number, Date created_at, String full_name, String avartar) {
+        this.account_id = account_id;
+        this.user_name = user_name;
+        this.role_name = role_name;
+        this.email = email;
+        this.status_name = status_name;
+        this.gender = gender;
+        this.address = address;
+        this.phone_number = phone_number;
+        this.created_at = created_at;
+        this.full_name = full_name;
+        this.avartar = avartar;
+    }
+    
       public Accounts(String user_name) {
         this.user_name = user_name;
     }
@@ -135,12 +165,37 @@ public class Accounts {
         this.created_at = created_at;
     }
 
-    @Override
-    public String toString() {
-        return "Accounts{" + "account_id=" + account_id + ", user_name=" + user_name + ", pass_word=" + pass_word + ", role_id=" + role_id + ", email=" + email + ", status_id=" + status_id + ", gender=" + gender + ", address=" + address + ", phone_number=" + phone_number + ", created_at=" + created_at + '}';
+    public String getAvartar() {
+        return avartar;
     }
 
-   
+    public void setAvartar(String avartar) {
+        this.avartar = avartar;
+    }
+
+    public String getRole_name() {
+        return role_name;
+    }
+
+    public void setRole_name(String role_name) {
+        this.role_name = role_name;
+    }
+
+    public String getStatus_name() {
+        return status_name;
+    }
+
+    public void setStatus_name(String status_name) {
+        this.status_name = status_name;
+    }
+
+    @Override
+    public String toString() {
+        return "Accounts{" + "account_id=" + account_id + ", user_name=" + user_name + ", pass_word=" + pass_word + ", role_id=" + role_id + ", role_name=" + role_name + ", status_name=" + status_name + ", email=" + email + ", status_id=" + status_id + ", gender=" + gender + ", address=" + address + ", phone_number=" + phone_number + ", created_at=" + created_at + ", full_name=" + full_name + ", avartar=" + avartar + '}';
+    }
     
     
+
+
+
 }

@@ -23,34 +23,6 @@ public class AccountDAO extends DBContext {
     protected PreparedStatement statement;
     protected ResultSet resultSet;
 
-    public List<Accounts> getAllAccount() {
-        //khởi tạo 1 list để load sản phẩm lên và lưu trong đấy
-        List<Accounts> list = new ArrayList<>();
-        String query = "SELECT a.account_id,\n"
-                + "a.user_name,\n"
-                + "r.role_name,\n"
-                + "a.email,\n"
-                + "acs.status_name, \n"
-                + "a.gender,\n"
-                + "a.address,\n"
-                + "a.phone_number\n"
-                + "a.created_at,\n"
-                + "a.full_name\n"
-                + "FROM Accounts a\n"
-                + "JOIN AccountStatuses acs ON a.status_id = acs.status_id\n"
-                + "JOIN Role r ON a.role_id = r.role_id;";
-        try {
-            connection = getConnection();
-            statement = connection.prepareStatement(query);
-            resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-
-            }
-        } catch (Exception e) {
-            e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
-        }
-        return list;
-    }
 
     public Accounts getAccountByAccountID(int id) {
         Accounts accounts = new Accounts();
@@ -68,7 +40,7 @@ public class AccountDAO extends DBContext {
             if (resultSet.next()) {
                 return new Accounts(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getInt(4),
                         resultSet.getString(5), resultSet.getInt(6), resultSet.getString(7),
-                        resultSet.getString(8), resultSet.getString(9), resultSet.getDate(10), resultSet.getString(11));
+                        resultSet.getString(8), resultSet.getString(9), resultSet.getDate(10), resultSet.getString(11), resultSet.getString(12));
             }
         } catch (Exception e) {
             e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
@@ -90,7 +62,7 @@ public class AccountDAO extends DBContext {
             if (resultSet.next()) {
                 return new Accounts(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getInt(4),
                         resultSet.getString(5), resultSet.getInt(6), resultSet.getString(7),
-                        resultSet.getString(8), resultSet.getString(9), resultSet.getDate(10), resultSet.getString(11));
+                        resultSet.getString(8), resultSet.getString(9), resultSet.getDate(10), resultSet.getString(11), resultSet.getString(12));
             }
         } catch (Exception e) {
             e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
@@ -109,7 +81,7 @@ public class AccountDAO extends DBContext {
             while (resultSet.next()) {
                 return new Accounts(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getInt(4),
                         resultSet.getString(5), resultSet.getInt(6), resultSet.getString(7),
-                        resultSet.getString(8), resultSet.getString(9), resultSet.getDate(10), resultSet.getString(11));
+                        resultSet.getString(8), resultSet.getString(9), resultSet.getDate(10), resultSet.getString(11), resultSet.getString(12));
             }
         } catch (Exception e) {
             e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
@@ -202,9 +174,5 @@ public class AccountDAO extends DBContext {
         return 0;
     }
 
-    public static void main(String[] args) {
-        AccountDAO dao = new AccountDAO();
-        dao.login("huientranq@gmail.com", "trang123");
-
-    }
+   
 }
