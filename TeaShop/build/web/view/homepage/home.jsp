@@ -50,11 +50,14 @@
                     <div class="top-info ps-2">
                         <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#" class="text-white">Tân Xã, Thạch Hòa, Thạch Thất, Hòa Lạc</a></small>
                         <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i><a href="#" class="text-white">huydxhe172399@fpt.edu.vn</a></small>
+                                <c:if test="${sessionScope.acc==null}">
+                            <small class="me-3"><a href="login" class="text-white">Login</a></small>
+                        </c:if>
                     </div>
                     <div class="top-link pe-2">
                         <a href="#" class="text-white"><small class="text-white mx-2">Privacy Policy</small>/</a>
                         <a href="#" class="text-white"><small class="text-white mx-2">Terms of Use</small>/</a>
-                        <a href="#" class="text-white"><small class="text-white ms-2">Sales and Refunds</small></a>
+                        <a href="#" class="text-white"><small class="text-white ms-2">Sales and Refunds</small></a>                   
                     </div>
                 </div>
             </div>
@@ -65,6 +68,7 @@
                     <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                         <span class="fa fa-bars text-primary"></span>
                     </button>
+
                     <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                         <div class="navbar-nav mx-auto">
                             <a href="home" class="nav-item nav-link active">Home</a>
@@ -87,9 +91,12 @@
                                 <i class="fa fa-shopping-bag fa-2x"></i>
                                 <!--                                <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">  </span>-->
                             </a>
-                            <a href="login" class="my-auto">
-                                <i class="fas fa-user fa-2x"></i>
-                            </a>
+                            <c:if test="${sessionScope.acc!=null}">
+                                 <span>Welcome ${sessionScope.acc.user_name} <i class="arrow_carrot-down"></i></span>
+                                <a href="userprofile?email=${sessionScope.acc.email}" class="my-auto">
+                                    <i class="fas fa-user fa-2x"></i>
+                                </a>
+                            </c:if>
                         </div>
                     </div>
                 </nav>

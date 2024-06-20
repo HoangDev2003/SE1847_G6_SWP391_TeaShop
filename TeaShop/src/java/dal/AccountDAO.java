@@ -23,7 +23,6 @@ public class AccountDAO extends DBContext {
     protected PreparedStatement statement;
     protected ResultSet resultSet;
 
-
     public Accounts getAccountByAccountID(int id) {
         Accounts accounts = new Accounts();
         connection = getConnection();
@@ -31,10 +30,10 @@ public class AccountDAO extends DBContext {
                 + "  FROM [dbo].[Accounts]\n"
                 + "  Where account_id = ?";
         try {
-            
+
             statement = connection.prepareStatement(sql);
             statement.setInt(1, id);
-            
+
             resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
@@ -174,5 +173,53 @@ public class AccountDAO extends DBContext {
         return 0;
     }
 
-   
+    public int updateProfile(String fullName, String phone, String email, String address) {
+        String sql = "update Accounts set full_name = ?, phone_number = ?, email = ?,\n"
+                + "address = ? where email = ?;";
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(sql);
+            statement.setString(1, fullName);
+            statement.setString(2, phone);
+            statement.setString(3, email);
+            statement.setString(4, address);
+            statement.setString(5, email);
+            int rowUpdated = statement.executeUpdate();
+            return rowUpdated;
+        } catch (Exception e) {
+            e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
+        }
+        return -1;
+    }
+
+    public int updatePassword(String newPassword, String email) {
+        String sql = "update Accounts set pass_word = ? where email = ?";
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(sql);
+            statement.setString(1, newPassword);
+            statement.setString(2, email);
+            int rowUpdated = statement.executeUpdate();
+            return rowUpdated;
+        } catch (Exception e) {
+            e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
+        }
+        return -1;
+    }
+
+    public int updateAvatar(String newAvatar, String email) {
+        String sql = "update Accounts set avartar = ? where email = ?";
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(sql);
+            statement.setString(1, newAvatar);
+            statement.setString(2, email);
+            int rowUpdated = statement.executeUpdate();
+            return rowUpdated;
+        } catch (Exception e) {
+            e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
+        }
+        return -1;
+    }
+
 }
