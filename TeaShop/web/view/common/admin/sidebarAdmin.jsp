@@ -52,10 +52,8 @@
                                         <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                                     </a>
                                     <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
-                                        <nav class="sb-sidenav-menu-nested nav">
-                                            <a class="nav-link" href="401.html">401 Page</a>
-                                            <a class="nav-link" href="404.html">404 Page</a>
-                                            <a class="nav-link" href="500.html">500 Page</a>
+                                        <nav class="sb-sidenav-menu-nested nav">                                          
+                                            <a class="nav-link" href="admin404.jsp">404 Page</a>                                           
                                         </nav>
                                     </div>
                                 </nav>
