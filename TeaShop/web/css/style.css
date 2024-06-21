@@ -26,12 +26,7 @@
     z-index: 99;
 }
 /*** Spinner End ***/
-.slide{
-    display: none;
-  width: 100%;
-  opacity: 0;
-  transition: opacity 1s ease-in-out;
-}
+
 
 /*** Button Start ***/
 .btn {
@@ -499,3 +494,4 @@
     line-height: 35px;
 }
 /*** Footer End ***/
+
