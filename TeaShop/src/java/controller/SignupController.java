@@ -90,7 +90,19 @@ public class SignupController extends HttpServlet {
         String address = request.getParameter("address");
         String gender = request.getParameter("gender");
         
+        // Kiểm tra khoảng trắng trong email, tên người dùng, mật khẩu và nhập lại mật khẩu
+        if (containsSpace(email) || containsSpace(user_name) || containsSpace(pass_word) || containsSpace(re_pass)) {
+            request.setAttribute("mess", "Check Space!");
+            request.setAttribute("email", email);
+            request.setAttribute("pass", pass_word);
+            request.setAttribute("re_pass", re_pass);
+            request.setAttribute("user", user_name);
+            request.setAttribute("phone_number", phone_number);
+            request.setAttribute("address", address);
+            request.setAttribute("gender", gender);
+            request.getRequestDispatcher(SIGNUP_JSP).forward(request, response);
         
+        }
         // Kiểm tra số điện thoại không hợp lệ
         if (phone_number == null || !phone_number.matches("0\\d{9}")) {
             // Số điện thoại không hợp lệ
@@ -169,7 +181,7 @@ public class SignupController extends HttpServlet {
             }
         }
     }
-
+    
     /**
      * Returns a short description of the servlet.
      *
@@ -179,5 +191,9 @@ public class SignupController extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+    // Hàm kiểm tra khoảng trắng
+    private boolean containsSpace(String input) {
+        return input != null && input.contains(" ");
+    }
 
 }

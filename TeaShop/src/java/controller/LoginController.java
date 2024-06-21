@@ -91,6 +91,8 @@ public class LoginController extends HttpServlet {
             if (failedAttempts >= 1) {
                 request.setAttribute("showForgotPassword", true);
             }
+            request.setAttribute("email", email);
+            request.setAttribute("pass", password);
             request.setAttribute("mess", "Your Email or Password is incorrect!");
             request.getRequestDispatcher(LOGIN_JSP).forward(request, response);
 

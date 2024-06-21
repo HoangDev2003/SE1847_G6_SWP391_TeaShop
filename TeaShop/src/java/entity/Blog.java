@@ -13,19 +13,13 @@ public class Blog {
     public int id, account_id;
     public String content, img, blog_name, created_at;
     public int categoryID;
-
-    public int getCategoryID() {
-        return categoryID;
-    }
-
-    public void setCategoryID(int categoryID) {
-        this.categoryID = categoryID;
-    }
+private boolean is_deleted;
+   
 
     public Blog() {
     }
 
-    public Blog(int id, int account_id, String content, String img, String blog_name, String created_at, int categoryID) {
+    public Blog(int id, int account_id, String content, String img, String blog_name, String created_at, int categoryID, boolean is_deleted) {
         this.id = id;
         this.account_id = account_id;
         this.content = content;
@@ -33,6 +27,7 @@ public class Blog {
         this.blog_name = blog_name;
         this.created_at = created_at;
         this.categoryID = categoryID;
+        this.is_deleted = is_deleted;
     }
 
     public int getId() {
@@ -82,6 +77,24 @@ public class Blog {
     public void setCreated_at(String created_at) {
         this.created_at = created_at;
     }
+
+    public int getCategoryID() {
+        return categoryID;
+    }
+
+    public void setCategoryID(int categoryID) {
+        this.categoryID = categoryID;
+    }
+
+    public boolean isIs_deleted() {
+        return is_deleted;
+    }
+
+    public void setIs_deleted(boolean is_deleted) {
+        this.is_deleted = is_deleted;
+    }
+
+    
 
     @Override
     public String toString() {

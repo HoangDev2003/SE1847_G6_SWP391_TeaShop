@@ -99,11 +99,11 @@
         <!-- Single Page Header start -->
         <div class="container-fluid page-header bg-primary py-5">
             <h1 class="text-center text-white display-6">Blog </h1>
-            <!--            <ol class="breadcrumb justify-content-center mb-0">
+                        <ol class="breadcrumb justify-content-center mb-0">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
                             <li class="breadcrumb-item"><a href="#"> </a></li>
                             <li class="breadcrumb-item active text-white">Shop Detail</li>
-                        </ol>-->
+                        </ol>
         </div>
         <!-- Single Page Header End -->
 
@@ -118,7 +118,7 @@
 
                     <div class=" border rounded">
                         <a href="">
-                            <img src="${b.getImg()}" class="img-fluid" rounded alt=""/>
+                            <img src="/TeaShop/img/${b.getImg()}" class="img-fluid" rounded alt=""/>
                         </a>
                     </div>
                     <h4 class="fw-bold mb-3">${b.getBlog_name()}</h4>
@@ -132,7 +132,9 @@
                 </div>
             </div>
         </div>
+                    
         <!-- Single Blog End -->
+        
 <!-- Tastimonial Start -->
         <div class="container-fluid testimonial py-5">
             <div class="container py-5">
@@ -148,6 +150,11 @@
 
                     <h1 class="display-5 mb-5 text-dark">Khách hàng của chúng tôi nói!!</h1>
                 </div>
+                <c:if test="${sessionScope.account != null}">
+                <div style="margin-bottom: 10px">
+                                    <a href="AddBlog.jsp" class="add-blog-button">Do you want to write a blog? Click Here!</a>
+                                </div>
+                </c:if>
                 <div class="owl-carousel testimonial-carousel">
                     <div class="testimonial-item img-border-radius bg-light rounded p-4 ">
                         <div class="position-relative ">

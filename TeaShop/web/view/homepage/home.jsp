@@ -41,6 +41,7 @@
         </div>
         <!-- Spinner End -->
 
+<<<<<<< HEAD
 
         <!-- Navbar start -->
         <div class="container-fluid fixed-top">
@@ -108,6 +109,12 @@
 
 
 
+=======
+<!-- Header Start -->
+        <jsp:include page="../common/homePage/header-start.jsp"></jsp:include>
+            <!-- Header End -->
+   
+>>>>>>> f8092b31fd9e2b19ff9a18e628b8549aa3e89551
         <!-- Hero header Start -->
         <div class="container-fluid py-5 mb-5 hero-header">
             <div class="container-fluid py-5 ">
@@ -228,7 +235,7 @@
 
                     <c:forEach items="${topBog}" var="b">
                         <div class="col-md-6 col-lg-4">
-                            <a href="#">
+                            <a href="blogdetail?bid=${b.getId()}">
                                 <div class="service-item bg-secondary rounded border border-secondary">
                                     <img  src=${b.getImg()} class="img-fluid" alt="hhh">
                                     <div class=" rounded-bottom">
