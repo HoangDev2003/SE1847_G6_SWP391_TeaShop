@@ -5,12 +5,11 @@
 package dal;
 
 import entity.Category;
-import entity.Product;
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -74,11 +73,101 @@ public class CategoryDAO extends DBContext {
         return null;
     }
 
+    public int insertCategory(Category c) {
+        connection = getConnection();
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        int generatedId = -1;
+        String sql = "INSERT INTO [dbo].[Category]\n"
+                + "           ([category_name])\n"
+                + "     VALUES\n"
+                + "           (?)";
+        try {
+            stm = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            stm.setString(1, c.getCategory_name());
+            stm.executeUpdate();
+
+            //get generatedId
+            rs = stm.getGeneratedKeys();
+            if (rs.next()) {
+                generatedId = rs.getInt(1);
+            }
+
+        } catch (SQLException ex) {
+            java.util.logging.Logger.getLogger(CategoryDAO.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        return generatedId;
+    }
+
+    public void updateCategory(Category c, int cid) {
+        connection = getConnection();
+        PreparedStatement stm = null;
+
+        String sql = "UPDATE [dbo].[Category]\n"
+                + "   SET [category_name] = ?\n"
+                + " WHERE category_id = ?";
+        try {
+            stm = connection.prepareStatement(sql);
+            stm.setString(1, c.getCategory_name());
+            stm.setInt(2, cid);
+            stm.executeUpdate();
+
+        } catch (SQLException ex) {
+            java.util.logging.Logger.getLogger(CategoryDAO.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+    }
+
+    public int deleteCategory(int id) {
+        connection = getConnection();
+        int n = 0;
+        PreparedStatement stm = null;
+
+        String sql = "DELETE FROM [dbo].[Category]\n"
+                + "      WHERE category_id = ?";
+        try {
+            stm = connection.prepareStatement(sql);
+            stm.setInt(1, id);
+            n = stm.executeUpdate();
+        } catch (SQLException ex) {
+            n = -1;
+            Logger.getLogger(CategoryDAO.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        }
+        return n;
+    }
+
     public static void main(String[] args) {
-        int id = 1;
+//        int id = 1;
+//        CategoryDAO categoryDAO = new CategoryDAO();
+//        Category category = categoryDAO.getCategoryById(id);
+//        System.out.println(category);
         CategoryDAO categoryDAO = new CategoryDAO();
-        Category category = categoryDAO.getCategoryById(id);
-        System.out.println(category);
+
+        //test insert category
+//        Category category = new Category("New Category");
+//        int generatedId = categoryDAO.insertCategory(category);
+//        System.out.println("ID của Category mới được chèn là: " + generatedId);
+        //test update category
+        // ID của Category cần cập nhật
+//            int categoryId = 7; // ID danh mục cần cập nhật, thay đổi theo nhu cầu của bạn
+//
+//            // Tạo đối tượng Category mới với tên cập nhật
+//            Category updatedCategory = new Category("Updated Category Name");
+//
+//            // Cập nhật Category
+//            categoryDAO.updateCategory(updatedCategory, categoryId);
+//            System.out.println("Category đã được cập nhật.");
+        int categoryId = 7;
+
+            // Xóa sản phẩm
+            int result = categoryDAO.deleteCategory(categoryId);
+            if (result > 0) {
+                System.out.println("Category đã được xóa thành công.");
+            } else {
+                System.out.println("");
+            }
     }
 
 }
