@@ -1,5 +1,5 @@
 <%-- 
-    Document   : cart-details
+    Document   : payment-result
     Created on : May 27, 2024, 6:03:28 PM
     Author     : HuyTD
 --%>
@@ -124,7 +124,7 @@
         </div>
         <!-- Modal Search End -->
 
-        <!-- cart-details Start-->
+        <!-- payment-result Start-->
         <div class="container-fluid fruite py-5">
             <div class="container py-5">            
                 <div class="row g-4">
@@ -197,70 +197,24 @@
                                             </c:forEach>
                                         </div>
                                     </div>
+
                                 </div>
                             </div>
-                            <div class="col-lg-6">
-                                <div class="row g-4 justify-content-center">
-                                    <c:if test="${empty cartInfo}">
-                                        <div class="col-md-12 col-lg-12 col-xl-12 mb-4">
-                                            <div class="p-4 border border-secondary rounded">
-                                                <p>Giỏ hàng của bạn hiện không có sản phẩm nào.</p>
-                                                <p><a href="shop" class="btn border border-secondary rounded-pill px-3 text-primary">Chọn sản phẩm</a></p>
-                                            </div>
-                                        </div>
-                                    </c:if>
-                                    <c:forEach var="cartItem" items="${cartInfo}" varStatus="status">
-                                        <div class="col-md-12 col-lg-12 col-xl-12 mb-4">
-                                            <div class="p-4 border border-secondary rounded">
-                                                <div class="row">
-                                                    <div class="col-md-4 col-lg-4 col-xl-4">
-                                                        <p><img src="${cartItem.product.image}" class="img-fluid w-100" alt="" width="50" height="50"></p>
-                                                    </div>
-                                                    <div class="col-md-8 col-lg-8 col-xl-8">
-                                                        <p>ID sản phẩm: ${cartItem.product.product_id}</p>
-                                                        <p>Tên sản phẩm: ${cartItem.product.product_name}</p>
-                                                        <p>Giá tiền: ${cartItem.product.price} đồng</p>
-                                                        <form action="CartDetails" method="post" id="form-${status.index}">
-                                                            <p>Số lượng:
-                                                                <input type="number" name="quantity" value="${cartItem.quantity}" onchange="document.getElementById('form-${status.index}').submit()">
-                                                                <input type="hidden" name="product_id" value="${cartItem.product.product_id}">
-                                                                <input type="hidden" name="service" value="updateQuantity">
-                                                            </p>
-                                                        </form>
-                                                        <form action="CartDetails" method="post" id="topping-form-${status.index}">
-                                                            <p>Toppings:</p>
-                                                            <c:forEach var="topping" items="${toppingList}">
-                                                                <div>
-                                                                    <input type="checkbox" name="topping_names" value="${topping}" id="topping-${status.index}-${topping}"
-                                                                           <c:forEach var="selectedTopping" items="${cartItem.topping}">
-                                                                               <c:if test="${selectedTopping.topping_name == topping}">checked</c:if>
-                                                                           </c:forEach>
-                                                                           >
-                                                                    <label for="topping-${status.index}-${topping}">${topping}</label>
-                                                                </div>
-                                                            </c:forEach>
-                                                            <input type="hidden" name="product_id" value="${cartItem.product.product_id}">
-                                                            <input type="hidden" name="service" value="updateTopping">
-                                                            <button type="submit">Update Toppings</button>
-                                                        </form>
-                                                        <p>Tổng tiền: ${cartItem.product.price * cartItem.quantity} đồng</p>
-                                                        <p><a href="CartDetails?service=delete&product_id=${cartItem.product.product_id}" class="btn border border-secondary rounded-pill px-3 text-primary">Xóa sản phẩm</a></p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </c:forEach>
-                                </div>
-                            </div>
-                            <div class="col-lg-3">
+                            <div class="col-lg-9">
                                 <div class="row g-4 justify-content-center"> 
-                                    <div class="col-md-6 col-lg-6 col-xl-12">
-                                        <div class="p-4 border border-secondary rounded">
-                                            <p>Tổng tiền hóa đơn: ${totalCartAmount} đồng</p>
-                                            <p><a href="shop" class="btn border border-secondary rounded-pill px-3 text-primary">Chọn thêm sản phẩm</a></p>
-                                            <p><a href="CartDetails?service=selectpayment" class="btn border border-secondary rounded-pill px-3 text-primary">Thanh toán</a></p>
-                                        </div>
-                                    </div>
+                                    <h2>Thông tin thanh toán</h2>
+                                    <h5>Trạng thái: ${status}</h5>
+                                    <p>Họ và tên: ${fullname}</p>
+                                    <p>Ngày thanh toán: ${formattedDate}</p>
+                                    <p>Thời gian thanh toán: ${formattedTime}</p>
+                                    <p>Số tiền: ${amount} đồng</p>
+                                    <p>Địa chỉ nhận hàng: ${address}</p>
+                                    <p>Thông tin đơn hàng: ${OrderInfo}</p>
+                                    <% if(request.getAttribute("status").equals("Giao dịch thất bại")){%>
+                                    <p><a href="CartDetails?service=selectpayment" class="btn border border-secondary rounded-pill px-3 text-primary">Thanh toán lại</a></p>
+                                    <%} else if(request.getAttribute("status").equals("Giao dịch thành công")){%>
+                                    <p><a href="home" class="btn border border-secondary rounded-pill px-3 text-primary">Quay về trang chủ</a></p>
+                                    <%}%>
                                 </div>
                             </div>
                         </div>
@@ -268,7 +222,7 @@
                 </div>
             </div>
         </div>
-        <!-- cart-details End-->        
+        <!-- payment-result End-->        
 
         <!-- Footer Start -->
         <jsp:include page="../common/homePage/footer-start.jsp"></jsp:include>

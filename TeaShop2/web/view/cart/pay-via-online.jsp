@@ -1,5 +1,5 @@
 <%-- 
-    Document   : cart-details
+    Document   : pay-via-online
     Created on : May 27, 2024, 6:03:28 PM
     Author     : HuyTD
 --%>
@@ -124,7 +124,7 @@
         </div>
         <!-- Modal Search End -->
 
-        <!-- cart-details Start-->
+        <!-- pay-via-online Start-->
         <div class="container-fluid fruite py-5">
             <div class="container py-5">            
                 <div class="row g-4">
@@ -197,70 +197,73 @@
                                             </c:forEach>
                                         </div>
                                     </div>
+
                                 </div>
                             </div>
-                            <div class="col-lg-6">
-                                <div class="row g-4 justify-content-center">
-                                    <c:if test="${empty cartInfo}">
-                                        <div class="col-md-12 col-lg-12 col-xl-12 mb-4">
-                                            <div class="p-4 border border-secondary rounded">
-                                                <p>Giỏ hàng của bạn hiện không có sản phẩm nào.</p>
-                                                <p><a href="shop" class="btn border border-secondary rounded-pill px-3 text-primary">Chọn sản phẩm</a></p>
-                                            </div>
-                                        </div>
-                                    </c:if>
-                                    <c:forEach var="cartItem" items="${cartInfo}" varStatus="status">
-                                        <div class="col-md-12 col-lg-12 col-xl-12 mb-4">
-                                            <div class="p-4 border border-secondary rounded">
-                                                <div class="row">
-                                                    <div class="col-md-4 col-lg-4 col-xl-4">
-                                                        <p><img src="${cartItem.product.image}" class="img-fluid w-100" alt="" width="50" height="50"></p>
-                                                    </div>
-                                                    <div class="col-md-8 col-lg-8 col-xl-8">
-                                                        <p>ID sản phẩm: ${cartItem.product.product_id}</p>
-                                                        <p>Tên sản phẩm: ${cartItem.product.product_name}</p>
-                                                        <p>Giá tiền: ${cartItem.product.price} đồng</p>
-                                                        <form action="CartDetails" method="post" id="form-${status.index}">
-                                                            <p>Số lượng:
-                                                                <input type="number" name="quantity" value="${cartItem.quantity}" onchange="document.getElementById('form-${status.index}').submit()">
-                                                                <input type="hidden" name="product_id" value="${cartItem.product.product_id}">
-                                                                <input type="hidden" name="service" value="updateQuantity">
-                                                            </p>
-                                                        </form>
-                                                        <form action="CartDetails" method="post" id="topping-form-${status.index}">
-                                                            <p>Toppings:</p>
-                                                            <c:forEach var="topping" items="${toppingList}">
-                                                                <div>
-                                                                    <input type="checkbox" name="topping_names" value="${topping}" id="topping-${status.index}-${topping}"
-                                                                           <c:forEach var="selectedTopping" items="${cartItem.topping}">
-                                                                               <c:if test="${selectedTopping.topping_name == topping}">checked</c:if>
-                                                                           </c:forEach>
-                                                                           >
-                                                                    <label for="topping-${status.index}-${topping}">${topping}</label>
-                                                                </div>
-                                                            </c:forEach>
-                                                            <input type="hidden" name="product_id" value="${cartItem.product.product_id}">
-                                                            <input type="hidden" name="service" value="updateTopping">
-                                                            <button type="submit">Update Toppings</button>
-                                                        </form>
-                                                        <p>Tổng tiền: ${cartItem.product.price * cartItem.quantity} đồng</p>
-                                                        <p><a href="CartDetails?service=delete&product_id=${cartItem.product.product_id}" class="btn border border-secondary rounded-pill px-3 text-primary">Xóa sản phẩm</a></p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </c:forEach>
-                                </div>
-                            </div>
-                            <div class="col-lg-3">
+                            <div class="col-lg-9">
                                 <div class="row g-4 justify-content-center"> 
-                                    <div class="col-md-6 col-lg-6 col-xl-12">
-                                        <div class="p-4 border border-secondary rounded">
-                                            <p>Tổng tiền hóa đơn: ${totalCartAmount} đồng</p>
-                                            <p><a href="shop" class="btn border border-secondary rounded-pill px-3 text-primary">Chọn thêm sản phẩm</a></p>
-                                            <p><a href="CartDetails?service=selectpayment" class="btn border border-secondary rounded-pill px-3 text-primary">Thanh toán</a></p>
+                                    <form action="Payment" method="post" onsubmit="return validateForm()">
+                                        <h2>Thanh toán bằng VNPay</h2>
+                                        <div class="col-md-12 col-lg-12 col-xl-12 mb-4">
+                                            <div class="p-4 border border-secondary rounded">
+                                                <p>Họ và tên:</p>
+                                                <input type="text" id="fullname" name="fullname" value="${fullname}">   
+                                            </div>
                                         </div>
-                                    </div>
+                                        <div class="col-md-12 col-lg-12 col-xl-12 mb-4">
+                                            <div class="p-4 border border-secondary rounded">
+                                                <p>Địa chỉ nhận hàng:</p>
+                                                <input type="text" id="address" name="address" value="${address}">   
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-xl-12 mb-4">
+                                            <div class="p-4 border border-secondary rounded">
+                                                <p>Số điện thoại:</p>
+                                                <input type="text" id="phonenumber" name="phonenumber" value="${phonenumber}">   
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-xl-12 mb-4">
+                                            <div class="p-4 border border-secondary rounded">
+                                                <p>Tổng tiền hóa đơn: ${totalCartAmount} đồng</p>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" name="amount" value="${totalCartAmount}">
+                                        <input type="hidden" name="service" value="VNPay">
+                                        <button type="submit" class="btn border border-secondary rounded-pill px-3 text-primary">Xác nhận thanh toán</button>
+                                    </form>
+                                        <script>
+                                        function validateForm() {
+                                            // Regex patterns
+                                            const namePattern = /^[a-zA-ZÀ-ỹ]+\s+[a-zA-ZÀ-ỹ]+(?:\s+[a-zA-ZÀ-ỹ]+)*$/;
+                                            const addressPattern = /^.{1,250}$/;
+                                            const phonePattern = /^\d{10}$/;
+
+                                            // Form values
+                                            const fullname = document.getElementById('fullname').value.trim();
+                                            const address = document.getElementById('address').value.trim();
+                                            const phonenumber = document.getElementById('phonenumber').value.trim();
+
+                                            // Validate name
+                                            if (!namePattern.test(fullname) || fullname.length < 1 || fullname.length > 50) {
+                                                alert("Họ và tên chỉ chứa chữ cái và phải có dấu cách ở giữa.");
+                                                return false;
+                                            }
+
+                                            // Validate address
+                                            if (!addressPattern.test(address)) {
+                                                alert("Địa chỉ nhận hàng phải dài từ 1 đến 250 ký tự.");
+                                                return false;
+                                            }
+
+                                            // Validate phone number
+                                            if (!phonePattern.test(phonenumber)) {
+                                                alert("Số điện thoại phải là số chứa đúng 10 chữ số.");
+                                                return false;
+                                            }
+
+                                            return true;
+                                        }
+                                    </script>
                                 </div>
                             </div>
                         </div>
@@ -268,7 +271,7 @@
                 </div>
             </div>
         </div>
-        <!-- cart-details End-->        
+        <!-- pay-via-online End-->        
 
         <!-- Footer Start -->
         <jsp:include page="../common/homePage/footer-start.jsp"></jsp:include>

@@ -105,21 +105,23 @@ public class OrderDetailsDAO extends DBContext {
         return categoryName; // Return the product entity
     }
 
-    public String getToppingNameById(int topping_id) {
-        String sql = "select topping_name from topping where topping_id=?";
+    public List<String> getToppingNamesByOrderDetailId(int order_details_id) {
+        String sql = "SELECT topping_name FROM Topping "
+                + "JOIN ToppingDetails ON Topping.topping_id = ToppingDetails.topping_id "
+                + "WHERE order_details_id = ?";
         Connection connection = getConnection(); // Obtain database connection
-        String toppingName = null;
+        List<String> toppingNames = new ArrayList<>();
 
         try {
             PreparedStatement pre = connection.prepareStatement(
                     sql,
                     ResultSet.TYPE_SCROLL_SENSITIVE,
                     ResultSet.CONCUR_READ_ONLY);
-            pre.setInt(1, topping_id); // Set the product_id parameter
+            pre.setInt(1, order_details_id); // Set the order_details_id parameter
             ResultSet rs = pre.executeQuery();
 
-            if (rs.next()) { // Check if a result is found
-                toppingName = rs.getString("topping_name");
+            while (rs.next()) { // Iterate through results
+                toppingNames.add(rs.getString("topping_name"));
             }
 
             rs.close(); // Close ResultSet
@@ -137,7 +139,7 @@ public class OrderDetailsDAO extends DBContext {
             }
         }
 
-        return toppingName; // Return the product entity
+        return toppingNames; // Return the list of topping names
     }
 
     /**
@@ -151,8 +153,10 @@ public class OrderDetailsDAO extends DBContext {
     public List<OrderDetails> getinfo(int orderId) {
         List<OrderDetails> infoList = new ArrayList<>();
         Connection connection = getConnection(); // Obtain database connection
-        String sql = "SELECT order_details_id, p.product_id, image, product_name, category_id, price, quantity, topping_id FROM OrderDetails od "
-                + "JOIN Product p ON od.product_id=p.product_id WHERE order_id = ?";
+        String sql = "SELECT order_details_id, p.product_id, image, product_name, category_id, price, quantity "
+                + "FROM OrderDetails od "
+                + "JOIN Product p ON od.product_id = p.product_id "
+                + "WHERE order_id = ?";
 
         try {
             PreparedStatement pre = connection.prepareStatement(
@@ -164,26 +168,32 @@ public class OrderDetailsDAO extends DBContext {
 
             while (rs.next()) {
                 OrderDetails orderDetails = new OrderDetails();
-                orderDetails.category = new Category();
-                orderDetails.product = new Product();
-                orderDetails.topping = new Topping();
-                
-                orderDetails.order_details_id = rs.getInt("order_details_id");
-                orderDetails.product.product_id = rs.getInt("product_id");
-                orderDetails.product.image = rs.getString("image");
-                orderDetails.product.product_name = rs.getString("product_name");
-                orderDetails.category.category_name = getCategoryNameById(rs.getInt("category_id"));
-                orderDetails.product.price = rs.getInt("price");
-                orderDetails.quantity = rs.getInt("quantity");
-                orderDetails.topping.topping_name = getToppingNameById(rs.getInt("topping_id"));
+                orderDetails.setCategory(new Category());
+                orderDetails.setProduct(new Product());
+                orderDetails.setTopping(new ArrayList<Topping>());
+
+                orderDetails.setOrder_details_id(rs.getInt("order_details_id"));
+                orderDetails.getProduct().setProduct_id(rs.getInt("product_id"));
+                orderDetails.getProduct().setImage(rs.getString("image"));
+                orderDetails.getProduct().setProduct_name(rs.getString("product_name"));
+                orderDetails.getCategory().setCategory_name(getCategoryNameById(rs.getInt("category_id")));
+                orderDetails.getProduct().setPrice(rs.getInt("price"));
+                orderDetails.setQuantity(rs.getInt("quantity"));
+
+                // Get topping names
+                List<String> toppingNames = getToppingNamesByOrderDetailId(rs.getInt("order_details_id"));
+                for (String toppingName : toppingNames) {
+                    Topping topping = new Topping();
+                    topping.setTopping_name(toppingName);
+                    orderDetails.getTopping().add(topping);
+                }
+
                 infoList.add(orderDetails);
             }
 
             rs.close(); // Close ResultSet
             pre.close(); // Close PreparedStatement
         } catch (SQLException ex) {
-            Logger.getLogger(OrderDetailsDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (Exception ex) { // Catch any parsing exceptions
             Logger.getLogger(OrderDetailsDAO.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             try {
@@ -246,52 +256,59 @@ public class OrderDetailsDAO extends DBContext {
 
         return info; // Return the account information object
     }
+
     public List<OrderDetails> getAllOrderDetails() {
         List<OrderDetails> list = new ArrayList<>();
-        String query = "SELECT od.order_details_id, od.product_id, od.order_id, od.quantity, od.topping_id, " +
-                       "p.product_name, c.category_name, t.topping_name " +
-                       "FROM OrderDetails od " +
-                       "JOIN Product p ON od.product_id = p.product_id " +
-                       "JOIN Category c ON p.category_id = c.category_id " +
-                       "LEFT JOIN Topping t ON od.topping_id = t.topping_id";
-        
+        String query = "SELECT od.order_details_id, od.product_id, od.order_id, od.quantity, "
+                + "p.product_name, c.category_name, t.topping_id, t.topping_name "
+                + "FROM OrderDetails od "
+                + "JOIN Product p ON od.product_id = p.product_id "
+                + "JOIN Category c ON p.category_id = c.category_id "
+                + "LEFT JOIN ToppingDetails td ON od.order_details_id = td.order_details_id "
+                + "LEFT JOIN Topping t ON td.topping_id = t.topping_id";
+
         try {
             Connection connection = getConnection();
             PreparedStatement statement = connection.prepareStatement(query);
             ResultSet resultSet = statement.executeQuery();
-            
+
             while (resultSet.next()) {
                 OrderDetails orderDetails = new OrderDetails();
                 orderDetails.setOrder_details_id(resultSet.getInt("order_details_id"));
                 orderDetails.setProduct_id(resultSet.getInt("product_id"));
                 orderDetails.setOrder_id(resultSet.getInt("order_id"));
                 orderDetails.setQuantity(resultSet.getInt("quantity"));
-                orderDetails.setTopping_id(resultSet.getInt("topping_id"));
-                
+
                 Product product = new Product();
                 product.setProduct_name(resultSet.getString("product_name"));
                 orderDetails.setProduct(product);
-                
+
                 Category category = new Category();
                 category.setCategory_name(resultSet.getString("category_name"));
                 orderDetails.setCategory(category);
-                
-                if (resultSet.getString("topping_name") != null) {
-                    Topping topping = new Topping();
-                    topping.setTopping_name(resultSet.getString("topping_name"));
-                    orderDetails.setTopping(topping);
-                }
-                
+
+                List<Topping> toppings = new ArrayList<>();
+                do {
+                    if (resultSet.getString("topping_name") != null) {
+                        Topping topping = new Topping();
+                        topping.setTopping_id(resultSet.getInt("topping_id"));
+                        topping.setTopping_name(resultSet.getString("topping_name"));
+                        toppings.add(topping);
+                    }
+                } while (resultSet.next() && resultSet.getInt("order_details_id") == orderDetails.getOrder_details_id());
+
+                orderDetails.setTopping(toppings);
                 list.add(orderDetails);
+                resultSet.previous();
             }
-            
+
             resultSet.close();
             statement.close();
             connection.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-        
+
         return list;
     }
 

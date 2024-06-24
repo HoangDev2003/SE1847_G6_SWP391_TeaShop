@@ -8,6 +8,7 @@ package entity;
  *
  * @author HuyTD
  */
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,5 +28,5 @@ import lombok.ToString;
 public class CartDetails {
     public int product_id, quantity, topping_id;
     public Product product;
-    public Topping topping;
+    public List<Topping> topping;
 }

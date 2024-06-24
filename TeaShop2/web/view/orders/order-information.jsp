@@ -76,7 +76,7 @@
                             <a href="${pageContext.request.contextPath}/home" class="nav-item nav-link">Home</a>
                             <a href ="${pageContext.request.contextPath}/blog" class="nav-item nav-link">Blog</a>
                             <a href="${pageContext.request.contextPath}/shop" class="nav-item nav-link active">Shop</a>
-                            
+
                             <div class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                                 <div class="dropdown-menu m-0 bg-secondary rounded-0">
@@ -213,14 +213,19 @@
                                                                 <p>Category: ${item.category.category_name}</p>
                                                                 <p>Giá tiền: ${item.product.price} đồng</p>
                                                                 <p>Số lượng: ${item.quantity}</p>
-                                                                <p>Topping: ${item.topping.topping_name}</p>
-                                                                <p>Tổng tiền: ${item.product.price*item.quantity} đồng</p>
-                                                                <p><a href="CartDetails?service=add2cart&order_id=${orderInfo.order_id}&product_id=${item.product.product_id}&quantity=${item.quantity}&topping_name=${item.topping.topping_name}&link_id=2" class="btn border border-secondary rounded-pill px-3 text-primary">Mua lại sản phẩm</a></p>
+                                                                <p>Topping: 
+                                                                    <c:forEach var="topping" items="${item.topping}">
+                                                                        <span>${topping.topping_name}</span><c:if test="${!toppingStatus.last}">, </c:if>
+                                                                    </c:forEach>
+                                                                </p>
+                                                                <p>Tổng tiền: ${item.product.price * item.quantity} đồng</p>
+                                                                <p><a href="CartDetails?service=add2cart&order_id=${orderInfo.order_id}&product_id=${item.product.product_id}&quantity=${item.quantity}&topping_name=${topping.topping_name}&link_id=2" class="btn border border-secondary rounded-pill px-3 text-primary">Mua lại sản phẩm</a></p>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </c:forEach>
+
                                         </div>
                                     </div>
                                 </div>
