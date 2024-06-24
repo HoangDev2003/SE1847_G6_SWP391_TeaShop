@@ -60,9 +60,9 @@
                                 <li class="breadcrumb-item active">Product Management</li>
                             </ol>
                             <div class="card mb-4">
-                                <div class="card-body">
-                                    DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, please visit the
-                                    <a target="_blank" href="https://datatables.net/">official DataTables documentation</a>                                   
+                                <div class="card-body">                                
+                                    <a style="transform: translateX(25vw); width: 25%; color: #00a5bb" 
+                                       href="addProductManager">Insert New Product!</a>                                   
                                 </div>
                             </div>
 
@@ -72,7 +72,7 @@
                                     Product Manager
                                 </div>
 
-                                
+
                                 <!--List all Product-->
 
                                 <div class="card-body">
@@ -85,7 +85,8 @@
                                                 <th>Image</th>
                                                 <th>Price</th>
                                                 <th>Date</th>
-                                                
+                                                <th>Update</th>
+                                                <th>Delete</th>   
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -93,11 +94,12 @@
                                             <tr>
                                                 <td>${product.product_id}</td>
                                                 <td>${product.product_name}</td>
-                                                <td>${product.category.category_id}</td>
+                                                <td>${product.category.category_name}</td>
                                                 <td><img src="${product.image}" style="width: 130px" /></td>
                                                 <td>${product. price}</td>
                                                 <td>${product.create_at}</td>
-                                                
+                                                <td><a href="">Update</a></td>
+                                                <td><a href="">Delete</a></td>
                                             </tr>  
                                         </c:forEach>
                                     </tbody>
