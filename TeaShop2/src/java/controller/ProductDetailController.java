@@ -31,7 +31,6 @@ public class ProductDetailController extends HttpServlet {
         List<Product> listSpecialProduct = productDAO.specialProduct();
         session.setAttribute("listSpecialProduct", listSpecialProduct);
         session.setAttribute("listCategory", listCategory);
-        
         int productId = Integer.parseInt(req.getParameter("id"));
         Product product = productDAO.getProductsById(productId);
        

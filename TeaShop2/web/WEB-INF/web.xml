@@ -45,7 +45,6 @@
         <servlet-class>controller.OrderInformationController</servlet-class>
     </servlet>
     <servlet>
-
         <servlet-name>ShippingController</servlet-name>
         <servlet-class>controller.ShippingController</servlet-class>
     </servlet>
@@ -96,7 +95,14 @@
     <servlet>
         <servlet-name>DeletePost</servlet-name>
         <servlet-class>controller.ManagerPost.DeletePost</servlet-class>
-        >>>>>>> f8092b31fd9e2b19ff9a18e628b8549aa3e89551
+    </servlet>
+    <servlet>
+        <servlet-name>ProductManagerController</servlet-name>
+        <servlet-class>controller.ProductManagerController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CategoryManagerController</servlet-name>
+        <servlet-class>controller.CategoryManagerController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ShopController</servlet-name>
@@ -213,6 +219,13 @@
     <servlet-mapping>
         <servlet-name>DeletePost</servlet-name>
         <url-pattern>/deletepost</url-pattern>
-
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductManagerController</servlet-name>
+        <url-pattern>/productmanager</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CategoryManagerController</servlet-name>
+        <url-pattern>/categorymanager</url-pattern>
     </servlet-mapping>
 </web-app>

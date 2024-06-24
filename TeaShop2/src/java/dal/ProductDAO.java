@@ -37,7 +37,6 @@ public class ProductDAO extends DBContext {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 Product product = new Product();
-
                 int product_id = resultSet.getInt("product_id");
                 String product_name = resultSet.getString("product_name");
                 category = ((new CategoryDAO()).getCategoryById(resultSet.getInt("category_id")));

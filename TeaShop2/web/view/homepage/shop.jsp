@@ -275,7 +275,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-
                                         </div>
                                     </c:forEach>
                                     <div class="col-12">
