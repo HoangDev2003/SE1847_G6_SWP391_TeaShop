@@ -96,9 +96,9 @@
                                                 <td>${product.product_name}</td>
                                                 <td>${product.category.category_name}</td>
                                                 <td><img src="${product.image}" style="width: 130px" /></td>
-                                                <td>${product. price}</td>
+                                                <td>${product.price}</td>
                                                 <td>${product.create_at}</td>
-                                                <td><a href="">Update</a></td>
+                                                <td><a href="updateProductManager?service=requestUpdate&productId=${product.product_id}">Update</a></td>
                                                 <td><a href="">Delete</a></td>
                                             </tr>  
                                         </c:forEach>

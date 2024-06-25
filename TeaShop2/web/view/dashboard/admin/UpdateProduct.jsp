@@ -1,6 +1,6 @@
 <%-- 
-    Document   : InsertProduct
-    Created on : Jun 24, 2024, 11:35:56 PM
+    Document   : UpdateProduct
+    Created on : Jun 25, 2024, 2:39:45 AM
     Author     : Pham Toan
 --%>
 
@@ -47,14 +47,17 @@
             </ul>
         </nav>
 
-        <c:if test="${InsertDone ne null}">
+
+        <!--Update Product-->
+        <c:if test="${UpdateDone ne null}">
             <h3>
-                ${InsertDone}
+                ${UpdateDone}
             </h3>
-        </c:if> 
-        <c:if test="${insertProduct ne null}">
-            <form action="addProductManager" id="insertProduct">
-                <input type="hidden" name="service" value="sendInsertDetail" />
+        </c:if>
+        
+        <c:if test="${productUpdate ne null}">
+            <form action="updateProductManager" id="updatedProduct" >
+                <input type="hidden" name="service" value="sendUpdateDetail" />
                 <div id="layoutSidenav">
                     <jsp:include page="../../common/admin/sidebarAdmin.jsp"></jsp:include>
                         <div id="layoutSidenav_content">
@@ -67,7 +70,7 @@
                                     </ol>
                                     <div class="card mb-4">
                                         <div class="card-body">                                
-                                            <h5>Insert a new Product!</h5>
+                                            <h5>Update Product</h5>
                                         </div>
                                     </div>
 
@@ -77,14 +80,11 @@
                                             Product Manager
                                         </div>
 
-
-                                        <!--List all Product-->
-
-
                                         <div class="card-body">
                                             <table id="datatablesSimple">
                                                 <thead>
                                                     <tr>
+                                                        <th>Product ID</th>
                                                         <th>Product Name</th>
                                                         <th>Category</th>
                                                         <th>Image</th>
@@ -95,31 +95,34 @@
                                                 </thead>
                                                 <tbody>                                       
                                                     <tr>
-                                                        <td>
-                                                            <input type="text" name="name" size="50" style="height: 35px"/>
-                                                        </td>
-                                                        <td><select name="category" style="width: 180px; height: 35px" >
+                                                        <td><input type="number" name="id" style="height: 35px; width: 60px" value="${productUpdate.product_id}" readonly />
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" name="name" size="50" style="height: 35px" value="${productUpdate.product_name}"/>
+                                                    </td>
+                                                    <td><select name="category" style="width: 180px; height: 35px">
                                                             <c:forEach items="${allCategorys}" var="category">
-                                                                <option  value="${category.category_id}">${category.category_name}</option>
+                                                                <option value="${category.category_id}" <c:if test="${category.category_id == productUpdate.category.category_id}">selected</c:if>>${category.category_name}</option>
                                                             </c:forEach>
                                                         </select>
                                                     </td>
-                                                    <td><input type="text" name="image_url" size="40" style="height: 35px"/>
+                                                    <td><input type="text" name="image_url" size="40" style="height: 35px" value="${productUpdate.image}"/>
                                                     </td>
-                                                    <td><input type="number" name="price" style="height: 35px"/>
+                                                    <td><input type="number" name="price" style="height: 35px" value="${productUpdate.price}"/>
                                                     </td>
-                                                    <td><input type="datetime" name="create_at" style="height: 35px"/>
+                                                    <td><input type="datetime" name="create_at" style="height: 35px" value="${productUpdate.create_at}"/>
                                                     </td>
-                                                    <td><input type="text" name="description" size="60" style="height: 35px"/>
+                                                    <td><input type="text" name="description" size="60" style="height: 35px" value="${productUpdate.description}"/>
                                                     </td>
                                                 </tr>                                         
                                             </tbody>
                                         </table>
                                     </div>
+
                                     <button
                                         style="transform: translateX(70vw) ; width: 10%"
-                                        onclick="document.getElementById('insertProduct').submit();">
-                                        ADD PRODUCT
+                                        onclick="document.getElementById('updatedProduct').submit();">
+                                        UPDATE PRODUCT
                                     </button>
                                     <div style="height: 20px"></div>
                                 </div>
@@ -142,11 +145,13 @@
                 </div>
             </form>
         </c:if>
+
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="${pageContext.request.contextPath}/js/scripts.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         <script src="${pageContext.request.contextPath}/js/datatables-simple-demo.js"></script>
     </body>
 </html>
+
 
 
