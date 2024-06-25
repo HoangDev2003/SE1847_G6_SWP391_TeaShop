@@ -4,6 +4,7 @@
  */
 package controller;
 
+import entity.CartDetails;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -16,10 +17,12 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 import java.util.logging.Level;
@@ -46,8 +49,10 @@ public class PaymentResultController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             HttpSession session = request.getSession(true);
+            List<CartDetails> cartInfo = new ArrayList<>();
+            Enumeration<String> em = session.getAttributeNames();
             String service = request.getParameter("service");
-            if(service == null || service.isEmpty()){
+            if (service == null || service.isEmpty()) {
                 service = "pay-online";
             }
             if (service.equals("cash-on-delivery")) {
@@ -77,7 +82,7 @@ public class PaymentResultController extends HttpServlet {
                 String phonenumber = request.getParameter("phonenumber");
                 String status = "Giao dịch thành công";
                 String OrderInfo = "Thanh toan hoa don Dream Coffee. So tien: " + amount + " dong";
-                
+
                 request.setAttribute("amount", amount);
                 request.setAttribute("status", status);
                 request.setAttribute("OrderInfo", OrderInfo);
@@ -86,7 +91,7 @@ public class PaymentResultController extends HttpServlet {
                 session.setAttribute("phonenumber", phonenumber);
 
                 request.getRequestDispatcher("view/cart/payment-result.jsp").forward(request, response);
-            } else if (service.equals("pay-online")){
+            } else if (service.equals("pay-online")) {
                 Map fields = new HashMap();
                 for (Enumeration params = request.getParameterNames(); params.hasMoreElements();) {
                     String fieldName = URLEncoder.encode((String) params.nextElement(), StandardCharsets.US_ASCII.toString());
@@ -131,6 +136,13 @@ public class PaymentResultController extends HttpServlet {
                 if (signValue.equals(vnp_SecureHash)) {
                     if ("00".equals(request.getParameter("vnp_TransactionStatus"))) {
                         status = "Giao dịch thành công";
+                        while (em.hasMoreElements()) {
+                            String key = em.nextElement();
+
+                            if (key.startsWith("cartItem")) {
+                                session.removeAttribute(key);
+                            }
+                        }
                     } else {
                         status = "Giao dịch thất bại";
                     }

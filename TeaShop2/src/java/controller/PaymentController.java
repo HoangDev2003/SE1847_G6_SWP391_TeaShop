@@ -6,6 +6,7 @@ package controller;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import entity.CartDetails;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -26,6 +27,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -39,21 +41,38 @@ public class PaymentController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession(true);
+
+        List<CartDetails> cartInfo = new ArrayList<>();
+        Enumeration<String> em = session.getAttributeNames();
+        while (em.hasMoreElements()) {
+            String key = em.nextElement();
+
+            if (key.startsWith("cartItem")) {
+                CartDetails cartItem = (CartDetails) session.getAttribute(key);
+                cartInfo.add(cartItem);
+            }
+        }
+
+        int totalCartAmount = 0;
+        for (CartDetails item : cartInfo) {
+            int price = item.product.getPrice();
+            int quantity = item.getQuantity();
+            totalCartAmount += price * quantity;
+        }
+
         String service = request.getParameter("service");
         if (service.equals("pay-online")) {
-            String amount = request.getParameter("amount");
-            request.setAttribute("totalCartAmount", amount);
+            request.setAttribute("totalCartAmount", totalCartAmount);
             request.getRequestDispatcher("view/cart/pay-via-online.jsp").forward(request, response);
         }
         if (service.equals("pay-on-delivery")) {
-            String amount = request.getParameter("amount");
-            request.setAttribute("totalCartAmount", amount);
+            request.setAttribute("totalCartAmount", totalCartAmount);
             request.getRequestDispatcher("view/cart/pay-on-delivery.jsp").forward(request, response);
         }
         if (service.equals("VNPay")) {
             String vnp_Version = "2.1.0";
             String vnp_Command = "pay";
-            String vnp_OrderInfo = "Thanh toan hoa don Dream Coffee. So tien: " + request.getParameter("amount") + " dong";
+            String vnp_OrderInfo = "Thanh toan hoa don Dream Coffee. So tien: " + totalCartAmount + " dong";
             String orderType = "other";
             String vnp_TxnRef = Config.getRandomNumber(8);
             String vnp_IpAddr = Config.getIpAddress(request);
@@ -65,7 +84,7 @@ public class PaymentController extends HttpServlet {
             session.setAttribute("address", address);
             session.setAttribute("phonenumber", phonenumber);
 
-            int amount = Integer.parseInt(request.getParameter("amount")) * 100;
+            int amount = totalCartAmount * 100;
             Map vnp_Params = new HashMap<>();
             vnp_Params.put("vnp_Version", vnp_Version);
             vnp_Params.put("vnp_Command", vnp_Command);

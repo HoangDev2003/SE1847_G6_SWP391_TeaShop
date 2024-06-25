@@ -227,8 +227,7 @@
                                                 <p>Tổng tiền hóa đơn: ${totalCartAmount} đồng</p>
                                             </div>
                                         </div>
-                                        <input type="hidden" name="amount" value="${totalCartAmount}">
-                                        <input type="hidden" name="service" value="VNPay">
+                                        <input type="hidden" name="amount" value="${totalCartAmount}">                                        <input type="hidden" name="service" value="VNPay">
                                         <button type="submit" class="btn border border-secondary rounded-pill px-3 text-primary">Xác nhận thanh toán</button>
                                     </form>
                                         <script>

@@ -235,7 +235,6 @@
                                             <p>Tổng tiền hóa đơn: ${totalCartAmount} đồng</p>
                                         
                                             <p><form action="Payment" method="POST" class="d-inline">
-                                                <input type="hidden" name="amount" value="${totalCartAmount}">
                                                 <input type="hidden" name="service" value="pay-on-delivery">
                                                 <button type="submit" class="btn border border-secondary rounded-pill px-3 text-primary">Thanh toán bằng tiền mặt</button>
                                             </form></p>
