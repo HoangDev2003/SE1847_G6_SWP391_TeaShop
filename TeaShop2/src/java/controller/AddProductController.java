@@ -54,7 +54,7 @@ public class AddProductController extends HttpServlet {
             Product product = new Product(name, category, image_url, price, create_at, description);
 
             int gerenatedProductId = (new ProductDAO()).insertProduct(product);
-            req.setAttribute("InsertDone", "Insert a new Product (ID = " + gerenatedProductId + ")\nClick Product Manager to see all changes");
+            req.setAttribute("InsertDone", "Insert a new Product (ID = " + gerenatedProductId + ")\nClick Product Management to see all changes");
             req.getRequestDispatcher("view/dashboard/admin/InsertProduct.jsp").forward(req, resp);
         }
     }

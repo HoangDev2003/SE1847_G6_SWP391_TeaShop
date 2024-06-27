@@ -54,15 +54,14 @@
                 <div id="layoutSidenav_content">
                     <main>                   
                         <div class="container-fluid px-4">
-                            <h1 class="mt-4">Product Management</h1>
-                            <ol class="breadcrumb mb-4">
+                            <ol class="breadcrumb mb-4" style="padding-top: 24px">
                                 <li class="breadcrumb-item"><a href="dashboardAdmin.jsp">Dashboard</a></li>
                                 <li class="breadcrumb-item active">Product Management</li>
                             </ol>
                             <div class="card mb-4">
                                 <div class="card-body">                                
                                     <a style="transform: translateX(25vw); width: 25%; color: #00a5bb" 
-                                       href="addProductManager">Insert New Product!</a>                                   
+                                       href="addProductManager"><ion-icon name="add-circle-outline"></ion-icon>  Insert a new Product!</a>                                   
                                 </div>
                             </div>
 
@@ -76,7 +75,8 @@
                                 <!--List all Product-->
 
                                 <div class="card-body">
-                                    <table id="datatablesSimple">
+
+                                    <table id="datatablesSimple" >
                                         <thead>
                                             <tr>
                                                 <th>Product ID</th>
@@ -89,21 +89,23 @@
                                                 <th>Delete</th>   
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody  >
                                         <c:forEach items="${listAllProduct}" var="product">
                                             <tr>
                                                 <td>${product.product_id}</td>
                                                 <td>${product.product_name}</td>
                                                 <td>${product.category.category_name}</td>
                                                 <td><img src="${product.image}" style="width: 130px" /></td>
-                                                <td>${product.price}</td>
+                                                <td>${product.price}đ</td>
                                                 <td>${product.create_at}</td>
-                                                <td><a href="updateProductManager?service=requestUpdate&productId=${product.product_id}">Update</a></td>
-                                                <td><a href="">Delete</a></td>
+                                                <td><a href="updateProductManager?service=requestUpdate&productId=${product.product_id}"><ion-icon name="create-outline"></ion-icon></a></td>
+                                                <td><a href="deleteProductManage?service=requestDelete&productId=${product.product_id}">
+                                                        <ion-icon name="trash-outline" ></ion-icon></a></td>
                                             </tr>  
                                         </c:forEach>
                                     </tbody>
                                 </table>
+
                             </div>
 
                         </div>
@@ -113,20 +115,41 @@
                     <div class="container-fluid px-4">
                         <div class="d-flex align-items-center justify-content-between small">
                             <div class="text-muted">Tea Shop - Admin Management</div>
-                            <div>
-                                <a href="#">Privacy Policy</a>
-                                &middot;
-                                <a href="#">Terms &amp; Conditions</a>
-                            </div>
                         </div>
                     </div>
                 </footer>
+                <style>
+                    .datatable-table
+                    {
+
+                        font-family: 'Verdana', sans-serif; /* Bạn có thể thay đổi phông chữ nếu muốn */
+                        font-size: 15px; /* Thiết lập kích thước phông chữ */
+                        color: #333; /* Màu sắc của chữ */
+                        text-align: center; /* Căn giữa ngang */
+                        vertical-align: middle; /* Căn giữa dọc */
+                        padding: 10px; /* Thêm khoảng đệm cho nội dung */
+                    }
+                    .datatable-table th a {
+
+                        font-family: 'Arial', sans-serif;
+                        color: inherit;
+                        text-align: center; /* Căn giữa ngang */
+                        vertical-align: middle; /* Căn giữa dọc */
+                        /*   
+                        */                    }
+                    td ion-icon {
+                        font-size: 30px;
+                        color: #000;
+                    }
+
+                </style>
             </div>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="${pageContext.request.contextPath}/js/scripts.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         <script src="${pageContext.request.contextPath}/js/datatables-simple-demo.js"></script>
+        <script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
     </body>
 </html>
 

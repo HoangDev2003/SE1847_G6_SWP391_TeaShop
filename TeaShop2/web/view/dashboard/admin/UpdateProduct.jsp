@@ -29,8 +29,6 @@
             <!-- Navbar Search-->
             <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
                 <div class="input-group">
-
-
                 </div>
             </form>
             <!-- Navbar-->
@@ -46,105 +44,112 @@
                 </li>
             </ul>
         </nav>
-
-
-        <!--Update Product-->
-        <c:if test="${UpdateDone ne null}">
-            <h3>
-                ${UpdateDone}
-            </h3>
-        </c:if>
         
-        <c:if test="${productUpdate ne null}">
-            <form action="updateProductManager" id="updatedProduct" >
-                <input type="hidden" name="service" value="sendUpdateDetail" />
-                <div id="layoutSidenav">
-                    <jsp:include page="../../common/admin/sidebarAdmin.jsp"></jsp:include>
-                        <div id="layoutSidenav_content">
-                            <main>                   
-                                <div class="container-fluid px-4">
-                                    <h1 class="mt-4">Product Management</h1>
-                                    <ol class="breadcrumb mb-4">
-                                        <li class="breadcrumb-item"><a href="dashboardAdmin.jsp">Dashboard</a></li>
-                                        <li class="breadcrumb-item active">Product Management</li>
-                                    </ol>
-                                    <div class="card mb-4">
-                                        <div class="card-body">                                
-                                            <h5>Update Product</h5>
-                                        </div>
-                                    </div>
+        <!--Update Product-->
 
-                                    <div class="card mb-4">
-                                        <div class="card-header">
-                                            <i class="fas fa-table me-1"></i>
-                                            Product Manager
-                                        </div>
+        <div id="layoutSidenav">
+            <jsp:include page="../../common/admin/sidebarAdmin.jsp"></jsp:include>
+                <div id="layoutSidenav_content">
+                    <main>                   
+                        <div class="card mb-4" style="padding-top: 24px">
+                            <div class="card-header" >
+                                <i class="fas fa-table me-1"></i>
+                                Update Product
+                            </div>
+                        <c:if test="${UpdateDone ne null}">
+                            <h3 class="card-body"   >
+                                ${UpdateDone}
+                            </h3>
+                        </c:if>
+                        <c:if test="${productUpdate ne null}">
+                            <form action="updateProductManager" id="updatedProduct" >
+                                <input type="hidden" name="service" value="sendUpdateDetail" />
+                                <div class="card-body">
+                                    <table id="datatablesSimple">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Product Name</th>
+                                                <th>Category</th>
+                                                <th>Image</th>
+                                                <th>Price</th>
+                                                <th>Date</th>
+                                                <th>Description</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>                                       
+                                            <tr>
+                                                <td><input type="number" name="id" style="height: 35px; width: 60px" value="${productUpdate.product_id}" readonly />
+                                                </td>
+                                                <td>
+                                                    <input type="text" name="name" size="30" style="height: 35px" value="${productUpdate.product_name}"/>
+                                                </td>
+                                                <td><select name="category" style="width: 180px; height: 35px">
+                                                        <c:forEach items="${allCategorys}" var="category">
+                                                            <option value="${category.category_id}" <c:if test="${category.category_id == productUpdate.category.category_id}">selected</c:if>>${category.category_name}</option>
+                                                        </c:forEach>
+                                                    </select>
+                                                </td>
+                                                <td><input type="text" name="image_url" size="30" style="height: 35px" value="${productUpdate.image}"/>
+                                                </td>
+                                                <td><input type="number" name="price" size="15" style="height: 35px" value="${productUpdate.price}"/>
+                                                </td>
+                                                <td><input type="datetime" name="create_at" style="height: 35px" value="${productUpdate.create_at}"/>
+                                                </td>
+                                                <td><input type="text" name="description" size="35" style="height: 35px" value="${productUpdate.description}"/>
+                                                </td>
+                                            </tr>                                         
+                                        </tbody>
 
-                                        <div class="card-body">
-                                            <table id="datatablesSimple">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Product ID</th>
-                                                        <th>Product Name</th>
-                                                        <th>Category</th>
-                                                        <th>Image</th>
-                                                        <th>Price</th>
-                                                        <th>Date</th>
-                                                        <th>Description</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>                                       
-                                                    <tr>
-                                                        <td><input type="number" name="id" style="height: 35px; width: 60px" value="${productUpdate.product_id}" readonly />
-                                                    </td>
-                                                    <td>
-                                                        <input type="text" name="name" size="50" style="height: 35px" value="${productUpdate.product_name}"/>
-                                                    </td>
-                                                    <td><select name="category" style="width: 180px; height: 35px">
-                                                            <c:forEach items="${allCategorys}" var="category">
-                                                                <option value="${category.category_id}" <c:if test="${category.category_id == productUpdate.category.category_id}">selected</c:if>>${category.category_name}</option>
-                                                            </c:forEach>
-                                                        </select>
-                                                    </td>
-                                                    <td><input type="text" name="image_url" size="40" style="height: 35px" value="${productUpdate.image}"/>
-                                                    </td>
-                                                    <td><input type="number" name="price" style="height: 35px" value="${productUpdate.price}"/>
-                                                    </td>
-                                                    <td><input type="datetime" name="create_at" style="height: 35px" value="${productUpdate.create_at}"/>
-                                                    </td>
-                                                    <td><input type="text" name="description" size="60" style="height: 35px" value="${productUpdate.description}"/>
-                                                    </td>
-                                                </tr>                                         
-                                            </tbody>
-                                        </table>
-                                    </div>
-
+                                    </table>
                                     <button
                                         style="transform: translateX(70vw) ; width: 10%"
                                         onclick="document.getElementById('updatedProduct').submit();">
                                         UPDATE PRODUCT
                                     </button>
-                                    <div style="height: 20px"></div>
                                 </div>
-
-                            </div>                    
-                        </main>
-                        <footer class="py-4 bg-light mt-auto">
-                            <div class="container-fluid px-4">
-                                <div class="d-flex align-items-center justify-content-between small">
-                                    <div class="text-muted">Tea Shop - Admin Management</div>
-                                    <div>
-                                        <a href="#">Privacy Policy</a>
-                                        &middot;
-                                        <a href="#">Terms &amp; Conditions</a>
-                                    </div>
-                                </div>
+                            </form>
+                        </c:if>
+                    </div>                    
+                </main>
+                <footer class="py-4 bg-light mt-auto">
+                    <div class="container-fluid px-4">
+                        <div class="d-flex align-items-center justify-content-between small">
+                            <div class="text-muted">Tea Shop - Admin Management</div>
+                            <div>
+                                <a href="#">Privacy Policy</a>
+                                &middot;
+                                <a href="#">Terms &amp; Conditions</a>
                             </div>
-                        </footer>
+                        </div>
                     </div>
-                </div>
-            </form>
-        </c:if>
+                </footer>
+                <style>
+                    .datatable-table
+                    {
+                        font-family: 'Verdana', sans-serif; /* Bạn có thể thay đổi phông chữ nếu muốn */
+                        font-size: 16px; /* Thiết lập kích thước phông chữ */
+                        color: #333; /* Màu sắc của chữ */
+                        text-align: center; /* Căn giữa ngang */
+                        vertical-align: middle; /* Căn giữa dọc */
+                        padding: 10px; /* Thêm khoảng đệm cho nội dung */
+                    }
+                    .datatable-table th a {
+                        font-family: 'Arial', sans-serif;
+                        color: inherit;
+                        text-align: center; /* Căn giữa ngang */
+                        vertical-align: middle; /* Căn giữa dọc */
+
+                        */
+                    }
+                    td ion-icon {
+                        font-size: 30px;
+                        color: #000;
+                    }
+
+                </style>
+            </div>
+        </div>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="${pageContext.request.contextPath}/js/scripts.js"></script>
