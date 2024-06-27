@@ -31,7 +31,7 @@ public class DeleteProductController extends HttpServlet {
 
             int n = (new ProductDAO()).deleteProduct(productId);
             if (n == 1) {
-                req.setAttribute("deleteDone", "Delete Product (Id = " + productId + ") done!");
+                req.setAttribute("deleteDone", "Delete Product (Id = " + productId + ") done!\nClick Product Management to see all changes");
             } else {
                 req.setAttribute("deleteDone", "Failed to delete Product (Id  = " + productId + ") because this product is asociated with an order.");
             }

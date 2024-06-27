@@ -47,58 +47,55 @@
             </ul>
         </nav>
 
-        <c:if test="${InsertDone ne null}">
-            <h3>
-                ${InsertDone}
-            </h3>
-        </c:if> 
-        <c:if test="${insertProduct ne null}">
-            <form action="addProductManager" id="insertProduct">
-                <input type="hidden" name="service" value="sendInsertDetail" />
-                <div id="layoutSidenav">
-                    <jsp:include page="../../common/admin/sidebarAdmin.jsp"></jsp:include>
-                        <div id="layoutSidenav_content">
-                            <main>                   
-                                <div class="container-fluid px-4">
-                                    <h1 class="mt-4">Product Management</h1>
-                                    <ol class="breadcrumb mb-4">
-                                        <li class="breadcrumb-item"><a href="dashboardAdmin.jsp">Dashboard</a></li>
-                                        <li class="breadcrumb-item active">Product Management</li>
-                                    </ol>
-                                    <div class="card mb-4">
-                                        <div class="card-body">                                
-                                            <h5>Insert a new Product!</h5>
-                                        </div>
+
+
+        <div id="layoutSidenav">
+            <jsp:include page="../../common/admin/sidebarAdmin.jsp"></jsp:include>
+                <div id="layoutSidenav_content">
+                    <main>                   
+                        <div class="container-fluid px-4">
+                           <ol class="breadcrumb mb-4" style="padding-top: 24px">                              
+                                <li class="breadcrumb-item active"><a href="productmanager">Product Management</a></li>
+                                <li class="breadcrumb-item">Insert Product</li>
+                            </ol>
+
+                        <c:if test="${InsertDone ne null}">
+                            <h3 class="insert-done">
+                                ${InsertDone}
+                            </h3>
+                        </c:if>
+                        <c:if test="${insertProduct ne null}">
+                            <form action="addProductManager" id="insertProduct">
+                                <input type="hidden" name="service" value="sendInsertDetail" />
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        <i class="fas fa-table me-1"></i>
+                                        Product Manager
                                     </div>
 
-                                    <div class="card mb-4">
-                                        <div class="card-header">
-                                            <i class="fas fa-table me-1"></i>
-                                            Product Manager
-                                        </div>
+
+                                    <!--List all Product-->
 
 
-                                        <!--List all Product-->
 
-
-                                        <div class="card-body">
-                                            <table id="datatablesSimple">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Product Name</th>
-                                                        <th>Category</th>
-                                                        <th>Image</th>
-                                                        <th>Price</th>
-                                                        <th>Date</th>
-                                                        <th>Description</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>                                       
-                                                    <tr>
-                                                        <td>
-                                                            <input type="text" name="name" size="50" style="height: 35px"/>
-                                                        </td>
-                                                        <td><select name="category" style="width: 180px; height: 35px" >
+                                    <div class="card-body">
+                                        <table id="datatablesSimple">
+                                            <thead>
+                                                <tr>
+                                                    <th>Product Name</th>
+                                                    <th>Category</th>
+                                                    <th>Image</th>
+                                                    <th>Price</th>
+                                                    <th>Date</th>
+                                                    <th>Description</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>                                       
+                                                <tr>
+                                                    <td>
+                                                        <input type="text" name="name" size="50" style="height: 35px"/>
+                                                    </td>
+                                                    <td><select name="category" style="width: 180px; height: 35px" >
                                                             <c:forEach items="${allCategorys}" var="category">
                                                                 <option  value="${category.category_id}">${category.category_name}</option>
                                                             </c:forEach>
@@ -116,6 +113,7 @@
                                             </tbody>
                                         </table>
                                     </div>
+
                                     <button
                                         style="transform: translateX(70vw) ; width: 10%"
                                         onclick="document.getElementById('insertProduct').submit();">
@@ -123,25 +121,39 @@
                                     </button>
                                     <div style="height: 20px"></div>
                                 </div>
-
-                            </div>                    
-                        </main>
-                        <footer class="py-4 bg-light mt-auto">
-                            <div class="container-fluid px-4">
-                                <div class="d-flex align-items-center justify-content-between small">
-                                    <div class="text-muted">Tea Shop - Admin Management</div>
-                                    <div>
-                                        <a href="#">Privacy Policy</a>
-                                        &middot;
-                                        <a href="#">Terms &amp; Conditions</a>
-                                    </div>
-                                </div>
+                            </form>
+                        </c:if>
+                    </div>                    
+                </main>
+                <footer class="py-4 bg-light mt-auto">
+                    <div class="container-fluid px-4">
+                        <div class="d-flex align-items-center justify-content-between small">
+                            <div class="text-muted">Tea Shop - Admin Management</div>
+                            <div>
+                                <a href="#">Privacy Policy</a>
+                                &middot;
+                                <a href="#">Terms &amp; Conditions</a>
                             </div>
-                        </footer>
+                        </div>
                     </div>
-                </div>
-            </form>
-        </c:if>
+                </footer>
+                <style>
+
+                    .insert-done {
+
+
+                        display: flex; /* Sử dụng flexbox */
+                        justify-content: center; /* Căn giữa ngang */
+                        align-items: center; /* Căn giữa dọc */
+                        color: inherit;
+                        text-align: center; /* Căn giữa nội dung bên trong (nếu cần) */
+
+                    }
+                </style>
+            </div>
+
+        </div>
+
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="${pageContext.request.contextPath}/js/scripts.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>

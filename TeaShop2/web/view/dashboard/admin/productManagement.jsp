@@ -57,12 +57,18 @@
                             <ol class="breadcrumb mb-4" style="padding-top: 24px">
                                 <li class="breadcrumb-item"><a href="dashboardAdmin.jsp">Dashboard</a></li>
                                 <li class="breadcrumb-item active">Product Management</li>
-                            </ol>
+                            </ol>    
+                        <c:if test="${deleteDone ne null}">
+                            <h4 class="font-weight-semi-bold text-uppercase mb-3 text-center">
+                                ${deleteDone}
+                            </h4>
+                        </c:if>
+                        <c:if test="${not empty listAllProduct}">
                             <div class="card mb-4">
-                                <div class="card-body">                                
-                                    <a style="transform: translateX(25vw); width: 25%; color: #00a5bb" 
-                                       href="addProductManager"><ion-icon name="add-circle-outline"></ion-icon>  Insert a new Product!</a>                                   
-                                </div>
+                                <div class="h1">                                
+                                    <a style="transform: translateX(25vw); width: 20%; color: #4cd6d6; text-decoration: none; font-family: 'Verdana';" 
+                                       href="addProductManager"><ion-icon name="add-circle-outline" ></ion-icon>  Add a new Product</a>                                   
+                                </div>  
                             </div>
 
                             <div class="card mb-4">
@@ -70,10 +76,7 @@
                                     <i class="fas fa-table me-1"></i>
                                     Product Manager
                                 </div>
-
-
                                 <!--List all Product-->
-
                                 <div class="card-body">
                                     <table id="datatablesSimple" >
                                         <thead>
@@ -89,34 +92,24 @@
                                             </tr>
                                         </thead>
                                         <tbody  >
-                                        <c:forEach items="${listAllProduct}" var="product">
-                                            <tr>
-                                                <td>${product.product_id}</td>
-                                                <td>${product.product_name}</td>
-                                                <td>${product.category.category_name}</td>
-                                                <td><img src="${product.image}" style="width: 130px" /></td>
-                                                <td>${product.price}đ</td>
-                                                <td>${product.create_at}</td>
-                                                <td><a href="updateProductManager?service=requestUpdate&productId=${product.product_id}"><ion-icon name="create-outline"></ion-icon></a></td>
-                                                <td><a href="deleteProductManager?service=requestDelete&productId=${product.product_id}">
-                                                        <ion-icon name="trash-outline"></ion-icon></a></td>
-                                            </tr>  
-                                        </c:forEach>
-                                    </tbody>
-                                </table>
-                                <c:if test="${deleteDone ne null}">
-                                    <h4 class="font-weight-semi-bold text-uppercase mb-3 text-center">
-                                        ${deleteDone}
-                                    </h4>
-                                </c:if>
-                                <script>
-                                    function confirmDelete(productId) {
-                                        return confirm("Are you sure you want to delete this Product (ID = " + productId + ") ?");
-                                    }
-                                </script>
+                                            <c:forEach items="${listAllProduct}" var="product">
+                                                <tr>
+                                                    <td>${product.product_id}</td>
+                                                    <td>${product.product_name}</td>
+                                                    <td>${product.category.category_name}</td>
+                                                    <td><img src="${product.image}" style="width: 130px" /></td>
+                                                    <td>${product.price}đ</td>
+                                                    <td>${product.create_at}</td>
+                                                    <td><a href="updateProductManager?service=requestUpdate&productId=${product.product_id}"><ion-icon name="create-outline"></ion-icon></a></td>
+                                                    <td><a href="deleteProductManager?service=requestDelete&productId=${product.product_id}">
+                                                            <ion-icon name="trash-outline"></ion-icon></a></td>
+                                                </tr>  
+                                            </c:forEach>
+                                        </tbody>                                   
+                                    </table>
+                                </div>
                             </div>
-
-                        </div>
+                        </c:if>
                     </div>                    
                 </main>
                 <footer class="py-4 bg-light mt-auto">
@@ -144,10 +137,41 @@
                         text-align: center; /* Căn giữa ngang */
                         vertical-align: middle; /* Căn giữa dọc */
                         /*   
-                        */                    }
+                        */ }
                     td ion-icon {
                         font-size: 30px;
                         color: #000;
+                    }
+
+                    .h1 a {
+                        font-weight: 500;
+                        font-size: 20px;
+                        text-align: center; /* Căn giữa ngang */
+                        vertical-align: middle;
+                        text-transform: uppercase;
+                    }
+
+                    a ion-icon {
+                        font-size: 25px;
+                        text-align: center; /* Căn giữa ngang */
+                        vertical-align: middle; /* Căn giữa dọc */
+                    }
+
+                    .datatable-sorter::before, .datatable-sorter::after {
+                        content: "";
+                        height: 0;
+                        width: 0;
+                        position: absolute;
+                        right: 4px;
+                        border-left: 4px solid transparent;
+                        border-right: 4px solid transparent;
+                        opacity: 0.8;
+                    }
+                    element.style {
+                        font-family: 'Arial';
+                        transform: translateX(25vw);
+                        width: 25%;
+                        color: #00a5bb;
                     }
 
                 </style>

@@ -22,11 +22,17 @@ import java.util.Vector;
 public class ProductManagerController extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {      
-        ProductDAO productDAO = new ProductDAO();
-        List<Product> listAllProduct = productDAO.findAll();
-        req.setAttribute("listAllProduct", listAllProduct);
-        req.getRequestDispatcher("view/dashboard/admin/productManagement.jsp").forward(req, resp);      
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String service = req.getParameter("service");
+        if (service == null) {
+            service = "listAll";
+        }
+        if (service.equals("listAll")) {
+            ProductDAO productDAO = new ProductDAO();
+            List<Product> listAllProduct = productDAO.findAll();
+            req.setAttribute("listAllProduct", listAllProduct);
+            req.getRequestDispatcher("view/dashboard/admin/productManagement.jsp").forward(req, resp);
+        }
     }
-    
+
 }

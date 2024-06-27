@@ -44,7 +44,7 @@
                 </li>
             </ul>
         </nav>
-        
+
         <!--Update Product-->
 
         <div id="layoutSidenav">
@@ -52,18 +52,19 @@
                 <div id="layoutSidenav_content">
                     <main>                   
                         <div class="card mb-4" style="padding-top: 24px">
-                            <div class="card-header" >
-                                <i class="fas fa-table me-1"></i>
-                                Update Product
-                            </div>
                         <c:if test="${UpdateDone ne null}">
-                            <h3 class="card-body"   >
+                            <h3 class="update-productDone"   >
                                 ${UpdateDone}
                             </h3>
                         </c:if>
                         <c:if test="${productUpdate ne null}">
                             <form action="updateProductManager" id="updatedProduct" >
                                 <input type="hidden" name="service" value="sendUpdateDetail" />
+                                <div class="card-header" >
+                                    <i class="fas fa-table me-1"></i>
+                                    Update Product
+                                </div>
+
                                 <div class="card-body">
                                     <table id="datatablesSimple">
                                         <thead>
@@ -139,12 +140,19 @@
                         color: inherit;
                         text-align: center; /* Căn giữa ngang */
                         vertical-align: middle; /* Căn giữa dọc */
-
-                        */
                     }
+
                     td ion-icon {
                         font-size: 30px;
                         color: #000;
+                    }
+
+                    .update-productDone{
+                        font-weight: 500;
+                        font-size: 20px;
+                        text-align: center; /* Căn giữa ngang */
+                        vertical-align: middle;
+                        text-transform: uppercase;
                     }
 
                 </style>
