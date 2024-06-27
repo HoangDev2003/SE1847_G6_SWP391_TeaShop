@@ -35,10 +35,8 @@ public class DeleteProductController extends HttpServlet {
             } else {
                 req.setAttribute("deleteDone", "Failed to delete Product (Id  = " + productId + ") because this product is asociated with an order.");
             }
-
             List<Product> products = (new ProductDAO()).findAll();
-
-            req.setAttribute("showSearchProduct", "Yes");
+            
             req.setAttribute("allProducts", products);
             req.getRequestDispatcher("view/dashboard/admin/productManagement.jsp").forward(req, resp);
         }

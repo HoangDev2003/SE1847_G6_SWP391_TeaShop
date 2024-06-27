@@ -75,7 +75,6 @@
                                 <!--List all Product-->
 
                                 <div class="card-body">
-
                                     <table id="datatablesSimple" >
                                         <thead>
                                             <tr>
@@ -99,13 +98,22 @@
                                                 <td>${product.price}đ</td>
                                                 <td>${product.create_at}</td>
                                                 <td><a href="updateProductManager?service=requestUpdate&productId=${product.product_id}"><ion-icon name="create-outline"></ion-icon></a></td>
-                                                <td><a href="deleteProductManage?service=requestDelete&productId=${product.product_id}">
-                                                        <ion-icon name="trash-outline" ></ion-icon></a></td>
+                                                <td><a href="deleteProductManager?service=requestDelete&productId=${product.product_id}">
+                                                        <ion-icon name="trash-outline"></ion-icon></a></td>
                                             </tr>  
                                         </c:forEach>
                                     </tbody>
                                 </table>
-
+                                <c:if test="${deleteDone ne null}">
+                                    <h4 class="font-weight-semi-bold text-uppercase mb-3 text-center">
+                                        ${deleteDone}
+                                    </h4>
+                                </c:if>
+                                <script>
+                                    function confirmDelete(productId) {
+                                        return confirm("Are you sure you want to delete this Product (ID = " + productId + ") ?");
+                                    }
+                                </script>
                             </div>
 
                         </div>
