@@ -51,7 +51,11 @@
             <jsp:include page="../../common/admin/sidebarAdmin.jsp"></jsp:include>
                 <div id="layoutSidenav_content">
                     <main>                   
-                        <div class="card mb-4" style="padding-top: 24px">
+                        <div class="container-fluid px-4">
+                            <ol class="breadcrumb mb-4" style="padding-top: 24px">                              
+                                <li class="breadcrumb-item active"><a href="productmanager">Product Management</a></li>
+                                <li class="breadcrumb-item">Update Product</li>
+                            </ol>
                         <c:if test="${UpdateDone ne null}">
                             <h3 class="update-productDone"   >
                                 ${UpdateDone}
@@ -60,53 +64,57 @@
                         <c:if test="${productUpdate ne null}">
                             <form action="updateProductManager" id="updatedProduct" >
                                 <input type="hidden" name="service" value="sendUpdateDetail" />
-                                <div class="card-header" >
-                                    <i class="fas fa-table me-1"></i>
-                                    Update Product
-                                </div>
+                                <div class="card mb-4">
+                                    <div class="card-header" >
+                                        <i class="fas fa-table me-1"></i>
+                                        Update Product
+                                    </div>
 
-                                <div class="card-body">
-                                    <table id="datatablesSimple">
-                                        <thead>
-                                            <tr>
-                                                <th>ID</th>
-                                                <th>Product Name</th>
-                                                <th>Category</th>
-                                                <th>Image</th>
-                                                <th>Price</th>
-                                                <th>Date</th>
-                                                <th>Description</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>                                       
-                                            <tr>
-                                                <td><input type="number" name="id" style="height: 35px; width: 60px" value="${productUpdate.product_id}" readonly />
-                                                </td>
-                                                <td>
-                                                    <input type="text" name="name" size="30" style="height: 35px" value="${productUpdate.product_name}"/>
-                                                </td>
-                                                <td><select name="category" style="width: 180px; height: 35px">
-                                                        <c:forEach items="${allCategorys}" var="category">
-                                                            <option value="${category.category_id}" <c:if test="${category.category_id == productUpdate.category.category_id}">selected</c:if>>${category.category_name}</option>
-                                                        </c:forEach>
-                                                    </select>
-                                                </td>
-                                                <td><input type="text" name="image_url" size="30" style="height: 35px" value="${productUpdate.image}"/>
-                                                </td>
-                                                <td><input type="number" name="price" size="15" style="height: 35px" value="${productUpdate.price}"/>
-                                                </td>
-                                                <td><input type="datetime" name="create_at" style="height: 35px" value="${productUpdate.create_at}"/>
-                                                </td>
-                                                <td><input type="text" name="description" size="35" style="height: 35px" value="${productUpdate.description}"/>
-                                                </td>
-                                            </tr>                                         
-                                        </tbody>
+                                    <div class="card-body">
+                                        <table id="datatablesSimple">
+                                            <thead>
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>Product Name</th>
+                                                    <th>Category</th>
+                                                    <th>Image</th>
+                                                    <th>Price</th>
+                                                    <th>Date</th>
+                                                    <th>Description</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>                                       
+                                                <tr>
+                                                    <td><input type="number" name="id" style="height: 35px; width: 60px" value="${productUpdate.product_id}" readonly />
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" name="name" size="30" style="height: 35px" value="${productUpdate.product_name}"/>
+                                                    </td>
+                                                    <td><select name="category" style="width: 180px; height: 35px">
+                                                            <c:forEach items="${allCategorys}" var="category">
+                                                                <option value="${category.category_id}" <c:if test="${category.category_id == productUpdate.category.category_id}">selected</c:if>>${category.category_name}</option>
+                                                            </c:forEach>
+                                                        </select>
+                                                    </td>
+                                                    <td><input type="text" name="image_url" size="30" style="height: 35px" value="${productUpdate.image}"/>
+                                                    </td>
+                                                    <td><input type="number" name="price" size="15" style="height: 35px" value="${productUpdate.price}"/>
+                                                    </td>
+                                                    <td><input type="datetime" name="create_at" style="height: 35px" value="${productUpdate.create_at}"/>
+                                                    </td>
+                                                    <td><input type="text" name="description" size="35" style="height: 35px" value="${productUpdate.description}"/>
+                                                    </td>
+                                                </tr>                                         
+                                            </tbody>
 
-                                    </table>
+                                        </table>
+
+                                    </div>
                                     <button
+                                        class="button-update"
                                         style="transform: translateX(70vw) ; width: 10%"
                                         onclick="document.getElementById('updatedProduct').submit();">
-                                        UPDATE PRODUCT
+                                        UPDATE
                                     </button>
                                 </div>
                             </form>
@@ -117,11 +125,7 @@
                     <div class="container-fluid px-4">
                         <div class="d-flex align-items-center justify-content-between small">
                             <div class="text-muted">Tea Shop - Admin Management</div>
-                            <div>
-                                <a href="#">Privacy Policy</a>
-                                &middot;
-                                <a href="#">Terms &amp; Conditions</a>
-                            </div>
+                            
                         </div>
                     </div>
                 </footer>
@@ -153,6 +157,30 @@
                         text-align: center; /* Căn giữa ngang */
                         vertical-align: middle;
                         text-transform: uppercase;
+                    }
+
+                    .button-update {
+                        font-family: 'Arial';
+
+                        background-color: #fff; /* Màu nền ban đầu */
+                        color: inherit; /* Màu chữ */
+                        border: 2px solid #0B3649; /* Bỏ viền */
+                        padding: 10px 20px; /* Kích thước bên trong */
+                        text-align: center; /* Căn giữa văn bản */
+                        text-decoration: none; /* Bỏ gạch chân */
+                        display: inline-block; /* Hiển thị dạng khối nội tuyến */
+                        font-size: 16px; /* Kích thước chữ */
+                        margin: 4px 2px; /* Khoảng cách bên ngoài */
+                        cursor: pointer; /* Con trỏ chuột */
+                        border-radius: 12px; /* Bo góc */
+                        transition: background-color 0.3s, box-shadow 0.3s; /* Hiệu ứng chuyển đổi */
+                    }
+
+                    .button-update:hover {
+                        background-color: #0B3649; /* Màu nền khi lướt chuột qua */
+                        color: white; /* Màu chữ khi lướt chuột qua */
+                        border-color: #0B3649;/* Màu nền khi lướt chuột qua */
+                        box-shadow: 0 0 10px #0056b3; /* Hiệu ứng đổ bóng khi lướt chuột qua */
                     }
 
                 </style>

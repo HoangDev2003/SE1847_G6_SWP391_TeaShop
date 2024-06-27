@@ -115,11 +115,11 @@
                                     </div>
 
                                     <button
+                                        class="button-insert"
                                         style="transform: translateX(70vw) ; width: 10%"
                                         onclick="document.getElementById('insertProduct').submit();">
                                         ADD PRODUCT
-                                    </button>
-                                    <div style="height: 20px"></div>
+                                    </button>                                
                                 </div>
                             </form>
                         </c:if>
@@ -129,11 +129,6 @@
                     <div class="container-fluid px-4">
                         <div class="d-flex align-items-center justify-content-between small">
                             <div class="text-muted">Tea Shop - Admin Management</div>
-                            <div>
-                                <a href="#">Privacy Policy</a>
-                                &middot;
-                                <a href="#">Terms &amp; Conditions</a>
-                            </div>
                         </div>
                     </div>
                 </footer>
@@ -148,6 +143,31 @@
                         color: inherit;
                         text-align: center; /* Căn giữa nội dung bên trong (nếu cần) */
 
+                    }
+                    
+                  
+
+                    .button-insert {
+                        font-family: 'Arial';                          
+                        background-color: #fff; /* Màu nền ban đầu */
+                        color: inherit; /* Màu chữ */
+                        border: 2px solid #0B3649; /* Bỏ viền */
+                        padding: 10px 20px; /* Kích thước bên trong */
+                        text-align: center; /* Căn giữa văn bản */
+                        text-decoration: none; /* Bỏ gạch chân */
+                        display: inline-block; /* Hiển thị dạng khối nội tuyến */
+                        font-size: 16px; /* Kích thước chữ */
+                        margin: 4px 2px; /* Khoảng cách bên ngoài */
+                        cursor: pointer; /* Con trỏ chuột */
+                        border-radius: 12px; /* Bo góc */
+                        transition: background-color 0.3s, box-shadow 0.3s; /* Hiệu ứng chuyển đổi */
+                    }
+
+                    .button-insert:hover {
+                        background-color: #0B3649; /* Màu nền khi lướt chuột qua */
+                        color: white; /* Màu chữ khi lướt chuột qua */
+                        border-color: #0B3649; /* Màu nền khi lướt chuột qua */
+                        box-shadow: 0 0 10px #0B3649; /* Hiệu ứng đổ bóng khi lướt chuột qua */
                     }
                 </style>
             </div>

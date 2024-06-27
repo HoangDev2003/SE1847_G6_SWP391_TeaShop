@@ -66,8 +66,8 @@
                         <c:if test="${not empty listAllProduct}">
                             <div class="card mb-4">
                                 <div class="h1">                                
-                                    <a style="transform: translateX(25vw); width: 20%; color: #4cd6d6; text-decoration: none; font-family: 'Verdana';" 
-                                       href="addProductManager"><ion-icon name="add-circle-outline" ></ion-icon>  Add a new Product</a>                                   
+                                    <a  
+                                        href="addProductManager"><ion-icon name="add-circle-outline" ></ion-icon>  Add a new Product</a>                                   
                                 </div>  
                             </div>
 
@@ -143,12 +143,38 @@
                         color: #000;
                     }
 
+                    .h1 {
+                        padding: 20px; /* Thêm padding cho thẻ div */
+                        background-color: #fff; /* Màu nền cho thẻ div */
+                        text-align: center; /* Căn giữa nội dung bên trong theo chiều ngang */
+                        
+                    }
+
                     .h1 a {
+                        display: flex; /* Sử dụng flexbox */
+                        align-items: center; /* Căn giữa theo chiều dọc */
+                        justify-content: center; /* Căn giữa theo chiều ngang */
                         font-weight: 500;
                         font-size: 20px;
-                        text-align: center; /* Căn giữa ngang */
-                        vertical-align: middle;
                         text-transform: uppercase;
+                        text-decoration: none; /* Bỏ gạch chân */
+                        color: inherit; /* Giữ nguyên màu chữ */
+                        padding: 10px 20px; /* Thêm padding cho liên kết */
+                        border: 2px solid #0B3649; /* Thêm viền */
+                        border-radius: 8px; /* Bo tròn các góc */
+                        background-color: #fff; /* Màu nền cho liên kết */
+                        transition: background-color 0.3s, color 0.3s, border-color 0.3s; /* Hiệu ứng chuyển đổi */
+                    }
+
+                    .h1 a ion-icon {
+                        margin-right: 8px; /* Khoảng cách giữa icon và chữ */
+                        font-size: 24px; /* Kích thước icon */
+                    }
+
+                    .h1 a:hover {
+                        background-color: #0B3649; /* Màu nền khi lướt chuột qua */
+                        color: white; /* Màu chữ khi lướt chuột qua */
+                        border-color: #0B3649; /* Màu viền khi lướt chuột qua */
                     }
 
                     a ion-icon {
