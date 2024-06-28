@@ -27,7 +27,7 @@ public class AddProductController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String service = req.getParameter("service");
-        req.setAttribute("manageProduct", "Yes");
+
         //Send List Category
         
         if (service == null) {
@@ -35,7 +35,6 @@ public class AddProductController extends HttpServlet {
         }
         
         if (service.equals("requestInsert")) {
-            CategoryDAO categoryDAO = new CategoryDAO();
             List<Category> listCategorys = (new CategoryDAO().findAll());
             req.setAttribute("allCategorys", listCategorys);
             req.setAttribute("insertProduct", "insertProduct");
