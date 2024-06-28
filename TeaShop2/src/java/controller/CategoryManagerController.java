@@ -33,19 +33,40 @@ public class CategoryManagerController extends HttpServlet {
             req.getRequestDispatcher("view/dashboard/admin/categoryManagement.jsp").forward(req, resp);
         }
 
-        if (service.equals("insertCategory")) {
-            List<Category> listCategory = (new CategoryDAO().findAll());
-            req.setAttribute("listAllcategory", listCategory);
+        if (service.equals("sendRequestInsert")) {
+            req.setAttribute("insertCategory", "insertCategory");
             req.getRequestDispatcher("view/dashboard/admin/categoryManagement.jsp").forward(req, resp);
         }
 
-        if (service.equals("sendRequestInsert")) {
+        if (service.equals("sendInsertDetail")) {
             String name = req.getParameter("name");
 
             Category category = new Category(name);
             int generatedCategoryId = (new CategoryDAO().insertCategory(category));
             req.setAttribute("InsertDone", "Insert Category (ID =" + generatedCategoryId + ") successfully!\n click Category Management to see all changes");
             req.getRequestDispatcher("view/dashboard/admin/categoryManagement.jsp").forward(req, resp);
+        }
+        
+        if(service.equals("sendRequestUpdate")){
+            int categoryId = Integer.parseInt(req.getParameter("categoryId"));
+            
+            Category category = (new CategoryDAO().getCategoryById(categoryId));
+            req.setAttribute("categoryUpdate", category);
+            req.getRequestDispatcher("view/dashboard/admin/categoryManagement.jsp").forward(req, resp);
+         }
+        
+        if(service.equals("sendUpdateDetail")){
+            int id = Integer.parseInt(req.getParameter("id"));
+            String name = req.getParameter("name");
+            
+            Category category = (new CategoryDAO().getCategoryById(id));
+            
+            category.setCategory_name(name);
+            
+            (new CategoryDAO()).updateCategory(category, id);
+            req.setAttribute("UpdateDone", "Update information for Category (ID = " + id + ") done!\nClick Category Management to see all changes");
+            req.getRequestDispatcher("view/dashboard/admin/categoryManagement.jsp").forward(req, resp);
+            
         }
 
     }
