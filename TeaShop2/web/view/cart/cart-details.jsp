@@ -257,8 +257,10 @@
                                     <div class="col-md-6 col-lg-6 col-xl-12">
                                         <div class="p-4 border border-secondary rounded">
                                             <p>Tổng tiền hóa đơn: ${totalCartAmount} đồng</p>
+                                        <c:if test="${not empty cartInfo}">
                                             <p><a href="shop" class="btn border border-secondary rounded-pill px-3 text-primary">Chọn thêm sản phẩm</a></p>
                                             <p><a href="CartDetails?service=selectpayment" class="btn border border-secondary rounded-pill px-3 text-primary">Thanh toán</a></p>
+                                        </c:if>
                                         </div>
                                     </div>
                                 </div>
