@@ -200,20 +200,53 @@
 
                                 </div>
                             </div>
-                            <div class="col-lg-9">
+                            <div class="col-lg-4">
                                 <div class="row g-4 justify-content-center"> 
                                     <h2>Thông tin thanh toán</h2>
-                                    <h5>Trạng thái: ${status}</h5>
+                                    <h5>Trạng thái: ${status}</h5>                                   
+                                    <% if(request.getAttribute("status").equals("Giao dịch thất bại")){%>
+                                    <p><a href="CartDetails?service=selectpayment" class="btn border border-secondary rounded-pill px-3 text-primary">Thanh toán lại</a></p>
+                                    <%} else if(request.getAttribute("status").equals("Giao dịch thành công")){%>
                                     <p>Họ và tên: ${fullname}</p>
                                     <p>Ngày thanh toán: ${formattedDate}</p>
                                     <p>Thời gian thanh toán: ${formattedTime}</p>
                                     <p>Số tiền: ${amount} đồng</p>
                                     <p>Địa chỉ nhận hàng: ${address}</p>
                                     <p>Thông tin đơn hàng: ${OrderInfo}</p>
-                                    <% if(request.getAttribute("status").equals("Giao dịch thất bại")){%>
-                                    <p><a href="CartDetails?service=selectpayment" class="btn border border-secondary rounded-pill px-3 text-primary">Thanh toán lại</a></p>
-                                    <%} else if(request.getAttribute("status").equals("Giao dịch thành công")){%>
                                     <p><a href="home" class="btn border border-secondary rounded-pill px-3 text-primary">Quay về trang chủ</a></p>
+                                    <%}%>
+                                </div>
+                            </div>
+                            <div class="col-lg-1">
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="row g-4 justify-content-center"> 
+                                    <%if(request.getAttribute("status").equals("Giao dịch thành công")){%>
+                                    <div class="p-4 border border-secondary rounded">
+                                        <h2>Hóa đơn</h2>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Sản phẩm</th>
+                                                    <th>Số lượng</th>
+                                                    <th>Giá</th>
+                                                    <th>Tổng</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <c:forEach var="cartItem" items="${cartInfo}">
+                                                    <tr>
+                                                        <td>${cartItem.product.product_name}</td>
+                                                        <td>${cartItem.quantity}</td>
+                                                        <td>${cartItem.product.price}</td>
+                                                        <td>${cartItem.quantity * cartItem.product.price}</td>
+                                                    </tr>
+                                                </c:forEach>
+                                            </tbody>
+                                        </table>
+                                        
+                                        <p>Tổng tiền hóa đơn: ${amount} đồng</p>
+                                    </div>
                                     <%}%>
                                 </div>
                             </div>
