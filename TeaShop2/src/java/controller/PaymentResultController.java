@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package controller;
 
 import entity.CartDetails;
@@ -51,6 +47,14 @@ public class PaymentResultController extends HttpServlet {
             HttpSession session = request.getSession(true);
             List<CartDetails> cartInfo = new ArrayList<>();
             Enumeration<String> em = session.getAttributeNames();
+            while (em.hasMoreElements()) {
+                String key = em.nextElement();
+
+                if (key.startsWith("cartItem")) {
+                    CartDetails cartItem = (CartDetails) session.getAttribute(key);
+                    cartInfo.add(cartItem);
+                }
+            }
             String service = request.getParameter("service");
             if (service == null || service.isEmpty()) {
                 service = "pay-online";
@@ -86,6 +90,7 @@ public class PaymentResultController extends HttpServlet {
                 request.setAttribute("amount", amount);
                 request.setAttribute("status", status);
                 request.setAttribute("OrderInfo", OrderInfo);
+                request.setAttribute("cartInfo", cartInfo);
                 session.setAttribute("fullname", fullname);
                 session.setAttribute("address", address);
                 session.setAttribute("phonenumber", phonenumber);
@@ -151,6 +156,7 @@ public class PaymentResultController extends HttpServlet {
                     status = "Giao dịch thất bại";
                 }
                 request.setAttribute("status", status);
+                request.setAttribute("cartInfo", cartInfo);
                 request.getRequestDispatcher("view/cart/payment-result.jsp").forward(request, response);
             }
         }
@@ -204,3 +210,4 @@ public class PaymentResultController extends HttpServlet {
     }// </editor-fold>
 
 }
+
