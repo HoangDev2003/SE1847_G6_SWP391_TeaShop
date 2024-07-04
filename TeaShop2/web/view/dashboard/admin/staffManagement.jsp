@@ -63,7 +63,7 @@
                                 </div>
                             </div>
                             <div style="margin-left: 15px; margin-bottom: 20px">
-                                <a href="adduser"><button type="button" class="btn btn-danger">Add Customer</button> </a>
+                                <a href="adduser"><button type="button" class="btn btn-danger">Add Staff</button> </a>
                             </div>
                             <form action="searchUser">
                                 <input type="search" name="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" style="max-width: 95%" />
@@ -73,7 +73,7 @@
                                     <i class="fas fa-table me-1"></i>
                                     DataTable Example
                                 </div>
-                                <form action="customermanager">
+                                <form action="staffmanager">
                                     <div class="card-body">
                                         <table id="datatablesSimple">
                                             <thead>
@@ -96,8 +96,8 @@
                                                     <td>${ls.phone_number}</td>
                                                     <td>${ls.role_name}</td>
                                                     <td>${ls.status_name}</td>
-<!--                                                    <td><a href="editcustomer?id=${lc.account_id}">Edit</a>
-                                                        <a href="delete?id=${lc.account_id}">Delete</a></td>-->
+<!--                                                    <td><a href="editstaff?id=${ls.account_id}">Edit</a>
+                                                        <a href="delete?id=${ls.account_id}">Delete</a></td>-->
                                                 </tr>
                                             </c:forEach>
                                         </tbody>

@@ -247,12 +247,12 @@ public class AdminDAO extends DBContext {
     }
 
     public static void main(String[] args) {
-        AdminDAO dao = new AdminDAO();
-        List<Accounts> list = dao.searchUser("user");
-        for(Accounts listhi : list){
-            System.out.println(listhi.getEmail());
+       AdminDAO dao = new AdminDAO();
+       List<Accounts> staffList = dao.getAllStaff();
+        for (Accounts staff : staffList) {
+            System.out.println(staff);
         }
-
+    
     }
 
 }

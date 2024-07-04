@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
+package controller;
 
 import dal.AdminDAO;
 import entity.Accounts;
@@ -19,8 +20,8 @@ import java.util.List;
  *
  * @author Huyen Tranq
  */
-@WebServlet(name = "StaffManagement", urlPatterns = {"/staffManagement"})
-public class StaffManagement extends HttpServlet {
+@WebServlet(name = "StaffManager", urlPatterns = {"/staffmanager"})
+public class StaffManager extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -33,7 +34,8 @@ public class StaffManagement extends HttpServlet {
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-           AdminDAO dao = new AdminDAO();
+            /* TODO output your page here. You may use following sample code. */
+            AdminDAO dao = new AdminDAO();
             List<Accounts> listStaff = dao.getAllStaff();
             System.out.println(listStaff);
             request.setAttribute("listStaff", listStaff);

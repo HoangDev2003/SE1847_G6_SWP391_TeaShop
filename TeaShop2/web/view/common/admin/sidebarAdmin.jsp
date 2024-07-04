@@ -27,7 +27,7 @@
                                 <nav class="sb-sidenav-menu-nested nav">
                                     <a class="nav-link" href="productmanager">Product Management</a>
                                     <a class="nav-link" href="categoryManagement.jsp">Category Management</a>                                   
-                                    <a class="nav-link" href="staffManagement">Staff Management</a>
+                                    <a class="nav-link" href="staffmanager">Staff Management</a>
                                 </nav>
                             </div>
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
