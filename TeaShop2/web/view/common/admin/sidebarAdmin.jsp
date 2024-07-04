@@ -26,8 +26,8 @@
                             <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
                                     <a class="nav-link" href="productmanager">Product Management</a>
-                                    <a class="nav-link" href="categoryManagement.jsp">Category Management</a>
-                                    <a class="nav-link" href="customerManagement">Customer Management</a>
+                                    <a class="nav-link" href="categoryManagement.jsp">Category Management</a>                                   
+                                    <a class="nav-link" href="staffManagement">Staff Management</a>
                                 </nav>
                             </div>
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
