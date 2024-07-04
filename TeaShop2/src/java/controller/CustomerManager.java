@@ -41,7 +41,7 @@ public class CustomerManager extends HttpServlet {
             List<Accounts> listCustomer = dao.getAllAccount();
             System.out.println(listCustomer);
             request.setAttribute("listUser", listCustomer);
-            request.getRequestDispatcher("./view/dashboard/admin/customerManagement.jsp").forward(request, response);
+            request.getRequestDispatcher("./view/dashboard/staff1/customerManagement.jsp").forward(request, response);
         }
     }
 

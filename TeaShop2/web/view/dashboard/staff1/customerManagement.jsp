@@ -46,7 +46,7 @@
             </ul>
         </nav>
         <div id="layoutSidenav">
-            <jsp:include page="../../common/admin/sidebarAdmin.jsp"></jsp:include>
+            <jsp:include page="../../common/staff/sidebarStaff.jsp"></jsp:include>
                 <div id="layoutSidenav_content">
                     <main>
                         <div class="container-fluid px-4">
