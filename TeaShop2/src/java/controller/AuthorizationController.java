@@ -28,6 +28,14 @@ public class AuthorizationController extends HttpServlet {
         return acc != null && acc.getRole_id() == 2;
     }
     
+    public static boolean isStaff (Accounts acc) {
+        return acc != null && acc.getRole_id() == 3;
+    }
+    
+    public static boolean isShipper (Accounts acc) {
+        return acc != null && acc.getRole_id() == 4;
+    }
+    
     public static void redirectToHome(HttpSession session, HttpServletResponse response)
             throws ServletException, IOException {
         //day ve trang home va thong bao

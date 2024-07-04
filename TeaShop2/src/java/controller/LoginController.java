@@ -110,8 +110,14 @@ public class LoginController extends HttpServlet {
                     case 1:
                         request.getRequestDispatcher("view/dashboard/admin/dashboardAdmin.jsp").forward(request, response);
                         break;
+                    case 3:
+                        request.getRequestDispatcher("view/dashboard/staff1/dashboardStaff.jsp").forward(request, response);
+                        break;
                     case 2:
                         response.sendRedirect("home");
+                        break;
+                    case 4:
+                        request.getRequestDispatcher("view/dashboard/shipper/order-list.jsp").forward(request, response);
                         break;
                     default:
                         break;
