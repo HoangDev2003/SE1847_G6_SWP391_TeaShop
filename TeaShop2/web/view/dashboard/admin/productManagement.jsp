@@ -6,6 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -98,7 +99,8 @@
                                                     <td>${product.product_name}</td>
                                                     <td>${product.category.category_name}</td>
                                                     <td><img src="${product.image}" style="width: 130px" /></td>
-                                                    <td>${product.price}đ</td>
+                                                    <fmt:setLocale value="vi_VN" />
+                                                    <td><fmt:formatNumber value="${product.price}" type="currency" currencySymbol="₫" /></td>
                                                     <td>${product.create_at}</td>
                                                     <td><a href="updateProductManager?service=requestUpdate&productId=${product.product_id}"><ion-icon name="create-outline"></ion-icon></a></td>
                                                     <td><a href="deleteProductManager?service=requestDelete&productId=${product.product_id}">

@@ -213,9 +213,10 @@
                                             <c:forEach items="${listCategory}" var="cate">
                                                 <ul class="list-unstyled fruite-categorie">
                                                     <li>
-                                                        <div class="d-flex justify-content-between fruite-name">
-                                                            <a href="shop?search=category&category_id=${cate.category_id}" class="${param.category_id == cate.category_id ? 'selected' : ''}">
-                                                                <ion-icon name="caret-forward-outline"></ion-icon> ${cate.category_name}
+                                                        <div class="d-flex justify-content-start align-items-center fruite-name">
+                                                            <a href="shop?search=category&category_id=${cate.category_id}" class="${param.category_id == cate.category_id ? 'selected' : ''} d-flex align-items-center">
+                                                                <ion-icon name="caret-forward-outline"></ion-icon> 
+                                                                <span class="ms-2">${cate.category_name}</span>
                                                             </a>
                                                         </div>
                                                     </li>
