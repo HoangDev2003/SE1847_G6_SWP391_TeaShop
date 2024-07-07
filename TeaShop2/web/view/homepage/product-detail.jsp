@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -141,9 +142,12 @@
                                 </div>
                             </div>
                             <div class="col-lg-6">
+                                <fmt:setLocale value="vi_VN" />
                                 <h4 class="fw-bold mb-3">${product.product_name}</h4>
                                 <p class="mb-3">${product.category.category_name}</p>
-                                <h5 class="fw-bold mb-3">${product.price}đ</h5>
+                                <h5 class="fw-bold mb-3">
+                                    <fmt:formatNumber value="${product.price}" type="currency" currencySymbol="₫" />
+                                </h5>
                                 <div class="d-flex mb-4">
                                     <i class="fa fa-star text-secondary"></i>
                                     <i class="fa fa-star text-secondary"></i>
