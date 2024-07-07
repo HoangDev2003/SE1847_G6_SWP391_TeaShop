@@ -155,7 +155,7 @@
                     </div>
                     <div class="modal-body d-flex align-items-center">
                         <div class="input-group w-75 mx-auto d-flex">
-                            <input type="search" class="form-control p-3" placeholder="keywords" aria-describedby="search-icon-1">
+                            <input type="search" class="form-control p-3" placeholder="Search by Keywords" aria-describedby="search-icon-1">
                             <span id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></span>
                         </div>
                     </div>
@@ -185,7 +185,7 @@
                                     <div class="input-group w-100 mx-auto d-flex">
 
                                         <input type="hidden" name="search" value="searchByName">
-                                        <input type="text" class="form-control p-3" name="keyword" placeholder="keywords" aria-describedby="search-icon-1">
+                                        <input type="text" class="form-control p-3" name="keyword" placeholder="Tìm kiếm theo từ khóa" arikeywordsa-describedby="search-icon-1">
                                         <span id="search-icon-1" class="input-group-text p-3" onclick="return this.closest('form').submit()"><i class="fa fa-search"></i></span>
                                     </div>
                                 </form>
@@ -215,7 +215,7 @@
                                                     <li>
                                                         <div class="d-flex justify-content-between fruite-name">
                                                             <a href="shop?search=category&category_id=${cate.category_id}" class="${param.category_id == cate.category_id ? 'selected' : ''}">
-                                                                <i class="fas fa-apple-alt me-2"></i>${cate.category_name}
+                                                                <ion-icon name="caret-forward-outline"></ion-icon> ${cate.category_name}
                                                             </a>
                                                         </div>
                                                     </li>
@@ -340,6 +340,7 @@
         <script src="${pageContext.request.contextPath}/lib/waypoints/waypoints.min.js"></script>
         <script src="${pageContext.request.contextPath}/lib/lightbox/js/lightbox.min.js"></script>
         <script src="${pageContext.request.contextPath}/lib/owlcarousel/owl.carousel.min.js"></script>
+        <script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
 
         <!-- Template Javascript -->
         <script src="${pageContext.request.contextPath}/js/main.js"></script>
