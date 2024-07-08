@@ -6,6 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -18,13 +19,28 @@
         <title>Admin Management</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="${pageContext.request.contextPath}/css/admin.css" rel="stylesheet" />
-        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script> 
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
             <a class="navbar-brand ps-3" href="index.html">Product Management</a>
             <!-- Sidebar Toggle-->
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+            <style>
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                }
+                th, td {
+                    padding: 12px;
+                    border: 1px solid #ddd;
+                    text-align: left;
+                }
+                th {
+                    background-color: #f2f2f2;
+                }
+            </style>
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
             <!-- Navbar Search-->
             <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
@@ -56,7 +72,7 @@
                         <div class="container-fluid px-4">
                             <ol class="breadcrumb mb-4" style="padding-top: 24px">
                                 <li class="breadcrumb-item"><a href="dashboardAdmin.jsp">Dashboard</a></li>
-                                <li class="breadcrumb-item active">Category Management</li>
+                                <li class="breadcrumb-item active">Product Management</li>
                             </ol>    
                         <c:if test="${deleteDone ne null}">
                             <h4 class="font-weight-semi-bold text-uppercase mb-3 text-center">
@@ -67,7 +83,7 @@
                             <div class="card mb-4">
                                 <div class="h1">                                
                                     <a  
-                                        href="addProductManager"><ion-icon name="add-circle-outline" ></ion-icon> Add a new Category</a>                                   
+                                        href="addProductManager"><ion-icon name="add-circle-outline" ></ion-icon>  Add a new Category</a>                                   
                                 </div>  
                             </div>
 
@@ -80,14 +96,12 @@
                                 <div class="card-body">
                                     <table id="datatablesSimple" >
                                         <thead>
-                                            <tr>
-                                                <th>Category ID</th>
-                                                <th>Category Name</th>
-                                                <th>Update</th>
-                                                <th>Delete</th>
-                                            </tr>
+                                        <th>Category ID</th>
+                                        <th>Category Name</th>
+                                        <th>Update</th>
+                                        <th>Delete</th>
                                         </thead>
-                                        <tbody  >
+                                        <tbody>
                                             <c:forEach items="${listAllCategory}" var="category">
                                                 <tr>
                                                     <td>${category.category_id}</td>
@@ -139,7 +153,7 @@
                         padding: 20px; /* Thêm padding cho thẻ div */
                         background-color: #fff; /* Màu nền cho thẻ div */
                         text-align: center; /* Căn giữa nội dung bên trong theo chiều ngang */
-                        
+
                     }
 
                     .h1 a {

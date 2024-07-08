@@ -21,15 +21,15 @@ public class CategoryManagerController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String service = req.getParameter("Service");
+        String service = req.getParameter("service");
 
         if (service == null) {
-            service = "listAllCategory";
+            service = "listAll";
         }
 
-        if (service.equals("listAllCategory")) {
+        if (service.equals("listAll")) {
             List<Category> listCategory = (new CategoryDAO().findAll());
-            req.setAttribute("listAllcategory", listCategory);
+            req.setAttribute("listAllCategory", listCategory);
             req.getRequestDispatcher("view/dashboard/admin/categoryManagement.jsp").forward(req, resp);
         }
 
