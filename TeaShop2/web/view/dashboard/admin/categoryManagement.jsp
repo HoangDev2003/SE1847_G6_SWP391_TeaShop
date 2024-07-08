@@ -167,7 +167,7 @@
                                 <input type="hidden" name="service" value="sendUpdateDetail"/>
                                 <div class="card mb-4">
                                     <div class="card-body">
-                                        <table >
+                                        <table>
                                             <thead>
                                                 <tr>
                                                     <th>Category ID</th>

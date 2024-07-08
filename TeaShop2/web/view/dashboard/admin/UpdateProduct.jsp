@@ -67,11 +67,11 @@
                                 <div class="card mb-4">
                                     <div class="card-header" >
                                         <i class="fas fa-table me-1"></i>
-                                        Update Product
+                                        
                                     </div>
 
                                     <div class="card-body">
-                                        <table id="datatablesSimple">
+                                        <table id="datatables-UpdateProduct">
                                             <thead>
                                                 <tr>
                                                     <th>ID</th>
@@ -130,20 +130,21 @@
                     </div>
                 </footer>
                 <style>
-                    .datatable-table
-                    {
-                        font-family: 'Verdana', sans-serif; /* Bạn có thể thay đổi phông chữ nếu muốn */
-                        font-size: 16px; /* Thiết lập kích thước phông chữ */
-                        color: #333; /* Màu sắc của chữ */
-                        text-align: center; /* Căn giữa ngang */
-                        vertical-align: middle; /* Căn giữa dọc */
-                        padding: 10px; /* Thêm khoảng đệm cho nội dung */
+                    datatables-UpdateProduct {
+                        width: 100%;
+                        border-collapse: collapse;
                     }
-                    .datatable-table th a {
-                        font-family: 'Arial', sans-serif;
-                        color: inherit;
-                        text-align: center; /* Căn giữa ngang */
-                        vertical-align: middle; /* Căn giữa dọc */
+                    th, td {
+                        
+                        text-align: center; /* Căn giữa chữ */
+                    }
+                    th {
+                        background-color: #f2f2f2;
+                    }
+                    
+                    .card-body {
+                        display: flex;
+                        justify-content: center;
                     }
 
                     td ion-icon {
@@ -182,6 +183,8 @@
                         border-color: #0B3649;/* Màu nền khi lướt chuột qua */
                         box-shadow: 0 0 10px #0056b3; /* Hiệu ứng đổ bóng khi lướt chuột qua */
                     }
+                    
+                    
 
                 </style>
             </div>
