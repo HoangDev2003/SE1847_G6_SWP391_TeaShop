@@ -73,7 +73,11 @@
                                 <li class="breadcrumb-item"><a href="dashboardAdmin.jsp">Dashboard</a></li>
                                 <li class="breadcrumb-item active">Category Management</li>
                             </ol>    
-                        
+                        <c:if test="${deleteDone ne null}">
+                            <h4 class="font-weight-semi-bold text-uppercase mb-3 text-center">
+                                ${deleteDone}
+                            </h4>
+                        </c:if>
 
 
 
