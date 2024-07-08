@@ -169,6 +169,25 @@
                         border-color: #0B3649; /* Màu nền khi lướt chuột qua */
                         box-shadow: 0 0 10px #0B3649; /* Hiệu ứng đổ bóng khi lướt chuột qua */
                     }
+                    
+                    .datatable-table
+                    {
+
+                        font-family: 'Verdana', sans-serif; /* Bạn có thể thay đổi phông chữ nếu muốn */
+                        font-size: 15px; /* Thiết lập kích thước phông chữ */
+                        color: #333; /* Màu sắc của chữ */
+                        text-align: center; /* Căn giữa ngang */
+                        vertical-align: middle; /* Căn giữa dọc */
+                        padding: 10px; /* Thêm khoảng đệm cho nội dung */
+                    }
+                    .datatable-table th a {
+
+                        font-family: 'Arial', sans-serif;
+                        color: inherit;
+                        text-align: center; /* Căn giữa ngang */
+                        vertical-align: middle; /* Căn giữa dọc */
+                        /*   
+                        */ }
                 </style>
             </div>
 

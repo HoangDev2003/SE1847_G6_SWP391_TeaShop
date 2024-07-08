@@ -24,23 +24,10 @@
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
-            <a class="navbar-brand ps-3" href="index.html">Product Management</a>
+            <a class="navbar-brand ps-3" href="categorymanager">Admin Manager</a>
             <!-- Sidebar Toggle-->
             <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-            <style>
-                table {
-                    width: 100%;
-                    border-collapse: collapse;
-                }
-                th, td {
-                    padding: 12px;
-                    border: 1px solid #ddd;
-                    text-align: left;
-                }
-                th {
-                    background-color: #f2f2f2;
-                }
-            </style>
+
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
             <!-- Navbar Search-->
             <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
@@ -62,7 +49,20 @@
                 </li>
             </ul>
         </nav>
-
+        <style>
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+            th, td {
+                padding: 12px;
+                border: 1px solid #ddd;
+                text-align: left;
+            }
+            th {
+                background-color: #f2f2f2;
+            }
+        </style>
 
 
         <div id="layoutSidenav">
@@ -72,29 +72,29 @@
                         <div class="container-fluid px-4">
                             <ol class="breadcrumb mb-4" style="padding-top: 24px">
                                 <li class="breadcrumb-item"><a href="dashboardAdmin.jsp">Dashboard</a></li>
-                                <li class="breadcrumb-item active">Product Management</li>
+                                <li class="breadcrumb-item active">Category Management</li>
                             </ol>    
                         <c:if test="${deleteDone ne null}">
                             <h4 class="font-weight-semi-bold text-uppercase mb-3 text-center">
                                 ${deleteDone}
                             </h4>
                         </c:if>
+
+
+
+                        <!--List all Category-->    
                         <c:if test="${not empty listAllCategory}">
                             <div class="card mb-4">
                                 <div class="h1">                                
                                     <a  
-                                        href="addProductManager"><ion-icon name="add-circle-outline" ></ion-icon>  Add a new Category</a>                                   
+                                        href="categorymanager?service=sendRequestInsert"><ion-icon name="add-circle-outline" ></ion-icon>  Add a new Category</a>                                   
                                 </div>  
                             </div>
-
                             <div class="card mb-4">
-                                <div class="card-header">
-                                    <i class="fas fa-table me-1"></i>
-                                    Category Manager
-                                </div>
+                               
                                 <!--List all Product-->
                                 <div class="card-body">
-                                    <table id="datatablesSimple" >
+                                    <table id="datatable-category">
                                         <thead>
                                         <th>Category ID</th>
                                         <th>Category Name</th>
@@ -115,8 +115,88 @@
                                     </table>
                                 </div>
                             </div>
+                        </c:if> 
+                        <!--List all Product End--> 
+
+                        
+                        <!--Insert Category Start--> 
+                        <c:if test="${InsertDone ne null}">
+                            <h3 class="font-weight-semi-bold text-uppercase mb-3 text-center">
+                                ${InsertDone}
+                            </h3>
                         </c:if>
-                    </div>                    
+                        <c:if test="${insertCategory ne null}">
+                            <form action="categorymanager" id="insertCategory">
+                                <input type="hidden" name="service" value="sendInsertDetail" />
+                                <div class="card mb-4">
+                                    <div class="card-body">
+                                        <table >
+                                            <thead>
+                                                <tr>
+                                                    <th>Category Name</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>                                       
+                                                <tr>
+                                                    <td>
+                                                        <input type="text" name="name" size="50" style="height: 35px" />
+                                                    </td> 
+                                                </tr>                                         
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <button
+                                        class="button-insert"
+                                        style="transform: translateX(70vw) ; width: 10%"
+                                        onclick="document.getElementById('insertCategory').submit();">
+                                        ADD Category
+                                    </button>                                
+                                </div>
+                            </form>
+                        </c:if>
+                        <!--Insert Category End--> 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        <c:if test="${UpdateDone ne null}">
+                            <h3 class="font-weight-semi-bold text-uppercase mb-3 text-center">
+                                ${UpdateDone}
+                            </h3>
+                        </c:if>
+                        <c:if test="${categoryUpdate ne null}">
+
+                        </c:if>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    </div>
+
                 </main>
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid px-4">
@@ -126,9 +206,8 @@
                     </div>
                 </footer>
                 <style>
-                    .datatable-table
+                    .datatable-category
                     {
-
                         font-family: 'Verdana', sans-serif; /* Bạn có thể thay đổi phông chữ nếu muốn */
                         font-size: 15px; /* Thiết lập kích thước phông chữ */
                         color: #333; /* Màu sắc của chữ */
@@ -136,7 +215,7 @@
                         vertical-align: middle; /* Căn giữa dọc */
                         padding: 10px; /* Thêm khoảng đệm cho nội dung */
                     }
-                    .datatable-table th a {
+                    .datatable-category th a {
 
                         font-family: 'Arial', sans-serif;
                         color: inherit;
@@ -204,6 +283,37 @@
                         transform: translateX(25vw);
                         width: 25%;
                         color: #00a5bb;
+                    }
+                    
+                    .insert-done {
+                        display: flex; /* Sử dụng flexbox */
+                        justify-content: center; /* Căn giữa ngang */
+                        align-items: center; /* Căn giữa dọc */
+                        color: inherit;
+                        text-align: center; /* Căn giữa nội dung bên trong (nếu cần) */
+                    }
+
+                    .button-insert {
+                        font-family: 'Arial';                          
+                        background-color: #fff; /* Màu nền ban đầu */
+                        color: inherit; /* Màu chữ */
+                        border: 2px solid #0B3649; /* Bỏ viền */
+                        padding: 10px 20px; /* Kích thước bên trong */
+                        text-align: center; /* Căn giữa văn bản */
+                        text-decoration: none; /* Bỏ gạch chân */
+                        display: inline-block; /* Hiển thị dạng khối nội tuyến */
+                        font-size: 16px; /* Kích thước chữ */
+                        margin: 4px 2px; /* Khoảng cách bên ngoài */
+                        cursor: pointer; /* Con trỏ chuột */
+                        border-radius: 12px; /* Bo góc */
+                        transition: background-color 0.3s, box-shadow 0.3s; /* Hiệu ứng chuyển đổi */
+                    }
+
+                    .button-insert:hover {
+                        background-color: #0B3649; /* Màu nền khi lướt chuột qua */
+                        color: white; /* Màu chữ khi lướt chuột qua */
+                        border-color: #0B3649; /* Màu nền khi lướt chuột qua */
+                        box-shadow: 0 0 10px #0B3649; /* Hiệu ứng đổ bóng khi lướt chuột qua */
                     }
 
                 </style>
