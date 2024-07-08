@@ -33,10 +33,8 @@ public class UpdateProductController extends HttpServlet {
         }
         if (service.equals("requestUpdate")) {
             List<Category> listCategorys = (new CategoryDAO().findAll());
-
             int productId = Integer.parseInt(req.getParameter("productId"));
             Product product = (new ProductDAO()).getProductsById(productId);
-            
             req.setAttribute("allCategorys", listCategorys);
             req.setAttribute("productUpdate", product);
             req.getRequestDispatcher("view/dashboard/admin/UpdateProduct.jsp").forward(req, resp);

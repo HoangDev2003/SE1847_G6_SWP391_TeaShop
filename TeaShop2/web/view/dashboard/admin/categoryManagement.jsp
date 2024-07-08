@@ -73,11 +73,7 @@
                                 <li class="breadcrumb-item"><a href="dashboardAdmin.jsp">Dashboard</a></li>
                                 <li class="breadcrumb-item active">Category Management</li>
                             </ol>    
-                        <c:if test="${deleteDone ne null}">
-                            <h4 class="font-weight-semi-bold text-uppercase mb-3 text-center">
-                                ${deleteDone}
-                            </h4>
-                        </c:if>
+                        
 
 
 
@@ -104,8 +100,8 @@
                                                 <tr>
                                                     <td>${category.category_id}</td>
                                                     <td>${category.category_name}</td>
-                                                    <td><a href="categorymanager?service=requestUpdate&categoryId=${category.category_id}"><ion-icon name="create-outline"></ion-icon></a></td>
-                                                    <td><a href="categorymanager?service=requestDelete&categoryId=${category.category_id}">
+                                                    <td><a href="categorymanager?service=sendRequestUpdate&categoryId=${category.category_id}"><ion-icon name="create-outline"></ion-icon></a></td>
+                                                    <td><a href="categorymanager?service=sendRequestDelete&categoryId=${category.category_id}">
                                                             <ion-icon name="trash-outline"></ion-icon></a></td>
                                                 </tr>  
                                             </c:forEach>
@@ -156,40 +152,46 @@
                         <!--Insert Category End--> 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+                        <!--Update Category -->
                         <c:if test="${UpdateDone ne null}">
                             <h3 class="font-weight-semi-bold text-uppercase mb-3 text-center">
                                 ${UpdateDone}
                             </h3>
                         </c:if>
                         <c:if test="${categoryUpdate ne null}">
+                            <form action="categorymanager" id="updatedCategory">
+                                <input type="hidden" name="service" value="sendUpdateDetail"/>
+                                <div class="card mb-4">
+                                    <div class="card-body">
+                                        <table >
+                                            <thead>
+                                                <tr>
+                                                    <th>Category ID</th>
+                                                    <th>Category Name</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>                                       
+                                                <tr>
+                                                    <td>
+                                                        <input type="text" name="id" size="50" style="height: 35px" value="${categoryUpdate.category_id}" readonly/>
+                                                    </td> 
+                                                    <td>
+                                                        <input type="text" name="name" size="50" style="height: 35px" value="${categoryUpdate.category_name}"/>
+                                                    </td> 
+                                                </tr>                                         
+                                            </tbody>
+                                        </table>
+                                    </div>
 
+                                    <button
+                                        class="button-insert"
+                                        style="transform: translateX(70vw) ; width: 10%"
+                                        onclick="document.getElementById('updatedCategory').submit();">
+                                        Update Category
+                                    </button>                                
+                                </div>
+                            </form>
                         </c:if>
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
