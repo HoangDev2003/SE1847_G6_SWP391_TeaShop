@@ -259,8 +259,9 @@
                                                             <i class="fa fa-star"></i>
                                                             <i class="fa fa-star"></i>
                                                         </div>
+                                                        <fmt:setLocale value="vi_VN" />
                                                         <div class="d-flex mb-2">
-                                                            <h5 class="fw-bold me-2">${special.price} đ</h5>
+                                                            <h5 class="fw-bold me-2"><fmt:formatNumber value="${special.price}" type="currency" currencySymbol="₫" /></h5>
                                                         </div>
                                                     </div>
                                                 </div>
