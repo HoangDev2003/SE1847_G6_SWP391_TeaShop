@@ -54,7 +54,7 @@
                 <div id="layoutSidenav_content">
                     <main>                   
                         <div class="container-fluid px-4">
-                           <ol class="breadcrumb mb-4" style="padding-top: 24px">                              
+                            <ol class="breadcrumb mb-4" style="padding-top: 24px">                              
                                 <li class="breadcrumb-item active"><a href="productmanager">Product Management</a></li>
                                 <li class="breadcrumb-item">Insert Product</li>
                             </ol>
@@ -70,7 +70,7 @@
                                 <div class="card mb-4">
                                     <div class="card-header">
                                         <i class="fas fa-table me-1"></i>
-                                        Product Manager
+                                        
                                     </div>
 
 
@@ -79,7 +79,7 @@
 
 
                                     <div class="card-body">
-                                        <table id="datatablesSimple">
+                                        <table id="datatable-insertProduct">
                                             <thead>
                                                 <tr>
                                                     <th>Product Name</th>
@@ -93,7 +93,7 @@
                                             <tbody>                                       
                                                 <tr>
                                                     <td>
-                                                        <input type="text" name="name" size="50" style="height: 35px"/>
+                                                        <input type="text" name="name" size="45" style="height: 35px"/>
                                                     </td>
                                                     <td><select name="category" style="width: 180px; height: 35px" >
                                                             <c:forEach items="${allCategorys}" var="category">
@@ -101,13 +101,13 @@
                                                             </c:forEach>
                                                         </select>
                                                     </td>
-                                                    <td><input type="text" name="image_url" size="40" style="height: 35px"/>
+                                                    <td><input type="text" name="image_url" size="25" style="height: 35px"/>
                                                     </td>
                                                     <td><input type="number" name="price" style="height: 35px"/>
                                                     </td>
                                                     <td><input type="datetime" name="create_at" style="height: 35px"/>
                                                     </td>
-                                                    <td><input type="text" name="description" size="60" style="height: 35px"/>
+                                                    <td><input type="text" name="description" size="55" style="height: 35px"/>
                                                     </td>
                                                 </tr>                                         
                                             </tbody>
@@ -144,11 +144,11 @@
                         text-align: center; /* Căn giữa nội dung bên trong (nếu cần) */
 
                     }
-                    
-                  
+
+
 
                     .button-insert {
-                        font-family: 'Arial';                          
+                        font-family: 'Arial';
                         background-color: #fff; /* Màu nền ban đầu */
                         color: inherit; /* Màu chữ */
                         border: 2px solid #0B3649; /* Bỏ viền */
@@ -169,25 +169,24 @@
                         border-color: #0B3649; /* Màu nền khi lướt chuột qua */
                         box-shadow: 0 0 10px #0B3649; /* Hiệu ứng đổ bóng khi lướt chuột qua */
                     }
-                    
-                    .datatable-table
-                    {
 
-                        font-family: 'Verdana', sans-serif; /* Bạn có thể thay đổi phông chữ nếu muốn */
-                        font-size: 15px; /* Thiết lập kích thước phông chữ */
-                        color: #333; /* Màu sắc của chữ */
-                        text-align: center; /* Căn giữa ngang */
-                        vertical-align: middle; /* Căn giữa dọc */
-                        padding: 10px; /* Thêm khoảng đệm cho nội dung */
+                    datatable-insertProduct {
+                        width: 100%;
+                        border-collapse: collapse;
                     }
-                    .datatable-table th a {
-
-                        font-family: 'Arial', sans-serif;
-                        color: inherit;
-                        text-align: center; /* Căn giữa ngang */
-                        vertical-align: middle; /* Căn giữa dọc */
-                        /*   
-                        */ }
+                    th, td {
+                        
+                        text-align: center; /* Căn giữa chữ */
+                    }
+                    th {
+                        background-color: #f2f2f2;
+                    }
+                    
+                    .card-body {
+                        display: flex;
+                        justify-content: center;
+                    }
+                    
                 </style>
             </div>
 

@@ -27,13 +27,12 @@
             <a class="navbar-brand ps-3" href="categorymanager">Admin Manager</a>
             <!-- Sidebar Toggle-->
             <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
             <!-- Navbar Search-->
             <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
                 <div class="input-group">
                     <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
-                    <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
+                    <button class="btn btn-primary" id="btnNavbarSearch" type="button"><ion-icon name="search-outline"></ion-icon></button>
                 </div>
             </form>
             <!-- Navbar-->
@@ -91,7 +90,6 @@
                                 </div>  
                             </div>
                             <div class="card mb-4">
-                               
                                 <!--List all Product-->
                                 <div class="card-body">
                                     <table id="datatable-category">
@@ -118,7 +116,7 @@
                         </c:if> 
                         <!--List all Product End--> 
 
-                        
+
                         <!--Insert Category Start--> 
                         <c:if test="${InsertDone ne null}">
                             <h3 class="font-weight-semi-bold text-uppercase mb-3 text-center">
@@ -139,7 +137,7 @@
                                             <tbody>                                       
                                                 <tr>
                                                     <td>
-                                                        <input type="text" name="name" size="50" style="height: 35px" />
+                                                        <input type="text" name="name" size="70" style="height: 35px" />
                                                     </td> 
                                                 </tr>                                         
                                             </tbody>
@@ -284,7 +282,7 @@
                         width: 25%;
                         color: #00a5bb;
                     }
-                    
+
                     .insert-done {
                         display: flex; /* Sử dụng flexbox */
                         justify-content: center; /* Căn giữa ngang */
@@ -294,7 +292,7 @@
                     }
 
                     .button-insert {
-                        font-family: 'Arial';                          
+                        font-family: 'Arial';
                         background-color: #fff; /* Màu nền ban đầu */
                         color: inherit; /* Màu chữ */
                         border: 2px solid #0B3649; /* Bỏ viền */
@@ -315,6 +313,25 @@
                         border-color: #0B3649; /* Màu nền khi lướt chuột qua */
                         box-shadow: 0 0 10px #0B3649; /* Hiệu ứng đổ bóng khi lướt chuột qua */
                     }
+
+                    table {
+                        width: 100%;
+                        border-collapse: collapse;
+                    }
+                    th, td {
+                        padding: 12px;
+                        border: 1px solid #ddd;
+                        text-align: center; /* Căn giữa chữ */
+                    }
+                    th {
+                        background-color: #f2f2f2;
+                    }
+                    .card-body {
+                        display: flex;
+                        justify-content: center;
+                    }
+
+                    
 
                 </style>
             </div>

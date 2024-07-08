@@ -17,7 +17,7 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Dashboard
                             </a>
-                            <div class="sb-sidenav-menu-heading">Interface</div>
+                            <div class="sb-sidenav-menu-heading">Admin Manager</div>
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                                 <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                                 Management
@@ -26,7 +26,7 @@
                             <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
                                     <a class="nav-link" href="productmanager">Product Management</a>
-                                    <a class="nav-link" href="categoryManagement.jsp">Category Management</a>                                   
+                                    <a class="nav-link" href="categorymanager">Category Management</a>                                   
                                     <a class="nav-link" href="staffmanager">Staff Management</a>
                                 </nav>
                             </div>
