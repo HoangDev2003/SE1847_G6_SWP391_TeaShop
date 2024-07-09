@@ -62,7 +62,7 @@
                             </h3>
                         </c:if>
                         <c:if test="${productUpdate ne null}">
-                            <form action="updateProductManager" id="updatedProduct" >
+                            <form action="updateProductManager" id="updatedProduct" enctype="multipart/form-data" method="post">
                                 <input type="hidden" name="service" value="sendUpdateDetail" />
                                 <div class="card mb-4">
                                     <div class="card-header" >
@@ -96,7 +96,7 @@
                                                             </c:forEach>
                                                         </select>
                                                     </td>
-                                                    <td><input type="text" name="image_url" size="30" style="height: 35px" value="${productUpdate.image}"/>
+                                                    <td><input type="file" name="image_url" size="30" style="height: 35px" value="${productUpdate.image}"/>
                                                     </td>
                                                     <td><input type="number" name="price" size="15" style="height: 35px" value="${productUpdate.price}"/>
                                                     </td>
