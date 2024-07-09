@@ -65,7 +65,7 @@
                             </h3>
                         </c:if>
                         <c:if test="${insertProduct ne null}">
-                            <form action="addProductManager" id="insertProduct">
+                            <form action="addProductManager" id="insertProduct" enctype="multipart/form-data" method="post">
                                 <input type="hidden" name="service" value="sendInsertDetail" />
                                 <div class="card mb-4">
                                     <div class="card-header">
@@ -75,8 +75,6 @@
 
 
                                     <!--List all Product-->
-
-
 
                                     <div class="card-body">
                                         <table id="datatable-insertProduct">
@@ -93,7 +91,7 @@
                                             <tbody>                                       
                                                 <tr>
                                                     <td>
-                                                        <input type="text" name="name" size="45" style="height: 35px"/>
+                                                        <input type="text" name="name" size="38" style="height: 35px"/>
                                                     </td>
                                                     <td><select name="category" style="width: 180px; height: 35px" >
                                                             <c:forEach items="${allCategorys}" var="category">
@@ -101,13 +99,13 @@
                                                             </c:forEach>
                                                         </select>
                                                     </td>
-                                                    <td><input type="text" name="image_url" size="25" style="height: 35px"/>
+                                                    <td><input type="file" name="image_url" size="5" style="height: 35px"/>
                                                     </td>
                                                     <td><input type="number" name="price" style="height: 35px"/>
                                                     </td>
                                                     <td><input type="datetime" name="create_at" style="height: 35px"/>
                                                     </td>
-                                                    <td><input type="text" name="description" size="55" style="height: 35px"/>
+                                                    <td><input type="text" name="description" size="40" style="height: 35px"/>
                                                     </td>
                                                 </tr>                                         
                                             </tbody>
