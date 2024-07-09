@@ -30,7 +30,7 @@ public class OrderDetailsDAO extends DBContext {
      */
     public List<OrderDetails> findByOrderId(int orderId) {
         List<OrderDetails> orderDetailsList = new ArrayList<>();
-        Connection connection = getConnection(); // Obtain database connection
+        connection = getConnection(); // Obtain database connection
         String sql = "SELECT * FROM OrderDetails WHERE order_id = ?";
 
         try {
@@ -44,10 +44,10 @@ public class OrderDetailsDAO extends DBContext {
             while (rs.next()) {
                 OrderDetails orderDetails = new OrderDetails();
                 orderDetails.order_details_id = rs.getInt("order_details_id");
-                orderDetails.product_id = rs.getInt("product_id");
+                orderDetails.product = (new ProductDAO().getProductsById(rs.getInt("product_id")));
                 orderDetails.order_id = rs.getInt("order_id");
                 orderDetails.quantity = rs.getInt("quantity");
-                orderDetails.topping_id = rs.getInt("topping_id");
+                orderDetails.topping = getToppingNamesByOrderDetailId(orderDetails.order_details_id);
                 orderDetailsList.add(orderDetails); // Add the order details to the list
             }
 
@@ -72,7 +72,7 @@ public class OrderDetailsDAO extends DBContext {
 
     public String getCategoryNameById(int category_id) {
         String sql = "select category_name from Category where category_id=?";
-        Connection connection = getConnection(); // Obtain database connection
+        connection = getConnection(); // Obtain database connection
         String categoryName = null;
 
         try {
@@ -105,12 +105,10 @@ public class OrderDetailsDAO extends DBContext {
         return categoryName; // Return the product entity
     }
 
-    public List<String> getToppingNamesByOrderDetailId(int order_details_id) {
-        String sql = "SELECT topping_name FROM Topping "
-                + "JOIN ToppingDetails ON Topping.topping_id = ToppingDetails.topping_id "
-                + "WHERE order_details_id = ?";
-        Connection connection = getConnection(); // Obtain database connection
-        List<String> toppingNames = new ArrayList<>();
+    public List<Topping> getToppingNamesByOrderDetailId(int order_details_id) {
+        String sql = "SELECT ToppingDetails.topping_id,topping_name FROM Topping JOIN ToppingDetails ON Topping.topping_id = ToppingDetails.topping_id WHERE order_details_id = ?";
+        connection = getConnection(); // Obtain database connection
+        List<Topping> toppingList = new ArrayList<>();
 
         try {
             PreparedStatement pre = connection.prepareStatement(
@@ -121,7 +119,10 @@ public class OrderDetailsDAO extends DBContext {
             ResultSet rs = pre.executeQuery();
 
             while (rs.next()) { // Iterate through results
-                toppingNames.add(rs.getString("topping_name"));
+                Topping topping = new Topping();
+                topping.topping_id = rs.getInt("topping_id");
+                topping.topping_name = rs.getString("topping_name");
+                toppingList.add(topping);
             }
 
             rs.close(); // Close ResultSet
@@ -139,7 +140,7 @@ public class OrderDetailsDAO extends DBContext {
             }
         }
 
-        return toppingNames; // Return the list of topping names
+        return toppingList; // Return the list of topping names
     }
 
     /**
@@ -152,7 +153,7 @@ public class OrderDetailsDAO extends DBContext {
      */
     public List<OrderDetails> getinfo(int orderId) {
         List<OrderDetails> infoList = new ArrayList<>();
-        Connection connection = getConnection(); // Obtain database connection
+        connection = getConnection(); // Obtain database connection
         String sql = "SELECT order_details_id, p.product_id, image, product_name, category_id, price, quantity "
                 + "FROM OrderDetails od "
                 + "JOIN Product p ON od.product_id = p.product_id "
@@ -170,7 +171,7 @@ public class OrderDetailsDAO extends DBContext {
                 OrderDetails orderDetails = new OrderDetails();
                 orderDetails.setCategory(new Category());
                 orderDetails.setProduct(new Product());
-                orderDetails.setTopping(new ArrayList<Topping>());
+                orderDetails.setTopping(new ArrayList<>());
 
                 orderDetails.setOrder_details_id(rs.getInt("order_details_id"));
                 orderDetails.getProduct().setProduct_id(rs.getInt("product_id"));
@@ -179,14 +180,7 @@ public class OrderDetailsDAO extends DBContext {
                 orderDetails.getCategory().setCategory_name(getCategoryNameById(rs.getInt("category_id")));
                 orderDetails.getProduct().setPrice(rs.getInt("price"));
                 orderDetails.setQuantity(rs.getInt("quantity"));
-
-                // Get topping names
-                List<String> toppingNames = getToppingNamesByOrderDetailId(rs.getInt("order_details_id"));
-                for (String toppingName : toppingNames) {
-                    Topping topping = new Topping();
-                    topping.setTopping_name(toppingName);
-                    orderDetails.getTopping().add(topping);
-                }
+                orderDetails.topping = getToppingNamesByOrderDetailId(orderId);
 
                 infoList.add(orderDetails);
             }
@@ -218,8 +212,8 @@ public class OrderDetailsDAO extends DBContext {
      */
     public Accounts accInfo(int orderId) {
         Accounts info = new Accounts();
-        Connection connection = getConnection(); // Obtain database connection
-        String sql = "SELECT a.user_name, a.gender, a.email, a.phone_number FROM Orders o "
+        connection = getConnection(); // Obtain database connection
+        String sql = "SELECT a.full_name, a.gender, a.email, a.phone_number FROM Orders o "
                 + "JOIN Accounts a ON o.account_id = a.account_id WHERE o.order_id = ?";
 
         try {
@@ -232,7 +226,7 @@ public class OrderDetailsDAO extends DBContext {
 
             if (rs.next()) {
                 // Populate the Accounts object with data from the ResultSet
-                info.setUser_name(rs.getString("user_name"));
+                info.setFull_name(rs.getString("full_name"));
                 info.setGender(rs.getString("gender"));
                 info.setEmail(rs.getString("email"));
                 info.setPhone_number(rs.getString("phone_number"));
@@ -268,7 +262,7 @@ public class OrderDetailsDAO extends DBContext {
                 + "LEFT JOIN Topping t ON td.topping_id = t.topping_id";
 
         try {
-            Connection connection = getConnection();
+            connection = getConnection();
             PreparedStatement statement = connection.prepareStatement(query);
             ResultSet resultSet = statement.executeQuery();
 
@@ -312,4 +306,75 @@ public class OrderDetailsDAO extends DBContext {
         return list;
     }
 
+    public void insertToppingDetails(int orderDetailsId, int toppingId) {
+        String insertSQL = "INSERT INTO [dbo].[ToppingDetails] ([order_details_id], [topping_id]) VALUES (?, ?)";
+
+        try {
+            connection = getConnection();
+            PreparedStatement statement = connection.prepareStatement(insertSQL);
+
+            // Set the parameters for the query
+            statement.setInt(1, orderDetailsId);
+            statement.setInt(2, toppingId);
+
+            // Execute the update
+            statement.executeUpdate();
+            connection.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public int insertOrderDetails(int productId, int orderId, int quantity) {
+        String insertSQL = "INSERT INTO [dbo].[OrderDetails] ([product_id], [order_id], [quantity]) VALUES (?, ?, ?)";
+        int orderDetailsId = -1; // Default value if insertion fails
+
+        try {
+            connection = getConnection();
+            PreparedStatement statement = connection.prepareStatement(insertSQL, Statement.RETURN_GENERATED_KEYS);
+
+            // Set the parameters for the query
+            statement.setInt(1, productId);
+            statement.setInt(2, orderId);
+            statement.setInt(3, quantity);
+
+            // Execute the update
+            int affectedRows = statement.executeUpdate();
+
+            if (affectedRows > 0) {
+                // Retrieve the generated key
+                ResultSet generatedKeys = statement.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    orderDetailsId = generatedKeys.getInt(1);
+                }
+            }
+
+            connection.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return orderDetailsId;
+    }
+
+    public int retrieveToppingIdByName(String topping_name) {
+        int toppingId = 0;
+        String sql = "SELECT topping_id FROM Topping WHERE topping_name = ?";
+
+        try {
+            connection = getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql);
+
+            statement.setString(1, topping_name);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                toppingId = resultSet.getInt("topping_id");
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            // Handle exception appropriately, log or throw further
+        }
+        return toppingId;
+    }
 }
