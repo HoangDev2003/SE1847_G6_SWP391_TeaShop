@@ -62,10 +62,30 @@ public class PaymentController extends HttpServlet {
 
         String service = request.getParameter("service");
         if (service.equals("pay-online")) {
+            em = session.getAttributeNames();
+            while (em.hasMoreElements()) {
+                String key = em.nextElement();
+                if (key.startsWith("billItem")) {
+                    session.removeAttribute(key);
+                }
+            }
+            session.removeAttribute("formattedDate");
+            session.removeAttribute("formattedTime");
+            
             request.setAttribute("totalCartAmount", totalCartAmount);
             request.getRequestDispatcher("view/cart/pay-via-online.jsp").forward(request, response);
         }
         if (service.equals("pay-on-delivery")) {
+            em = session.getAttributeNames();
+            while (em.hasMoreElements()) {
+                String key = em.nextElement();
+                if (key.startsWith("billItem")) {
+                    session.removeAttribute(key);
+                }
+            }
+            session.removeAttribute("formattedDate");
+            session.removeAttribute("formattedTime");
+            
             request.setAttribute("totalCartAmount", totalCartAmount);
             request.getRequestDispatcher("view/cart/pay-on-delivery.jsp").forward(request, response);
         }
@@ -79,9 +99,13 @@ public class PaymentController extends HttpServlet {
             String vnp_TmnCode = Config.vnp_TmnCode;
 
             String address = request.getParameter("address");
+            String district = request.getParameter("district");
+            String ward = request.getParameter("ward");
             String phonenumber = request.getParameter("phonenumber");
 
             session.setAttribute("address", address);
+            session.setAttribute("district", district);
+            session.setAttribute("ward", ward);
             session.setAttribute("phonenumber", phonenumber);
 
             int amount = totalCartAmount * 100;
