@@ -5,6 +5,7 @@
 package controller;
 
 import dal.CartDetailsDAO;
+import dal.OrderDetailsDAO;
 import entity.CartDetails;
 import entity.Orders;
 import entity.Product;
@@ -38,94 +39,132 @@ public class CartDetailsController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-throws ServletException, IOException {
-    response.setContentType("text/html;charset=UTF-8");
-    HttpSession session = request.getSession(true);
-    CartDetailsDAO cartDetailsDAO = new CartDetailsDAO();
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        HttpSession session = request.getSession(true);
+        CartDetailsDAO cartDetailsDAO = new CartDetailsDAO();
 
-    try (PrintWriter out = response.getWriter()) {
-        String service = request.getParameter("service");
-        if (service == null || service.isEmpty()) {
-            service = "showcart";
-        }
+        try (PrintWriter out = response.getWriter()) {
+            String service = request.getParameter("service");
+            if (service == null || service.isEmpty()) {
+                service = "showcart";
+            }
 
-        if (service.equals("add2cart")) {
-            String order_id = request.getParameter("order_id");
-            String product_id = request.getParameter("product_id");
-            String quantity = request.getParameter("quantity");
-            String[] topping_names = request.getParameterValues("topping_names");
-            String link_id = request.getParameter("link_id");
-            String link = null;
+            if (service.equals("add2cart")) {
+                String order_id = request.getParameter("order_id");
+                String product_id = request.getParameter("product_id");
+                String quantity = request.getParameter("quantity");
+                String[] topping_names = request.getParameterValues("topping_names");
+                String link_id = request.getParameter("link_id");
+                String link = null;
 
-            CartDetails cartItem = (CartDetails) session.getAttribute("cartItem" + product_id);
-            if (cartItem == null) {
-                cartItem = new CartDetails();
-                cartItem.product = new Product();
-                cartItem.topping = new ArrayList<>();
-                CartDetails cartInfo = cartDetailsDAO.getInfo(Integer.parseInt(product_id));
-                cartItem.product.setProduct_id(cartInfo.product.getProduct_id());
-                cartItem.product.setProduct_name(cartInfo.product.getProduct_name());
-                cartItem.product.setImage(cartInfo.product.getImage());
-                cartItem.product.setPrice(cartInfo.product.getPrice());
-                int intQuantity = 1;
-                if (!(quantity == null || quantity.isEmpty())) {
-                    intQuantity = Integer.parseInt(quantity);
+                CartDetails cartItem = (CartDetails) session.getAttribute("cartItem" + product_id);
+                if (cartItem == null) {
+                    cartItem = new CartDetails();
+                    cartItem.product = new Product();
+                    cartItem.topping = new ArrayList<>();
+                    CartDetails cartInfo = cartDetailsDAO.getInfo(Integer.parseInt(product_id));
+                    cartItem.product.setProduct_id(cartInfo.product.getProduct_id());
+                    cartItem.product.setProduct_name(cartInfo.product.getProduct_name());
+                    cartItem.product.setImage(cartInfo.product.getImage());
+                    cartItem.product.setPrice(cartInfo.product.getPrice());
+                    int intQuantity = 1;
+                    if (!(quantity == null || quantity.isEmpty())) {
+                        intQuantity = Integer.parseInt(quantity);
+                    }
+                    cartItem.setQuantity(intQuantity);
+
+                    if (topping_names != null) {
+                        for (String topping_name : topping_names) {
+                            Topping topping = new Topping();
+                            topping.setTopping_name(topping_name);
+                            cartItem.topping.add(topping);
+                        }
+                    }
+
+                    session.setAttribute("cartItem" + product_id, cartItem);
                 }
-                cartItem.setQuantity(intQuantity);
 
+                switch (link_id) {
+                    case "1" ->
+                        link = "shop";
+                    case "2" ->
+                        link = "OrderInformation?order_id=" + order_id;
+                    case "3" ->
+                        link = "home";
+                    case "4" ->
+                        link = "product-details?id=" + product_id;
+                    default ->
+                        link = "login.jsp";
+                }
+                response.sendRedirect(link);
+            }
+
+            if (service.equals("updateQuantity")) {
+                String quantity = request.getParameter("quantity");
+                int intQuantity = 1;
+                if (quantity != null && !quantity.isEmpty()) {
+                    try {
+                        intQuantity = Integer.parseInt(quantity);
+                    } catch (NumberFormatException e) {
+                        intQuantity = 1;
+                    }
+                }
+                String product_id = request.getParameter("product_id");
+                CartDetails cartItem = (CartDetails) session.getAttribute("cartItem" + product_id);
+                if (intQuantity > 0 && intQuantity < 1000) {
+                    cartItem.setQuantity(intQuantity);
+                } else if (intQuantity >= 1000) {
+                    cartItem.setQuantity(999);
+                } else {
+                    cartItem.setQuantity(1);
+                }
+
+                List<CartDetails> cartInfo = new ArrayList<>();
+                Enumeration<String> em = session.getAttributeNames();
+                while (em.hasMoreElements()) {
+                    String key = em.nextElement();
+
+                    if (key.startsWith("cartItem")) {
+                        CartDetails cartItems = (CartDetails) session.getAttribute(key);
+                        cartInfo.add(cartItems);
+                    }
+                }
+                List<String> toppingList = cartDetailsDAO.getTopping();
+
+                // Calculate total cart amount
+                int totalCartAmount = 0;
+                for (CartDetails item : cartInfo) {
+                    int price = item.product.getPrice();
+                    int quantities = item.getQuantity();
+                    totalCartAmount += price * quantities;
+                }
+
+                // Prepare JSON response manually
+                String jsonResponse = "{";
+                jsonResponse += "\"totalPrice\": " + (cartItem.product.getPrice() * cartItem.getQuantity()) + ",";
+                jsonResponse += "\"totalCartAmount\": " + totalCartAmount;
+                jsonResponse += "}";
+
+                // Return JSON response
+                response.setContentType("application/json");
+                response.getWriter().write(jsonResponse);
+            }
+            if (service.equals("updateTopping")) {
+                String[] topping_names = request.getParameterValues("topping_names");
+                String product_id = request.getParameter("product_id");
+                CartDetails cartItem = (CartDetails) session.getAttribute("cartItem" + product_id);
+                cartItem.topping = new ArrayList<>();
                 if (topping_names != null) {
                     for (String topping_name : topping_names) {
                         Topping topping = new Topping();
+                        topping.setTopping_id(new OrderDetailsDAO().retrieveToppingIdByName(topping_name));
                         topping.setTopping_name(topping_name);
                         cartItem.topping.add(topping);
                     }
                 }
-
-                session.setAttribute("cartItem" + product_id, cartItem);
+                response.sendRedirect("CartDetails?service=showcart");
             }
-
-            switch (link_id) {
-                case "1" -> link = "shop";
-                case "2" -> link = "OrderInformation?order_id=" + order_id;
-                case "3" -> link = "home";
-                case "4" -> link = "product-details?id=" + product_id;
-                default -> link = "login.jsp";              
-            }
-            response.sendRedirect(link);
-        }
-        if (service.equals("updateQuantity")) {
-            String quantity = request.getParameter("quantity");
-            int intQuantity = 1;
-            if (quantity != null && !quantity.isEmpty()) {
-                try {
-                    intQuantity = Integer.parseInt(quantity);
-                } catch (NumberFormatException e) {
-                    intQuantity = 1;
-                }
-            }
-            String product_id = request.getParameter("product_id");
-            CartDetails cartItem = (CartDetails) session.getAttribute("cartItem" + product_id);
-            if (intQuantity > 0) {
-                cartItem.setQuantity(intQuantity);
-            } else {
-                cartItem.setQuantity(1);
-            }
-            response.sendRedirect("CartDetails?service=showcart");
-        }
-        if (service.equals("updateTopping")) {
-            String[] topping_names = request.getParameterValues("topping_names");
-            String product_id = request.getParameter("product_id");
-            CartDetails cartItem = (CartDetails) session.getAttribute("cartItem" + product_id);
-            cartItem.topping = new ArrayList<>();
-            if (topping_names != null) {
-                for (String topping_name : topping_names) {
-                    Topping topping = new Topping();
-                    topping.setTopping_name(topping_name);
-                    cartItem.topping.add(topping);
-                }
-            }
-            response.sendRedirect("CartDetails?service=showcart");
-        }
             if (service.equals("delete")) {
                 String product_id = request.getParameter("product_id");
                 session.removeAttribute("cartItem" + product_id);
