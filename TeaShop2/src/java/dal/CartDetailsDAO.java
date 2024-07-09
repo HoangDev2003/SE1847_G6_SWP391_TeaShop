@@ -84,27 +84,4 @@ public class CartDetailsDAO extends DBContext {
         return cartDetails;
     }
 
-    public String[] accInfo(int orderId) {
-        String[] info = new String[4];
-        connection = getConnection();
-        String sql = "select full_name, gender, email, phone_number from Orders o join Accounts a on o.account_id=a.account_id where order_id = ?";
-        try {
-            PreparedStatement pre = connection.prepareStatement(
-                    sql,
-                    ResultSet.TYPE_SCROLL_SENSITIVE,
-                    ResultSet.CONCUR_READ_ONLY);
-            pre.setInt(1, orderId);
-            ResultSet rs = pre.executeQuery();
-            if (rs.next()) {
-                info[0] = rs.getString("full_name");
-                info[1] = rs.getString("gender");
-                info[2] = rs.getString("email");
-                info[3] = rs.getString("phone_number");
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(CartDetailsDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return info;
-    }
 }
