@@ -20,6 +20,49 @@ import java.util.Date;
  */
 public class OrdersDAO extends DBContext {
 
+    public int insertOrder(Integer accountId, String orderDate, String estimatedDeliveryDate, int totalAmount, int statusId, String note, String paymentMethod, String phoneNumber, String fullName, String address) {
+        String insertSQL = "INSERT INTO [dbo].[Orders] ([account_id], [order_date], [estimated_delivery_date], [total_amount], [status_id], [note], [payment_method], [phone_number], [full_name], [address]) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        int orderId = -1; // Default value if insertion fails
+
+        try {
+            connection = getConnection();
+            PreparedStatement statement = connection.prepareStatement(insertSQL, Statement.RETURN_GENERATED_KEYS);
+
+            // Set the parameters for the query
+            if (accountId == null) {
+                statement.setNull(1, Types.INTEGER);
+            } else {
+                statement.setInt(1, accountId);
+            }
+            statement.setString(2, orderDate);
+            statement.setString(3, estimatedDeliveryDate);
+            statement.setInt(4, totalAmount);
+            statement.setInt(5, statusId);
+            statement.setString(6, note);
+            statement.setString(7, paymentMethod);
+            statement.setString(8, phoneNumber);
+            statement.setString(9, fullName);
+            statement.setString(10, address);
+
+            // Execute the update
+            int affectedRows = statement.executeUpdate();
+
+            if (affectedRows > 0) {
+                // Retrieve the generated key
+                ResultSet generatedKeys = statement.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    orderId = generatedKeys.getInt(1);
+                }
+            }
+
+            connection.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return orderId;
+    }
+
     public List<Orders> getAllListOrder() {
         List<Orders> ordersList = new ArrayList<>();
         Orders order = null;
@@ -39,22 +82,11 @@ public class OrdersDAO extends DBContext {
 
                 order = new Orders();
                 order.order_id = rs.getInt("order_id");
-                order.product = (new ProductDAO().getProductsById(rs.getInt("product_id")));
                 order.account = (new AccountDAO().getAccountByAccountID(rs.getInt("account_id")));
                 order.status = (new StatusDAO().getStatusByStatusID(rs.getInt("status_id")));
                 order.total_amount = rs.getInt("total_amount");
-                String orderDateString = rs.getString("order_date");
-
-                // Parse the date string into a Date object
-                SimpleDateFormat dbDateFormat = new SimpleDateFormat("yyyy-MM-dd"); // Assuming the date from DB is in this format
-                Date date = dbDateFormat.parse(orderDateString);
-
-                // Format the Date object into dd/MM/yyyy format
-                SimpleDateFormat displayDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                String formattedDate = displayDateFormat.format(date);
-
-                // Set the formatted date to the order object
-                order.order_date = formattedDate;
+                order.setOrder_date(rs.getTimestamp("order_date"));
+                order.setEstimated_delivery_date(rs.getTimestamp("estimated_delivery_date"));
                 order.note = rs.getString("note");
                 ordersList.add(order);
             }
@@ -87,10 +119,10 @@ public class OrdersDAO extends DBContext {
     public List<Orders> findByAccountId(int accountId) {
         List<Orders> ordersList = new ArrayList<>();
         Orders order = null;
-        connection = getConnection(); // Obtain database connection
         String sql = "SELECT * FROM Orders WHERE account_id = ?";
 
         try {
+            connection = getConnection();
             PreparedStatement pre = connection.prepareStatement(
                     sql,
                     ResultSet.TYPE_SCROLL_SENSITIVE,
@@ -104,19 +136,61 @@ public class OrdersDAO extends DBContext {
                 order.account = (new AccountDAO().getAccountByAccountID(rs.getInt("account_id")));
                 order.status = (new StatusDAO().getStatusByStatusID(rs.getInt("status_id")));
                 order.total_amount = rs.getInt("total_amount");
-                String orderDateString = rs.getString("order_date");
-
-                // Parse the date string into a Date object
-                SimpleDateFormat dbDateFormat = new SimpleDateFormat("yyyy-MM-dd"); // Assuming the date from DB is in this format
-                Date date = dbDateFormat.parse(orderDateString);
-
-                // Format the Date object into dd/MM/yyyy format
-                SimpleDateFormat displayDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                String formattedDate = displayDateFormat.format(date);
-
-                // Set the formatted date to the order object
-                order.order_date = formattedDate;
+                order.setOrder_date(rs.getTimestamp("order_date"));
+                order.setEstimated_delivery_date(rs.getTimestamp("estimated_delivery_date"));
+                // Retrieve the note
                 order.note = rs.getString("note");
+
+                // Add the order to the list
+                ordersList.add(order);
+            }
+
+            rs.close(); // Close ResultSet
+            pre.close(); // Close PreparedStatement
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception ex) { // Catch any parsing exceptions
+            Logger.getLogger(OrdersDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close(); // Close the database connection
+                }
+            } catch (SQLException e) {
+                Logger.getLogger(OrdersDAO.class.getName()).log(Level.SEVERE, null, e);
+            }
+        }
+        return ordersList; // Return the list of orders
+    }
+
+    public List<Orders> findByAccountIdAndStatusId(int accountId, int statusId) {
+        List<Orders> ordersList = new ArrayList<>();
+        Orders order = null;
+        String sql = "SELECT * FROM Orders WHERE account_id = ? and status_id = ?";
+
+        try {
+            connection = getConnection();
+            PreparedStatement pre = connection.prepareStatement(
+                    sql,
+                    ResultSet.TYPE_SCROLL_SENSITIVE,
+                    ResultSet.CONCUR_READ_ONLY);
+            pre.setInt(1, accountId);
+            pre.setInt(2, statusId);
+            ResultSet rs = pre.executeQuery();
+
+            while (rs.next()) {
+                order = new Orders();
+                order.order_id = rs.getInt("order_id");
+                order.account = (new AccountDAO().getAccountByAccountID(rs.getInt("account_id")));
+                order.status = (new StatusDAO().getStatusByStatusID(rs.getInt("status_id")));
+                order.total_amount = rs.getInt("total_amount");
+                order.setOrder_date(rs.getTimestamp("order_date"));
+                order.setEstimated_delivery_date(rs.getTimestamp("estimated_delivery_date"));
+                // Retrieve the note
+                order.note = rs.getString("note");
+
+                // Add the order to the list
+                ordersList.add(order);
             }
 
             rs.close(); // Close ResultSet
@@ -160,18 +234,8 @@ public class OrdersDAO extends DBContext {
                 order.account = (new AccountDAO().getAccountByAccountID(rs.getInt("account_id")));
                 order.status = (new StatusDAO().getStatusByStatusID(rs.getInt("status_id")));
                 order.total_amount = rs.getInt("total_amount");
-                String orderDateString = rs.getString("order_date");
-
-                // Parse the date string into a Date object
-                SimpleDateFormat dbDateFormat = new SimpleDateFormat("yyyy-MM-dd"); // Assuming the date from DB is in this format
-                Date date = dbDateFormat.parse(orderDateString);
-
-                // Format the Date object into dd/MM/yyyy format
-                SimpleDateFormat displayDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                String formattedDate = displayDateFormat.format(date);
-
-                // Set the formatted date to the order object
-                order.order_date = formattedDate;
+                order.setOrder_date(rs.getTimestamp("order_date"));
+                order.setEstimated_delivery_date(rs.getTimestamp("estimated_delivery_date"));
                 order.note = rs.getString("note");
             }
 
@@ -215,11 +279,4 @@ public class OrdersDAO extends DBContext {
         }
     }
 
-    public static void main(String[] args) {
-
-        OrdersDAO orderDAO = new OrdersDAO();
-        List<Orders> orderlist = orderDAO.getAllListOrder();
-        System.out.println(orderlist.size());
-
-    }
 }
