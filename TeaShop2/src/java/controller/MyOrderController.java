@@ -34,29 +34,46 @@ public class MyOrderController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-    // Set the content type of the response to HTML with UTF-8 encoding
-    response.setContentType("text/html;charset=UTF-8");
-    
-    // Retrieve or create a session associated with the request
-    HttpSession session = request.getSession(true);
-    
-    try (PrintWriter out = response.getWriter()) {
-        // Create an instance of OrdersDAO to interact with the database
+        // Set the content type of the response to HTML with UTF-8 encoding
+        response.setContentType("text/html;charset=UTF-8");
+
+        // Retrieve or create a session associated with the request
+        HttpSession session = request.getSession(true);
         OrdersDAO ordersDAO = new OrdersDAO();
-        
-        // Retrieve the account ID stored in the session
-//        int accountId = (int) session.getAttribute("accountId");
-        int accountId = 4;
-        // Retrieve the list of orders associated with the account ID
-        List<Orders> listOrders = ordersDAO.findByAccountId(accountId);
-        
-        // Set the list of orders as a request attribute for access in the JSP page
-        request.setAttribute("listOrders", listOrders);
-        
-        // Forward the request to the "my-order.jsp" page for rendering
-        request.getRequestDispatcher("view/orders/my-order.jsp").forward(request, response);
+        try (PrintWriter out = response.getWriter()) {
+            String service = request.getParameter("service");
+            if (service == null || service.isEmpty()) {
+                service = "show";
+            }
+
+            if (service.equals("show")) {
+                List<Orders> listOrders;
+                String current_status_id = request.getParameter("current_status_id");
+                if (current_status_id == null || current_status_id.isEmpty()) {
+                    current_status_id = "0";
+                }
+                // Retrieve the account ID stored in the session
+                Integer accountId = (Integer) session.getAttribute("accountId");
+                if (!(accountId == null)) {
+                    int statusId = Integer.parseInt(current_status_id);
+                    if (statusId == 0) {
+                        listOrders = ordersDAO.findByAccountId(accountId);
+                    } else {
+                        listOrders = ordersDAO.findByAccountIdAndStatusId(accountId, statusId);
+                    }
+                    // Retrieve the list of orders associated with the account ID
+
+                    // Set the list of orders as a request attribute for access in the JSP page
+                    request.setAttribute("listOrders", listOrders);
+                } else {
+                    request.setAttribute("message", "Quý khách cần đăng nhập để truy cập vào trang này");
+                }
+                request.setAttribute("current_status_id", current_status_id);
+                // Forward the request to the "my-order.jsp" page for rendering
+                request.getRequestDispatcher("view/orders/my-order.jsp").forward(request, response);
+            }
+        }
     }
-}
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
