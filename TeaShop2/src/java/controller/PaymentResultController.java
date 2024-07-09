@@ -1,6 +1,9 @@
 package controller;
 
+import dal.OrderDetailsDAO;
+import dal.OrdersDAO;
 import entity.CartDetails;
+import entity.Topping;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -45,58 +48,115 @@ public class PaymentResultController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             HttpSession session = request.getSession(true);
-            List<CartDetails> cartInfo = new ArrayList<>();
-            Enumeration<String> em = session.getAttributeNames();
-            while (em.hasMoreElements()) {
-                String key = em.nextElement();
+            OrdersDAO orderDAO = new OrdersDAO();
+            OrderDetailsDAO orderDetailsDAO = new OrderDetailsDAO();
 
-                if (key.startsWith("cartItem")) {
-                    CartDetails cartItem = (CartDetails) session.getAttribute(key);
-                    cartInfo.add(cartItem);
-                }
-            }
+            int order_id = 0;
             String service = request.getParameter("service");
+            Integer accoundId = (Integer) session.getAttribute("accountId");
             if (service == null || service.isEmpty()) {
                 service = "pay-online";
             }
             if (service.equals("cash-on-delivery")) {
-                Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
+                String sqlDateTime = "";
+                if (session.getAttribute("formattedDate") == null && session.getAttribute("formattedTime") == null) {
+                    Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
 
-                SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
-                String vnp_CreateDate = formatter.format(cld.getTime());
-                SimpleDateFormat inputFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+                    SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
+                    String vnp_CreateDate = formatter.format(cld.getTime());
+                    SimpleDateFormat inputFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                    SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+                    SimpleDateFormat sqlformatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-                Date date;
-                try {
-                    date = inputFormat.parse(vnp_CreateDate);
-                    String formattedDate = dateFormat.format(date);
-                    String formattedTime = timeFormat.format(date);
-
-                    request.setAttribute("formattedDate", formattedDate);
-                    request.setAttribute("formattedTime", formattedTime);
-                } catch (ParseException ex) {
-                    Logger.getLogger(PaymentController.class.getName()).log(Level.SEVERE, null, ex);
+                    Date date;
+                    try {
+                        date = inputFormat.parse(vnp_CreateDate);
+                        String formattedDate = dateFormat.format(date);
+                        String formattedTime = timeFormat.format(date);
+                        sqlDateTime = sqlformatter.format(date);
+                        session.setAttribute("formattedDate", formattedDate);
+                        session.setAttribute("formattedTime", formattedTime);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(PaymentController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
 
                 String amount = request.getParameter("amount");
                 String fullname = request.getParameter("fullname");
                 String address = request.getParameter("address");
+                String district = request.getParameter("district");
+                String ward = request.getParameter("ward");
                 String phonenumber = request.getParameter("phonenumber");
                 String status = "Giao dịch thành công";
                 String OrderInfo = "Thanh toan hoa don Dream Coffee. So tien: " + amount + " dong";
 
+                String fullAddress = address + ", Phường " + ward + ", " + district;
+                List<CartDetails> billInfo = new ArrayList<>();
+                boolean hasBillItems = false;
+                Enumeration<String> checkEm = session.getAttributeNames();
+                while (checkEm.hasMoreElements()) {
+                    String key = checkEm.nextElement();
+                    if (key.startsWith("billItem")) {
+                        hasBillItems = true;
+                        break;
+                    }
+                }
+
+                if (!hasBillItems) {
+                    if (accoundId == null) {
+                        order_id = orderDAO.insertOrder(null, sqlDateTime, null, Integer.parseInt(amount), 1, null, "COD", phonenumber, fullname, fullAddress);
+                    } else {
+                        order_id = orderDAO.insertOrder(accoundId, sqlDateTime, null, Integer.parseInt(amount), 1, null, "COD", null, null, fullAddress);
+                    }
+                    Enumeration<String> em = session.getAttributeNames();
+                    while (em.hasMoreElements()) {
+                        String key = em.nextElement();
+
+                        if (key.startsWith("cartItem")) {
+                            CartDetails cartItem = (CartDetails) session.getAttribute(key);
+
+                            int product_id = cartItem.product.product_id;
+                            int order_details_id = orderDetailsDAO.insertOrderDetails(product_id, order_id, cartItem.quantity);
+                            List<Topping> toppings = cartItem.topping;
+                            for (Topping topping : toppings) {
+                                int toppingId = topping.topping_id;
+                                orderDetailsDAO.insertToppingDetails(order_details_id, toppingId);
+                            }
+                            session.setAttribute("billItem" + product_id, cartItem);
+
+                            session.removeAttribute(key);
+                        }
+                    }
+                }
+                Enumeration<String> em = session.getAttributeNames();
+                while (em.hasMoreElements()) {
+                    String key = em.nextElement();
+
+                    if (key.startsWith("billItem")) {
+                        CartDetails billItem = (CartDetails) session.getAttribute(key);
+                        billInfo.add(billItem);
+                    }
+                }
+                request.setAttribute("billInfo", billInfo);
                 request.setAttribute("amount", amount);
                 request.setAttribute("status", status);
                 request.setAttribute("OrderInfo", OrderInfo);
-                request.setAttribute("cartInfo", cartInfo);
                 session.setAttribute("fullname", fullname);
                 session.setAttribute("address", address);
+                session.setAttribute("district", district);
+                session.setAttribute("ward", ward);
                 session.setAttribute("phonenumber", phonenumber);
 
                 request.getRequestDispatcher("view/cart/payment-result.jsp").forward(request, response);
             } else if (service.equals("pay-online")) {
+                String sqlDateTime = "";
+                String address = (String) session.getAttribute("address");
+                String district = (String) session.getAttribute("district");
+                String ward = (String) session.getAttribute("ward");
+                String fullAddress = address + ", Phường " + ward + ", " + district;
+                String fullname = (String) session.getAttribute("fullname");
+                String phonenumber = (String) session.getAttribute("phonenumber");
                 Map fields = new HashMap();
                 for (Enumeration params = request.getParameterNames(); params.hasMoreElements();) {
                     String fieldName = URLEncoder.encode((String) params.nextElement(), StandardCharsets.US_ASCII.toString());
@@ -123,11 +183,14 @@ public class PaymentResultController extends HttpServlet {
 
                 String vnp_PayDate = request.getParameter("vnp_PayDate");
                 try {
+
                     SimpleDateFormat inputFormat = new SimpleDateFormat("yyyyMMddHHmmss");
                     SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
                     SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+                    SimpleDateFormat sqlformatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
                     Date date = inputFormat.parse(vnp_PayDate);
+                    sqlDateTime = sqlformatter.format(date);
                     String formattedDate = dateFormat.format(date);
                     String formattedTime = timeFormat.format(date);
 
@@ -141,13 +204,52 @@ public class PaymentResultController extends HttpServlet {
                 if (signValue.equals(vnp_SecureHash)) {
                     if ("00".equals(request.getParameter("vnp_TransactionStatus"))) {
                         status = "Giao dịch thành công";
+                        List<CartDetails> billInfo = new ArrayList<>();
+                        boolean hasBillItems = false;
+                        Enumeration<String> checkEm = session.getAttributeNames();
+                        while (checkEm.hasMoreElements()) {
+                            String key = checkEm.nextElement();
+                            if (key.startsWith("billItem")) {
+                                hasBillItems = true;
+                                break;
+                            }
+                        }
+
+                        if (!hasBillItems) {
+                            if (accoundId == null) {
+                                order_id = orderDAO.insertOrder(null, sqlDateTime, null, amount, 1, null, "VNPay", phonenumber, fullname, fullAddress);
+                            } else {
+                                order_id = orderDAO.insertOrder(accoundId, sqlDateTime, null, amount, 1, null, "VNPay", null, null, fullAddress);
+                            }
+                            Enumeration<String> em = session.getAttributeNames();
+                            while (em.hasMoreElements()) {
+                                String key = em.nextElement();
+
+                                if (key.startsWith("cartItem")) {
+                                    CartDetails cartItem = (CartDetails) session.getAttribute(key);
+
+                                    int product_id = cartItem.product.product_id;
+                                    int order_details_id = orderDetailsDAO.insertOrderDetails(product_id, order_id, cartItem.quantity);
+                                    List<Topping> toppings = cartItem.topping;
+                                    for (Topping topping : toppings) {
+                                        int toppingId = topping.topping_id;
+                                        orderDetailsDAO.insertToppingDetails(order_details_id, toppingId);
+                                    }
+                                    session.setAttribute("billItem" + product_id, cartItem);
+                                    session.removeAttribute(key);
+                                }
+                            }
+                        }
+                        Enumeration<String> em = session.getAttributeNames();
                         while (em.hasMoreElements()) {
                             String key = em.nextElement();
 
-                            if (key.startsWith("cartItem")) {
-                                session.removeAttribute(key);
+                            if (key.startsWith("billItem")) {
+                                CartDetails billItem = (CartDetails) session.getAttribute(key);
+                                billInfo.add(billItem);
                             }
                         }
+                        request.setAttribute("billInfo", billInfo);
                     } else {
                         status = "Giao dịch thất bại";
                     }
@@ -156,7 +258,6 @@ public class PaymentResultController extends HttpServlet {
                     status = "Giao dịch thất bại";
                 }
                 request.setAttribute("status", status);
-                request.setAttribute("cartInfo", cartInfo);
                 request.getRequestDispatcher("view/cart/payment-result.jsp").forward(request, response);
             }
         }
@@ -210,4 +311,3 @@ public class PaymentResultController extends HttpServlet {
     }// </editor-fold>
 
 }
-
