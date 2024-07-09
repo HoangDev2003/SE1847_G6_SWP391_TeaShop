@@ -5,12 +5,14 @@
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@page import="entity.CartDetails, java.util.Enumeration"%>
 <!DOCTYPE html>
 <html lang="en">
 
     <head>
         <meta charset="utf-8">
-        <title>Fruitables - Vegetable Website Template</title>
+        <title>Dreamy Coffee</title>
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
         <meta content="" name="keywords">
         <meta content="" name="description">
@@ -74,8 +76,8 @@
                         <div class="navbar-nav mx-auto">
                             <a href="${pageContext.request.contextPath}/home" class="nav-item nav-link">Home</a>
                             <a href ="${pageContext.request.contextPath}/blog" class="nav-item nav-link">Blog</a>
-                            <a href="${pageContext.request.contextPath}/shop" class="nav-item nav-link active">Shop</a>
-                            
+                            <a href="${pageContext.request.contextPath}/shop" class="nav-item nav-link">Shop</a>
+
                             <div class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                                 <div class="dropdown-menu m-0 bg-secondary rounded-0">
@@ -88,14 +90,43 @@
                             <a href="contact.jsp" class="nav-item nav-link">Contact</a>
                         </div>
                         <div class="d-flex m-3 me-0">
-                            <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
+                            <%
+                int count = 0;
+                Enumeration<String> em = session.getAttributeNames();
+                while (em.hasMoreElements()) {
+                    String key = em.nextElement();
+
+                    if (key.startsWith("cartItem")) {
+                        count++;
+                    }
+                } 
+                            %>
                             <a href="CartDetails?service=showcart" class="position-relative me-4 my-auto">
-                                <i class="fa fa-shopping-bag fa-2x"></i>
-                                <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">3</span>
+                                <i class="fa fa-shopping-bag fa-2x" style="color: orange;"></i>
+                                <%if(count>0){%>
+                                <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;"><%=count%></span>
+                                <%}%>
                             </a>
-                            <a href="#" class="my-auto">
-                                <i class="fas fa-user fa-2x"></i>
-                            </a>
+                            <% 
+    Integer accountId = (Integer) session.getAttribute("accountId");
+    if (accountId != null) {
+                            %>
+                            <div class="nav-item dropdown">
+                                <a href="#" class="nav-link" data-bs-toggle="dropdown" style="color: black;">
+                                    <i class="fas fa-user fa-2x" style="color: black;"></i>
+                                </a>
+                                <div class="dropdown-menu m-0 bg-secondary rounded-0">
+                                    <a href="userprofile" class="dropdown-item">Thông tin</a>
+                                    <a href="MyOrder" class="dropdown-item">Đơn hàng</a>
+                                </div>
+                            </div>
+                            <% 
+                                } else { 
+                            %>
+                            <a href="login"><i class="fas fa-user fa-2x" style="color: black;"></i></a>
+                                <% 
+                                    } 
+                                %>
                         </div>
                     </div>
                 </nav>
@@ -110,98 +141,78 @@
                     <div class="col-lg-12">
                         <h1 class="mb-4"></h1>
                         <div class="row g-4">
-                            <div class="col-xl-3">
-                                <form action="shop" method="GET">
-                                    <div class="input-group w-100 mx-auto d-flex">
-
-                                        <input type="hidden" name="search" value="searchByName">
-                                        <input type="text" class="form-control p-3" name="keyword" placeholder="keywords" aria-describedby="search-icon-1">
-                                        <span id="search-icon-1" class="input-group-text p-3" onclick="return this.closest('form').submit()"><i class="fa fa-search"></i></span>
-                                    </div>
-                                </form>
-
-                            </div>
                             <div class="col-6"></div>
-                            <div class="col-xl-3">
-                                <div class="bg-light ps-3 py-3 rounded d-flex justify-content-between mb-4">
-                                    <label for="sort">Sắp xếp theo:</label>
-                                    <select name="sort" id="sort" onchange="sortBy()" class="border-0 form-select-sm bg-light me-3">
-                                        <option value="product_id" <c:if test="${param.sort == null || param.sort == 'product_id'}">selected</c:if>>None</option>
-                                        <option value="create_at" <c:if test="${param.sort == 'create_at'}">selected</c:if>>Sản phẩm mới nhất</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
                             <div class="row g-4">
                                 <div class="col-lg-3">
-                                    <div class="row g-4">
-                                        <div class="col-lg-12">
-                                            <div class="mb-3">
-                                                <h4>Loại sản phẩm</h4>
-                                            <c:forEach items="${listCategory}" var="cate">
-                                                <ul class="list-unstyled fruite-categorie">
-                                                    <li>
-                                                        <div class="d-flex justify-content-between fruite-name">
-                                                            <a href="shop?search=category&category_id=${cate.category_id}"><i class="fas fa-apple-alt me-2"></i>${cate.category_name}</a>
-
-                                                        </div>
-                                                    </li>
-                                                </ul>
-                                            </c:forEach>
-                                        </div>
+                                    <div class="p-4 border border-secondary rounded">
+                                        <h4><a class="nav-link" ${current_status_id == '0' ? '' : 'style="color: black;"'} href="MyOrder">
+                                                Tất cả đơn hàng
+                                            </a></h4>
+                                        <a class="nav-link" ${current_status_id == '1' ? '' : 'style="color: black;"'} href="MyOrder?current_status_id=1">
+                                            Đơn hàng đang chờ xác nhận
+                                        </a>
+                                        <a class="nav-link" ${current_status_id == '2' ? '' : 'style="color: black;"'} href="MyOrder?current_status_id=2">
+                                            Đơn hàng đang làm
+                                        </a>
+                                        <a class="nav-link" ${current_status_id == '3' ? '' : 'style="color: black;"'} href="MyOrder?current_status_id=3">
+                                            Đơn hàng đang được giao
+                                        </a>
+                                        <a class="nav-link" ${current_status_id == '4' ? '' : 'style="color: black;"'} href="MyOrder?current_status_id=4">
+                                            Đơn hàng đã hoàn thành
+                                        </a>
                                     </div>
-
-                                    <div class="container">
-                                        <div class="col-lg-12">
-                                            <h4 class="mb-3">Sản phẩm nổi bật</h4>
-                                            <c:forEach items="${listSpecialProduct}" var="special">
-                                                <div class="d-flex align-items-center mb-4 p-3 border rounded shadow-sm product-card">
-                                                    <div class="rounded me-4" style="width: 100px; height: 100px; overflow: hidden;">
-                                                        <img src="${special.image}" class="img-fluid rounded" alt="${special.product_name}">
-                                                    </div>
-                                                    <div>
-                                                        <h6 class="mb-2">${special.product_name}</h6>
-                                                        <div class="d-flex mb-2 text-warning">
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                        </div>
-                                                        <div class="d-flex mb-2">
-                                                            <h5 class="fw-bold me-2">${special.price}</h5>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </c:forEach>
-                                        </div>
-                                    </div>
-
                                 </div>
-                            </div>
-                            <div class="col-lg-9">
-                                <div class="row g-4 justify-content-center"> 
-                                    <c:forEach items="${listOrders}" var="p">
-                                        <div class="col-md-6 col-lg-6 col-xl-4">
-                                            <div class="p-4 border border-secondary rounded">
-                                                <p>ID hóa đơn: ${p.order_id}</p>
-                                                <p>Ngày: ${p.order_date}</p> 
-                                                <p>Tổng tiền hóa đơn: ${p.total_amount} đồng</p>
-                                                <p>Trạng thái: ${p.status}</p>
-                                                <p><a href="OrderInformation?order_id=${p.order_id}" class="btn border border-secondary rounded-pill px-3 text-primary">Chi tiết</a></p>
+                                <div class="col-lg-9">
+                                    <h4>${message}</h4>
+                                    <c:if test="${empty listOrders}">
+                                        <div class="row justify-content-center align-items-middle" style="height: 100vh;">
+                                            <div class="col-auto">
+                                                <%if (accountId != null) {%>
+                                                <c:choose>
+                                                    <c:when test="${current_status_id == 0}">
+                                                        <h4>Hiện tại không có đơn hàng nào</h4>
+                                                    </c:when>
+                                                    <c:when test="${current_status_id == 1}">
+                                                        <h4>Hiện tại không có đơn hàng nào đang xác nhận</h4>
+                                                    </c:when>
+                                                    <c:when test="${current_status_id == 2}">
+                                                        <h4>Hiện tại không có đơn hàng nào đang làm</h4>
+                                                    </c:when>
+                                                    <c:when test="${current_status_id == 3}">
+                                                        <h4>Hiện tại không có đơn hàng nào đang được giao</h4>
+                                                    </c:when>
+                                                    <c:when test="${current_status_id == 4}">
+                                                        <h4>Hiện tại không có đơn hàng nào đã hoàn thành</h4>
+                                                    </c:when>
+                                                </c:choose>
+                                                        <%}%>
                                             </div>
                                         </div>
-                                    </c:forEach>
-                                    <div class="col-12">
-                                        <div class="pagination d-flex justify-content-center mt-5">
-                                            <a href="#" class="rounded">&laquo;</a>
-                                            <a href="#" class="active rounded">1</a>
-                                            <a href="#" class="rounded">2</a>
-                                            <a href="#" class="rounded">3</a>
-                                            <a href="#" class="rounded">4</a>
-                                            <a href="#" class="rounded">5</a>
-                                            <a href="#" class="rounded">6</a>
-                                            <a href="#" class="rounded">&raquo;</a>
+                                    </c:if>
+                                    <div class="row g-4 justify-content-center">
+
+                                        <c:forEach items="${listOrders}" var="p">
+                                            <div class="col-md-6 col-lg-6 col-xl-4">
+                                                <div class="p-4 border border-secondary rounded">
+                                                    <p>ID hóa đơn: ${p.order_id}</p>
+                                                    <p>Ngày: ${p.formattedOrderDate}</p> 
+                                                    <p>Tổng tiền hóa đơn: ${p.total_amount} đồng</p>
+                                                    <p>Trạng thái: ${p.status.status_name}</p>
+                                                    <p><a href="OrderInformation?order_id=${p.order_id}" class="btn border border-secondary rounded-pill px-3 text-primary">Chi tiết</a></p>
+                                                </div>
+                                            </div>
+                                        </c:forEach>
+                                        <div class="col-12">
+                                            <div class="pagination d-flex justify-content-center mt-5">
+                                                <a href="#" class="rounded">&laquo;</a>
+                                                <a href="#" class="active rounded">1</a>
+                                                <a href="#" class="rounded">2</a>
+                                                <a href="#" class="rounded">3</a>
+                                                <a href="#" class="rounded">4</a>
+                                                <a href="#" class="rounded">5</a>
+                                                <a href="#" class="rounded">6</a>
+                                                <a href="#" class="rounded">&raquo;</a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -210,23 +221,22 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <!-- my-order End-->        
+            <!-- my-order End-->        
 
-        <!-- Footer Start -->
-        <jsp:include page="../common/homePage/footer-start.jsp"></jsp:include>
-            <!-- Footer End -->  
+            <!-- Footer Start -->
+            <jsp:include page="../common/homePage/footer-start.jsp"></jsp:include>
+                <!-- Footer End -->  
 
-            <!-- JavaScript Libraries-->
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-            <script src="${pageContext.request.contextPath}/lib/easing/easing.min.js"></script>
-        <script src="${pageContext.request.contextPath}/lib/waypoints/waypoints.min.js"></script>
-        <script src="${pageContext.request.contextPath}/lib/lightbox/js/lightbox.min.js"></script>
-        <script src="${pageContext.request.contextPath}/lib/owlcarousel/owl.carousel.min.js"></script>
+                <!-- JavaScript Libraries-->
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+                <script src="${pageContext.request.contextPath}/lib/easing/easing.min.js"></script>
+            <script src="${pageContext.request.contextPath}/lib/waypoints/waypoints.min.js"></script>
+            <script src="${pageContext.request.contextPath}/lib/lightbox/js/lightbox.min.js"></script>
+            <script src="${pageContext.request.contextPath}/lib/owlcarousel/owl.carousel.min.js"></script>
 
-        <!-- Template Javascript -->
-        <script src="${pageContext.request.contextPath}/js/main.js"></script>
+            <!-- Template Javascript -->
+            <script src="${pageContext.request.contextPath}/js/main.js"></script>
     </body>
 
 </html>
