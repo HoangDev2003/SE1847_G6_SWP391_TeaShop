@@ -7,12 +7,14 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@page import="entity.CartDetails, java.util.Enumeration"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 
     <head>
         <meta charset="utf-8">
-        <title>Fruitables - Vegetable Website Template</title>
+        <title>Dreamy Coffee</title>
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
         <meta content="" name="keywords">
         <meta content="" name="description">
@@ -76,7 +78,7 @@
                         <div class="navbar-nav mx-auto">
                             <a href="${pageContext.request.contextPath}/home" class="nav-item nav-link">Home</a>
                             <a href ="${pageContext.request.contextPath}/blog" class="nav-item nav-link">Blog</a>
-                            <a href="${pageContext.request.contextPath}/shop" class="nav-item nav-link active">Shop</a>
+                            <a href="${pageContext.request.contextPath}/shop" class="nav-item nav-link">Shop</a>
 
                             <div class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
@@ -90,14 +92,43 @@
                             <a href="contact.jsp" class="nav-item nav-link">Contact</a>
                         </div>
                         <div class="d-flex m-3 me-0">
-                            <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
+                            <%
+                int count = 0;
+                Enumeration<String> em = session.getAttributeNames();
+                while (em.hasMoreElements()) {
+                    String key = em.nextElement();
+
+                    if (key.startsWith("cartItem")) {
+                        count++;
+                    }
+                } 
+                            %>
                             <a href="CartDetails?service=showcart" class="position-relative me-4 my-auto">
-                                <i class="fa fa-shopping-bag fa-2x"></i>
-                                <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">3</span>
+                                <i class="fa fa-shopping-bag fa-2x" style="color: orange;"></i>
+                                <%if(count>0){%>
+                                <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;"><%=count%></span>
+                                <%}%>
                             </a>
-                            <a href="#" class="my-auto">
-                                <i class="fas fa-user fa-2x"></i>
-                            </a>
+                            <% 
+    Integer accountId = (Integer) session.getAttribute("accountId");
+    if (accountId != null) {
+                            %>
+                            <div class="nav-item dropdown">
+                                <a href="#" class="nav-link" data-bs-toggle="dropdown" style="color: black;">
+                                    <i class="fas fa-user fa-2x" style="color: black;"></i>
+                                </a>
+                                <div class="dropdown-menu m-0 bg-secondary rounded-0">
+                                    <a href="userprofile" class="dropdown-item">Thông tin</a>
+                                    <a href="MyOrder" class="dropdown-item">Đơn hàng</a>
+                                </div>
+                            </div>
+                            <% 
+                                } else { 
+                            %>
+                            <a href="login"><i class="fas fa-user fa-2x" style="color: black;"></i></a>
+                                <% 
+                                    } 
+                                %>
                         </div>
                     </div>
                 </nav>
@@ -105,70 +136,30 @@
         </div>
         <!-- Navbar End -->
 
-        <!-- Modal Search Start -->
-        <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-fullscreen">
-                <div class="modal-content rounded-0">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Search by keyword</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body d-flex align-items-center">
-                        <div class="input-group w-75 mx-auto d-flex">
-                            <input type="search" class="form-control p-3" placeholder="keywords" aria-describedby="search-icon-1">
-                            <span id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Modal Search End -->
-
-        <!-- payment-result Start-->
+        <!-- cart-details Start-->
         <div class="container-fluid fruite py-5">
             <div class="container py-5">            
                 <div class="row g-4">
                     <div class="col-lg-12">
                         <h1 class="mb-4"></h1>
                         <div class="row g-4">
-                            <div class="col-xl-3">
-                                <form action="shop" method="GET">
-                                    <div class="input-group w-100 mx-auto d-flex">
-
-                                        <input type="hidden" name="search" value="searchByName">
-                                        <input type="text" class="form-control p-3" name="keyword" placeholder="keywords" aria-describedby="search-icon-1">
-                                        <span id="search-icon-1" class="input-group-text p-3" onclick="return this.closest('form').submit()"><i class="fa fa-search"></i></span>
-                                    </div>
-                                </form>
-
-                            </div>
                             <div class="col-6"></div>
-                            <div class="col-xl-3">
-                                <div class="bg-light ps-3 py-3 rounded d-flex justify-content-between mb-4">
-                                    <label for="sort">Sắp xếp theo:</label>
-                                    <select name="sort" id="sort" onchange="sortBy()" class="border-0 form-select-sm bg-light me-3">
-                                        <option value="product_id" <c:if test="${param.sort == null || param.sort == 'product_id'}">selected</c:if>>None</option>
-                                        <option value="create_at" <c:if test="${param.sort == 'create_at'}">selected</c:if>>Sản phẩm mới nhất</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
                             <div class="row g-4">
                                 <div class="col-lg-3">
                                     <div class="row g-4">
                                         <div class="col-lg-12">
                                             <div class="mb-3">
                                                 <h4>Loại sản phẩm</h4>
-                                            <c:forEach items="${listCategory}" var="cate">
-                                                <ul class="list-unstyled fruite-categorie">
-                                                    <li>
-                                                        <div class="d-flex justify-content-between fruite-name">
-                                                            <a href="shop?search=category&category_id=${cate.category_id}"><i class="fas fa-apple-alt me-2"></i>${cate.category_name}</a>
+                                                <c:forEach items="${listCategory}" var="cate">
+                                                    <ul class="list-unstyled fruite-categorie">
+                                                        <li>
+                                                            <div class="d-flex justify-content-between fruite-name">
+                                                                <a href="shop?search=category&category_id=${cate.category_id}"><i class="fas fa-apple-alt me-2"></i>${cate.category_name}</a>
 
-                                                        </div>
-                                                    </li>
-                                                </ul>
-                                            </c:forEach>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </c:forEach>
                                         </div>
                                     </div>
 
@@ -210,7 +201,7 @@
                                     <p>Họ và tên: ${fullname}</p>
                                     <p>Ngày thanh toán: ${formattedDate}</p>
                                     <p>Thời gian thanh toán: ${formattedTime}</p>
-                                    <p>Số tiền: ${amount} đồng</p>
+                                    <p>Số tiền: <fmt:formatNumber value="${amount}" type="number" groupingUsed="true"/> đồng</p>
                                     <p>Địa chỉ nhận hàng: ${address}</p>
                                     <p>Thông tin đơn hàng: ${OrderInfo}</p>
                                     <p><a href="home" class="btn border border-secondary rounded-pill px-3 text-primary">Quay về trang chủ</a></p>
@@ -234,18 +225,18 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <c:forEach var="cartItem" items="${cartInfo}">
+                                                <c:forEach var="billItem" items="${billInfo}">
                                                     <tr>
-                                                        <td>${cartItem.product.product_name}</td>
-                                                        <td>${cartItem.quantity}</td>
-                                                        <td>${cartItem.product.price}</td>
-                                                        <td>${cartItem.quantity * cartItem.product.price}</td>
+                                                        <td>${billItem.product.product_name}</td>
+                                                        <td>${billItem.quantity}</td>
+                                                        <td>${billItem.product.price}</td>
+                                                        <td>${billItem.quantity * cartItem.product.price}</td>
                                                     </tr>
                                                 </c:forEach>
                                             </tbody>
                                         </table>
                                         
-                                        <p>Tổng tiền hóa đơn: ${amount} đồng</p>
+                                        <p>Tổng tiền hóa đơn: <fmt:formatNumber value="${amount}" type="number" groupingUsed="true"/> đồng</p>
                                     </div>
                                     <%}%>
                                 </div>
