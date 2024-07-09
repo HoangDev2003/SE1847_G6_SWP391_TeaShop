@@ -26,7 +26,8 @@ import lombok.ToString;
 @Setter
 
 public class CartDetails {
-    public int product_id, quantity, topping_id;
+    public int product_id, quantity;
     public Product product;
     public List<Topping> topping;
 }
+
