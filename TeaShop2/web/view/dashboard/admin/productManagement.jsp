@@ -28,12 +28,18 @@
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
             <!-- Navbar Search-->
-            <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-                <div class="input-group">
-                    <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
-                    <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
-                </div>
-            </form>
+            <c:if test="${showSearchProduct ne null}">
+                <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0" action="productmanager" id="searchByName">
+                    <input type="hidden" name="service" value="searchByKeywords"/>
+                    <div class="input-group">
+                        <input class="form-control" type="text" placeholder="Search by Keywords" aria-label="Search by Keywords" aria-describedby="btnNavbarSearch" name="keywords"
+                               value="${keywords}" />
+                        <button class="btn btn-primary" id="btnNavbarSearch" type="submit"><i class="fas fa-search"></i></button>
+                    </div>
+                </form>
+            </c:if>
+
+
             <!-- Navbar-->
             <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
                 <li class="nav-item dropdown">
@@ -58,12 +64,21 @@
                             <ol class="breadcrumb mb-4" style="padding-top: 24px">
                                 <li class="breadcrumb-item"><a href="dashboardAdmin.jsp">Dashboard</a></li>
                                 <li class="breadcrumb-item active">Product Management</li>
-                            </ol>    
+                            </ol>
+
+                        <c:if test="${notFoundProduct ne null}">
+                            <h4 class="font-weight-semi-bold text-uppercase mb-3 text-center">
+                                ${notFoundProduct}
+                            </h4>
+                        </c:if>
+
                         <c:if test="${deleteDone ne null}">
                             <h4 class="font-weight-semi-bold text-uppercase mb-3 text-center">
                                 ${deleteDone}
                             </h4>
                         </c:if>
+
+
                         <c:if test="${not empty listAllProduct}">
                             <div class="card mb-4">
                                 <div class="h1">                                
@@ -99,7 +114,7 @@
                                                     <td>${product.product_name}</td>
                                                     <td>${product.category.category_name}</td>
                                                     <td><img src="${product.image}" style="width: 130px" /></td>
-                                                    <fmt:setLocale value="vi_VN" />
+                                                        <fmt:setLocale value="vi_VN" />
                                                     <td><fmt:formatNumber value="${product.price}" type="currency" currencySymbol="₫" /></td>
                                                     <td>${product.create_at}</td>
                                                     <td><a href="updateProductManager?service=requestUpdate&productId=${product.product_id}"><ion-icon name="create-outline"></ion-icon></a></td>
@@ -149,7 +164,7 @@
                         padding: 20px; /* Thêm padding cho thẻ div */
                         background-color: #fff; /* Màu nền cho thẻ div */
                         text-align: center; /* Căn giữa nội dung bên trong theo chiều ngang */
-                        
+
                     }
 
                     .h1 a {
@@ -210,6 +225,11 @@
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         <script src="${pageContext.request.contextPath}/js/datatables-simple-demo.js"></script>
         <script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
+        <!-- Include jQuery -->
+        <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+
+
+
     </body>
 </html>
 

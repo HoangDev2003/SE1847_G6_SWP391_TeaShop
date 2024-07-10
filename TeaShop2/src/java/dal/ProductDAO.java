@@ -177,6 +177,39 @@ public class ProductDAO extends DBContext {
 
     }
 
+    public List<Product> getProductByKeyWords(String keyword) {
+        List<Product> products = new ArrayList<>();
+        Category category = null;
+        connection = getConnection();
+        String sql = "SELECT * FROM [dbo].[Product] WHERE product_name LIKE ?\n";
+
+        try {
+            //Tạo đối tượng PrepareStatement
+            PreparedStatement statement = connection.prepareStatement(sql);
+            // Set the parameters
+            statement.setString(1, "%" + keyword + "%");
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                int product_id = resultSet.getInt("product_id");
+                String product_name = resultSet.getString("product_name");
+                category = ((new CategoryDAO()).getCategoryById(resultSet.getInt("category_id")));
+                String image = resultSet.getString("image");
+                int price = resultSet.getInt("price");
+                float discount = resultSet.getFloat("price");
+                Date create_at = resultSet.getDate("create_at");
+
+                //add to collections
+                products.add(new Product(product_id, product_name, category, image, price, discount, create_at, image));
+            }
+            return products;
+        } catch (SQLException ex) {
+            System.out.println("Error " + ex.getMessage());
+
+        }
+        return null;
+    }
+
     public List<Product> findProductByPriceRange(int priceFrom, int priceTo, int page, String sort) {
         List<Product> list = new ArrayList<>();
         connection = getConnection();
@@ -553,48 +586,24 @@ public class ProductDAO extends DBContext {
     }
 
     public static void main(String[] args) {
-//        test Insert Product
-//        Category category = new Category(1, "CategoryName"); // Giả sử bạn có class Category với constructor phù hợp
-//        Product product = new Product(50, "Cappuccino", category, "", 10, 0, new Date(), "Test");
-//
-//        // Tạo đối tượng ProductDAO và chèn sản phẩm vào cơ sở dữ liệu
-//        ProductDAO productDAO = new ProductDAO();
-//        int generatedId = productDAO.insertProduct(product);
-//        System.out.println("ID của sản phẩm mới được chèn là: " + generatedId);
-//
-//        // Lấy sản phẩm vừa chèn từ cơ sở dữ liệu
-//        Product insertedProduct = productDAO.getProductsById(generatedId);
-//        System.out.println(insertedProduct);
-
-        //test Update Product
-//        ProductDAO productDAO = new ProductDAO();
-//        Category category = new Category(2, "CategoryName");
-//        Product product = new Product("Updated", category, "", 40, new Date(), "Okela");
-//
-//        // ID của sản phẩm cần cập nhật
-//        int productId = 25;
-//
-//        // Cập nhật sản phẩm
-//        productDAO.updateProduct(product, productId);
-//        System.out.println("Sản phẩm đã được cập nhật.");
-//
-//        // Lấy sản phẩm vừa cập nhật từ cơ sở dữ liệu
-//        Product updatedProduct = productDAO.getProductsById(productId);
-//        System.out.println(updatedProduct);
-
-        //test Delete Product 
         ProductDAO productDAO = new ProductDAO();
+        String keyword = "Ô Long"; // Thay "sample" bằng từ khóa bạn muốn tìm kiếm
+        List<Product> products = productDAO.getProductByKeyWords(keyword);
 
-            // ID của sản phẩm cần xóa
-            int productId = 25;
-
-            // Xóa sản phẩm
-            int result = productDAO.deleteProduct(productId);
-            if (result > 0) {
-                System.out.println("Sản phẩm đã được xóa thành công.");
-            } else {
-                System.out.println("Không thể xóa sản phẩm hoặc sản phẩm không tồn tại.");
+        if (products != null && !products.isEmpty()) {
+            for (Product product : products) {
+                System.out.println("Product ID: " + product.getProduct_id());
+                System.out.println("Product Name: " + product.getProduct_name());
+                System.out.println("Category: " + product.getCategory().getCategory_name());
+                System.out.println("Image: " + product.getImage());
+                System.out.println("Price: " + product.getPrice());
+                System.out.println("Discount: " + product.getDiscount());
+                System.out.println("Create At: " + product.getCreate_at());
+                System.out.println("---------------");
             }
+        } else {
+            System.out.println("No products found with the keyword: " + keyword);
+        }
     }
 
 }
