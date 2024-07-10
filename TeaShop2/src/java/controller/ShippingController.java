@@ -28,9 +28,12 @@ public class ShippingController extends HttpServlet {
             throws ServletException, IOException {
         OrdersDAO orderDAO = new OrdersDAO();
         StatusDAO statusDAO = new StatusDAO();
-        List<Orders> listOrders = orderDAO.getAllListOrder();
+        String statusOrderParam = request.getParameter("statusOrder");
+        int statusOrder = (statusOrderParam != null) ? Integer.parseInt(statusOrderParam) : 2;
+        List<Orders> listOrders = orderDAO.findOrdersStatusId(statusOrder);
         List<Status> listStatus = statusDAO.findAll();
         HttpSession session = request.getSession();
+        request.setAttribute("statusOrder", statusOrder);
         session.setAttribute("listOrders", listOrders);
         session.setAttribute("listStatus", listStatus);
         request.getRequestDispatcher("view/dashboard/shipper/order-list.jsp").forward(request, response);

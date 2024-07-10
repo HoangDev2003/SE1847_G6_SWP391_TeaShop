@@ -54,6 +54,40 @@
         userLinkRTL.setAttribute('disabled', true);
       }
     </script>
+    <style>
+    /* CSS tuỳ chỉnh để tối ưu hóa cho màn hình điện thoại */
+    @media (max-width: 50px) {
+      .card-header .row {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .card-header .col-4, .card-header .col-8 {
+        flex: 0 0 100%;
+        max-width: 100%;
+      }
+      .card-header .col-4 h5 {
+        margin-bottom: 1rem;
+      }
+      .card-body .table-responsive {
+        overflow-x: auto;
+      }
+      .table th, .table td {
+        white-space: nowrap;
+        font-size: 0.875rem;
+      }
+      .table th {
+        min-width: 80px;
+      }
+      .table th:first-child, .table td:first-child {
+        width: 30px;
+      }
+    }
+    .address {
+    width: 200px; /* Giới hạn chiều rộng tối đa */
+    word-wrap: break-word; /* Tự động xuống dòng khi quá chiều rộng */
+    white-space: normal; /* Cho phép xuống dòng */
+}
+  </style>
   </head>
 
 
@@ -83,189 +117,129 @@
           
         </nav>
         <div class="content">
-          <nav class="navbar navbar-light navbar-glass navbar-top navbar-expand">
-
-            <button class="btn navbar-toggler-humburger-icon navbar-toggler me-1 me-sm-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarVerticalCollapse" aria-controls="navbarVerticalCollapse" aria-expanded="false" aria-label="Toggle Navigation"><span class="navbar-toggle-icon"><span class="toggle-line"></span></span></button>
-            <a class="navbar-brand me-1 me-sm-3" href="${pageContext.request.contextPath}/index.html">
-              <div class="d-flex align-items-center"><img class="me-2" src="${pageContext.request.contextPath}/assets/img/icons/spot-illustrations/falcon.png" alt="" width="40" /><span class="font-sans-serif">falcon</span>
-              </div>
-            </a>
-            <ul class="navbar-nav align-items-center d-none d-lg-block">
-              <li class="nav-item">
-                <div class="search-box" data-list='{"valueNames":["title"]}'>
-                  <form class="position-relative" data-bs-toggle="search" data-bs-display="static">
-                    <input class="form-control search-input fuzzy-search" type="search" placeholder="Search..." aria-label="Search" />
-                    <span class="fas fa-search search-box-icon"></span>
-
-                  </form>
-                  <div class="btn-close-falcon-container position-absolute end-0 top-50 translate-middle shadow-none" data-bs-dismiss="search">
-                    <div class="btn-close-falcon" aria-label="Close"></div>
-                  </div>
-                  
-                </div>
-              </li>
-            </ul>
-            <ul class="navbar-nav navbar-nav-icons ms-auto flex-row align-items-center">
-              <li class="nav-item">
-                <div class="theme-control-toggle fa-icon-wait px-2">
-                  <input class="form-check-input ms-0 theme-control-toggle-input" id="themeControlToggle" type="checkbox" data-theme-control="theme" value="dark" />
-                  <label class="mb-0 theme-control-toggle-label theme-control-toggle-light" for="themeControlToggle" data-bs-toggle="tooltip" data-bs-placement="left" title="Switch to light theme"><span class="fas fa-sun fs-0"></span></label>
-                  <label class="mb-0 theme-control-toggle-label theme-control-toggle-dark" for="themeControlToggle" data-bs-toggle="tooltip" data-bs-placement="left" title="Switch to dark theme"><span class="fas fa-moon fs-0"></span></label>
-                </div>
-              </li>
-             
+          <jsp:include page="../../common/dashboard/shipper/topbar.jsp"></jsp:include>
+          <div class="card mb-3" id="ordersTable" data-list='{"valueNames":["order","status","amount"],"page":10,"pagination":true}'>
+  <div class="card-header">
+    <div class="row flex-between-center">
+      <div class="col-4 col-sm-auto d-flex align-items-center pe-0">
+        <h5 class="fs-0 mb-0 text-nowrap py-2 py-xl-0">Đơn hàng</h5>
+      </div>
+      <div class="col-8 col-sm-auto ms-auto text-end ps-0">
+        <div class="d-none" id="orders-bulk-actions">
+          
+        </div>
+        <div id="orders-actions">
+          <button class="btn ${statusOrder == 2 ? 'btn-primary' : 'btn'}" onclick="filterOrders(2)">Chờ giao hàng</button>
+         
+          <button class="btn ${statusOrder == 3 ? 'btn-primary' : 'btn'}" onclick="filterOrders(3)">Hoàn thành</button>
+        </div>
+      </div>
+        <script>
+           
+            function filterOrders(statusOrder) {
+                window.location.href = 'ship?statusOrder=' + statusOrder;
+            }
+        </script>
+    </div>
+  </div>
+  <div class="card-body p-0">
+    <div class="table-responsive scrollbar">
+      <table class="table table-sm table-striped fs--1 mb-0 overflow-hidden">
+        <thead class="bg-200 text-900">
+          <tr>
+            <th>
               
-              <li class="nav-item dropdown"><a class="nav-link pe-0" id="navbarDropdownUser" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <div class="avatar avatar-xl">
-                    <img class="rounded-circle" src="${pageContext.request.contextPath}/assets/img/team/3-thumb.png" alt="" />
-
-                  </div>
-                </a>
-                <div class="dropdown-menu dropdown-menu-end py-0" aria-labelledby="navbarDropdownUser">
-                  <div class="bg-white dark__bg-1000 rounded-2 py-2">
-                    <a class="dropdown-item fw-bold text-warning" href="#!"><span class="fas fa-crown me-1"></span><span>My Account</span></a>
-
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#!">Set status</a>
-                    <a class="dropdown-item" href="${pageContext.request.contextPath}/pages/user/profile.html">Profile &amp; account</a>
-                    <a class="dropdown-item" href="#!">Feedback</a>
-
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="${pageContext.request.contextPath}/pages/user/settings.html">Settings</a>
-                    <a class="dropdown-item" href="${pageContext.request.contextPath}/pages/authentication/card/logout.html">Logout</a>
-                  </div>
-                </div>
-              </li>
-            </ul>
-          </nav>
-          <div class="card mb-3" id="ordersTable" data-list='{"valueNames":["order","date","address","status","amount"],"page":10,"pagination":true}'>
-            <div class="card-header">
-              <div class="row flex-between-center">
-                <div class="col-4 col-sm-auto d-flex align-items-center pe-0">
-                  <h5 class="fs-0 mb-0 text-nowrap py-2 py-xl-0">Orders</h5>
-                </div>
-                <div class="col-8 col-sm-auto ms-auto text-end ps-0">
-                  <div class="d-none" id="orders-bulk-actions">
-                    <div class="d-flex">
-                      <select class="form-select form-select-sm" aria-label="Bulk actions">
-                        <option selected="">Bulk actions</option>
-                        <option value="Refund">Refund</option>
-                        <option value="Delete">Delete</option>
-                        <option value="Archive">Archive</option>
-                      </select>
-                      <button class="btn btn-falcon-default btn-sm ms-2" type="button">Apply</button>
-                    </div>
-                  </div>
-                  <div id="orders-actions">
-                    <button class="btn btn-falcon-default btn-sm" type="button"><span class="fas fa-plus" data-fa-transform="shrink-3 down-2"></span><span class="d-none d-sm-inline-block ms-1">New</span></button>
-                    <button class="btn btn-falcon-default btn-sm mx-2" type="button"><span class="fas fa-filter" data-fa-transform="shrink-3 down-2"></span><span class="d-none d-sm-inline-block ms-1">Filter</span></button>
-                    <button class="btn btn-falcon-default btn-sm" type="button"><span class="fas fa-external-link-alt" data-fa-transform="shrink-3 down-2"></span><span class="d-none d-sm-inline-block ms-1">Export</span></button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="card-body p-0">
-              <div class="table-responsive scrollbar">
-                <table class="table table-sm table-striped fs--1 mb-0 overflow-hidden">
-                  <thead class="bg-200 text-900">
-                    <tr>
-                      <th>
-                        <div class="form-check fs-0 mb-0 d-flex align-items-center">
-                          <input class="form-check-input" id="checkbox-bulk-customers-select" type="checkbox" data-bulk-select='{"body":"table-orders-body","actions":"orders-bulk-actions","replacedElement":"orders-actions"}' />
-                        </div>
-                      </th>
-                      
-                      <th class="sort pe-1 align-middle white-space-nowrap" data-sort="order">Order</th>
-                      <th class="sort pe-1 align-middle white-space-nowrap pe-7" data-sort="date">Date</th>
-                      <th class="sort pe-1 align-middle white-space-nowrap " data-sort="phone">Phone number</th>
-                      <th class="sort pe-1 align-middle white-space-nowrap" data-sort="product">Product</th>
-                      <th class="sort pe-1 align-middle white-space-nowrap" data-sort="address" style="min-width: 12.5rem;">Ship To</th>
-                      <th class="sort pe-1 align-middle white-space-nowrap text-center" data-sort="status">Status</th>
-                      <th class="sort pe-1 align-middle white-space-nowrap text-end" data-sort="amount">Amount</th>
-                      <th class="no-sort"></th>
-                    </tr>
-                  </thead>
-                  <tbody class="list" id="table-orders-body">
-                      <c:forEach items="${listOrders}" var="lo">
-    <tr class="btn-reveal-trigger">
-        <td class="align-middle" style="width: 30px;">
-            <div class="form-check fs-0 mb-0 d-flex align-items-center">
-                <input class="form-check-input" type="checkbox" id="checkbox-${lo.order_id}" data-bulk-select-row="data-bulk-select-row" />
-            </div>
-        </td>
-        <td class="order py-2 align-middle white-space-nowrap">
-            <a href="${pageContext.request.contextPath}/app/e-commerce/orders/order-details.html">
-                <strong>#${lo.order_id}</strong>
-            </a> bởi <strong>${lo.account.full_name}</strong><br/>
-        </td>
-        <td class="date py-2 align-middle">${lo.order_date}</td>
-        <td class="date py-2 align-middle">${lo.account.phone_number}</td>
-        <td class="address py-2 align-middle white-space-nowrap">${lo.product.product_name}</td>
-        <td class="address py-2 align-middle white-space-nowrap">
-            ${lo.account.address}
-            <p class="mb-0 text-500">VnPay</p>
-        </td>
-        <td class="status py-2 align-middle text-center fs-0 white-space-nowrap">
-            <c:choose>
-                <c:when test="${lo.status.status_name == 'Chờ xác nhận'}">
+            </th>
+            <th class="sort pe-1 align-middle white-space-nowrap" data-sort="order">Đơn hàng</th>
+            
+            
+            
+            
+            <th class="sort pe-1 align-middle white-space-nowrap text-center" data-sort="status">Trạng thái</th>
+            
+            <th class="no-sort"></th>
+          </tr>
+        </thead>
+        <tbody class="list" id="table-orders-body">
+          <c:forEach items="${listOrders}" var="lo">
+            <tr class="btn-reveal-trigger">
+              <td class="align-middle" style="width: 1px;">
+                
+              </td>
+              <td class="order py-2 align-middle white-space-nowrap" ">
+                <a href="shipdetail?order_id=${lo.order_id}">
+                  <strong>#${lo.order_id}</strong>
+                </a> bởi <strong>${lo.full_name}</strong><br/>
+                <div>${lo.formattedOrderDate}</div>
+                <div>${lo.product.product_name}</div>
+                <div>${lo.phone_number}</div>
+                <div class="address">${lo.address}</div>
+                <div>${lo.total_amount} đ</div>
+                
+              </td>
+            
+              
+              <td class=" py-2 align-middle text-center fs-0 white-space-nowrap">
+                <c:choose>
+                  <c:when test="${lo.status.status_name == 'Chờ xác nhận'}">
                     <span class="badge badge rounded-pill d-block badge-soft-warning">
-                        Chờ xác nhận<span class="ms-1 fas fa-stream" data-fa-transform="shrink-2"></span>
+                      Chờ xác nhận<span class="ms-1 fas fa-stream" data-fa-transform="shrink-2"></span>
                     </span>
-                </c:when>
-                <c:when test="${lo.status.status_name == 'Chờ giao hàng'}">
+                  </c:when>
+                  <c:when test="${lo.status.status_name == 'Chờ giao hàng'}">
                     <span class="badge badge rounded-pill d-block badge-soft-primary">
-                        Chờ giao hàng<span class="ms-1 fas fa-redo" data-fa-transform="shrink-2"></span>
+                      Chờ giao hàng<span class="ms-1 fas fa-redo" data-fa-transform="shrink-2"></span>
                     </span>
-                </c:when>
-                <c:when test="${lo.status.status_name == 'Hoàn thành'}">
+                  </c:when>
+                  <c:when test="${lo.status.status_name == 'Hoàn thành'}">
                     <span class="badge badge rounded-pill d-block badge-soft-success">
-                        Hoàn thành<span class="ms-1 fas fa-check" data-fa-transform="shrink-2"></span>
+                      Hoàn thành<span class="ms-1 fas fa-check" data-fa-transform="shrink-2"></span>
                     </span>
-                </c:when>
-                <c:otherwise>
+                  </c:when>
+                  <c:otherwise>
                     <span class="badge badge rounded-pill d-block badge-soft-secondary">
-                        ${lo.status.status_name}<span class="ms-1 fas fa-question-circle" data-fa-transform="shrink-2"></span>
+                      ${lo.status.status_name}<span class="ms-1 fas fa-question-circle" data-fa-transform="shrink-2"></span>
                     </span>
-                </c:otherwise>
-            </c:choose>
-        </td>
-        <td class="amount py-2 align-middle text-end fs-0 fw-medium">${lo.total_amount} đ</td>
-        <td class="py-2 align-middle white-space-nowrap text-end">
-            <div class="dropdown font-sans-serif position-static">
-                <button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal" type="button" id="order-dropdown-${lo.order_id}" data-bs-toggle="dropdown" data-boundary="viewport" aria-haspopup="true" aria-expanded="false">
+                  </c:otherwise>
+                </c:choose>
+              </td>
+              
+              <td class="py-2 align-middle white-space-nowrap text-end">
+                <div class="dropdown font-sans-serif position-static">
+                  <button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal" type="button" id="order-dropdown-${lo.order_id}" data-bs-toggle="dropdown" data-boundary="viewport" aria-haspopup="true" aria-expanded="false">
                     <span class="fas fa-ellipsis-h fs--1"></span>
-                </button>
-                <div class="dropdown-menu dropdown-menu-end border py-0" aria-labelledby="order-dropdown-${lo.order_id}">
+                  </button>
+                  <div class="dropdown-menu dropdown-menu-end border py-0" aria-labelledby="order-dropdown-${lo.order_id}">
                     <div class="bg-white py-2">
-                        <c:forEach items="${listStatus}" var="ls">
-                            <form action="ship" method="post">
-                                <input type="hidden" name="action" value="updateStatus">
-                                <input type="hidden" name="orderId" value="${lo.order_id}">
-                                <input type="hidden" name="statusId" value="${ls.status_id}">
-                                <button class="dropdown-item" type="submit">${ls.status_name}</button>
-                            </form>
-                        </c:forEach>
-<!--                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item text-danger" href="#!">Delete</a>-->
+                      <c:forEach items="${listStatus}" var="ls">
+                        <form action="ship" method="post">
+                          <input type="hidden" name="action" value="updateStatus">
+                          <input type="hidden" name="orderId" value="${lo.order_id}">
+                          <input type="hidden" name="statusId" value="${ls.status_id}">
+                          <button class="dropdown-item" type="submit">${ls.status_name}</button>
+                        </form>
+                      </c:forEach>
+                      <!-- <div class="dropdown-divider"></div>
+                      <a class="dropdown-item text-danger" href="#!">Xóa</a> -->
                     </div>
+                  </div>
                 </div>
-            </div>
-        </td>
-    </tr>
-</c:forEach>
-                    
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            <div class="card-footer">
-              <div class="d-flex align-items-center justify-content-center">
-                <button class="btn btn-sm btn-falcon-default me-1" type="button" title="Previous" data-list-pagination="prev"><span class="fas fa-chevron-left"></span></button>
-                <ul class="pagination mb-0"></ul>
-                <button class="btn btn-sm btn-falcon-default ms-1" type="button" title="Next" data-list-pagination="next"><span class="fas fa-chevron-right">             </span></button>
-              </div>
-            </div>
-          </div>
+              </td>
+            </tr>
+          </c:forEach>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="card-footer">
+    <div class="d-flex align-items-center justify-content-center">
+      <button class="btn btn-sm btn-falcon-default me-1" type="button" title="Previous" data-list-pagination="prev"><span class="fas fa-chevron-left"></span></button>
+      <ul class="pagination mb-0"></ul>
+      <button class="btn btn-sm btn-falcon-default ms-1" type="button" title="Next" data-list-pagination="next"><span class="fas fa-chevron-right"></span></button>
+    </div>
+      
+  </div>
+</div>
           <footer class="footer">
             <div class="row g-0 justify-content-between fs--1 mt-4 mb-3">
               <div class="col-12 col-sm-auto text-center">
@@ -287,43 +261,7 @@
                 </div>
                 <button class="btn-close btn-close-white position-absolute top-0 end-0 mt-2 me-2" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
-              <div class="modal-body py-4 px-5">
-                <form>
-                  <div class="mb-3">
-                    <label class="form-label" for="modal-auth-name">Name</label>
-                    <input class="form-control" type="text" autocomplete="on" id="modal-auth-name" />
-                  </div>
-                  <div class="mb-3">
-                    <label class="form-label" for="modal-auth-email">Email address</label>
-                    <input class="form-control" type="email" autocomplete="on" id="modal-auth-email" />
-                  </div>
-                  <div class="row gx-2">
-                    <div class="mb-3 col-sm-6">
-                      <label class="form-label" for="modal-auth-password">Password</label>
-                      <input class="form-control" type="password" autocomplete="on" id="modal-auth-password" />
-                    </div>
-                    <div class="mb-3 col-sm-6">
-                      <label class="form-label" for="modal-auth-confirm-password">Confirm Password</label>
-                      <input class="form-control" type="password" autocomplete="on" id="modal-auth-confirm-password" />
-                    </div>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="modal-auth-register-checkbox" />
-                    <label class="form-label" for="modal-auth-register-checkbox">I accept the <a href="#!">terms </a>and <a href="#!">privacy policy</a></label>
-                  </div>
-                  <div class="mb-3">
-                    <button class="btn btn-primary d-block w-100 mt-3" type="submit" name="submit">Register</button>
-                  </div>
-                </form>
-                <div class="position-relative mt-5">
-                  <hr class="bg-300" />
-                  <div class="divider-content-center">or register with</div>
-                </div>
-                <div class="row g-2 mt-2">
-                  <div class="col-sm-6"><a class="btn btn-outline-google-plus btn-sm d-block w-100" href="#"><span class="fab fa-google-plus-g me-2" data-fa-transform="grow-8"></span> google</a></div>
-                  <div class="col-sm-6"><a class="btn btn-outline-facebook btn-sm d-block w-100" href="#"><span class="fab fa-facebook-square me-2" data-fa-transform="grow-8"></span> facebook</a></div>
-                </div>
-              </div>
+              
             </div>
           </div>
         </div>

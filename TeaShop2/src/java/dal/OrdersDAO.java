@@ -81,13 +81,18 @@ public class OrdersDAO extends DBContext {
             while (rs.next()) {
 
                 order = new Orders();
-                order.order_id = rs.getInt("order_id");
-                order.account = (new AccountDAO().getAccountByAccountID(rs.getInt("account_id")));
-                order.status = (new StatusDAO().getStatusByStatusID(rs.getInt("status_id")));
-                order.total_amount = rs.getInt("total_amount");
-                order.setOrder_date(rs.getTimestamp("order_date"));
+                order.setOrder_id(rs.getInt("order_id"));
+
+                order.setAccount(new AccountDAO().getAccountByAccountID(rs.getInt("account_id")));
+                order.setStatus(new StatusDAO().getStatusByStatusID(rs.getInt("status_id")));
+                order.setTotal_amount(rs.getInt("total_amount"));
+                order.setOrder_date(rs.getTimestamp("order_date")); // Set order_date directly
                 order.setEstimated_delivery_date(rs.getTimestamp("estimated_delivery_date"));
-                order.note = rs.getString("note");
+                order.setNote(rs.getString("note"));
+                order.setAddress(rs.getString("address"));
+                order.setFull_name(rs.getString("full_name"));
+                order.setPayment_method(rs.getString("payment_method"));
+                order.setPhone_number(rs.getString("phone_number"));
                 ordersList.add(order);
             }
 
@@ -119,10 +124,10 @@ public class OrdersDAO extends DBContext {
     public List<Orders> findByAccountId(int accountId) {
         List<Orders> ordersList = new ArrayList<>();
         Orders order = null;
+        connection = getConnection(); // Obtain database connection
         String sql = "SELECT * FROM Orders WHERE account_id = ?";
 
         try {
-            connection = getConnection();
             PreparedStatement pre = connection.prepareStatement(
                     sql,
                     ResultSet.TYPE_SCROLL_SENSITIVE,
@@ -132,17 +137,18 @@ public class OrdersDAO extends DBContext {
 
             while (rs.next()) {
                 order = new Orders();
-                order.order_id = rs.getInt("order_id");
-                order.account = (new AccountDAO().getAccountByAccountID(rs.getInt("account_id")));
-                order.status = (new StatusDAO().getStatusByStatusID(rs.getInt("status_id")));
-                order.total_amount = rs.getInt("total_amount");
-                order.setOrder_date(rs.getTimestamp("order_date"));
-                order.setEstimated_delivery_date(rs.getTimestamp("estimated_delivery_date"));
-                // Retrieve the note
-                order.note = rs.getString("note");
+                order.setOrder_id(rs.getInt("order_id"));
 
-                // Add the order to the list
-                ordersList.add(order);
+                order.setAccount(new AccountDAO().getAccountByAccountID(rs.getInt("account_id")));
+                order.setStatus(new StatusDAO().getStatusByStatusID(rs.getInt("status_id")));
+                order.setTotal_amount(rs.getInt("total_amount"));
+                order.setOrder_date(rs.getTimestamp("order_date")); // Set order_date directly
+                order.setEstimated_delivery_date(rs.getTimestamp("estimated_delivery_date"));
+                order.setNote(rs.getString("note"));
+                order.setAddress(rs.getString("address"));
+                order.setFull_name(rs.getString("full_name"));
+                order.setPayment_method(rs.getString("payment_method"));
+                order.setPhone_number(rs.getString("phone_number"));
             }
 
             rs.close(); // Close ResultSet
@@ -230,13 +236,19 @@ public class OrdersDAO extends DBContext {
 
             if (rs.next()) {
                 order = new Orders();
-                order.order_id = rs.getInt("order_id");
-                order.account = (new AccountDAO().getAccountByAccountID(rs.getInt("account_id")));
-                order.status = (new StatusDAO().getStatusByStatusID(rs.getInt("status_id")));
-                order.total_amount = rs.getInt("total_amount");
-                order.setOrder_date(rs.getTimestamp("order_date"));
+                order.setOrder_id(rs.getInt("order_id"));
+
+                order.setAccount(new AccountDAO().getAccountByAccountID(rs.getInt("account_id")));
+                order.setStatus(new StatusDAO().getStatusByStatusID(rs.getInt("status_id")));
+                order.setTotal_amount(rs.getInt("total_amount"));
+                order.setOrder_date(rs.getTimestamp("order_date")); // Set order_date directly
                 order.setEstimated_delivery_date(rs.getTimestamp("estimated_delivery_date"));
-                order.note = rs.getString("note");
+                order.setNote(rs.getString("note"));
+                order.setAddress(rs.getString("address"));
+                order.setFull_name(rs.getString("full_name"));
+                order.setPayment_method(rs.getString("payment_method"));
+                order.setPhone_number(rs.getString("phone_number"));
+
             }
 
             rs.close(); // Close ResultSet
@@ -276,6 +288,159 @@ public class OrdersDAO extends DBContext {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+        }
+    }
+    public List<Orders> getOrderByStatusCompeleteAndAccountID(int account_id) {
+        List<Orders> ordersList = new ArrayList<>();
+        connection = getConnection();
+        Orders order = null;
+        String sql = "SELECT *\n"
+                + "  FROM [dbo].[Orders]\n"
+                + "  Where status_id = 3 and account_id = ?";
+        try {
+            PreparedStatement pre = connection.prepareStatement(
+                    sql,
+                    ResultSet.TYPE_SCROLL_SENSITIVE,
+                    ResultSet.CONCUR_READ_ONLY);
+            pre.setInt(1, account_id);
+            ResultSet rs = pre.executeQuery();
+
+            while (rs.next()) {
+
+                order = new Orders();
+                order.setOrder_id(rs.getInt("order_id"));
+
+                order.setAccount(new AccountDAO().getAccountByAccountID(rs.getInt("account_id")));
+                order.setStatus(new StatusDAO().getStatusByStatusID(rs.getInt("status_id")));
+                order.setTotal_amount(rs.getInt("total_amount"));
+                order.setOrder_date(rs.getTimestamp("order_date")); // Set order_date directly
+                order.setEstimated_delivery_date(rs.getTimestamp("estimated_delivery_date"));
+                order.setNote(rs.getString("note"));
+                order.setAddress(rs.getString("address"));
+                order.setFull_name(rs.getString("full_name"));
+                order.setPayment_method(rs.getString("payment_method"));
+                order.setPhone_number(rs.getString("phone_number"));
+            }
+
+            rs.close(); // Close ResultSet
+            pre.close(); // Close PreparedStatement
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception ex) { // Catch any parsing exceptions
+            Logger.getLogger(OrdersDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close(); // Close the database connection
+                }
+            } catch (SQLException e) {
+                Logger.getLogger(OrdersDAO.class.getName()).log(Level.SEVERE, null, e);
+            }
+        }
+
+        return ordersList;
+    }
+
+    public static void main(String[] args) {
+
+        OrdersDAO orderDAO = new OrdersDAO();
+        List<Orders> orderlist = orderDAO.getAllListOrder();
+        System.out.println(orderlist.size());
+
+    }
+
+    public List<Orders> getOrderByStatusCompeleteAndAccountIDAndFeedback(int account_id, int statusFeedback) {
+        List<Orders> ordersList = new ArrayList<>();
+        Orders order = null;
+        try {
+            connection = getConnection(); // get connection to your database
+            String query = "SELECT * FROM Orders WHERE account_id = ? AND status_id = ? AND status_feedback_id = ?";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setInt(1, account_id);
+            ps.setInt(2, 3);
+            ps.setInt(3, statusFeedback);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                order = new Orders();
+                order.setOrder_id(rs.getInt("order_id"));
+
+                order.setAccount(new AccountDAO().getAccountByAccountID(rs.getInt("account_id")));
+                order.setStatus(new StatusDAO().getStatusByStatusID(rs.getInt("status_id")));
+                order.setTotal_amount(rs.getInt("total_amount"));
+                order.setOrder_date(rs.getTimestamp("order_date")); // Set order_date directly
+                order.setEstimated_delivery_date(rs.getTimestamp("estimated_delivery_date"));
+                order.setNote(rs.getString("note"));
+                order.setAddress(rs.getString("address"));
+                order.setFull_name(rs.getString("full_name"));
+                order.setPayment_method(rs.getString("payment_method"));
+                order.setPhone_number(rs.getString("phone_number"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ordersList;
+    }
+
+    public List<Orders> findOrdersStatusId(int statusId) {
+        List<Orders> ordersList = new ArrayList<>();
+        Orders order = null;
+        String sql = "SELECT * FROM Orders WHERE status_id = ?";
+
+        try {
+            connection = getConnection();
+            PreparedStatement pre = connection.prepareStatement(
+                    sql,
+                    ResultSet.TYPE_SCROLL_SENSITIVE,
+                    ResultSet.CONCUR_READ_ONLY);
+            pre.setInt(1, statusId);
+
+            ResultSet rs = pre.executeQuery();
+
+            while (rs.next()) {
+                order = new Orders();
+                order.setOrder_id(rs.getInt("order_id"));
+
+                order.setAccount(new AccountDAO().getAccountByAccountID(rs.getInt("account_id")));
+                order.setStatus(new StatusDAO().getStatusByStatusID(rs.getInt("status_id")));
+                order.setTotal_amount(rs.getInt("total_amount"));
+                order.setOrder_date(rs.getTimestamp("order_date")); // Set order_date directly
+                order.setEstimated_delivery_date(rs.getTimestamp("estimated_delivery_date"));
+                order.setNote(rs.getString("note"));
+                order.setAddress(rs.getString("address"));
+                order.setFull_name(rs.getString("full_name"));
+                order.setPayment_method(rs.getString("payment_method"));
+                order.setPhone_number(rs.getString("phone_number"));
+
+                // Add the order to the list
+                ordersList.add(order);
+            }
+
+            rs.close(); // Close ResultSet
+            pre.close(); // Close PreparedStatement
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception ex) { // Catch any parsing exceptions
+            Logger.getLogger(OrdersDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close(); // Close the database connection
+                }
+            } catch (SQLException e) {
+                Logger.getLogger(OrdersDAO.class.getName()).log(Level.SEVERE, null, e);
+            }
+        }
+        return ordersList; // Return the list of orders
+    }
+
+    public void updateDeliveryTime(int orderId, Timestamp deliveryTime) {
+        String query = "UPDATE Orders SET estimate_delivery_date = ? WHERE order_id = ?";
+        try (Connection connection = getConnection(); PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setTimestamp(1, deliveryTime);
+            ps.setInt(2, orderId);
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         }
     }
 
