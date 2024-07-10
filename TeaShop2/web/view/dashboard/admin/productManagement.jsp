@@ -33,7 +33,7 @@
                     <input type="hidden" name="service" value="searchByKeywords"/>
                     <div class="input-group">
                         <input class="form-control" type="text" placeholder="Search by Keywords" aria-label="Search by Keywords" aria-describedby="btnNavbarSearch" name="keywords"
-                               value="${keywords}" />
+                               value="${keywords}"/>
                         <button class="btn btn-primary" id="btnNavbarSearch" type="submit"><i class="fas fa-search"></i></button>
                     </div>
                 </form>
