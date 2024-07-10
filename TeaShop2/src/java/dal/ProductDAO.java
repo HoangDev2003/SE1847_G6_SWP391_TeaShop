@@ -563,6 +563,31 @@ public class ProductDAO extends DBContext {
                     .getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    public void updateDiscount(Product p, int pid) {
+        connection = getConnection();
+        PreparedStatement stm = null;
+
+        String sql = "UPDATE [dbo].[Product]\n"
+                + "   SET [product_name] = ?\n"
+                + "      ,[category_id] = ?\n"
+                + "      ,[price] = ?\n"
+                + "	 ,[discount] = ?\n"
+                + " WHERE product_id = ?";
+        try {
+            stm = connection.prepareStatement(sql);
+            stm.setString(1, p.getProduct_name());
+            stm.setInt(2, p.getCategory().getCategory_id());
+            stm.setInt(3, p.getPrice());
+            stm.setFloat(4, p.getDiscount());
+            stm.setInt(7, pid);
+            stm.executeUpdate();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     public int deleteProduct(int id) {
         connection = getConnection();
@@ -586,24 +611,8 @@ public class ProductDAO extends DBContext {
     }
 
     public static void main(String[] args) {
-        ProductDAO productDAO = new ProductDAO();
-        String keyword = "Ô Long"; // Thay "sample" bằng từ khóa bạn muốn tìm kiếm
-        List<Product> products = productDAO.getProductByKeyWords(keyword);
-
-        if (products != null && !products.isEmpty()) {
-            for (Product product : products) {
-                System.out.println("Product ID: " + product.getProduct_id());
-                System.out.println("Product Name: " + product.getProduct_name());
-                System.out.println("Category: " + product.getCategory().getCategory_name());
-                System.out.println("Image: " + product.getImage());
-                System.out.println("Price: " + product.getPrice());
-                System.out.println("Discount: " + product.getDiscount());
-                System.out.println("Create At: " + product.getCreate_at());
-                System.out.println("---------------");
-            }
-        } else {
-            System.out.println("No products found with the keyword: " + keyword);
-        }
+        
+        
     }
 
 }
