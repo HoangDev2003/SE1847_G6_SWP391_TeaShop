@@ -8,7 +8,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
-<!--<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="utf-8" />
@@ -23,11 +23,11 @@
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-             Navbar Brand
+            Navbar Brand
             <a class="navbar-brand ps-3" href="productmanager">Product Management</a>
-             Sidebar Toggle
+            Sidebar Toggle
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
-             Navbar Search
+            Navbar Search
             <c:if test="${showSearchProduct ne null}">
                 <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0" action="productmanager" id="searchByName">
                     <input type="hidden" name="service" value="searchByKeywords"/>
@@ -40,7 +40,7 @@
             </c:if>
 
 
-             Navbar
+            Navbar
             <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
@@ -74,7 +74,7 @@
 
                         <c:if test="${not empty listAllProduct}">
                             <div class="card mb-4">
-                                  
+
                             </div>
 
                             <div class="card mb-4">
@@ -82,7 +82,6 @@
                                     <i class="fas fa-table me-1"></i>
                                     Product Manager
                                 </div>
-                                List all Product
                                 <div class="card-body">
                                     <table id="datatablesSimple" >
                                         <thead>
@@ -90,11 +89,9 @@
                                                 <th>Product ID</th>
                                                 <th>Product Name</th>
                                                 <th>Category</th>
-                                                <th>Image</th>
                                                 <th>Price</th>
-                                                <th>Date</th>
-                                                <th>Update</th>
-                                                <th>Delete</th>   
+                                                <th>Discount (%) </th>
+                                                <th>Update</th> 
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -103,13 +100,10 @@
                                                     <td>${product.product_id}</td>
                                                     <td>${product.product_name}</td>
                                                     <td>${product.category.category_name}</td>
-                                                    <td><img src="${product.image}" style="width: 130px" /></td>
-                                                        <fmt:setLocale value="vi_VN" />
+                                                    <fmt:setLocale value="vi_VN" />
                                                     <td><fmt:formatNumber value="${product.price}" type="currency" currencySymbol="₫" /></td>
-                                                    <td>${product.create_at}</td>
-                                                    <td><a href="updateProductManager?service=requestUpdate&productId=${product.product_id}"><ion-icon name="create-outline"></ion-icon></a></td>
-                                                    <td><a href="deleteProductManager?service=requestDelete&productId=${product.product_id}">
-                                                            <ion-icon name="trash-outline"></ion-icon></a></td>
+                                                    <td>${product.discount}</td>
+                                                    <td><a href="saleManager?service=requestUpdate&productId=${product.product_id}"><ion-icon name="create-outline"></ion-icon></a></td>
                                                 </tr>  
                                             </c:forEach>
                                         </tbody>                                   
@@ -215,10 +209,9 @@
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         <script src="${pageContext.request.contextPath}/js/datatables-simple-demo.js"></script>
         <script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
-         Include jQuery 
         <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 
 
 
     </body>
-</html>-->
+</html>

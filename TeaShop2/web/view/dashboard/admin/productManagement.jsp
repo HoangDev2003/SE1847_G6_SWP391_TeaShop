@@ -225,7 +225,6 @@
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         <script src="${pageContext.request.contextPath}/js/datatables-simple-demo.js"></script>
         <script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
-        <!-- Include jQuery -->
         <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 
 
