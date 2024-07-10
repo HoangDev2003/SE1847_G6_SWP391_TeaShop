@@ -124,6 +124,10 @@
         <servlet-name>StaffManager</servlet-name>
         <servlet-class>controller.StaffManager</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SaleManager</servlet-name>
+        <servlet-class>controller.SaleManagerController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ShopController</servlet-name>
         <url-pattern>/shop</url-pattern>
@@ -264,5 +268,8 @@
         <servlet-name>EditStaff</servlet-name>
         <url-pattern>/editstaff</url-pattern>
     </servlet-mapping>
-    
+    <servlet-mapping>
+        <servlet-name>SaleManager</servlet-name>
+        <url-pattern>/saleManager</url-pattern>
+    </servlet-mapping>
 </web-app>

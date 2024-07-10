@@ -580,7 +580,7 @@ public class ProductDAO extends DBContext {
             stm.setInt(2, p.getCategory().getCategory_id());
             stm.setInt(3, p.getPrice());
             stm.setFloat(4, p.getDiscount());
-            stm.setInt(7, pid);
+            stm.setInt(5, pid);
             stm.executeUpdate();
 
         } catch (SQLException ex) {
@@ -611,7 +611,25 @@ public class ProductDAO extends DBContext {
     }
 
     public static void main(String[] args) {
-        
+        ProductDAO productDAO = new ProductDAO();
+
+        // Tạo đối tượng Category (giả sử category_id là 1)
+        Category category = new Category();
+        category.setCategory_id(1);
+
+        // Tạo đối tượng Product với các thuộc tính cần thiết
+        Product product = new Product();
+        product.setProduct_name("Ô Long Nhài Sữa");
+        product.setCategory(category);
+        product.setPrice(45000);
+        product.setDiscount(15);
+
+        // Gọi phương thức updateDiscount với product và product_id (giả sử product_id là 1)
+        int productId = 5;
+        productDAO.updateDiscount(product, productId);
+
+        // In ra thông báo để xác nhận đã cập nhật
+        System.out.println("Product updated successfully!");
         
     }
 
