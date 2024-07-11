@@ -6,6 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -134,7 +135,8 @@
                             <div class="col-lg-6">
                                 <h4 class="fw-bold mb-3">${product.product_name}</h4>
                                 <p class="mb-3">${product.category.category_name}</p>
-                                <h5 class="fw-bold mb-3">${product.price}đ</h5>
+                                <fmt:setLocale value="vi_VN" />
+                                <h5 class="fw-bold mb-3"><fmt:formatNumber value="${product.price}" type="currency" currencySymbol="₫" /></h5>
                                 <div class="d-flex mb-4">
                                     <i class="fa fa-star text-secondary"></i>
                                     <i class="fa fa-star text-secondary"></i>
@@ -193,10 +195,7 @@
                                         </c:forEach>
                                     </div>
                                     <div class="tab-pane" id="nav-vision" role="tabpanel">
-                                        <p class="text-dark">Tempor erat elitr rebum at clita. Diam dolor diam ipsum et tempor sit. Aliqu diam
-                                            amet diam et eos labore. 3</p>
-                                        <p class="mb-0">Diam dolor diam ipsum et tempor sit. Aliqu diam amet diam et eos labore.
-                                            Clita erat ipsum et lorem et sit</p>
+                                       
                                     </div>
                                 </div>
                             </div>
@@ -213,7 +212,10 @@
                                         <ul class="list-unstyled fruite-categorie">
                                             <li>
                                                 <div class="d-flex justify-content-between fruite-name">
-                                                    <a href="shop?search=category&category_id=${cate.category_id}">${cate.category_name}</a>
+                                                    
+                                                    <a href="shop?search=category&category_id=${cate.category_id}"><ion-icon name="caret-forward-outline"></ion-icon> ${cate.category_name}
+                                                    </a>
+                                                    
                                                 </div>
                                             </li>
                                         </ul>
@@ -237,7 +239,8 @@
                                                 <i class="fa fa-star"></i>
                                             </div>
                                             <div class="d-flex mb-2">
-                                                <h5 class="fw-bold me-2">${special.price}</h5>
+                                                <fmt:setLocale value="vi_VN" />
+                                                <h5 class="fw-bold me-2"><fmt:formatNumber value="${special.price}" type="currency" currencySymbol="₫" /></h5>
                                             </div>
                                         </div>
                                     </div>
@@ -267,7 +270,7 @@
 <script src="${pageContext.request.contextPath}/lib/waypoints/waypoints.min.js"></script>
 <script src="${pageContext.request.contextPath}/lib/lightbox/js/lightbox.min.js"></script>
 <script src="${pageContext.request.contextPath}/lib/owlcarousel/owl.carousel.min.js"></script>
-
+<script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
 <!-- Template Javascript -->
 <script src="${pageContext.request.contextPath}/js/main.js"></script>
 </body>

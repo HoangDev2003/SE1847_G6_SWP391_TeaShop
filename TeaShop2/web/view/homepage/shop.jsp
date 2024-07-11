@@ -205,7 +205,7 @@
                                     <div class="row g-4">
                                         <div class="col-lg-12">
                                             <div class="mb-3">
-                                                <h4>Loại sản phẩm</h4>
+                                                <h4>Danh mục sản phẩm</h4>
                                             <c:forEach items="${listCategory}" var="cate">
                                                 <ul class="list-unstyled fruite-categorie">
                                                     <li>
