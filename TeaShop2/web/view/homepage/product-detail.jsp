@@ -134,10 +134,16 @@
                             </div>
                             <div class="col-lg-6">
                                 <h4 class="fw-bold mb-3">${product.product_name}</h4>
-                                <p class="mb-3">${product.category.category_name}</p>
+                                <p class="" style="margin-bottom: 8px">${product.category.category_name}</p>
                                 <fmt:setLocale value="vi_VN" />
-                                <h5 class="fw-bold mb-3"><fmt:formatNumber value="${product.price}" type="currency" currencySymbol="₫" /></h5>
-                                <div class="d-flex mb-4">
+                                <p class="text-dark fs-5 fw-bold mb-0" style="">
+                                    <span style="text-decoration: line-through; opacity: 0.6; font-style: italic;">
+                                        <fmt:formatNumber value="${product.price}" type="currency" currencySymbol="₫" />
+                                    </span>
+                                    &nbsp;
+                                    <fmt:formatNumber value="${product.price - (product.price * (product.discount / 100))}" type="currency" currencySymbol="₫" />
+                                </p>
+                                <div class="d-flex mb-4" style=" padding-top: 10px">
                                     <i class="fa fa-star text-secondary"></i>
                                     <i class="fa fa-star text-secondary"></i>
                                     <i class="fa fa-star text-secondary"></i>
@@ -195,7 +201,7 @@
                                         </c:forEach>
                                     </div>
                                     <div class="tab-pane" id="nav-vision" role="tabpanel">
-                                       
+
                                     </div>
                                 </div>
                             </div>
@@ -212,10 +218,10 @@
                                         <ul class="list-unstyled fruite-categorie">
                                             <li>
                                                 <div class="d-flex justify-content-between fruite-name">
-                                                    
+
                                                     <a href="shop?search=category&category_id=${cate.category_id}"><ion-icon name="caret-forward-outline"></ion-icon> ${cate.category_name}
                                                     </a>
-                                                    
+
                                                 </div>
                                             </li>
                                         </ul>
@@ -240,7 +246,13 @@
                                             </div>
                                             <div class="d-flex mb-2">
                                                 <fmt:setLocale value="vi_VN" />
-                                                <h5 class="fw-bold me-2"><fmt:formatNumber value="${special.price}" type="currency" currencySymbol="₫" /></h5>
+                                                <a class="text-dark fs-5 fw-bold mb-0" href="product-details?id=${special.product_id}">
+                                                    <span style="text-decoration: line-through; opacity: 0.6; font-style: italic;">
+                                                        <fmt:formatNumber value="${special.price}" type="currency" currencySymbol="₫" />
+                                                    </span>
+                                                    &nbsp;
+                                                    <fmt:formatNumber value="${special.price - (special.price * (special.discount / 100))}" type="currency" currencySymbol="₫" />
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
