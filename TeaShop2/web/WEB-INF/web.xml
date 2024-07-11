@@ -160,6 +160,10 @@
         <servlet-name>FilterCustomerController</servlet-name>
         <servlet-class>controller.FilterCustomerController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>FilterStaffController</servlet-name>
+        <servlet-class>controller.FilterStaffController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ShopController</servlet-name>
         <url-pattern>/shop</url-pattern>

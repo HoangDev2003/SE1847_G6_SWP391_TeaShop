@@ -293,8 +293,23 @@ public class AdminDAO extends DBContext {
         return list;
     }
 
-    public int countFelmale() {
+    public int countFemale() {
         String query = "select count(*) from Accounts where gender = 'Female' and a.role_id = 2";
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(query);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                return resultSet.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
+        }
+        return 0;
+    }
+    
+    public int countFemaleStaff() {
+        String query = "select count(*) from Accounts where gender = 'Female' and a.role_id = 3";
         try {
             connection = getConnection();
             statement = connection.prepareStatement(query);
@@ -310,6 +325,21 @@ public class AdminDAO extends DBContext {
 
     public int countMale() {
         String query = "select count(*) from Accounts where gender = 'Male' and a.role_id = 2";
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(query);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                return resultSet.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
+        }
+        return 0;
+    }
+    
+     public int countMaleStaff() {
+        String query = "select count(*) from Accounts where gender = 'Male' and a.role_id = 3";
         try {
             connection = getConnection();
             statement = connection.prepareStatement(query);
