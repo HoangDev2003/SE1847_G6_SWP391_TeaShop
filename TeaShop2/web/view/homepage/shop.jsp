@@ -67,23 +67,23 @@
     <body>
 
         <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
-<df-messenger
-  intent="WELCOME"
-  chat-title="Teashop_chatbot"
-  agent-id="1c5afa8b-a018-4fe2-a813-ea37b5e90bff"
-  language-code="vi"
-  chat-icon="https://upload.wikimedia.org/wikipedia/vi/a/a5/Mixigaming-Logo.jpg?20210321094042"
-></df-messenger>               
-        <!-- Spinner Start -->
-        <div id="spinner" class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
-            <div class="spinner-grow text-primary" role="status"></div>
-        </div>
-        <!-- Spinner End -->
+    <df-messenger
+        intent="WELCOME"
+        chat-title="Teashop_chatbot"
+        agent-id="1c5afa8b-a018-4fe2-a813-ea37b5e90bff"
+        language-code="vi"
+        chat-icon="https://upload.wikimedia.org/wikipedia/vi/a/a5/Mixigaming-Logo.jpg?20210321094042"
+        ></df-messenger>               
+    <!-- Spinner Start -->
+    <div id="spinner" class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
+        <div class="spinner-grow text-primary" role="status"></div>
+    </div>
+    <!-- Spinner End -->
 
 
-        <!-- Navbar start -->
-        <div class="container-fluid fixed-top">
-            <jsp:include page="../common/homePage/topbar.jsp"></jsp:include>
+    <!-- Navbar start -->
+    <div class="container-fluid fixed-top">
+        <jsp:include page="../common/homePage/topbar.jsp"></jsp:include>
             <div class="container px-0">
                 <nav class="navbar navbar-light bg-white navbar-expand-xl">
                     <a href="index.html" class="navbar-brand"><h1 class="text-primary display-6"></h1></a>
@@ -97,221 +97,230 @@
                     <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                         <div class="navbar-nav mx-auto">
                             <a href="${pageContext.request.contextPath}/home" class="nav-item nav-link">Home</a>
-                            <a href ="${pageContext.request.contextPath}/blog" class="nav-item nav-link">Blog</a>
-                            <a href="${pageContext.request.contextPath}/shop" class="nav-item nav-link active">Shop</a>
+                        <a href ="${pageContext.request.contextPath}/blog" class="nav-item nav-link">Blog</a>
+                        <a href="${pageContext.request.contextPath}/shop" class="nav-item nav-link active">Shop</a>
 
-                            <div class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
-                                <div class="dropdown-menu m-0 bg-secondary rounded-0">
-                                    <a href="cart.jsp" class="dropdown-item">Cart</a>
-                                    <a href="chackout.jsp" class="dropdown-item">Checkout</a>
-                                    <a href="testimonial.jsp" class="dropdown-item">Testimonial</a>
-                                    <a href="404.jsp" class="dropdown-item">404 Page</a>
-                                </div>
+                        <div class="nav-item dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
+                            <div class="dropdown-menu m-0 bg-secondary rounded-0">
+                                <a href="cart.jsp" class="dropdown-item">Cart</a>
+                                <a href="chackout.jsp" class="dropdown-item">Checkout</a>
+                                <a href="testimonial.jsp" class="dropdown-item">Testimonial</a>
+                                <a href="404.jsp" class="dropdown-item">404 Page</a>
                             </div>
-                            <a href="contact.jsp" class="nav-item nav-link">Contact</a>
                         </div>
-                        <div class="d-flex m-3 me-0">
-                            <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
-                                <%
-                    int count = 0;
-                    Enumeration<String> em = session.getAttributeNames();
-                    while (em.hasMoreElements()) {
-                        String key = em.nextElement();
-
-                        if (key.startsWith("cartItem")) {
-                            count++;
-                        }
-                    } 
-                                %>
-                            <a href="CartDetails?service=showcart" class="position-relative me-4 my-auto">
-                                <i class="fa fa-shopping-bag fa-2x"></i>
-                                <%if(count>0){%>
-                                <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;"><%=count%></span>
-                                <%}%>
-                            </a>
-                            <a href="#" class="my-auto">
-                                <i class="fas fa-user fa-2x"></i>
-                            </a>
-                        </div>
+                        <a href="contact.jsp" class="nav-item nav-link">Contact</a>
                     </div>
-                </nav>
-            </div>
+                    <div class="d-flex m-3 me-0">
+                        <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
+                            <%
+                int count = 0;
+                Enumeration<String> em = session.getAttributeNames();
+                while (em.hasMoreElements()) {
+                    String key = em.nextElement();
+
+                    if (key.startsWith("cartItem")) {
+                        count++;
+                    }
+                } 
+                            %>
+                        <a href="CartDetails?service=showcart" class="position-relative me-4 my-auto">
+                            <i class="fa fa-shopping-bag fa-2x"></i>
+                            <%if(count>0){%>
+                            <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;"><%=count%></span>
+                            <%}%>
+                        </a>
+                        <a href="#" class="my-auto">
+                            <i class="fas fa-user fa-2x"></i>
+                        </a>
+                    </div>
+                </div>
+            </nav>
         </div>
-        <!-- Navbar End -->
+    </div>
+    <!-- Navbar End -->
 
 
-        <!-- Modal Search Start -->
-        <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-fullscreen">
-                <div class="modal-content rounded-0">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Search by keyword</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body d-flex align-items-center">
-                        <div class="input-group w-75 mx-auto d-flex">
-                            <input type="search" class="form-control p-3" placeholder="Search by Keywords" aria-describedby="search-icon-1">
-                            <span id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></span>
-                        </div>
+    <!-- Modal Search Start -->
+    <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content rounded-0">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Search by keyword</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body d-flex align-items-center">
+                    <div class="input-group w-75 mx-auto d-flex">
+                        <input type="search" class="form-control p-3" placeholder="Search by Keywords" aria-describedby="search-icon-1">
+                        <span id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></span>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- Modal Search End -->
+    </div>
+    <!-- Modal Search End -->
 
 
-        <!-- Single Page Header start -->
-        <div class="container-fluid page-header bg-primary py-5">
-            <h1 class="text-center text-white display-6">Shop </h1>
+    <!-- Single Page Header start -->
+    <div class="container-fluid page-header bg-primary py-5">
+        <h1 class="text-center text-white display-6">Shop </h1>
 
-        </div>
-        <!-- Single Page Header End -->
+    </div>
+    <!-- Single Page Header End -->
 
 
-        <!-- Fruits Shop Start-->
-        <div class="container-fluid fruite py-5">
-            <div class="container py-5">            
-                <div class="row g-4">
-                    <div class="col-lg-12">
-                        <h1 class="mb-4"></h1>
-                        <div class="row g-4">
-                            <div class="col-xl-3">
-                                <form action="shop" method="GET">
-                                    <div class="input-group w-100 mx-auto d-flex">
+    <!-- Fruits Shop Start-->
+    <div class="container-fluid fruite py-5">
+        <div class="container py-5">            
+            <div class="row g-4">
+                <div class="col-lg-12">
+                    <h1 class="mb-4"></h1>
+                    <div class="row g-4">
+                        <div class="col-xl-3">
+                            <form action="shop" method="GET">
+                                <div class="input-group w-100 mx-auto d-flex">
 
-                                        <input type="hidden" name="search" value="searchByName">
-                                        <input type="text" class="form-control p-3" name="keyword" placeholder="Tìm kiếm theo từ khóa" arikeywordsa-describedby="search-icon-1">
-                                        <span id="search-icon-1" class="input-group-text p-3" onclick="return this.closest('form').submit()"><i class="fa fa-search"></i></span>
-                                    </div>
-                                </form>
+                                    <input type="hidden" name="search" value="searchByName">
+                                    <input type="text" class="form-control p-3" name="keyword" placeholder="Tìm kiếm theo từ khóa" arikeywordsa-describedby="search-icon-1">
+                                    <span id="search-icon-1" class="input-group-text p-3" onclick="return this.closest('form').submit()"><i class="fa fa-search"></i></span>
+                                </div>
+                            </form>
 
-                            </div>
-                            <div class="col-6"></div>
-                            <div class="col-xl-3">
-                                <div class="bg-light ps-3 py-3 rounded d-flex justify-content-between mb-4">
-                                    <label for="sort">Sắp xếp theo:</label>
-                                    <select name="sort" id="sort" onchange="sortBy()" class="border-0 form-select-sm bg-light me-3">
-                                        <option value="product_id" <c:if test="${param.sort == null || param.sort == 'product_id'}">selected</c:if>>None</option>
-                                        <option value="create_at" <c:if test="${param.sort == 'create_at'}">selected</c:if>>Sản phẩm mới nhất</option>
-                                        <option value="reduced_price" <c:if test="${param.sort == 'reduced_price'}">selected</c:if>>Cao đến Thấp</option>
-                                        <option value="increase_price" <c:if test="${param.sort == 'increase_price'}">selected</c:if>>Thấp đến Cao</option>
-                                        </select>
-                                    </div>
+                        </div>
+                        <div class="col-6"></div>
+                        <div class="col-xl-3">
+                            <div class="bg-light ps-3 py-3 rounded d-flex justify-content-between mb-4">
+                                <label for="sort">Sắp xếp theo:</label>
+                                <select name="sort" id="sort" onchange="sortBy()" class="border-0 form-select-sm bg-light me-3">
+                                    <option value="product_id" <c:if test="${param.sort == null || param.sort == 'product_id'}">selected</c:if>>None</option>
+                                    <option value="create_at" <c:if test="${param.sort == 'create_at'}">selected</c:if>>Sản phẩm mới nhất</option>
+                                    <option value="reduced_price" <c:if test="${param.sort == 'reduced_price'}">selected</c:if>>Cao đến Thấp</option>
+                                    <option value="increase_price" <c:if test="${param.sort == 'increase_price'}">selected</c:if>>Thấp đến Cao</option>
+                                    </select>
                                 </div>
                             </div>
-                            <div class="row g-4">
-                                <div class="col-lg-3">
-                                    <div class="row g-4">
-                                        <div class="col-lg-12">
-                                            <div class="mb-3">
-                                                <h4>Danh mục sản phẩm</h4>
-                                            <c:forEach items="${listCategory}" var="cate">
-                                                <ul class="list-unstyled fruite-categorie">
-                                                    <li>
-                                                        <div class="d-flex justify-content-start align-items-center fruite-name">
-                                                            <a href="shop?search=category&category_id=${cate.category_id}" class="${param.category_id == cate.category_id ? 'selected' : ''} d-flex align-items-center">
-                                                                <ion-icon name="caret-forward-outline"></ion-icon> 
-                                                                <span class="ms-2">${cate.category_name}</span>
-                                                            </a>
-                                                        </div>
-                                                    </li>
-                                                </ul>
-                                            </c:forEach>
-                                        </div>
-                                    </div>
+                        </div>
+                        <div class="row g-4">
+                            <div class="col-lg-3">
+                                <div class="row g-4">
                                     <div class="col-lg-12">
                                         <div class="mb-3">
-                                            <h4 class="mb-2">Khoảng Giá</h4>
-
-                                            <div class="input-group">
-                                                <form action="shop" method="GET">
-                                                    <input type="hidden" name="search" value="searchByPriceRange">
-                                                    <input type="number" class="form-control" id="priceFrom" name="priceFrom" placeholder="Từ">
-                                                    <span class="input-group-text">-</span>
-                                                    <input type="number" class="form-control" id="priceTo" name="priceTo" placeholder="Đến">
-                                                    <span type="submit" class="btn btn-success" onclick="return this.closest('form').submit()">Áp Dụng</span>
-                                                </form>
-                                            </div>
-                                            <c:if test="${not empty priceErrorMessage}">
-                                                <div class="error-message">${priceErrorMessage}</div>
-                                            </c:if>
-                                        </div>
-                                    </div>
-                                    <div class="container">
-                                        <div class="col-lg-12">
-                                            <h4 class="mb-3">Sản phẩm nổi bật</h4>
-                                            <c:forEach items="${listSpecialProduct}" var="special">
-                                                <div class="d-flex align-items-center mb-4 p-3 border rounded shadow-sm product-card">
-                                                    <div class="rounded me-4" style="width: 100px; height: 100px; overflow: hidden;">
-                                                        <img src="${special.image}" class="img-fluid rounded" alt="${special.product_name}">
+                                            <h4>Danh mục sản phẩm</h4>
+                                        <c:forEach items="${listCategory}" var="cate">
+                                            <ul class="list-unstyled fruite-categorie">
+                                                <li>
+                                                    <div class="d-flex justify-content-start align-items-center fruite-name">
+                                                        <a href="shop?search=category&category_id=${cate.category_id}" class="${param.category_id == cate.category_id ? 'selected' : ''} d-flex align-items-center">
+                                                            <ion-icon name="caret-forward-outline"></ion-icon> 
+                                                            <span class="ms-2">${cate.category_name}</span>
+                                                        </a>
                                                     </div>
-                                                    <div>
-                                                        <h6 class="mb-2">${special.product_name}</h6>
-                                                        <div class="d-flex mb-2 text-warning">
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                        </div>
-                                                        <fmt:setLocale value="vi_VN" />
-                                                        <div class="d-flex mb-2">
-                                                            <h5 class="fw-bold me-2"><fmt:formatNumber value="${special.price}" type="currency" currencySymbol="₫" /></h5>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </c:forEach>
-                                        </div>
+                                                </li>
+                                            </ul>
+                                        </c:forEach>
                                     </div>
-
                                 </div>
-                            </div>
-                            <div class="col-lg-9">
-                                <div class="row g-4 justify-content-center">
-                                    <c:forEach items="${listProduct}" var="p">
-                                        <div class="col-md-6 col-lg-6 col-xl-4">
+                                <div class="col-lg-12">
+                                    <div class="mb-3">
+                                        <h4 class="mb-2">Khoảng Giá</h4>
 
-                                            <div class="rounded position-relative fruite-item">
-                                                <div class="fruite-img">
-                                                    <a href="product-details?id=${p.product_id}">
-                                                        <img src="${p.image}" class="img-fluid w-100 rounded-top" alt="">
-                                                    </a>
+                                        <div class="input-group">
+                                            <form action="shop" method="GET">
+                                                <input type="hidden" name="search" value="searchByPriceRange">
+                                                <input type="number" class="form-control" id="priceFrom" name="priceFrom" placeholder="Từ">
+                                                <span class="input-group-text">-</span>
+                                                <input type="number" class="form-control" id="priceTo" name="priceTo" placeholder="Đến">
+                                                <span type="submit" class="btn btn-success" onclick="return this.closest('form').submit()">Áp Dụng</span>
+                                            </form>
+                                        </div>
+                                        <c:if test="${not empty priceErrorMessage}">
+                                            <div class="error-message">${priceErrorMessage}</div>
+                                        </c:if>
+                                    </div>
+                                </div>
+                                <div class="container">
+                                    <div class="col-lg-12">
+                                        <h4 class="mb-3">Sản phẩm nổi bật</h4>
+                                        <c:forEach items="${listSpecialProduct}" var="special">
+                                            <div class="d-flex align-items-center mb-4 p-3 border rounded shadow-sm product-card">
+                                                <div class="rounded me-4" style="width: 100px; height: 100px; overflow: hidden;">
+                                                    <img src="${special.image}" class="img-fluid rounded" alt="${special.product_name}">
                                                 </div>
-                                                <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">${p.category.category_name}</div>
-                                                <div class="p-4 border border-secondary border-top-0 rounded-bottom">
-                                                    <h4>${p.product_name}</h4>
-
+                                                <div>
+                                                    <h6 class="mb-2">${special.product_name}</h6>
+                                                    <div class="d-flex mb-2 text-warning">
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                    </div>
                                                     <fmt:setLocale value="vi_VN" />
-
-                                                    <div class="d-flex justify-content-between flex-lg-wrap">
-                                                        <p class="text-dark fs-5 fw-bold mb-0">
-                                                            <fmt:formatNumber value="${p.price}" type="currency" currencySymbol="₫" /> 
-                                                        </p>
-                                                        <a href="CartDetails?service=add2cart&product_id=${p.product_id}&link_id=1" class="btn border border-secondary rounded-pill px-3 text-primary">
-                                                            <i class="fa fa-shopping-bag me-2 text-primary"></i> Mua ngay
-                                                        </a>                                                 
+                                                    <div class="d-flex mb-2">
+                                                        <a class="text-dark fs-5 fw-bold mb-0" href="product-details?id=${special.product_id}">
+                                                        <span style="text-decoration: line-through; opacity: 0.6; font-style: italic;">
+                                                            <fmt:formatNumber value="${special.price}" type="currency" currencySymbol="₫" />
+                                                        </span>
+                                                        &nbsp;
+                                                        <fmt:formatNumber value="${special.price - (special.price * (special.discount / 100))}" type="currency" currencySymbol="₫" />
+                                                        </a>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </c:forEach>
-                                    <div class="col-12">
-                                        <div class="pagination d-flex justify-content-center mt-5">
+                                        </c:forEach>
+                                    </div>
+                                </div>
 
-                                            <c:forEach begin="1" end="${pageControl.totalPage}" var="pageNumber">
-                                                <c:set var="currentPage" value="${pageControl.page}" />
-                                                <c:choose>
-                                                    <c:when test="${currentPage eq pageNumber}">
-                                                        <a href="#" class="active rounded">${pageNumber}</a>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <a href="${pageControl.urlPattern}page=${pageNumber}" class="rounded">${pageNumber}</a>
-                                                    </c:otherwise>
-                                                </c:choose>
-                                            </c:forEach>
+                            </div>
+                        </div>
+                        <div class="col-lg-9">
+                            <div class="row g-4 justify-content-center">
+                                <c:forEach items="${listProduct}" var="p">
+                                    <div class="col-md-6 col-lg-6 col-xl-4">
 
+                                        <div class="rounded position-relative fruite-item">
+                                            <div class="fruite-img">
+                                                <a href="product-details?id=${p.product_id}">
+                                                    <img src="${p.image}" class="img-fluid w-100 rounded-top" alt="">
+                                                </a>
+                                            </div>
+                                            <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">${p.category.category_name}</div>
+                                            <div class="p-4 border border-secondary border-top-0 rounded-bottom">
+                                                <h4>${p.product_name}</h4>
+
+                                                <fmt:setLocale value="vi_VN" />
+
+                                                <div class="d-flex justify-content-between flex-lg-wrap">
+                                                    <p class="text-dark fs-5 fw-bold mb-0">
+                                                        <span style="text-decoration: line-through; opacity: 0.6; font-style: italic;">
+                                                            <fmt:formatNumber value="${p.price}" type="currency" currencySymbol="₫" />
+                                                        </span>
+                                                        &nbsp;
+                                                        <fmt:formatNumber value="${p.price - (p.price * (p.discount / 100))}" type="currency" currencySymbol="₫" />
+                                                    </p>
+                                                    <a href="CartDetails?service=add2cart&product_id=${p.product_id}&link_id=1" class="btn border border-secondary rounded-pill px-3 text-primary">
+                                                        <i class="fa fa-shopping-bag me-2 text-primary"></i> Mua ngay
+                                                    </a>                                                 
+                                                </div>
+                                            </div>
                                         </div>
+                                    </div>
+                                </c:forEach>
+                                <div class="col-12">
+                                    <div class="pagination d-flex justify-content-center mt-5">
+
+                                        <c:forEach begin="1" end="${pageControl.totalPage}" var="pageNumber">
+                                            <c:set var="currentPage" value="${pageControl.page}" />
+                                            <c:choose>
+                                                <c:when test="${currentPage eq pageNumber}">
+                                                    <a href="#" class="active rounded">${pageNumber}</a>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <a href="${pageControl.urlPattern}page=${pageNumber}" class="rounded">${pageNumber}</a>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </c:forEach>
+
                                     </div>
                                 </div>
                             </div>
@@ -320,28 +329,29 @@
                 </div>
             </div>
         </div>
-        <!-- Fruits Shop End-->
+    </div>
+    <!-- Fruits Shop End-->
 
 
-        <!-- Footer Start -->
-        <jsp:include page="../common/homePage/footer-start.jsp"></jsp:include>
-            <!-- Footer End -->
+    <!-- Footer Start -->
+    <jsp:include page="../common/homePage/footer-start.jsp"></jsp:include>
+        <!-- Footer End -->
 
-            <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-            <!-- JavaScript Libraries -->
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-            <script src="${pageContext.request.contextPath}/lib/easing/easing.min.js"></script>
-        <script src="${pageContext.request.contextPath}/lib/waypoints/waypoints.min.js"></script>
-        <script src="${pageContext.request.contextPath}/lib/lightbox/js/lightbox.min.js"></script>
-        <script src="${pageContext.request.contextPath}/lib/owlcarousel/owl.carousel.min.js"></script>
-        <script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
+        <!-- JavaScript Libraries -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="${pageContext.request.contextPath}/lib/easing/easing.min.js"></script>
+    <script src="${pageContext.request.contextPath}/lib/waypoints/waypoints.min.js"></script>
+    <script src="${pageContext.request.contextPath}/lib/lightbox/js/lightbox.min.js"></script>
+    <script src="${pageContext.request.contextPath}/lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
 
-        <!-- Template Javascript -->
-        <script src="${pageContext.request.contextPath}/js/main.js"></script>
-    </body>
+    <!-- Template Javascript -->
+    <script src="${pageContext.request.contextPath}/js/main.js"></script>
+</body>
 
 </html>

@@ -106,7 +106,7 @@ public class ProductDAO extends DBContext {
                 int category_id = resultSet.getInt("category_id");
                 String image = resultSet.getString("image");
                 int price = resultSet.getInt("price");
-                float discount = resultSet.getFloat("price");
+                float discount = resultSet.getFloat("discount");
                 Date create_at = resultSet.getDate("create_at");
                 product.setProduct_id(product_id);
                 product.setProduct_name(product_name);
@@ -156,7 +156,7 @@ public class ProductDAO extends DBContext {
                 category = ((new CategoryDAO()).getCategoryById(resultSet.getInt("category_id")));
                 String image = resultSet.getString("image");
                 int price = resultSet.getInt("price");
-                float discount = resultSet.getFloat("price");
+                float discount = resultSet.getFloat("discount");
                 Date create_at = resultSet.getDate("create_at");
                 product.setProduct_id(product_id);
                 product.setProduct_name(product_name);
@@ -196,7 +196,7 @@ public class ProductDAO extends DBContext {
                 category = ((new CategoryDAO()).getCategoryById(resultSet.getInt("category_id")));
                 String image = resultSet.getString("image");
                 int price = resultSet.getInt("price");
-                float discount = resultSet.getFloat("price");
+                float discount = resultSet.getFloat("discount");
                 Date create_at = resultSet.getDate("create_at");
 
                 //add to collections
@@ -238,7 +238,7 @@ public class ProductDAO extends DBContext {
                 category = ((new CategoryDAO()).getCategoryById(resultSet.getInt("category_id")));
                 String image = resultSet.getString("image");
                 int price = resultSet.getInt("price");
-                float discount = resultSet.getFloat("price");
+                float discount = resultSet.getFloat("discount");
                 Date create_at = resultSet.getDate("create_at");
                 product.setProduct_id(product_id);
                 product.setProduct_name(product_name);
@@ -286,7 +286,7 @@ public class ProductDAO extends DBContext {
                 category = ((new CategoryDAO()).getCategoryById(resultSet.getInt("category_id")));
                 String image = resultSet.getString("image");
                 int price = resultSet.getInt("price");
-                float discount = resultSet.getFloat("price");
+                float discount = resultSet.getFloat("discount");
                 Date create_at = resultSet.getDate("create_at");
                 product.setProduct_id(product_id);
                 product.setProduct_name(product_name);
@@ -444,7 +444,7 @@ public class ProductDAO extends DBContext {
                 category = ((new CategoryDAO()).getCategoryById(resultSet.getInt("category_id")));
                 String image = resultSet.getString("image");
                 int price = resultSet.getInt("price");
-                float discount = resultSet.getFloat("price");
+                float discount = resultSet.getFloat("discount");
                 Date create_at = resultSet.getDate("create_at");
                 product.setProduct_id(product_id);
                 product.setProduct_name(product_name);

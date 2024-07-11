@@ -33,6 +33,7 @@ public class ShopController extends HttpServlet {
 
         List<Product> listProduct = findProductDoGet(request, pageControl);
 
+        List<Product> listProduct1 = productDAO.findAll();
         List<Category> listCategory = categoryDAO.findAll();
 
         List<Product> listSpecialProduct = productDAO.specialProduct();
