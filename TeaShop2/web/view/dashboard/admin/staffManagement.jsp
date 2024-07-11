@@ -63,7 +63,7 @@
                                 </div>
                             </div>
                             <div style="margin-left: 15px; margin-bottom: 20px">
-                                <a href="adduser"><button type="button" class="btn btn-danger">Add User</button> </a>
+                                <a href="adduser"><button type="button" class="btn btn-danger">Add Staff</button> </a>
                             </div>
                             <form action="searchStaff">
                                 <input type="search" name="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" style="max-width: 95%" />
