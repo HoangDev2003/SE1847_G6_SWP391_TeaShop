@@ -5,8 +5,10 @@
 package controller;
 
 import dal.CategoryDAO;
+import dal.FeedbackDAO;
 import dal.ProductDAO;
 import entity.Category;
+import entity.Feedback;
 import entity.Product;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -26,14 +28,21 @@ public class ProductDetailController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ProductDAO productDAO = new ProductDAO();
         CategoryDAO categoryDAO = new CategoryDAO();
+        FeedbackDAO feedbackDAO = new FeedbackDAO();
+        
         HttpSession session = req.getSession();
+       
         List<Category> listCategory = categoryDAO.findAll();
+        
         List<Product> listSpecialProduct = productDAO.specialProduct();
         session.setAttribute("listSpecialProduct", listSpecialProduct);
         session.setAttribute("listCategory", listCategory);
+        
+        
         int productId = Integer.parseInt(req.getParameter("id"));
+        List<Feedback> feedbackList = feedbackDAO.getFeedbackList(productId);
         Product product = productDAO.getProductsById(productId);
-       
+        session.setAttribute("feedbackList", feedbackList);
         req.setAttribute("product", product);
         
         req.getRequestDispatcher("view/homepage/product-detail.jsp").forward(req, resp);
