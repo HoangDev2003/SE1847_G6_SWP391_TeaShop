@@ -42,7 +42,7 @@ public class ProductDAO extends DBContext {
                 category = ((new CategoryDAO()).getCategoryById(resultSet.getInt("category_id")));
                 String image = resultSet.getString("image");
                 int price = resultSet.getInt("price");
-                float discount = resultSet.getFloat("price");
+                float discount = resultSet.getFloat("discount");
                 Date create_at = resultSet.getDate("create_at");
                 product.setProduct_id(product_id);
                 product.setProduct_name(product_name);
@@ -563,6 +563,31 @@ public class ProductDAO extends DBContext {
                     .getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    public void updateDiscount(Product p, int pid) {
+        connection = getConnection();
+        PreparedStatement stm = null;
+
+        String sql = "UPDATE [dbo].[Product]\n"
+                + "   SET [product_name] = ?\n"
+                + "      ,[category_id] = ?\n"
+                + "      ,[price] = ?\n"
+                + "	 ,[discount] = ?\n"
+                + " WHERE product_id = ?";
+        try {
+            stm = connection.prepareStatement(sql);
+            stm.setString(1, p.getProduct_name());
+            stm.setInt(2, p.getCategory().getCategory_id());
+            stm.setInt(3, p.getPrice());
+            stm.setFloat(4, p.getDiscount());
+            stm.setInt(5, pid);
+            stm.executeUpdate();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     public int deleteProduct(int id) {
         connection = getConnection();
@@ -587,23 +612,25 @@ public class ProductDAO extends DBContext {
 
     public static void main(String[] args) {
         ProductDAO productDAO = new ProductDAO();
-        String keyword = "Ô Long"; // Thay "sample" bằng từ khóa bạn muốn tìm kiếm
-        List<Product> products = productDAO.getProductByKeyWords(keyword);
 
-        if (products != null && !products.isEmpty()) {
-            for (Product product : products) {
-                System.out.println("Product ID: " + product.getProduct_id());
-                System.out.println("Product Name: " + product.getProduct_name());
-                System.out.println("Category: " + product.getCategory().getCategory_name());
-                System.out.println("Image: " + product.getImage());
-                System.out.println("Price: " + product.getPrice());
-                System.out.println("Discount: " + product.getDiscount());
-                System.out.println("Create At: " + product.getCreate_at());
-                System.out.println("---------------");
-            }
-        } else {
-            System.out.println("No products found with the keyword: " + keyword);
-        }
+        // Tạo đối tượng Category (giả sử category_id là 1)
+        Category category = new Category();
+        category.setCategory_id(1);
+
+        // Tạo đối tượng Product với các thuộc tính cần thiết
+        Product product = new Product();
+        product.setProduct_name("Ô Long Nhài Sữa");
+        product.setCategory(category);
+        product.setPrice(45000);
+        product.setDiscount(15);
+
+        // Gọi phương thức updateDiscount với product và product_id (giả sử product_id là 1)
+        int productId = 5;
+        productDAO.updateDiscount(product, productId);
+
+        // In ra thông báo để xác nhận đã cập nhật
+        System.out.println("Product updated successfully!");
+        
     }
 
 }
