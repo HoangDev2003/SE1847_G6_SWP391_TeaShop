@@ -62,32 +62,51 @@
                                     .
                                 </div>
                             </div>
-                            <div style="margin-left: 15px; margin-bottom: 20px">
-                                <a href="adduser"><button type="button" class="btn btn-danger">Add Staff</button> </a>
-                            </div>
-                            <form action="searchStaff">
-                                <input type="search" name="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" style="max-width: 95%" />
-                            </form>
-                            <div class="card mb-4">
-                                <div class="card-header">
-                                    <i class="fas fa-table me-1"></i>
-                                    DataTable Example
+                            <div class="filter1">
+                                <form action="filterstaff">
+                                    <div class="filter" style="display: flex; align-items: center;">
+                                        <a class="texta" style="color: #454444f7; margin-right: 10px;">Filter:</a>
+                                        <select name="gender" style="margin-right: 10px;">
+                                            <option>Gender</option>
+                                            <option value="Female" ${'Female' == gender ? "selected" : ""}>Female</option>        
+                                        <option value="Male" ${'Male' == gender ? "selected" : ""}>Male</option>   
+                                    </select>                                                                   
+                                    <select name="status" style="margin-right: 10px;">
+                                        <option>Status</option>
+                                        <c:forEach items="${listas}" var="s">
+                                            <option value="${s.getStatus_id()}" ${s.getStatus_id() == status ? "selected" : ""}>${s.getStatus_name()}</option>                  
+                                        </c:forEach>
+                                    </select>
+                                    <input type="submit" value="Filter"/>                                              
                                 </div>
-                                <form action="staffmanager">
-                                    <div class="card-body">
-                                        <table id="datatablesSimple">
-                                            <thead>
-                                                <tr>
-                                                    <th>Name</th>
-                                                    <th>Gender</th>
-                                                    <th>Email</th>
-                                                    <th>Phone Number</th>
-                                                    <th>Role</th>
-                                                    <th>Status</th>
-                                                    <th>Feature</th>
-                                                </tr>
-                                            </thead>                                           
-                                            <tbody>
+                            </form>                             
+                        </div>
+                        <div style="margin-left: 15px; margin-bottom: 20px; margin-top: 20px">
+                            <a href="adduser"><button type="button" class="btn btn-danger">Add Staff</button> </a>
+                        </div>
+                        <form action="searchStaff">
+                            <input type="search" name="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" style="max-width: 95%" />
+                        </form>
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-table me-1"></i>
+                                DataTable Example
+                            </div>
+                            <form action="staffmanager">
+                                <div class="card-body">
+                                    <table id="datatablesSimple">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Gender</th>
+                                                <th>Email</th>
+                                                <th>Phone Number</th>
+                                                <th>Role</th>
+                                                <th>Status</th>
+                                                <th>Feature</th>
+                                            </tr>
+                                        </thead>                                           
+                                        <tbody>
                                             <c:forEach items="${listStaff}" var="ls">
                                                 <tr>                                                 
                                                     <td>${ls.user_name}</td>
