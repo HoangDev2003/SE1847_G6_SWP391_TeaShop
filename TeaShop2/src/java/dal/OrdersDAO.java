@@ -434,7 +434,7 @@ public class OrdersDAO extends DBContext {
     }
 
     public void updateDeliveryTime(int orderId, Timestamp deliveryTime) {
-        String query = "UPDATE Orders SET estimate_delivery_date = ? WHERE order_id = ?";
+        String query = "UPDATE Orders SET estimated_delivery_date = ? WHERE order_id = ?";
         try (Connection connection = getConnection(); PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setTimestamp(1, deliveryTime);
             ps.setInt(2, orderId);
