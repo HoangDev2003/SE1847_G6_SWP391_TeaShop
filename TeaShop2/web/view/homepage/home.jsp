@@ -52,7 +52,7 @@
                         <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#" class="text-white">Tân Xã, Thạch Hòa, Thạch Thất, Hòa Lạc</a></small>
                         <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i><a href="#" class="text-white">huydxhe172399@fpt.edu.vn</a></small>
                                 <c:if test="${sessionScope.acc==null}">
-                            <small class="me-3"><a href="login" class="text-white">Login</a></small>
+                            <small class="me-3"><a href="login" class="text-white">Đăng nhập</a></small>
                         </c:if>
                     </div>
                     <div class="top-link pe-2">
