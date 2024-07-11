@@ -20,17 +20,58 @@ import java.util.logging.Logger;
  * @author HuyTD
  */
 public class OrderDetailsDAO extends DBContext {
+    
+    public List<OrderDetails> getOrderDetailByAccountIDAndStatusFeedbackID(int account_id, int status_feedback_id) {
+        List<OrderDetails> orderDetailsList = new ArrayList<>();
+        OrderDetails orderdetail = null;
+        try {
+            connection = getConnection();
+            String query = "SELECT od.[order_details_id]\n"
+                    + "      ,od.[product_id]\n"
+                    + "      ,od.[order_id]\n"
+                    + "      ,od.[quantity]\n"
+                    + "      ,od.[status_feedback_id]\n"
+                    + "FROM [dbo].[OrderDetails] od\n"
+                    + "JOIN [dbo].[Orders] o ON od.[order_id] = o.[order_id]\n"
+                    + "WHERE o.[status_id] = 3\n"
+                    + "  AND o.[account_id] = ?\n"
+                    + "  AND od.[status_feedback_id] = ?;";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setInt(1, account_id);
+            
+            ps.setInt(2, status_feedback_id);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                orderdetail = new OrderDetails();
+            orderdetail.setOrder_details_id(rs.getInt("order_details_id"));
+            orderdetail.setProduct(new ProductDAO().getProductsById(rs.getInt("product_id")));
+            orderdetail.setQuantity(rs.getInt("quantity"));
+            
+            orderdetail.setStatus_feedback_id(rs.getInt("status_feedback_id"));
+            orderdetail.setOrders(new OrdersDAO().findByOrderId(rs.getInt("order_id")));
+            orderDetailsList.add(orderdetail);
+            }
+        rs.close(); // Close ResultSet
+            ps.close(); // Close PreparedStatement
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderDetailsDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) { // Catch any parsing exceptions
+            Logger.getLogger(OrderDetailsDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close(); // Close the database connection
+                }
+            } catch (SQLException e) {
+                Logger.getLogger(OrderDetailsDAO.class.getName()).log(Level.SEVERE, null, e);
+            }
+        }
+        return orderDetailsList;
+    }
 
-    /**
-     * Finds order details by order ID.
-     *
-     * @param orderId The ID of the order for which to retrieve order details.
-     * @return A list of OrderDetails objects associated with the given order
-     * ID.
-     */
     public List<OrderDetails> findByOrderId(int orderId) {
         List<OrderDetails> orderDetailsList = new ArrayList<>();
-        connection = getConnection(); // Obtain database connection
+        Connection connection = getConnection(); // Obtain database connection
         String sql = "SELECT * FROM OrderDetails WHERE order_id = ?";
 
         try {
@@ -44,10 +85,11 @@ public class OrderDetailsDAO extends DBContext {
             while (rs.next()) {
                 OrderDetails orderDetails = new OrderDetails();
                 orderDetails.order_details_id = rs.getInt("order_details_id");
-                orderDetails.product = (new ProductDAO().getProductsById(rs.getInt("product_id")));
-                orderDetails.order_id = rs.getInt("order_id");
+                orderDetails.setProduct(new ProductDAO().getProductsById(rs.getInt("product_id")));
+                orderDetails.setOrders(new OrdersDAO().findByOrderId(rs.getInt("order_id")));
+                orderDetails.image = rs.getString("image");
                 orderDetails.quantity = rs.getInt("quantity");
-                orderDetails.topping = getToppingNamesByOrderDetailId(orderDetails.order_details_id);
+                orderDetails.setStatus_feedback_id(rs.getInt("status_feedback_id"));
                 orderDetailsList.add(orderDetails); // Add the order details to the list
             }
 
@@ -69,6 +111,24 @@ public class OrderDetailsDAO extends DBContext {
 
         return orderDetailsList; // Return the list of order details
     }
+    /**
+     * Finds order details by order ID.
+     *
+     * @param orderId The ID of the order for which to retrieve order details.
+     * @return A list of OrderDetails objects associated with the given order
+     * ID.
+     */
+    public void updateImagePath(int orderDetailsId, String imagePath) {
+    String query = "UPDATE OrderDetails SET image = ? WHERE order_details_id = ?";
+    try (Connection connection = getConnection();
+         PreparedStatement ps = connection.prepareStatement(query)) {
+        ps.setString(1, imagePath);
+        ps.setInt(2, orderDetailsId);
+        ps.executeUpdate();
+    } catch (SQLException ex) {
+        ex.printStackTrace();
+    }
+}
 
     public String getCategoryNameById(int category_id) {
         String sql = "select category_name from Category where category_id=?";

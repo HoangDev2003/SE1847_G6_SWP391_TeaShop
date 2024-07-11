@@ -29,5 +29,8 @@ public class OrderDetails {
     public int order_details_id, product_id, order_id, quantity, topping_id;
     public Product product;
     public Category category;
+    public Orders orders;
+    public String image;
+    public int status_feedback_id;
     public List<Topping> topping;
 }
