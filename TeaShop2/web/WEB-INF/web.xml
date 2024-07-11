@@ -128,6 +128,10 @@
         <servlet-name>SaleManager</servlet-name>
         <servlet-class>controller.SaleManagerController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DeleteStaffController</servlet-name>
+        <servlet-class>controller.DeleteStaffController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ShopController</servlet-name>
         <url-pattern>/shop</url-pattern>
@@ -271,5 +275,9 @@
     <servlet-mapping>
         <servlet-name>SaleManager</servlet-name>
         <url-pattern>/saleManager</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteStaffController</servlet-name>
+        <url-pattern>/deletestaff</url-pattern>
     </servlet-mapping>
 </web-app>

@@ -72,6 +72,7 @@ public class EditStaff extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
+        
         AdminDAO dao = new AdminDAO();
         String user_name = request.getParameter("user_name");
         String email = request.getParameter("email");
@@ -110,7 +111,7 @@ public class EditStaff extends HttpServlet {
             imgUpload = dao.getProductImage1ById(a.getAccount_id()); // Lấy đường dẫn ảnh 1 cũ
         }
         dao.editUserById(role_id, status_id, a.getAccount_id());
-        response.sendRedirect("staffManagement");
+        response.sendRedirect("staffmanager");
     }
 
     /**

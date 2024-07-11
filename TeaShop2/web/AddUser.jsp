@@ -246,8 +246,10 @@
                                                         </div>
                                                         <div class="col-sm-9">
                                                             <select class="input-like-p" name="role">
-                                                                <option value="1">Admin</option>   
-                                                                <option value="2">User</option>     
+                                                                  <option value="1">Admin</option>   
+                                                                <option value="2">User</option>   
+                                                                <option value="3">Staff</option>   
+                                                                <option value="4">Shipper</option>      
                                                             </select>
 
                                                         </div>
@@ -260,7 +262,7 @@
                                                         <div class="col-sm-9" style="display: flex">                                                           
                                                             <select class="input-like-p" name="status">
                                                                 <option value="1">Active</option>   
-                                                                <option value="2">Deactive</option>  
+                                                                <option value="2">Inactive</option>  
                                                             </select>
 
 
