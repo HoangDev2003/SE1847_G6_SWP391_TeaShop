@@ -66,6 +66,14 @@
 
     <body>
 
+        <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+<df-messenger
+  intent="WELCOME"
+  chat-title="Teashop_chatbot"
+  agent-id="1c5afa8b-a018-4fe2-a813-ea37b5e90bff"
+  language-code="vi"
+  chat-icon="https://upload.wikimedia.org/wikipedia/vi/a/a5/Mixigaming-Logo.jpg?20210321094042"
+></df-messenger>               
         <!-- Spinner Start -->
         <div id="spinner" class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
             <div class="spinner-grow text-primary" role="status"></div>
@@ -75,17 +83,7 @@
 
         <!-- Navbar start -->
         <div class="container-fluid fixed-top">
-            <div class="container topbar bg-primary d-none d-lg-block">
-                <div class="d-flex justify-content-between">
-                    <div class="top-info ps-2">
-                        <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#" class="text-white">Lê Thái Tổ, Hàng Trống, Quận Hoàn Kiếm, Hà Nội</a></small>
-                        <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i><a href="#" class="text-white">dreamycoffee@gmail.com</a></small>
-                    </div>
-                    <div class="top-link pe-2">
-                        
-                    </div>
-                </div>
-            </div>
+            <jsp:include page="../common/homePage/topbar.jsp"></jsp:include>
             <div class="container px-0">
                 <nav class="navbar navbar-light bg-white navbar-expand-xl">
                     <a href="index.html" class="navbar-brand"><h1 class="text-primary display-6"></h1></a>
