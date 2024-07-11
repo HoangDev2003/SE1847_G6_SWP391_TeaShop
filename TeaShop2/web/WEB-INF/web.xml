@@ -140,6 +140,14 @@
         <servlet-name>ShipperManager</servlet-name>
         <servlet-class>controller.ShipperManager</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>EditShipper</servlet-name>
+        <servlet-class>EditShipper</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EditShipperController</servlet-name>
+        <servlet-class>controller.EditShipperController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ShopController</servlet-name>
         <url-pattern>/shop</url-pattern>
@@ -292,5 +300,12 @@
         <servlet-name>SearchStaffController</servlet-name>
         <url-pattern>/searchStaff</url-pattern>
     </servlet-mapping>
-    
+    <servlet-mapping>
+        <servlet-name>EditShipper</servlet-name>
+        <url-pattern>/editshipper</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditShipperController</servlet-name>
+        <url-pattern>/editShipper</url-pattern>
+    </servlet-mapping>
 </web-app>

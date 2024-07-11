@@ -88,16 +88,16 @@
                                                 </tr>
                                             </thead>                                           
                                             <tbody>
-                                            <c:forEach items="${listShipper}" var="ls">
+                                            <c:forEach items="${listShipper}" var="lp">
                                                 <tr>                                                 
-                                                    <td>${ls.user_name}</td>
-                                                    <td>${ls.gender}</td>
-                                                    <td>${ls.email}</td>
-                                                    <td>${ls.phone_number}</td>
-                                                    <td>${ls.role_name}</td>
-                                                    <td>${ls.status_name}</td>
-                                                    <td><a href="edit?id=${ls.account_id}">Edit</a>
-                                                        <a href="deletes?id=${ls.account_id}">Delete</a></td>
+                                                    <td>${lp.user_name}</td>
+                                                    <td>${lp.gender}</td>
+                                                    <td>${lp.email}</td>
+                                                    <td>${lp.phone_number}</td>
+                                                    <td>${lp.role_name}</td>
+                                                    <td>${lp.status_name}</td>
+                                                    <td><a href="editShipper?id=${lp.account_id}">Edit</a>
+                                                        <a href="deletes?id=${lp.account_id}">Delete</a></td>
                                                 </tr>
                                             </c:forEach>
                                         </tbody>

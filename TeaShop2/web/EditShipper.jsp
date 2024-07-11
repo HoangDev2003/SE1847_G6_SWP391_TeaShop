@@ -119,7 +119,7 @@
         <div class="dashboard-wrapper">
             <div class="dashboard-ecommerce">
                 <div class="container-fluid dashboard-content">
-                    <form id="switchForm"  action="editstaff" class="form-horizontal" method="post" enctype="multipart/form-data">
+                    <form id="switchForm"  action="editShipper" class="form-horizontal" method="post" enctype="multipart/form-data">
                         <fieldset>
                             <!-- Form Name -->
                             <legend>Staff Information</legend>
