@@ -22,8 +22,8 @@ import java.util.List;
  *
  * @author Huyen Tranq
  */
-@WebServlet(name = "FilterStaffController", urlPatterns = {"/filterstaff"})
-public class FilterStaffController extends HttpServlet {
+@WebServlet(name = "FilterShipperController", urlPatterns = {"/filtershipper"})
+public class FilterShipperController extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -34,9 +34,8 @@ public class FilterStaffController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");            
-            /* TODO output your page here. You may use following sample code. */
-            HttpSession session = request.getSession();
+        response.setContentType("text/html;charset=UTF-8");
+        HttpSession session = request.getSession();
             if (!AuthorizationController.isAdmin((Accounts) session.getAttribute("acc"))) {
                 AuthorizationController.redirectToHome(session, response);
             } else {
@@ -49,10 +48,10 @@ public class FilterStaffController extends HttpServlet {
                 String gender = request.getParameter("gender");
 
                 if (gender.equals("Gender") && status.equals("Status")) {
-                    response.sendRedirect("staffmanager");
+                    response.sendRedirect("shippermanager");
                 } else if (!gender.equals("Gender") && status.equals("Status")) {
-                    int countf = dao.countFemaleStaff();
-                    int countm = dao.countMaleStaff();
+                    int countf = dao.countFemaleShipper();
+                    int countm = dao.countMaleShipper();
 
                     String index1 = request.getParameter("indexf");
                     String index2 = request.getParameter("indexm");
@@ -66,35 +65,35 @@ public class FilterStaffController extends HttpServlet {
                     int indexm = Integer.parseInt(index2);
 
                     if (gender.equals("Male")) {
-                        List<Accounts> listm = dao.getAllAccountMaleStaff(indexm);
+                        List<Accounts> listm = dao.getAllAccountMaleShipper(indexm);
                         if (listm.isEmpty()) {
                             request.setAttribute("error", "No result found !");
                             request.setAttribute("gender", gender);
-                            request.getRequestDispatcher("./view/dashboard/admin/staffManagement.jsp").forward(request, response);
+                            request.getRequestDispatcher("./view/dashboard/admin/shipperManagement.jsp").forward(request, response);
                         } else {
                             request.setAttribute("indexm", indexm);
-                            request.setAttribute("listStaff", listm);
+                            request.setAttribute("listShipper", listm);
                             request.setAttribute("gender", gender);
-                            request.getRequestDispatcher("./view/dashboard/admin/staffManagement.jsp").forward(request, response);
+                            request.getRequestDispatcher("./view/dashboard/admin/shipperManagement.jsp").forward(request, response);
                         }
                     } else if (gender.equals("Female")) {
-                        List<Accounts> listf = dao.getAllAccountFemaleStaff(indexf);
+                        List<Accounts> listf = dao.getAllAccountFemaleShipper(indexf);
                         if (listf.isEmpty()) {
                             request.setAttribute("error", "No result found !");
                             request.setAttribute("gender", gender);
-                            request.getRequestDispatcher("./view/dashboard/admin/staffManagement.jsp").forward(request, response);
+                            request.getRequestDispatcher("./view/dashboard/admin/shipperManagement.jsp").forward(request, response);
                         } else {
                             request.setAttribute("gender", gender);
                             request.setAttribute("indexf", indexf);
-                            request.setAttribute("listStaff", listf);
-                            request.getRequestDispatcher("./view/dashboard/admin/staffManagement.jsp").forward(request, response);
+                            request.setAttribute("listShipper", listf);
+                            request.getRequestDispatcher("./view/dashboard/admin/shipperManagement.jsp").forward(request, response);
                         }
                     }
                 } 
                 else if ((gender.equals("Gender") || gender == null) && !(status.equals("Status"))) {
 
                 //List accout active
-                int countActive = dao.countActiveAccountStaff();
+                int countActive = dao.countActiveAccountShipper();
                 String index4 = request.getParameter("indexa");
                 if (index4 == null) {
                     index4 = "1";
@@ -102,62 +101,62 @@ public class FilterStaffController extends HttpServlet {
                 int indexa = Integer.parseInt(index4);
 
                 //List account inactive
-                int countInActive = dao.countInActiveAccountStaff();                
+                int countInActive = dao.countInActiveAccountShipper();                
                 String index5 = request.getParameter("indexi");
                 if (index5 == null) {
                     index5 = "1";
                 }
                 int indexI = Integer.parseInt(index5);
                 if (status.equals("1")) {
-                    List<Accounts> lista = dao.getAccountsActiveStaff(indexa);
+                    List<Accounts> lista = dao.getAccountsActiveShipper(indexa);
                     if (lista.isEmpty()) {
                         request.setAttribute("error", "No result found !");
                         request.setAttribute("status", "1");
-                        request.getRequestDispatcher("./view/dashboard/admin/staffManagement.jsp").forward(request, response);
+                        request.getRequestDispatcher("./view/dashboard/admin/shipperManagement.jsp").forward(request, response);
                     } else {
                         request.setAttribute("status", "1");
                         request.setAttribute("indexa", indexa);
-                        request.setAttribute("listStaff", lista);
-                        request.getRequestDispatcher("./view/dashboard/admin/staffManagement.jsp").forward(request, response);
+                        request.setAttribute("listShipper", lista);
+                        request.getRequestDispatcher("./view/dashboard/admin/shipperManagement.jsp").forward(request, response);
                     }
 
                 } else if (status.equals("2")) {
-                    List<Accounts> listi = dao.getAccountsInActiveStaff(indexI);
+                    List<Accounts> listi = dao.getAccountsInActiveShipper(indexI);
                     if (listi.isEmpty()) {
                         request.setAttribute("error", "No result found !");
                         request.setAttribute("status", "2");
-                        request.getRequestDispatcher("./view/dashboard/admin/staffManagement.jsp").forward(request, response);
+                        request.getRequestDispatcher("./view/dashboard/admin/shipperManagement.jsp").forward(request, response);
                     } else {
                         request.setAttribute("status", "2");
                         request.setAttribute("indexi", indexI);
-                        request.setAttribute("listStaff", listi);
-                        request.getRequestDispatcher("./view/dashboard/admin/staffManagement.jsp").forward(request, response);
+                        request.setAttribute("listShipper", listi);
+                        request.getRequestDispatcher("./view/dashboard/admin/shipperManagement.jsp").forward(request, response);
                     }
                 }
             } else {
                 int status_id = Integer.parseInt(status);
-                int count = dao.countAccountByGenderAndStatusStaff(gender, status_id);
+                int count = dao.countAccountByGenderAndStatusShipper(gender, status_id);
                 String index9 = request.getParameter("index");
                 if (index9 == null) {
                     index9 = "1";
                 }
                 int index = Integer.parseInt(index9);
-                List<Accounts> list = dao.getAccountByGenderAndStatusStaff(gender, status_id, index);
+                List<Accounts> list = dao.getAccountByGenderAndStatusShipper(gender, status_id, index);
                 if (list.isEmpty()) {
                     request.setAttribute("error", "No result found !");
                     request.setAttribute("gender", gender);
                     request.setAttribute("status", status_id);
-                    request.getRequestDispatcher("./view/dashboard/admin/staffManagement.jsp").forward(request, response);
+                    request.getRequestDispatcher("./view/dashboard/admin/shipperManagement.jsp").forward(request, response);
                 } else {
-                    request.setAttribute("listStaff", list);
+                    request.setAttribute("listShipper", list);
                     request.setAttribute("gender", gender);
                     request.setAttribute("status", status_id);                  
                     request.setAttribute("index", index);
-                    request.getRequestDispatcher("./view/dashboard/admin/staffManagement.jsp").forward(request, response);
+                    request.getRequestDispatcher("./view/dashboard/admin/shipperManagement.jsp").forward(request, response);
                 }
             }
     }
-    }
+    } 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /** 
