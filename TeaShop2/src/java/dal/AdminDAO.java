@@ -294,7 +294,7 @@ public class AdminDAO extends DBContext {
     }
 
     public int countFelmale() {
-        String query = "select count(*) from Accounts where gender = 'Female'";
+        String query = "select count(*) from Accounts where gender = 'Female' and a.role_id = 2";
         try {
             connection = getConnection();
             statement = connection.prepareStatement(query);
@@ -309,7 +309,7 @@ public class AdminDAO extends DBContext {
     }
 
     public int countMale() {
-        String query = "select count(*) from Accounts where gender = 'Male'";
+        String query = "select count(*) from Accounts where gender = 'Male' and a.role_id = 2";
         try {
             connection = getConnection();
             statement = connection.prepareStatement(query);
@@ -337,7 +337,7 @@ public class AdminDAO extends DBContext {
                 + "FROM Accounts a\n"
                 + "JOIN AccountStatuses acs ON a.status_id = acs.status_id\n"
                 + "JOIN Role r ON a.role_id = r.role_id\n"
-                + "where gender = 'Male'\n"
+                + "where gender = 'Male' and a.role_id = 2\n"
                 + "ORDER BY created_at DESC\n"
                 + "OFFSET ? rows FETCH next 12 rows only;";
         try {
@@ -370,7 +370,7 @@ public class AdminDAO extends DBContext {
                 + "FROM Accounts a\n"
                 + "JOIN AccountStatuses acs ON a.status_id = acs.status_id\n"
                 + "JOIN Role r ON a.role_id = r.role_id\n"
-                + "where gender = 'Female'\n"
+                + "where gender = 'Female' and a.role_id = 2\n"
                 + "ORDER BY created_at DESC\n"
                 + "OFFSET ? rows FETCH next 12 rows only;";
         try {
@@ -390,7 +390,7 @@ public class AdminDAO extends DBContext {
     }
 
     public int countActiveAccount() {
-        String query = "select count(*) from Accounts where status_id = 1";
+        String query = "select count(*) from Accounts where status_id = 1 and a.role_id = 2";
         try {
             connection = getConnection();
             statement = connection.prepareStatement(query);
@@ -405,7 +405,7 @@ public class AdminDAO extends DBContext {
     }
 
     public int countInActiveAccount() {
-        String query = "select count(*) from Accounts where status_id = 2";
+        String query = "select count(*) from Accounts where status_id = 2 and a.role_id = 2";
         try {
             connection = getConnection();
             statement = connection.prepareStatement(query);
@@ -433,7 +433,7 @@ public class AdminDAO extends DBContext {
                 + "FROM Accounts a\n"
                 + "JOIN AccountStatuses acs ON a.status_id = acs.status_id\n"
                 + "JOIN Role r ON a.role_id = r.role_id\n"
-                + "where a.status_id = 1\n"
+                + "where a.status_id = 1 and a.role_id = 2\n"
                 + "ORDER BY created_at DESC\n"
                 + "OFFSET ? rows FETCH next 12 rows only;";
         try {
@@ -466,7 +466,7 @@ public class AdminDAO extends DBContext {
                 + "FROM Accounts a\n"
                 + "JOIN AccountStatuses acs ON a.status_id = acs.status_id\n"
                 + "JOIN Role r ON a.role_id = r.role_id\n"
-                + "where a.status_id = 2\n"
+                + "where a.status_id = 2 and a.role_id = 2\n"
                 + "ORDER BY created_at DESC\n"
                 + "OFFSET ? rows FETCH next 12 rows only;";
         try {
@@ -486,7 +486,7 @@ public class AdminDAO extends DBContext {
     }
     
      public int countAccountByGenderAndStatus(String gender, int status) {
-        String query = "select count(*) from Accounts where gender = ? and status_id = ?";
+        String query = "select count(*) from Accounts where gender = ? and status_id = ? and a.role_id = 2";
         try {
             connection = getConnection();
             statement = connection.prepareStatement(query);
@@ -516,7 +516,7 @@ public class AdminDAO extends DBContext {
                 + "FROM Accounts a\n"
                 + "JOIN AccountStatuses acs ON a.status_id = acs.status_id\n"
                 + "JOIN Role r ON a.role_id = r.role_id\n"
-                + "where a.gender = ? and a.status_id = ?\n"
+                + "where a.gender = ? and a.status_id = ? and a.role_id = 2\n"
                 + "ORDER BY created_at DESC\n"
                 + "OFFSET ? rows FETCH next 12 rows only;";
         try {
