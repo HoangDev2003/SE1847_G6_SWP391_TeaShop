@@ -97,7 +97,7 @@
                                                     <td>${lp.role_name}</td>
                                                     <td>${lp.status_name}</td>
                                                     <td><a href="editShipper?id=${lp.account_id}">Edit</a>
-                                                        <a href="deletes?id=${lp.account_id}">Delete</a></td>
+                                                        <a href="deleteshipper?id=${lp.account_id}">Delete</a></td>
                                                 </tr>
                                             </c:forEach>
                                         </tbody>

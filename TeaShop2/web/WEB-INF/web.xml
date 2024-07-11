@@ -148,6 +148,10 @@
         <servlet-name>EditShipperController</servlet-name>
         <servlet-class>controller.EditShipperController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DeleteShipperController</servlet-name>
+        <servlet-class>controller.DeleteShipperController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ShopController</servlet-name>
         <url-pattern>/shop</url-pattern>
@@ -307,5 +311,9 @@
     <servlet-mapping>
         <servlet-name>EditShipperController</servlet-name>
         <url-pattern>/editShipper</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteShipperController</servlet-name>
+        <url-pattern>/deleteshipper</url-pattern>
     </servlet-mapping>
 </web-app>
