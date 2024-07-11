@@ -63,9 +63,9 @@
                                 </div>
                             </div>
                             <div style="margin-left: 15px; margin-bottom: 20px">
-                                <a href="adduser"><button type="button" class="btn btn-danger">Add Staff</button> </a>
+                                <a href="adduser"><button type="button" class="btn btn-danger">Add User</button> </a>
                             </div>
-                            <form action="searchUser">
+                            <form action="searchStaff">
                                 <input type="search" name="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" style="max-width: 95%" />
                             </form>
                             <div class="card mb-4">
@@ -84,7 +84,7 @@
                                                     <th>Phone Number</th>
                                                     <th>Role</th>
                                                     <th>Status</th>
-<!--                                                    <th>Feature</th>-->
+                                                    <th>Feature</th>
                                                 </tr>
                                             </thead>                                           
                                             <tbody>
@@ -96,8 +96,8 @@
                                                     <td>${ls.phone_number}</td>
                                                     <td>${ls.role_name}</td>
                                                     <td>${ls.status_name}</td>
-<!--                                                    <td><a href="editstaff?id=${ls.account_id}">Edit</a>
-                                                        <a href="delete?id=${ls.account_id}">Delete</a></td>-->
+                                                    <td><a href="editstaff?id=${ls.account_id}">Edit</a>
+                                                        <a href="deletestaff?id=${ls.account_id}">Delete</a></td>
                                                 </tr>
                                             </c:forEach>
                                         </tbody>
