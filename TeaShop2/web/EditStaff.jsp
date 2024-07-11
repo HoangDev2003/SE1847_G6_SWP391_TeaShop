@@ -99,7 +99,7 @@
                           
 
                             <li class="nav-item">
-                                <a class="nav-link active" href="usermanager" >
+                                <a class="nav-link active" href="staffmanager" >
                                     <i class="fas fa-fw fa-chart-pie"></i>
                                     Staff Manager
                                 </a>
@@ -129,8 +129,8 @@
                                         <div class="col">
                                             <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
                                                 <ol class="breadcrumb mb-0">
-                                                    <li class="breadcrumb-item"><a href="usermanager">Customer Manager</a></li>
-                                                    <li class="breadcrumb-item active" aria-current="page">Edit User Profile</li>
+                                                    <li class="breadcrumb-item"><a href="customerManagement">Customer Manager</a></li>
+                                                    <li class="breadcrumb-item active" aria-current="page">Edit Staff Profile</li>
                                                 </ol>
                                             </nav>
                                         </div>
@@ -209,7 +209,7 @@
                                                         <div class="col-sm-9">
                                                             <select class="input-like-p" name="role">
                                                                 <option value="1" ${'Admin' eq acc.role_name ? "selected" : ""}>Admin</option>   
-                                                                <option value="3" ${'User' eq acc.role_name ? "selected" : ""}>Staff</option>                                                         
+                                                                <option value="3" ${'Staff' eq acc.role_name ? "selected" : ""}>Staff</option>                                                         
                                                             </select>
 
                                                         </div>
@@ -222,7 +222,7 @@
                                                         <div class="col-sm-9" style="display: flex">                                                           
                                                             <select class="input-like-p" name="status">
                                                                 <option value="1" ${'Active' eq acc.status_name ? "selected" : ""}>Active</option>   
-                                                                <option value="2" ${'Deactive' eq acc.status_name ? "selected" : ""}>Inactive</option>   
+                                                                <option value="2" ${'Inactive' eq acc.status_name ? "selected" : ""}>Inactive</option>   
                                                             </select>
 
 
