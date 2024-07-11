@@ -5,8 +5,8 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -35,6 +35,8 @@
         <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
 
         <!-- Template Stylesheet -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
         <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
     </head>
 
@@ -49,105 +51,90 @@
 
         <!-- Navbar start -->
         <div class="container-fluid fixed-top">
-            <div class="container topbar bg-primary d-none d-lg-block">
-                <div class="d-flex justify-content-between">
-                    <div class="top-info ps-2">
-                        <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#" class="text-white">123 Street, New York</a></small>
-                        <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i><a href="#" class="text-white">Email@Example.com</a></small>
-                    </div>
-                    <div class="top-link pe-2">
-                        <a href="#" class="text-white"><small class="text-white mx-2">Privacy Policy</small>/</a>
-                        <a href="#" class="text-white"><small class="text-white mx-2">Terms of Use</small>/</a>
-                        <a href="#" class="text-white"><small class="text-white ms-2">Sales and Refunds</small></a>
-                    </div>
-                </div>
-            </div>
-            <div class="container px-0">
-                <nav class="navbar navbar-light bg-white navbar-expand-xl">
-                    <a href="shop" class="navbar-brand"><h1 class="text-primary display-6">Dreamy Coffee</h1></a>
-                    <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                        <span class="fa fa-bars text-primary"></span>
-                    </button>
-                    <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
-                        <div class="navbar-nav mx-auto">
-                            <a href="home" class="nav-item nav-link">Home</a>
-                            <a href="shop" class="nav-item nav-link">Shop</a>
-                            <div class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
-                                <div class="dropdown-menu m-0 bg-secondary rounded-0">
-                                    <a href="cart.jsp" class="dropdown-item">Cart</a>
-                                    <a href="chackout.jsp" class="dropdown-item">Checkout</a>
-                                    <a href="testimonial.jsp" class="dropdown-item">Testimonial</a>
-                                    <a href="404.jsp" class="dropdown-item">404 Page</a>
+            <jsp:include page="../common/homePage/topbar.jsp"></jsp:include>
+                <div class="container px-0">
+                    <nav class="navbar navbar-light bg-white navbar-expand-xl">
+                        <a href="shop" class="navbar-brand"><h1 class="text-primary display-6">Dreamy Coffee</h1></a>
+                        <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                            <span class="fa fa-bars text-primary"></span>
+                        </button>
+                        <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
+                            <div class="navbar-nav mx-auto">
+                                <a href="home" class="nav-item nav-link">Home</a>
+                                <a href="shop" class="nav-item nav-link">Shop</a>
+                                <div class="nav-item dropdown">
+                                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
+                                    <div class="dropdown-menu m-0 bg-secondary rounded-0">
+                                        <a href="cart.jsp" class="dropdown-item">Cart</a>
+                                        <a href="chackout.jsp" class="dropdown-item">Checkout</a>
+                                        <a href="testimonial.jsp" class="dropdown-item">Testimonial</a>
+                                        <a href="404.jsp" class="dropdown-item">404 Page</a>
+                                    </div>
                                 </div>
+                                <a href="contact.jsp" class="nav-item nav-link">Contact</a>
                             </div>
-                            <a href="contact.jsp" class="nav-item nav-link">Contact</a>
+                            <div class="d-flex m-3 me-0">
+                                <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
+                                <a href="#" class="position-relative me-4 my-auto">
+                                    <i class="fa fa-shopping-bag fa-2x"></i>
+                                    <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">3</span>
+                                </a>
+                                <a href="#" class="my-auto">
+                                    <i class="fas fa-user fa-2x"></i>
+                                </a>
+                            </div>
                         </div>
-                        <div class="d-flex m-3 me-0">
-                            <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
-                            <a href="#" class="position-relative me-4 my-auto">
-                                <i class="fa fa-shopping-bag fa-2x"></i>
-                                <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">3</span>
-                            </a>
-                            <a href="#" class="my-auto">
-                                <i class="fas fa-user fa-2x"></i>
-                            </a>
-                        </div>
-                    </div>
-                </nav>
+                    </nav>
+                </div>
             </div>
-        </div>
-        <!-- Navbar End -->
+            <!-- Navbar End -->
 
 
-        <!-- Modal Search Start -->
-        <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-fullscreen">
-                <div class="modal-content rounded-0">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Tìm kiếm bằng tên sản phẩm</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body d-flex align-items-center">
-                        <div class="input-group w-75 mx-auto d-flex">
-                            <input type="search" class="form-control p-3" placeholder="Tìm kiếm bằng tên sản phẩm" aria-describedby="search-icon-1">
-                            <span id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></span>
+            <!-- Modal Search Start -->
+            <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-fullscreen">
+                    <div class="modal-content rounded-0">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Tìm kiếm bằng tên sản phẩm</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body d-flex align-items-center">
+                            <div class="input-group w-75 mx-auto d-flex">
+                                <input type="search" class="form-control p-3" placeholder="Tìm kiếm bằng tên sản phẩm" aria-describedby="search-icon-1">
+                                <span id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <!-- Modal Search End -->
+            <!-- Modal Search End -->
 
 
-        <!-- Single Page Header start -->
-        <div class="container-fluid page-header bg-primary py-5">
-            <h1 class="text-center text-white display-6">Shop Details</h1>
+            <!-- Single Page Header start -->
+            <div class="container-fluid page-header bg-primary py-5">
+                <h1 class="text-center text-white display-6">Shop Details</h1>
 
-        </div>
-        <!-- Single Page Header End -->
+            </div>
+            <!-- Single Page Header End -->
 
 
-        <!-- Single Product Start -->
-        <div class="container-fluid py-5 mt-5">
-            <div class="container py-5">
-                <div class="row g-4 mb-5">
-                    <div class="col-lg-8 col-xl-9">
-                        <div class="row g-4">
-                            <div class="col-lg-6">
-                                <div class="border rounded">
-                                    <a href="#">
-                                        <img src="${product.image}" class="img-fluid rounded" alt="Image">
+            <!-- Single Product Start -->
+            <div class="container-fluid py-5 mt-5">
+                <div class="container py-5">
+                    <div class="row g-4 mb-5">
+                        <div class="col-lg-8 col-xl-9">
+                            <div class="row g-4">
+                                <div class="col-lg-6">
+                                    <div class="border rounded">
+                                        <a href="#">
+                                            <img src="${product.image}" class="img-fluid rounded" alt="Image">
                                     </a>
                                 </div>
                             </div>
                             <div class="col-lg-6">
-                                <fmt:setLocale value="vi_VN" />
                                 <h4 class="fw-bold mb-3">${product.product_name}</h4>
                                 <p class="mb-3">${product.category.category_name}</p>
-                                <h5 class="fw-bold mb-3">
-                                    <fmt:formatNumber value="${product.price}" type="currency" currencySymbol="₫" />
-                                </h5>
+                                <h5 class="fw-bold mb-3">${product.price}đ</h5>
                                 <div class="d-flex mb-4">
                                     <i class="fa fa-star text-secondary"></i>
                                     <i class="fa fa-star text-secondary"></i>
@@ -177,48 +164,33 @@
                                     <div class="nav nav-tabs mb-3">                                      
                                         <button class="nav-link border-white border-bottom-0" type="button" role="tab"
                                                 id="nav-mission-tab" data-bs-toggle="tab" data-bs-target="#nav-mission"
-                                                aria-controls="nav-mission" aria-selected="false">Reviews</button>
+                                                aria-controls="nav-mission" aria-selected="false">Đánh giá sản phẩm</button>
                                     </div>
                                 </nav>
                                 <div class="tab-content mb-5">
 
                                     <div class="tab-pane" id="nav-mission" role="tabpanel" aria-labelledby="nav-mission-tab">
-                                        <div class="d-flex">
-                                            <img src="https://m.yodycdn.com/blog/hinh-nen-thien-nhien-4k-yody-vn-11.jpg" class="img-fluid rounded-circle p-3" style="width: 100px; height: 100px;" alt="">
-                                            <div class="">
-                                                <p class="mb-2" style="font-size: 14px;">April 12, 2024</p>
-                                                <div class="d-flex justify-content-between">
-                                                    <h5>Jason Smith</h5>
-                                                    <div class="d-flex mb-3">
-                                                        <i class="fa fa-star text-secondary"></i>
-                                                        <i class="fa fa-star text-secondary"></i>
-                                                        <i class="fa fa-star text-secondary"></i>
-                                                        <i class="fa fa-star text-secondary"></i>
-                                                        <i class="fa fa-star text-secondary"></i>
+                                        <c:forEach items="${feedbackList}" var="fb">
+                                            <div class="d-flex">
+                                                <img src="https://m.yodycdn.com/blog/hinh-nen-thien-nhien-4k-yody-vn-11.jpg" class="img-fluid rounded-circle p-3" style="width: 100px; height: 100px;" alt="">
+                                                <div class="">
+                                                    <p class="mb-2" style="font-size: 14px;">${fb.formattedCreatedAt}</p>
+                                                    <div class="d-flex justify-content-between">
+                                                        <h5>${fb.account.full_name}</h5>
+
                                                     </div>
-                                                </div>
-                                                <p>The generated Lorem Ipsum is therefore always free from repetition injected humour, or non-characteristic 
-                                                    words etc. Susp endisse ultricies nisi vel quam suscipit</p>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex">
-                                            <img src="https://cdn-media.sforum.vn/storage/app/media/wp-content/uploads/2023/12/hinh-nen-vu-tru-72.jpg" class="img-fluid rounded-circle p-3" style="width: 100px; height: 100px;" alt="">
-                                            <div class="">
-                                                <p class="mb-2" style="font-size: 14px;">April 12, 2024</p>
-                                                <div class="d-flex justify-content-between">
-                                                    <h5>Sam Peters</h5>
-                                                    <div class="d-flex mb-3">
-                                                        <i class="fa fa-star text-secondary"></i>
-                                                        <i class="fa fa-star text-secondary"></i>
-                                                        <i class="fa fa-star text-secondary"></i>
-                                                        <i class="fa fa-star text-secondary"></i>
-                                                        <i class="fa fa-star text-secondary"></i>
+                                                    <div class="d-flex mb-2 text-warning">
+                                                        <c:forEach begin="1" end="${fb.rating}" var="star">
+                                                            <i class="fa fa-star"></i>
+                                                        </c:forEach>
+                                                        <c:forEach begin="${fb.rating + 1}" end="5" var="star">
+                                                            <i class="fa fa-star-o"></i>
+                                                        </c:forEach>
                                                     </div>
+                                                    <p>${fb.comment}</p>
                                                 </div>
-                                                <p class="text-dark">The generated Lorem Ipsum is therefore always free from repetition injected humour, or non-characteristic 
-                                                    words etc. Susp endisse ultricies nisi vel quam suscipit </p>
                                             </div>
-                                        </div>
+                                        </c:forEach>
                                     </div>
                                     <div class="tab-pane" id="nav-vision" role="tabpanel">
                                         <p class="text-dark">Tempor erat elitr rebum at clita. Diam dolor diam ipsum et tempor sit. Aliqu diam
@@ -228,37 +200,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <form action="#">
-                                <h4 class="mb-5 fw-bold">Viết phản hồi</h4>
-                                <div class="row g-4">
-                                    <div class="col-lg-6">
-                                        <div class="border-bottom rounded">
-                                            <input type="text" class="form-control border-0 me-4" placeholder="Tên của bạn *">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="border-bottom rounded">
-                                            <input type="email" class="form-control border-0" placeholder="Email của bạn *">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <div class="border-bottom rounded my-4">
-                                            <textarea name="" id="" class="form-control border-0" cols="30" rows="8" placeholder="Phản hồi của bạn*" spellcheck="false"></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <div class="d-flex justify-content-between py-3 mb-5">
-                                            <div class="d-flex align-items-center">
 
-                                                <div class="d-flex align-items-center" style="font-size: 12px;">
-
-                                                </div>  
-                                            </div>
-                                            <a href="#" class="btn border border-secondary text-primary rounded-pill px-4 py-3"> Post Comment</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
                         </div>
                     </div>
                     <div class="col-lg-4 col-xl-3">
@@ -271,11 +213,7 @@
                                         <ul class="list-unstyled fruite-categorie">
                                             <li>
                                                 <div class="d-flex justify-content-between fruite-name">
-                                                    
-                                                    <a href="shop?search=category&category_id=${cate.category_id}">
-                                                        <ion-icon name="caret-forward-outline"></ion-icon>
-                                                        ${cate.category_name}
-                                                    </a>
+                                                    <a href="shop?search=category&category_id=${cate.category_id}">${cate.category_name}</a>
                                                 </div>
                                             </li>
                                         </ul>
@@ -285,8 +223,7 @@
                             <div class="col-lg-12">
                                 <h4 class="mb-4">Sản phẩm nổi bật</h4>
                                 <c:forEach items="${listSpecialProduct}" var="special">
-                                    <div class="d-flex align-items-center mb-4 p-3 border rounded shadow-sm product-card"  >
-                                        
+                                    <div class="d-flex align-items-center mb-4 p-3 border rounded shadow-sm product-card">
                                         <div class="rounded me-4" style="width: 100px; height: 100px; overflow: hidden;">
                                             <img src="${special.image}" class="img-fluid rounded" alt="${special.product_name}">
                                         </div>
@@ -299,9 +236,8 @@
                                                 <i class="fa fa-star"></i>
                                                 <i class="fa fa-star"></i>
                                             </div>
-                                            <fmt:setLocale value="vi_VN" />
                                             <div class="d-flex mb-2">
-                                                <h5 class="fw-bold me-2"><fmt:formatNumber value="${special.price}" type="currency" currencySymbol="₫" /></h5>
+                                                <h5 class="fw-bold me-2">${special.price}</h5>
                                             </div>
                                         </div>
                                     </div>
@@ -331,7 +267,6 @@
 <script src="${pageContext.request.contextPath}/lib/waypoints/waypoints.min.js"></script>
 <script src="${pageContext.request.contextPath}/lib/lightbox/js/lightbox.min.js"></script>
 <script src="${pageContext.request.contextPath}/lib/owlcarousel/owl.carousel.min.js"></script>
-<script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
 
 <!-- Template Javascript -->
 <script src="${pageContext.request.contextPath}/js/main.js"></script>
