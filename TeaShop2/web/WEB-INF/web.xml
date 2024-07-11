@@ -156,6 +156,10 @@
         <servlet-name>SearchShipperController</servlet-name>
         <servlet-class>controller.SearchShipperController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>FilterCustomerController</servlet-name>
+        <servlet-class>controller.FilterCustomerController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ShopController</servlet-name>
         <url-pattern>/shop</url-pattern>
@@ -324,4 +328,5 @@
         <servlet-name>SearchShipperController</servlet-name>
         <url-pattern>/searchShipper</url-pattern>
     </servlet-mapping>
+   
 </web-app>

@@ -4,6 +4,7 @@
  */
 package dal;
 
+import entity.AccountStatus;
 import entity.Accounts;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -215,8 +216,8 @@ public class AdminDAO extends DBContext {
         }
         return list;
     }
-    
-     public List<Accounts> getAllStaff() {
+
+    public List<Accounts> getAllStaff() {
         //khởi tạo 1 list để load sản phẩm lên và lưu trong đấy
         List<Accounts> list = new ArrayList<>();
         String query = "SELECT a.account_id,\n"
@@ -246,7 +247,7 @@ public class AdminDAO extends DBContext {
         return list;
     }
 
-      public List<Accounts> getAllShipper() {
+    public List<Accounts> getAllShipper() {
         //khởi tạo 1 list để load sản phẩm lên và lưu trong đấy
         List<Accounts> list = new ArrayList<>();
         String query = "SELECT a.account_id,\n"
@@ -275,14 +276,274 @@ public class AdminDAO extends DBContext {
         }
         return list;
     }
-      
+
+    public List<AccountStatus> getAllStatus() {
+        List<AccountStatus> list = new ArrayList<>();
+        String query = "select * from AccountStatuses";
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(query);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                list.add(new AccountStatus(resultSet.getInt(1), resultSet.getString(2)));
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
+        }
+        return list;
+    }
+
+    public int countFelmale() {
+        String query = "select count(*) from Accounts where gender = 'Female'";
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(query);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                return resultSet.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
+        }
+        return 0;
+    }
+
+    public int countMale() {
+        String query = "select count(*) from Accounts where gender = 'Male'";
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(query);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                return resultSet.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
+        }
+        return 0;
+    }
+
+    public List<Accounts> getAllAccountMale(int index) {
+        List<Accounts> list = new ArrayList<>();
+        String query = "SELECT a.account_id,\n"
+                + "a.user_name,\n"
+                + "r.role_name,\n"
+                + "a.email,\n"
+                + "acs.status_name, \n"
+                + "a.gender,\n"
+                + "a.address,\n"
+                + "a.phone_number,\n"
+                + "a.created_at\n"
+                + "FROM Accounts a\n"
+                + "JOIN AccountStatuses acs ON a.status_id = acs.status_id\n"
+                + "JOIN Role r ON a.role_id = r.role_id\n"
+                + "where gender = 'Male'\n"
+                + "ORDER BY created_at DESC\n"
+                + "OFFSET ? rows FETCH next 12 rows only;";
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(query);
+            statement.setInt(1, (index - 1) * 12);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                list.add(new Accounts(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3),
+                        resultSet.getString(4), resultSet.getString(5),
+                        resultSet.getString(6), resultSet.getString(7), resultSet.getString(8), resultSet.getDate(9)));
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
+        }
+        return list;
+    }
+
+    public List<Accounts> getAllAccountFemale(int index) {
+        List<Accounts> list = new ArrayList<>();
+        String query = "SELECT a.account_id,\n"
+                + "a.user_name,\n"
+                + "r.role_name,\n"
+                + "a.email,\n"
+                + "acs.status_name, \n"
+                + "a.gender,\n"
+                + "a.address,\n"
+                + "a.phone_number,\n"
+                + "a.created_at\n"
+                + "FROM Accounts a\n"
+                + "JOIN AccountStatuses acs ON a.status_id = acs.status_id\n"
+                + "JOIN Role r ON a.role_id = r.role_id\n"
+                + "where gender = 'Female'\n"
+                + "ORDER BY created_at DESC\n"
+                + "OFFSET ? rows FETCH next 12 rows only;";
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(query);
+            statement.setInt(1, (index - 1) * 12);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                list.add(new Accounts(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3),
+                        resultSet.getString(4), resultSet.getString(5),
+                        resultSet.getString(6), resultSet.getString(7), resultSet.getString(8), resultSet.getDate(9)));
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
+        }
+        return list;
+    }
+
+    public int countActiveAccount() {
+        String query = "select count(*) from Accounts where status_id = 1";
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(query);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                return resultSet.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
+        }
+        return 0;
+    }
+
+    public int countInActiveAccount() {
+        String query = "select count(*) from Accounts where status_id = 2";
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(query);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                return resultSet.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
+        }
+        return 0;
+    }
+
+    public List<Accounts> getAccountsActive(int index) {
+        List<Accounts> list = new ArrayList<>();
+        String query = "SELECT a.account_id,\n"
+                + "a.user_name,\n"
+                + "r.role_name,\n"
+                + "a.email,\n"
+                + "acs.status_name, \n"
+                + "a.gender,\n"
+                + "a.address,\n"
+                + "a.phone_number,\n"
+                + "a.created_at\n"
+                + "FROM Accounts a\n"
+                + "JOIN AccountStatuses acs ON a.status_id = acs.status_id\n"
+                + "JOIN Role r ON a.role_id = r.role_id\n"
+                + "where a.status_id = 1\n"
+                + "ORDER BY created_at DESC\n"
+                + "OFFSET ? rows FETCH next 12 rows only;";
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(query);
+            statement.setInt(1, (index - 1) * 12);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                list.add(new Accounts(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3),
+                        resultSet.getString(4), resultSet.getString(5),
+                        resultSet.getString(6), resultSet.getString(7), resultSet.getString(8), resultSet.getDate(9)));
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
+        }
+        return list;
+    } 
+    
+    public List<Accounts> getAccountsInActive(int index) {
+        List<Accounts> list = new ArrayList<>();
+        String query = "SELECT a.account_id,\n"
+                + "a.user_name,\n"
+                + "r.role_name,\n"
+                + "a.email,\n"
+                + "acs.status_name, \n"
+                + "a.gender,\n"
+                + "a.address,\n"
+                + "a.phone_number,\n"
+                + "a.created_at\n"
+                + "FROM Accounts a\n"
+                + "JOIN AccountStatuses acs ON a.status_id = acs.status_id\n"
+                + "JOIN Role r ON a.role_id = r.role_id\n"
+                + "where a.status_id = 2\n"
+                + "ORDER BY created_at DESC\n"
+                + "OFFSET ? rows FETCH next 12 rows only;";
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(query);
+            statement.setInt(1, (index - 1) * 12);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                list.add(new Accounts(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3),
+                        resultSet.getString(4), resultSet.getString(5),
+                        resultSet.getString(6), resultSet.getString(7), resultSet.getString(8), resultSet.getDate(9)));
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
+        }
+        return list;
+    }
+    
+     public int countAccountByGenderAndStatus(String gender, int status) {
+        String query = "select count(*) from Accounts where gender = ? and status_id = ?";
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(query);
+            statement.setString(1, gender);          
+            statement.setInt(2, status);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                return resultSet.getInt(1);
+            }
+        } catch (Exception e) {
+             e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
+        }
+        return 0;
+    }
+
+    public List<Accounts> getAccountByGenderAndStatus(String gender, int status, int index) {
+        List<Accounts> list = new ArrayList<>();
+        String query = "SELECT a.account_id,\n"
+                + "a.user_name,\n"
+                + "r.role_name,\n"
+                + "a.email,\n"
+                + "acs.status_name, \n"
+                + "a.gender,\n"
+                + "a.address,\n"
+                + "a.phone_number,\n"
+                + "a.created_at\n"
+                + "FROM Accounts a\n"
+                + "JOIN AccountStatuses acs ON a.status_id = acs.status_id\n"
+                + "JOIN Role r ON a.role_id = r.role_id\n"
+                + "where a.gender = ? and a.status_id = ?\n"
+                + "ORDER BY created_at DESC\n"
+                + "OFFSET ? rows FETCH next 12 rows only;";
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(query);
+            statement.setString(1, gender);
+            statement.setInt(2, status);
+            statement.setInt(3, (index - 1) * 12);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                list.add(new Accounts(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3),
+                        resultSet.getString(4), resultSet.getString(5),
+                        resultSet.getString(6), resultSet.getString(7), resultSet.getString(8), resultSet.getDate(9)));
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
+        }
+        return list;
+    }
+
     public static void main(String[] args) {
-       AdminDAO dao = new AdminDAO();
-       List<Accounts> staffList = dao.getAllShipper();
+        AdminDAO dao = new AdminDAO();
+        List<Accounts> staffList = dao.getAccountByGenderAndStatus("Male", 1, 2);
         for (Accounts staff : staffList) {
             System.out.println(staff);
         }
-    
+
     }
 
 }

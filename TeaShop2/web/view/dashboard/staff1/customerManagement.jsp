@@ -62,32 +62,55 @@
                                     .
                                 </div>
                             </div>
-                            <div style="margin-left: 15px; margin-bottom: 20px">
-                                <a href="adduser"><button type="button" class="btn btn-danger">Add Customer</button> </a>
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <div class="filter1">
+                                    <form action="filtercustomer">
+                                        <div class="filter">
+                                            <a class="texta" style=" color: #454444f7;" >Filter:</a>
+                                            <select name="gender">
+                                                <option>Gender</option>
+                                                <option value="Female" ${'Female' == gender ? "selected":""}>Female</option>        
+                                            <option value="Male" ${'Male' == gender ? "selected":""}>Male</option>   
+                                        </select>                                                                   
+                                        <div>
+                                            <select name="status">
+                                                <option>Status</option>
+                                                <c:forEach items="${listas}" var="s">
+                                                    <option value="${s.getStatus_id()}" ${s.getStatus_id() == status ? "selected" : ""}>${s.getStatus_name()}</option>                  
+                                                </c:forEach>
+                                            </select>
+                                        </div>
+                                        <input type="submit" value="Filter"/>                                              
+                                    </div>
+                                </form>                             
                             </div>
-                            <form action="searchUser">
-                                <input type="search" name="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" style="max-width: 95%" />
-                            </form>
-                            <div class="card mb-4">
-                                <div class="card-header">
-                                    <i class="fas fa-table me-1"></i>
-                                    DataTable Example
-                                </div>
-                                <form action="customermanager">
-                                    <div class="card-body">
-                                        <table id="datatablesSimple">
-                                            <thead>
-                                                <tr>
-                                                    <th>Name</th>
-                                                    <th>Gender</th>
-                                                    <th>Email</th>
-                                                    <th>Phone Number</th>
-                                                    <th>Role</th>
-                                                    <th>Status</th>
-                                                    <th>Feature</th>
-                                                </tr>
-                                            </thead>                                           
-                                            <tbody>
+                        </div>
+                        <div style="margin-left: 15px; margin-bottom: 20px">
+                            <a href="adduser"><button type="button" class="btn btn-danger">Add Customer</button> </a>
+                        </div>
+                        <form action="searchUser">
+                            <input type="search" name="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" style="max-width: 95%" />
+                        </form>
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-table me-1"></i>
+                                DataTable Example
+                            </div>
+                            <form action="customermanager">
+                                <div class="card-body">
+                                    <table id="datatablesSimple">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Gender</th>
+                                                <th>Email</th>
+                                                <th>Phone Number</th>
+                                                <th>Role</th>
+                                                <th>Status</th>
+                                                <th>Feature</th>
+                                            </tr>
+                                        </thead>                                           
+                                        <tbody>
                                             <c:forEach items="${listUser}" var="lc">
                                                 <tr>                                                 
                                                     <td>${lc.user_name}</td>
