@@ -136,6 +136,10 @@
         <servlet-name>SearchStaffController</servlet-name>
         <servlet-class>controller.SearchStaffController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ShipperManager</servlet-name>
+        <servlet-class>controller.ShipperManager</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ShopController</servlet-name>
         <url-pattern>/shop</url-pattern>
@@ -288,4 +292,5 @@
         <servlet-name>SearchStaffController</servlet-name>
         <url-pattern>/searchStaff</url-pattern>
     </servlet-mapping>
+    
 </web-app>

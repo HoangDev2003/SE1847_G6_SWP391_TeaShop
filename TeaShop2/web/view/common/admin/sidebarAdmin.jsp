@@ -28,6 +28,7 @@
                                     <a class="nav-link" href="productmanager">Product Management</a>
                                     <a class="nav-link" href="categorymanager">Category Management</a>                                   
                                     <a class="nav-link" href="staffmanager">Staff Management</a>
+                                    <a class="nav-link" href="shippermanager">Shipper Management</a>
                                 </nav>
                             </div>
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
