@@ -74,7 +74,7 @@ public class FilterCustomerController extends HttpServlet {
                             request.getRequestDispatcher("./view/dashboard/staff1/customerManagement.jsp").forward(request, response);
                         } else {
                             request.setAttribute("indexm", indexm);
-                            request.setAttribute("listacc", listm);
+                            request.setAttribute("listUser", listm);
                             request.setAttribute("gender", gender);
                             request.getRequestDispatcher("./view/dashboard/staff1/customerManagement.jsp").forward(request, response);
                         }
@@ -87,7 +87,7 @@ public class FilterCustomerController extends HttpServlet {
                         } else {
                             request.setAttribute("gender", gender);
                             request.setAttribute("indexf", indexf);
-                            request.setAttribute("listacc", listf);
+                            request.setAttribute("listUser", listf);
                             request.getRequestDispatcher("./view/dashboard/staff1/customerManagement.jsp").forward(request, response);
                         }
                     }
@@ -118,7 +118,7 @@ public class FilterCustomerController extends HttpServlet {
                     } else {
                         request.setAttribute("status", "1");
                         request.setAttribute("indexa", indexa);
-                        request.setAttribute("listacc", lista);
+                        request.setAttribute("listUser", lista);
                         request.getRequestDispatcher("./view/dashboard/staff1/customerManagement.jsp").forward(request, response);
                     }
 
@@ -131,7 +131,7 @@ public class FilterCustomerController extends HttpServlet {
                     } else {
                         request.setAttribute("status", "2");
                         request.setAttribute("indexi", indexI);
-                        request.setAttribute("listacc", listi);
+                        request.setAttribute("listUser", listi);
                         request.getRequestDispatcher("./view/dashboard/staff1/customerManagement.jsp").forward(request, response);
                     }
                 }
@@ -150,7 +150,7 @@ public class FilterCustomerController extends HttpServlet {
                     request.setAttribute("status", status_id);
                     request.getRequestDispatcher("./view/dashboard/staff1/customerManagement.jsp").forward(request, response);
                 } else {
-                    request.setAttribute("listacc", list);
+                    request.setAttribute("listUser", list);
                     request.setAttribute("gender", gender);
                     request.setAttribute("status", status_id);                  
                     request.setAttribute("index", index);

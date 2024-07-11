@@ -65,27 +65,25 @@
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                 <div class="filter1">
                                     <form action="filtercustomer">
-                                        <div class="filter">
-                                            <a class="texta" style=" color: #454444f7;" >Filter:</a>
-                                            <select name="gender">
+                                        <div class="filter" style="display: flex; align-items: center;">
+                                            <a class="texta" style="color: #454444f7; margin-right: 10px;">Filter:</a>
+                                            <select name="gender" style="margin-right: 10px;">
                                                 <option>Gender</option>
-                                                <option value="Female" ${'Female' == gender ? "selected":""}>Female</option>        
-                                            <option value="Male" ${'Male' == gender ? "selected":""}>Male</option>   
+                                                <option value="Female" ${'Female' == gender ? "selected" : ""}>Female</option>        
+                                            <option value="Male" ${'Male' == gender ? "selected" : ""}>Male</option>   
                                         </select>                                                                   
-                                        <div>
-                                            <select name="status">
-                                                <option>Status</option>
-                                                <c:forEach items="${listas}" var="s">
-                                                    <option value="${s.getStatus_id()}" ${s.getStatus_id() == status ? "selected" : ""}>${s.getStatus_name()}</option>                  
-                                                </c:forEach>
-                                            </select>
-                                        </div>
+                                        <select name="status" style="margin-right: 10px;">
+                                            <option>Status</option>
+                                            <c:forEach items="${listas}" var="s">
+                                                <option value="${s.getStatus_id()}" ${s.getStatus_id() == status ? "selected" : ""}>${s.getStatus_name()}</option>                  
+                                            </c:forEach>
+                                        </select>
                                         <input type="submit" value="Filter"/>                                              
                                     </div>
                                 </form>                             
                             </div>
                         </div>
-                        <div style="margin-left: 15px; margin-bottom: 20px">
+                        <div style="margin-left: 15px; margin-bottom: 20px; margin-top: 20px">
                             <a href="adduser"><button type="button" class="btn btn-danger">Add Customer</button> </a>
                         </div>
                         <form action="searchUser">
