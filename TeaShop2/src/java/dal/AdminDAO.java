@@ -385,6 +385,39 @@ public class AdminDAO extends DBContext {
         }
         return list;
     }
+    
+    public List<Accounts> getAllAccountMaleStaff(int index) {
+        List<Accounts> list = new ArrayList<>();
+        String query = "SELECT a.account_id,\n"
+                + "a.user_name,\n"
+                + "r.role_name,\n"
+                + "a.email,\n"
+                + "acs.status_name, \n"
+                + "a.gender,\n"
+                + "a.address,\n"
+                + "a.phone_number,\n"
+                + "a.created_at\n"
+                + "FROM Accounts a\n"
+                + "JOIN AccountStatuses acs ON a.status_id = acs.status_id\n"
+                + "JOIN Role r ON a.role_id = r.role_id\n"
+                + "where gender = 'Male' and a.role_id = 3\n"
+                + "ORDER BY created_at DESC\n"
+                + "OFFSET ? rows FETCH next 12 rows only;";
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(query);
+            statement.setInt(1, (index - 1) * 12);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                list.add(new Accounts(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3),
+                        resultSet.getString(4), resultSet.getString(5),
+                        resultSet.getString(6), resultSet.getString(7), resultSet.getString(8), resultSet.getDate(9)));
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
+        }
+        return list;
+    }
 
     public List<Accounts> getAllAccountFemale(int index) {
         List<Accounts> list = new ArrayList<>();
@@ -418,6 +451,39 @@ public class AdminDAO extends DBContext {
         }
         return list;
     }
+    
+    public List<Accounts> getAllAccountFemaleStaff(int index) {
+        List<Accounts> list = new ArrayList<>();
+        String query = "SELECT a.account_id,\n"
+                + "a.user_name,\n"
+                + "r.role_name,\n"
+                + "a.email,\n"
+                + "acs.status_name, \n"
+                + "a.gender,\n"
+                + "a.address,\n"
+                + "a.phone_number,\n"
+                + "a.created_at\n"
+                + "FROM Accounts a\n"
+                + "JOIN AccountStatuses acs ON a.status_id = acs.status_id\n"
+                + "JOIN Role r ON a.role_id = r.role_id\n"
+                + "where gender = 'Female' and a.role_id = 3\n"
+                + "ORDER BY created_at DESC\n"
+                + "OFFSET ? rows FETCH next 12 rows only;";
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(query);
+            statement.setInt(1, (index - 1) * 12);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                list.add(new Accounts(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3),
+                        resultSet.getString(4), resultSet.getString(5),
+                        resultSet.getString(6), resultSet.getString(7), resultSet.getString(8), resultSet.getDate(9)));
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
+        }
+        return list;
+    }
 
     public int countActiveAccount() {
         String query = "select count(*) from Accounts where status_id = 1 and a.role_id = 2";
@@ -433,9 +499,39 @@ public class AdminDAO extends DBContext {
         }
         return 0;
     }
+    
+    public int countActiveAccountStaff() {
+        String query = "select count(*) from Accounts where status_id = 1 and a.role_id = 3";
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(query);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                return resultSet.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
+        }
+        return 0;
+    }
 
     public int countInActiveAccount() {
         String query = "select count(*) from Accounts where status_id = 2 and a.role_id = 2";
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(query);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                return resultSet.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
+        }
+        return 0;
+    }
+    
+    public int countInActiveAccountStaff() {
+        String query = "select count(*) from Accounts where status_id = 2 and a.role_id = 3";
         try {
             connection = getConnection();
             statement = connection.prepareStatement(query);
@@ -464,6 +560,39 @@ public class AdminDAO extends DBContext {
                 + "JOIN AccountStatuses acs ON a.status_id = acs.status_id\n"
                 + "JOIN Role r ON a.role_id = r.role_id\n"
                 + "where a.status_id = 1 and a.role_id = 2\n"
+                + "ORDER BY created_at DESC\n"
+                + "OFFSET ? rows FETCH next 12 rows only;";
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(query);
+            statement.setInt(1, (index - 1) * 12);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                list.add(new Accounts(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3),
+                        resultSet.getString(4), resultSet.getString(5),
+                        resultSet.getString(6), resultSet.getString(7), resultSet.getString(8), resultSet.getDate(9)));
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
+        }
+        return list;
+    } 
+    
+    public List<Accounts> getAccountsActiveStaff(int index) {
+        List<Accounts> list = new ArrayList<>();
+        String query = "SELECT a.account_id,\n"
+                + "a.user_name,\n"
+                + "r.role_name,\n"
+                + "a.email,\n"
+                + "acs.status_name, \n"
+                + "a.gender,\n"
+                + "a.address,\n"
+                + "a.phone_number,\n"
+                + "a.created_at\n"
+                + "FROM Accounts a\n"
+                + "JOIN AccountStatuses acs ON a.status_id = acs.status_id\n"
+                + "JOIN Role r ON a.role_id = r.role_id\n"
+                + "where a.status_id = 1 and a.role_id = 3\n"
                 + "ORDER BY created_at DESC\n"
                 + "OFFSET ? rows FETCH next 12 rows only;";
         try {
@@ -515,8 +644,58 @@ public class AdminDAO extends DBContext {
         return list;
     }
     
+    public List<Accounts> getAccountsInActiveStaff(int index) {
+        List<Accounts> list = new ArrayList<>();
+        String query = "SELECT a.account_id,\n"
+                + "a.user_name,\n"
+                + "r.role_name,\n"
+                + "a.email,\n"
+                + "acs.status_name, \n"
+                + "a.gender,\n"
+                + "a.address,\n"
+                + "a.phone_number,\n"
+                + "a.created_at\n"
+                + "FROM Accounts a\n"
+                + "JOIN AccountStatuses acs ON a.status_id = acs.status_id\n"
+                + "JOIN Role r ON a.role_id = r.role_id\n"
+                + "where a.status_id = 2 and a.role_id = 3\n"
+                + "ORDER BY created_at DESC\n"
+                + "OFFSET ? rows FETCH next 12 rows only;";
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(query);
+            statement.setInt(1, (index - 1) * 12);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                list.add(new Accounts(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3),
+                        resultSet.getString(4), resultSet.getString(5),
+                        resultSet.getString(6), resultSet.getString(7), resultSet.getString(8), resultSet.getDate(9)));
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
+        }
+        return list;
+    }
+    
      public int countAccountByGenderAndStatus(String gender, int status) {
         String query = "select count(*) from Accounts where gender = ? and status_id = ? and a.role_id = 2";
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(query);
+            statement.setString(1, gender);          
+            statement.setInt(2, status);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                return resultSet.getInt(1);
+            }
+        } catch (Exception e) {
+             e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
+        }
+        return 0;
+    }
+     
+      public int countAccountByGenderAndStatusStaff(String gender, int status) {
+        String query = "select count(*) from Accounts where gender = ? and status_id = ? and a.role_id = 3";
         try {
             connection = getConnection();
             statement = connection.prepareStatement(query);
@@ -547,6 +726,41 @@ public class AdminDAO extends DBContext {
                 + "JOIN AccountStatuses acs ON a.status_id = acs.status_id\n"
                 + "JOIN Role r ON a.role_id = r.role_id\n"
                 + "where a.gender = ? and a.status_id = ? and a.role_id = 2\n"
+                + "ORDER BY created_at DESC\n"
+                + "OFFSET ? rows FETCH next 12 rows only;";
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(query);
+            statement.setString(1, gender);
+            statement.setInt(2, status);
+            statement.setInt(3, (index - 1) * 12);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                list.add(new Accounts(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3),
+                        resultSet.getString(4), resultSet.getString(5),
+                        resultSet.getString(6), resultSet.getString(7), resultSet.getString(8), resultSet.getDate(9)));
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
+        }
+        return list;
+    }
+    
+    public List<Accounts> getAccountByGenderAndStatusStaff(String gender, int status, int index) {
+        List<Accounts> list = new ArrayList<>();
+        String query = "SELECT a.account_id,\n"
+                + "a.user_name,\n"
+                + "r.role_name,\n"
+                + "a.email,\n"
+                + "acs.status_name, \n"
+                + "a.gender,\n"
+                + "a.address,\n"
+                + "a.phone_number,\n"
+                + "a.created_at\n"
+                + "FROM Accounts a\n"
+                + "JOIN AccountStatuses acs ON a.status_id = acs.status_id\n"
+                + "JOIN Role r ON a.role_id = r.role_id\n"
+                + "where a.gender = ? and a.status_id = ? and a.role_id = 3\n"
                 + "ORDER BY created_at DESC\n"
                 + "OFFSET ? rows FETCH next 12 rows only;";
         try {

@@ -74,7 +74,7 @@ public class FilterStaffController extends HttpServlet {
                             request.getRequestDispatcher("./view/dashboard/admin/staffManagement.jsp").forward(request, response);
                         } else {
                             request.setAttribute("indexm", indexm);
-                            request.setAttribute("listUser", listm);
+                            request.setAttribute("listStaff", listm);
                             request.setAttribute("gender", gender);
                             request.getRequestDispatcher("./view/dashboard/admin/staffManagement.jsp").forward(request, response);
                         }
@@ -87,7 +87,7 @@ public class FilterStaffController extends HttpServlet {
                         } else {
                             request.setAttribute("gender", gender);
                             request.setAttribute("indexf", indexf);
-                            request.setAttribute("listUser", listf);
+                            request.setAttribute("listStaff", listf);
                             request.getRequestDispatcher("./view/dashboard/admin/staffManagement.jsp").forward(request, response);
                         }
                     }
@@ -110,7 +110,7 @@ public class FilterStaffController extends HttpServlet {
                 }
                 int indexI = Integer.parseInt(index5);
                 if (status.equals("1")) {
-                    List<Accounts> lista = dao.getAccountsActive(indexa);
+                    List<Accounts> lista = dao.getAccountsActiveStaff(indexa);
                     if (lista.isEmpty()) {
                         request.setAttribute("error", "No result found !");
                         request.setAttribute("status", "1");
@@ -118,12 +118,12 @@ public class FilterStaffController extends HttpServlet {
                     } else {
                         request.setAttribute("status", "1");
                         request.setAttribute("indexa", indexa);
-                        request.setAttribute("listUser", lista);
+                        request.setAttribute("listStaff", lista);
                         request.getRequestDispatcher("./view/dashboard/admin/staffManagement.jsp").forward(request, response);
                     }
 
                 } else if (status.equals("2")) {
-                    List<Accounts> listi = dao.getAccountsInActive(indexI);
+                    List<Accounts> listi = dao.getAccountsInActiveStaff(indexI);
                     if (listi.isEmpty()) {
                         request.setAttribute("error", "No result found !");
                         request.setAttribute("status", "2");
@@ -131,26 +131,26 @@ public class FilterStaffController extends HttpServlet {
                     } else {
                         request.setAttribute("status", "2");
                         request.setAttribute("indexi", indexI);
-                        request.setAttribute("listUser", listi);
+                        request.setAttribute("listStaff", listi);
                         request.getRequestDispatcher("./view/dashboard/admin/staffManagement.jsp").forward(request, response);
                     }
                 }
             } else {
                 int status_id = Integer.parseInt(status);
-                int count = dao.countAccountByGenderAndStatus(gender, status_id);
+                int count = dao.countAccountByGenderAndStatusStaff(gender, status_id);
                 String index9 = request.getParameter("index");
                 if (index9 == null) {
                     index9 = "1";
                 }
                 int index = Integer.parseInt(index9);
-                List<Accounts> list = dao.getAccountByGenderAndStatus(gender, status_id, index);
+                List<Accounts> list = dao.getAccountByGenderAndStatusStaff(gender, status_id, index);
                 if (list.isEmpty()) {
                     request.setAttribute("error", "No result found !");
                     request.setAttribute("gender", gender);
                     request.setAttribute("status", status_id);
                     request.getRequestDispatcher("./view/dashboard/admin/staffManagement.jsp").forward(request, response);
                 } else {
-                    request.setAttribute("listUser", list);
+                    request.setAttribute("listStaff", list);
                     request.setAttribute("gender", gender);
                     request.setAttribute("status", status_id);                  
                     request.setAttribute("index", index);
