@@ -107,7 +107,7 @@ public class PaymentResultController extends HttpServlet {
                     if (accoundId == null) {
                         order_id = orderDAO.insertOrder(null, sqlDateTime, null, Integer.parseInt(amount), 1, null, "COD", phonenumber, fullname, fullAddress);
                     } else {
-                        order_id = orderDAO.insertOrder(accoundId, sqlDateTime, null, Integer.parseInt(amount), 1, null, "COD", null, null, fullAddress);
+                        order_id = orderDAO.insertOrder(accoundId, sqlDateTime, null, Integer.parseInt(amount), 1, null, "COD", phonenumber, fullname, fullAddress);
                     }
                     Enumeration<String> em = session.getAttributeNames();
                     while (em.hasMoreElements()) {
@@ -219,7 +219,7 @@ public class PaymentResultController extends HttpServlet {
                             if (accoundId == null) {
                                 order_id = orderDAO.insertOrder(null, sqlDateTime, null, amount, 1, null, "VNPay", phonenumber, fullname, fullAddress);
                             } else {
-                                order_id = orderDAO.insertOrder(accoundId, sqlDateTime, null, amount, 1, null, "VNPay", null, null, fullAddress);
+                                order_id = orderDAO.insertOrder(accoundId, sqlDateTime, null, amount, 1, null, "VNPay", phonenumber, fullname, fullAddress);
                             }
                             Enumeration<String> em = session.getAttributeNames();
                             while (em.hasMoreElements()) {
