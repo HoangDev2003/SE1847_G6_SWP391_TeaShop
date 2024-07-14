@@ -111,6 +111,52 @@
                                 </div>
                             </div>
                         </c:if>
+
+                        <c:if test="${UpdateDone ne null}">
+                            <h3 class="font-weight-semi-bold text-uppercase mb-3 text-center">
+                                ${UpdateDone}
+                            </h3>
+                        </c:if>
+                        <c:if test="${categoryUpdate ne null}">
+                            <form action="categorymanager" id="updatedCategory">
+                                <input type="hidden" name="service" value="sendUpdateDetail"/>
+                                <div class="card mb-4">
+                                    <div class="card-body">
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>Product ID</th>
+                                                    <th>Product Name</th>
+                                                    <th>Category</th>
+                                                    <th>Price</th>
+                                                    <th>Discount (%) </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            <c:forEach items="${listAllProduct}" var="product">
+                                                <tr>
+                                                    <td>${product.product_id}</td>
+                                                    <td>${product.product_name}</td>
+                                                    <td>${product.category.category_name}</td>
+                                                    <fmt:setLocale value="vi_VN" />
+                                                    <td><fmt:formatNumber value="${product.price}" type="currency" currencySymbol="₫" /></td>
+                                                    <td>${product.discount}</td>
+                                                    <td><a href="saleManager?service=requestUpdate&productId=${product.product_id}"><ion-icon name="create-outline"></ion-icon></a></td>
+                                                </tr>  
+                                            </c:forEach>
+                                        </tbody>         
+                                        </table>
+                                    </div>
+
+                                    <button
+                                        class="button-insert"
+                                        style="transform: translateX(70vw) ; width: 10%"
+                                        onclick="document.getElementById('updatedDiscount').submit();">
+                                        Update Category
+                                    </button>                                
+                                </div>
+                            </form>
+                        </c:if>    
                     </div>                    
                 </main>
                 <footer class="py-4 bg-light mt-auto">
