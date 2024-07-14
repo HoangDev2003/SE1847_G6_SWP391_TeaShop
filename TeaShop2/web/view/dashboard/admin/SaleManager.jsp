@@ -23,13 +23,13 @@
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-            Navbar Brand
+           
             <a class="navbar-brand ps-3" href="productmanager">Product Management</a>
-            Sidebar Toggle
+            
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
-            Navbar Search
+          
             <c:if test="${showSearchProduct ne null}">
-                <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0" action="productmanager" id="searchByName">
+                <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0" action="saleManager" id="searchByName">
                     <input type="hidden" name="service" value="searchByKeywords"/>
                     <div class="input-group">
                         <input class="form-control" type="text" placeholder="Search by Keywords" aria-label="Search by Keywords" aria-describedby="btnNavbarSearch" name="keywords"
@@ -40,7 +40,7 @@
             </c:if>
 
 
-            Navbar
+           
             <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
@@ -90,7 +90,7 @@
                                                 <th>Product Name</th>
                                                 <th>Category</th>
                                                 <th>Price</th>
-                                                <th>Discount (%) </th>
+                                                <th>Discount (%)</th>
                                                 <th>Update</th> 
                                             </tr>
                                         </thead>
@@ -101,7 +101,7 @@
                                                     <td>${product.product_name}</td>
                                                     <td>${product.category.category_name}</td>
                                                     <fmt:setLocale value="vi_VN" />
-                                                    <td><fmt:formatNumber value="${product.price}" type="currency" currencySymbol="₫" /></td>
+                                                    <td><fmt:formatNumber value="${product.price}" type="currency" currencySymbol="₫"/></td>
                                                     <td>${product.discount}</td>
                                                     <td><a href="saleManager?service=requestUpdate&productId=${product.product_id}"><ion-icon name="create-outline"></ion-icon></a></td>
                                                 </tr>  
@@ -117,42 +117,33 @@
                                 ${UpdateDone}
                             </h3>
                         </c:if>
-                        <c:if test="${categoryUpdate ne null}">
-                            <form action="categorymanager" id="updatedCategory">
+                        <c:if test="${productUpdate ne null}">
+                            <form action="saleManager" id="updatedDiscount">
                                 <input type="hidden" name="service" value="sendUpdateDetail"/>
                                 <div class="card mb-4">
-                                    <div class="card-body">
-                                        <table>
+                                    <div class="card-discount">
+                                        <table id="datatables-Discount">
                                             <thead>
                                                 <tr>
                                                     <th>Product ID</th>
-                                                    <th>Product Name</th>
-                                                    <th>Category</th>
-                                                    <th>Price</th>
-                                                    <th>Discount (%) </th>
+                                                    <th>Discount (%)</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                            <c:forEach items="${listAllProduct}" var="product">
                                                 <tr>
-                                                    <td>${product.product_id}</td>
-                                                    <td>${product.product_name}</td>
-                                                    <td>${product.category.category_name}</td>
-                                                    <fmt:setLocale value="vi_VN" />
-                                                    <td><fmt:formatNumber value="${product.price}" type="currency" currencySymbol="₫" /></td>
-                                                    <td>${product.discount}</td>
-                                                    <td><a href="saleManager?service=requestUpdate&productId=${product.product_id}"><ion-icon name="create-outline"></ion-icon></a></td>
+                                                    <td><input type="number" name="id" style="height: 35px; width: 60px" value="${productUpdate.product_id}" readonly />
+                                                    </td>
+                                                    <td><input type="number" name="discount" size="50" style="height: 35px" value="${productUpdate.discount}"/>
                                                 </tr>  
-                                            </c:forEach>
-                                        </tbody>         
+                                            </tbody>         
                                         </table>
                                     </div>
 
                                     <button
-                                        class="button-insert"
+                                        class="button-update"
                                         style="transform: translateX(70vw) ; width: 10%"
                                         onclick="document.getElementById('updatedDiscount').submit();">
-                                        Update Category
+                                        Update Discount
                                     </button>                                
                                 </div>
                             </form>
@@ -167,7 +158,7 @@
                     </div>
                 </footer>
                 <style>
-                    .datatable-table
+                     .datatable-table
                     {
 
                         font-family: 'Verdana', sans-serif; /* Bạn có thể thay đổi phông chữ nếu muốn */
@@ -246,6 +237,77 @@
                         width: 25%;
                         color: #00a5bb;
                     }
+                    
+                     datatables-UpdateProduct {
+                        width: 100%;
+                        border-collapse: collapse;
+                    }
+                   th, td {
+                        padding: 12px;
+                        border: 1px solid #ddd;
+                        text-align: center; /* Căn giữa chữ */
+                    }
+                    th {
+                        background-color: #f2f2f2;
+                    }
+
+                    td ion-icon {
+                        font-size: 30px;
+                        color: #000;
+                    }
+
+                    .update-productDone{
+                        font-weight: 500;
+                        font-size: 20px;
+                        text-align: center; /* Căn giữa ngang */
+                        vertical-align: middle;
+                        text-transform: uppercase;
+                    }
+
+                    .button-update {
+                        font-family: 'Arial';
+
+                        background-color: #fff; /* Màu nền ban đầu */
+                        color: inherit; /* Màu chữ */
+                        border: 2px solid #0B3649; /* Bỏ viền */
+                        padding: 10px 20px; /* Kích thước bên trong */
+                        text-align: center; /* Căn giữa văn bản */
+                        text-decoration: none; /* Bỏ gạch chân */
+                        display: inline-block; /* Hiển thị dạng khối nội tuyến */
+                        font-size: 16px; /* Kích thước chữ */
+                        margin: 4px 2px; /* Khoảng cách bên ngoài */
+                        cursor: pointer; /* Con trỏ chuột */
+                        border-radius: 12px; /* Bo góc */
+                        transition: background-color 0.3s, box-shadow 0.3s; /* Hiệu ứng chuyển đổi */
+                    }
+
+                    .button-update:hover {
+                        background-color: #0B3649; /* Màu nền khi lướt chuột qua */
+                        color: white; /* Màu chữ khi lướt chuột qua */
+                        border-color: #0B3649;/* Màu nền khi lướt chuột qua */
+                        box-shadow: 0 0 10px #0056b3; /* Hiệu ứng đổ bóng khi lướt chuột qua */
+                    }
+                    
+                    datatables-Discount {
+                        width: 100%;
+                        border-collapse: collapse;
+                        
+                    }
+                    th, td {
+                        
+                        text-align: center; /* Căn giữa chữ */
+                    }
+                    th {
+                        background-color: #f2f2f2;
+                    }
+                    
+                    .card-discount {
+                        display: flex;
+                        justify-content: center;
+                    }
+                    
+                   
+                    
 
                 </style>
             </div>

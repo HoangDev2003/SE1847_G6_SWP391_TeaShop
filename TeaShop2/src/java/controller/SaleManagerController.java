@@ -4,13 +4,22 @@
  */
 package controller;
 
+import dal.CategoryDAO;
 import dal.ProductDAO;
+import entity.Category;
 import entity.Product;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -47,6 +56,27 @@ public class SaleManagerController extends HttpServlet {
             req.setAttribute("listAllProduct", products);
             req.setAttribute("keywords", keywords);
             req.setAttribute("showSearchProduct", "Yes");
+            req.getRequestDispatcher("view/dashboard/admin/SaleManager.jsp").forward(req, resp);
+        }
+
+        if (service.equals("requestUpdate")) {
+            List<Category> listCategorys = (new CategoryDAO().findAll());
+            int productId = Integer.parseInt(req.getParameter("productId"));
+            Product product = (new ProductDAO()).getProductsById(productId);
+            req.setAttribute("allCategorys", listCategorys);
+            req.setAttribute("productUpdate", product);
+            req.getRequestDispatcher("view/dashboard/admin/SaleManager.jsp").forward(req, resp);
+        }
+        if (service.equals("sendUpdateDetail")) {
+            int id = Integer.parseInt(req.getParameter("id"));
+            float discount = Float.parseFloat(req.getParameter("discount"));
+            Product product = (new ProductDAO()).getProductsById(id);
+
+            product.setDiscount(discount);
+
+            //set new value for product
+            (new ProductDAO()).updateProduct(product, id);
+            req.setAttribute("UpdateDone", "Update discount for Product (ID = " + id + ") done!\nClick Sale Management to see all changes");
             req.getRequestDispatcher("view/dashboard/admin/SaleManager.jsp").forward(req, resp);
         }
     }

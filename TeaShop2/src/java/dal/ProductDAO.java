@@ -622,7 +622,7 @@ public class ProductDAO extends DBContext {
         product.setProduct_name("Ô Long Nhài Sữa");
         product.setCategory(category);
         product.setPrice(45000);
-        product.setDiscount(15);
+        product.setDiscount(20);
 
         // Gọi phương thức updateDiscount với product và product_id (giả sử product_id là 1)
         int productId = 5;
