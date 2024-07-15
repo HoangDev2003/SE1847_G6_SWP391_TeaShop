@@ -52,7 +52,7 @@ public class CartDetailsDAO extends DBContext {
     public CartDetails getInfo(int product_id) {
         CartDetails cartDetails = null;
         connection = getConnection();
-        String sql = "select product_id, product_name, price, image from Product where product_id = ?";
+        String sql = "select product_id, product_name, price, discount, image from Product where product_id = ?";
         try {
 
             PreparedStatement pre = connection.prepareStatement(
@@ -66,6 +66,7 @@ public class CartDetailsDAO extends DBContext {
                 cartDetails.product = new Product();
                 cartDetails.product.product_id = rs.getInt("product_id");
                 cartDetails.product.product_name = rs.getString("product_name");
+                cartDetails.product.discount = rs.getFloat("discount");
                 cartDetails.product.price = rs.getInt("price");
                 cartDetails.product.image = rs.getString("image");
             }
