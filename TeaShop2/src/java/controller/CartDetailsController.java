@@ -67,7 +67,8 @@ public class CartDetailsController extends HttpServlet {
                     cartItem.product.setProduct_id(cartInfo.product.getProduct_id());
                     cartItem.product.setProduct_name(cartInfo.product.getProduct_name());
                     cartItem.product.setImage(cartInfo.product.getImage());
-                    cartItem.product.setPrice(cartInfo.product.getPrice());
+                    int price = (int) (cartInfo.product.price - (cartInfo.product.price*(cartInfo.product.discount)/100));
+                    cartItem.product.setPrice(price);
                     int intQuantity = 1;
                     if (!(quantity == null || quantity.isEmpty())) {
                         intQuantity = Integer.parseInt(quantity);
