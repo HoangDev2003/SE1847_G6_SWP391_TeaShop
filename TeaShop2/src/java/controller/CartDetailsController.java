@@ -206,6 +206,8 @@ public class CartDetailsController extends HttpServlet {
             if (service.equals("selectpayment")) {
                 // Show cart details
 
+                String note = request.getParameter("note");
+                session.setAttribute("note", note);
                 // Retrieve cart information and topping list
                 List<CartDetails> cartInfo = new ArrayList<>();
                 Enumeration<String> em = session.getAttributeNames();
