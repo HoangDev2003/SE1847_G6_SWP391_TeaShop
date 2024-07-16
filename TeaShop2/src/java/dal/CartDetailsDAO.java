@@ -19,7 +19,7 @@ import java.util.logging.Logger;
  */
 public class CartDetailsDAO extends DBContext {
 
-    public List getTopping() {
+    public List<String> getTopping() {
         List<String> toppingList = new ArrayList();
         String sql = "select * from Topping";
         connection = getConnection();
