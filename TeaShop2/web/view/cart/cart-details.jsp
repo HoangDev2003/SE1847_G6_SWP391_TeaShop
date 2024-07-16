@@ -340,10 +340,31 @@
                                         <div class="col-md-6 col-lg-6 col-xl-12">
                                             <div class="p-4 border border-secondary rounded">
                                                 <p id="total-cart-amount">Tổng tiền hóa đơn: <fmt:formatNumber value="${totalCartAmount}" type="number" groupingUsed="true"/> đồng</p>
-
                                                 <c:if test="${not empty cartInfo}">
-                                                    <p><a href="shop" class="btn border border-secondary rounded-pill px-3 text-primary">Chọn thêm sản phẩm</a></p>
-                                                    <p><a href="CartDetails?service=selectpayment" class="btn border border-secondary rounded-pill px-3 text-primary">Thanh toán</a></p>
+                                                    <form action="CartDetails" method="post" style="max-width: 600px; margin: auto;">
+                                                        <input type="hidden" name="service" value="selectpayment">
+
+                                                        <div class="form-group">
+                                                            <label for="note">Ghí chú:</label>
+                                                            <textarea id="note" name="note" class="form-control" placeholder="Điền thêm các thông tin về đơn hàng (ít đá, nhiều đường,...)" rows="6" style="width: 100%;" maxlength="250"></textarea>
+                                                        </div>
+
+                                                        <button type="submit" class="btn border border-secondary rounded-pill px-3 text-primary">Thanh toán</button>
+                                                    </form>
+                                                    <style>
+                                                        .form-group {
+                                                            margin-bottom: 10px;
+                                                        }
+
+                                                        .form-control::placeholder {
+                                                            color: #bbb; /* Light gray color for fader placeholder text */
+                                                            opacity: 1; /* Ensure the color is applied */
+                                                        }
+
+                                                        .btn {
+                                                            margin-top: 10px;
+                                                        }
+                                                    </style>
                                                 </c:if>
                                             </div>
                                         </div>
