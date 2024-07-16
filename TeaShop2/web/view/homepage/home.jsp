@@ -1,6 +1,7 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="java.util.Enumeration"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -72,7 +73,7 @@
 
                     <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                         <div class="navbar-nav mx-auto">
-                            <a href="home" class="nav-item nav-link active">Home</a>
+                            <a href="home" class="nav-item nav-link">Home</a>
                             <a href ="blog" class="nav-item nav-link">Blog</a>
                             <a href="shop" class="nav-item nav-link">Shop</a>
                             <a href="product-detail" class="nav-item nav-link">Shop Detail</a>
@@ -88,9 +89,22 @@
                             <a href="contact" class="nav-item nav-link">Contact</a>
                         </div>
                         <div class="d-flex m-3 me-0">
-                            <a href="cart" class="position-relative me-4 my-auto">
+                            <%
+                int count = 0;
+                Enumeration<String> em = session.getAttributeNames();
+                while (em.hasMoreElements()) {
+                    String key = em.nextElement();
+
+                    if (key.startsWith("cartItem")) {
+                        count++;
+                    }
+                } 
+                            %>
+                            <a href="CartDetails?service=showcart" class="position-relative me-4 my-auto">
                                 <i class="fa fa-shopping-bag fa-2x"></i>
-                                <!--                                <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">  </span>-->
+                                <%if(count>0){%>
+                                <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;"><%=count%></span>
+                                <%}%>
                             </a>
                             <c:if test="${sessionScope.acc!=null}">
                                  <span>Welcome ${sessionScope.acc.user_name} <i class="arrow_carrot-down"></i></span>
