@@ -61,13 +61,13 @@ public class StaffController extends HttpServlet {
                 }
                 int statusId = Integer.parseInt(current_status_id);
                 if (statusId == 0) {
-                    listOrders = staffDAO.getAllUncompletedOrder();
+                    listOrders = staffDAO.getAllOrder();
                 } else {
                     listOrders = staffDAO.getOrderByStatusId(statusId);
                 }
                 request.setAttribute("listOrders", listOrders);
                 request.setAttribute("current_status_id", current_status_id);
-                request.getRequestDispatcher("view/orders/order-manage.jsp").forward(request, response);
+                request.getRequestDispatcher("view/dashboard/staff1/order-manage.jsp").forward(request, response);
             }
         }
     }
