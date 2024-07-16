@@ -5,6 +5,7 @@
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="java.util.Enumeration"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -76,14 +77,43 @@
                             <a href="contact.html" class="nav-item nav-link">Contact</a>
                         </div>
                         <div class="d-flex m-3 me-0">
-                            <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
-                            <a href="#" class="position-relative me-4 my-auto">
-                                <i class="fa fa-shopping-bag fa-2x"></i>
-                                <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">3</span>
+                            <%
+                int count = 0;
+                Enumeration<String> em = session.getAttributeNames();
+                while (em.hasMoreElements()) {
+                    String key = em.nextElement();
+
+                    if (key.startsWith("cartItem")) {
+                        count++;
+                    }
+                } 
+                            %>
+                            <a href="CartDetails?service=showcart" class="position-relative me-4 my-auto">
+                                <i class="fa fa-shopping-bag fa-2x" style="color: orange;"></i>
+                                <%if(count>0){%>
+                                <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;"><%=count%></span>
+                                <%}%>
                             </a>
-                            <a href="#" class="my-auto">
-                                <i class="fas fa-user fa-2x"></i>
-                            </a>
+                            <% 
+    Integer accountId = (Integer) session.getAttribute("accountId");
+    if (accountId != null) {
+                            %>
+                            <div class="nav-item dropdown">
+                                <a href="#" class="nav-link" data-bs-toggle="dropdown" style="color: black;">
+                                    <i class="fas fa-user fa-2x" style="color: black;"></i>
+                                </a>
+                                <div class="dropdown-menu m-0 bg-secondary rounded-0">
+                                    <a href="userprofile" class="dropdown-item">Thông tin</a>
+                                    <a href="MyOrder" class="dropdown-item">Đơn hàng</a>
+                                </div>
+                            </div>
+                            <% 
+                                } else { 
+                            %>
+                            <a href="login"><i class="fas fa-user fa-2x" style="color: black;"></i></a>
+                                <% 
+                                    } 
+                                %>
                         </div>
                     </div>
                 </nav>
