@@ -92,6 +92,7 @@ public class PaymentResultController extends HttpServlet {
                 String OrderInfo = "Thanh toan hoa don Dream Coffee. So tien: " + amount + " dong";
 
                 String fullAddress = address + ", Phường " + ward + ", " + district;
+                String note = (String) session.getAttribute("note");
                 List<CartDetails> billInfo = new ArrayList<>();
                 boolean hasBillItems = false;
                 Enumeration<String> checkEm = session.getAttributeNames();
@@ -105,9 +106,9 @@ public class PaymentResultController extends HttpServlet {
 
                 if (!hasBillItems) {
                     if (accoundId == null) {
-                        order_id = orderDAO.insertOrder(null, sqlDateTime, null, Integer.parseInt(amount), 1, null, "COD", phonenumber, fullname, fullAddress);
+                        order_id = orderDAO.insertOrder(null, sqlDateTime, null, Integer.parseInt(amount), 1, note, "COD", phonenumber, fullname, fullAddress);
                     } else {
-                        order_id = orderDAO.insertOrder(accoundId, sqlDateTime, null, Integer.parseInt(amount), 1, null, "COD", phonenumber, fullname, fullAddress);
+                        order_id = orderDAO.insertOrder(accoundId, sqlDateTime, null, Integer.parseInt(amount), 1, note, "COD", phonenumber, fullname, fullAddress);
                     }
                     Enumeration<String> em = session.getAttributeNames();
                     while (em.hasMoreElements()) {
@@ -157,6 +158,7 @@ public class PaymentResultController extends HttpServlet {
                 String fullAddress = address + ", Phường " + ward + ", " + district;
                 String fullname = (String) session.getAttribute("fullname");
                 String phonenumber = (String) session.getAttribute("phonenumber");
+                String note = (String) session.getAttribute("note");
                 Map fields = new HashMap();
                 for (Enumeration params = request.getParameterNames(); params.hasMoreElements();) {
                     String fieldName = URLEncoder.encode((String) params.nextElement(), StandardCharsets.US_ASCII.toString());
@@ -217,9 +219,9 @@ public class PaymentResultController extends HttpServlet {
 
                         if (!hasBillItems) {
                             if (accoundId == null) {
-                                order_id = orderDAO.insertOrder(null, sqlDateTime, null, amount, 1, null, "VNPay", phonenumber, fullname, fullAddress);
+                                order_id = orderDAO.insertOrder(null, sqlDateTime, null, amount, 1, note, "VNPay", phonenumber, fullname, fullAddress);
                             } else {
-                                order_id = orderDAO.insertOrder(accoundId, sqlDateTime, null, amount, 1, null, "VNPay", phonenumber, fullname, fullAddress);
+                                order_id = orderDAO.insertOrder(accoundId, sqlDateTime, null, amount, 1, note, "VNPay", phonenumber, fullname, fullAddress);
                             }
                             Enumeration<String> em = session.getAttributeNames();
                             while (em.hasMoreElements()) {
