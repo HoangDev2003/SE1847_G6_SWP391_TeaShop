@@ -1,6 +1,7 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="java.util.Enumeration"%>
 <!-- Navbar start -->
 <div class="container-fluid fixed-top">
 
@@ -35,7 +36,7 @@
             <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                 <div class="navbar-nav mx-auto">
                     <a href="home" class="nav-item nav-link ">Home</a>
-                    <a href ="blog" class="nav-item nav-link active">Blog</a>
+                    <a href ="blog" class="nav-item nav-link">Blog</a>
                     <a href="shop" class="nav-item nav-link">Shop</a>
 
                     <div class="nav-item dropdown">
@@ -50,17 +51,46 @@
                     <a href="contact" class="nav-item nav-link">Contact</a>
                 </div>
                 <div class="d-flex m-3 me-0">
-                    <a href="cart" class="position-relative me-4 my-auto">
-                        <i class="fa fa-shopping-bag fa-2x"></i>
-                        <!--                                <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">  </span>-->
-                    </a>
-                    <a href="login" class="my-auto">
-                        <i class="fas fa-user fa-2x"></i>
-                    </a>
-                </div>
-            </div>
-        </nav>
-    </div>
-</div>
+                    <%
+                int count = 0;
+                Enumeration<String> em = session.getAttributeNames();
+                while (em.hasMoreElements()) {
+                    String key = em.nextElement();
 
-<!-- Navbar end --> 
+                    if (key.startsWith("cartItem")) {
+                        count++;
+                    }
+                } 
+                            %>
+                            <a href="CartDetails?service=showcart" class="position-relative me-4 my-auto">
+                                <i class="fa fa-shopping-bag fa-2x"></i>
+                                <%if(count>0){%>
+                                <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;"><%=count%></span>
+                                <%}%>
+                            </a>
+                    <% 
+    Integer accountId = (Integer) session.getAttribute("accountId");
+    if (accountId != null) {
+                            %>
+                            <div class="nav-item dropdown">
+                                <a href="#" class="nav-link" data-bs-toggle="dropdown" style="color: black;">
+                                    <i class="fas fa-user fa-2x" style="color: black;"></i>
+                                </a>
+                                <div class="dropdown-menu m-0 bg-secondary rounded-0">
+                                    <a href="userprofile" class="dropdown-item">Thông tin</a>
+                                    <a href="MyOrder" class="dropdown-item">Đơn hàng</a>
+                                </div>
+                            </div>
+                            <% 
+                                } else { 
+                            %>
+                            <a href="login"><i class="fas fa-user fa-2x" style="color: black;"></i></a>
+                                <% 
+                                    } 
+                                %>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <!-- Navbar End -->
