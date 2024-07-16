@@ -7,7 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-
+<%@page import="java.util.Enumeration"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -75,20 +75,49 @@
                                 <a href="contact.jsp" class="nav-item nav-link">Contact</a>
                             </div>
                             <div class="d-flex m-3 me-0">
-                                <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
-                                <a href="#" class="position-relative me-4 my-auto">
-                                    <i class="fa fa-shopping-bag fa-2x"></i>
-                                    <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">3</span>
+                            <%
+                int count = 0;
+                Enumeration<String> em = session.getAttributeNames();
+                while (em.hasMoreElements()) {
+                    String key = em.nextElement();
+
+                    if (key.startsWith("cartItem")) {
+                        count++;
+                    }
+                } 
+                            %>
+                            <a href="CartDetails?service=showcart" class="position-relative me-4 my-auto">
+                                <i class="fa fa-shopping-bag fa-2x"></i>
+                                <%if(count>0){%>
+                                <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;"><%=count%></span>
+                                <%}%>
+                            </a>
+                            <% 
+    Integer accountId = (Integer) session.getAttribute("accountId");
+    if (accountId != null) {
+                            %>
+                            <div class="nav-item dropdown">
+                                <a href="#" class="nav-link" data-bs-toggle="dropdown" style="color: black;">
+                                    <i class="fas fa-user fa-2x" style="color: black;"></i>
                                 </a>
-                                <a href="#" class="my-auto">
-                                    <i class="fas fa-user fa-2x"></i>
-                                </a>
+                                <div class="dropdown-menu m-0 bg-secondary rounded-0">
+                                    <a href="userprofile" class="dropdown-item">Thông tin</a>
+                                    <a href="MyOrder" class="dropdown-item">Đơn hàng</a>
+                                </div>
                             </div>
+                            <% 
+                                } else { 
+                            %>
+                            <a href="login"><i class="fas fa-user fa-2x" style="color: black;"></i></a>
+                                <% 
+                                    } 
+                                %>
                         </div>
-                    </nav>
-                </div>
+                    </div>
+                </nav>
             </div>
-            <!-- Navbar End -->
+        </div>
+        <!-- Navbar End -->
 
 
             <!-- Modal Search Start -->
@@ -152,20 +181,49 @@
                                 </div>
                                 <p class="mb-4">${product.description}</p>
 
-                                <div class="input-group quantity mb-5" style="width: 100px;">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-minus rounded-circle bg-light border" >
-                                            <i class="fa fa-minus"></i>
-                                        </button>
+                                <form id="addToCartForm" method="POST" action="CartDetails">
+                                    <div class="input-group quantity mb-5" style="width: 100px;">
+                                        <div class="input-group-btn">
+                                            <button type="button" class="btn btn-sm btn-minus rounded-circle bg-light border">
+                                                <i class="fa fa-minus"></i>
+                                            </button>
+                                        </div>
+                                        <input id="quantityInput" type="text" name="quantity" class="form-control form-control-sm text-center border-0" value="1">
+                                        <div class="input-group-btn">
+                                            <button type="button" class="btn btn-sm btn-plus rounded-circle bg-light border">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                        </div>
                                     </div>
-                                    <input type="text" class="form-control form-control-sm text-center border-0" value="1">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-plus rounded-circle bg-light border">
-                                            <i class="fa fa-plus"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <a href="CartDetails?service=add2cart&product_id=${product.product_id}&link_id=4" class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"></i>Mua ngay</a>
+                                    <input type="hidden" name="service" value="add2cart">
+                                    <input type="hidden" name="product_id" value="${product.product_id}">
+                                    <input type="hidden" name="link_id" value="4">
+                                    <button type="submit" class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary">Mua ngay</button>
+                                </form>
+
+                                <script>
+                                    document.addEventListener('DOMContentLoaded', function () {
+                                        var form = document.getElementById('addToCartForm');
+                                        var quantityInput = document.getElementById('quantityInput');
+                                        var btnMinus = document.querySelector('.btn-minus');
+                                        var btnPlus = document.querySelector('.btn-plus');
+
+                                        btnMinus.addEventListener('click', function () {
+                                            var currentValue = parseInt(quantityInput.value);
+                                            if (!isNaN(currentValue) && currentValue > 1) {
+                                                quantityInput.value = currentValue - 1;
+                                            }
+                                        });
+
+                                        btnPlus.addEventListener('click', function () {
+                                            var currentValue = parseInt(quantityInput.value);
+                                            if (!isNaN(currentValue)) {
+                                                quantityInput.value = currentValue + 1;
+                                            }
+                                        });
+                                    });
+                                </script>
+
                             </div>
                             <div class="col-lg-12">
                                 <nav>
