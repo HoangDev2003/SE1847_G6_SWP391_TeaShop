@@ -4,14 +4,11 @@
  */
 package dal;
 
-import entity.OrderDetails;
 import entity.Orders;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,13 +19,12 @@ import java.util.logging.Logger;
  */
 public class StaffDAO extends DBContext {
 
-    public List<Orders> getAllUncompletedOrder() {
+    public List<Orders> getAllOrder() {
         List<Orders> ordersList = new ArrayList<>();
         Orders order = null;
         connection = getConnection();
         String sql = "SELECT * \n"
                 + "FROM Orders \n"
-                + "WHERE status_id IN (1, 2) \n"
                 + "ORDER BY order_date ASC;";
         try {
             PreparedStatement pre = connection.prepareStatement(
@@ -43,14 +39,8 @@ public class StaffDAO extends DBContext {
                 order = new Orders();
                 order.order_id = rs.getInt("order_id");
                 int account_id = rs.getInt("account_id");
-                if (account_id != 0) {
-                    order.account = (new AccountDAO().getAccountByAccountID(account_id));
-                    order.phone_number = order.account.getPhone_number();
-                    order.full_name = order.account.getFull_name();
-                } else {
-                    order.phone_number = rs.getString("phone_number");
-                    order.full_name = rs.getString("full_name");
-                }
+                order.phone_number = rs.getString("phone_number");
+                order.full_name = rs.getString("full_name");
                 order.status = (new StatusDAO().getStatusByStatusID(rs.getInt("status_id")));
                 order.orderDetails = (new OrderDetailsDAO().findByOrderId(rs.getInt("order_id")));
                 order.total_amount = rs.getInt("total_amount");
