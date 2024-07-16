@@ -6,7 +6,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<%@page import="entity.CartDetails, java.util.Enumeration"%>
+<%@page import="java.util.Enumeration"%>
 <!DOCTYPE html>
 <html lang="en">
 
