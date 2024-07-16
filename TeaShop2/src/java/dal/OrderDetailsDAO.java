@@ -87,7 +87,7 @@ public class OrderDetailsDAO extends DBContext {
                 orderDetails.order_details_id = rs.getInt("order_details_id");
                 orderDetails.setProduct(new ProductDAO().getProductsById(rs.getInt("product_id")));
                 orderDetails.setOrders(new OrdersDAO().findByOrderId(rs.getInt("order_id")));
-                orderDetails.image = rs.getString("image");
+                orderDetails.image = orderDetails.product.image;
                 orderDetails.quantity = rs.getInt("quantity");
                 orderDetails.setStatus_feedback_id(rs.getInt("status_feedback_id"));
                 orderDetailsList.add(orderDetails); // Add the order details to the list
