@@ -94,26 +94,24 @@
                 <div class="content">
                     <jsp:include page="../../common/dashboard/shipper/topbar.jsp"></jsp:include>
                         <div class="card mb-3">
-                            <div class="bg-holder d-none d-lg-block bg-card" style="background-image:url(../../../assets/img/icons/spot-illustrations/corner-4.png);opacity: 0.7;">
-                            </div>
-                            <!--/.bg-holder-->
-                            
+                            <div class="bg-holder d-none d-lg-block bg-card" style="background-image:url(../../../assets/img/icons/spot-illustrations/corner-4.png);opacity: 0.7;"></div>
                             <div class="card-body position-relative">
                                 <h5>Chi tiết đơn hàng: #${orders.order_id}</h5>
                             <p class="me-2">Thời gian giao hàng: </p>
-                            <p class="me-2"> ${orders.formattedOrderDate} đến  ${orders.formattedEstimated_delivery_date}</p>
-                            <form action="shipdetail" method="post" enctype="multipart/form-data">
-                                <%
-                                    String savedTime = request.getParameter("savedTime");
-                                %>
-                                <p class="me-2">
-                                    <input type="datetime-local" id="deliveryTime" value="<%= savedTime != null ? savedTime : "" %>" name="deliveryTime" required> 
-                                    <input type="hidden" name="order_id" value="${orders.order_id}">
-                                    
-                                    <button type="submit">Lưu thời gian giao hàng dự kiến</button></p>
-                            </form>
+                            <p class="me-2"> ${orders.formattedOrderDate} đến ${orders.formattedEstimated_delivery_date}</p>
+                            <c:if test="${orders.status.status_id != 3 && orders.status.status_id != 4}">
+                                <form action="shipdetail" method="post" enctype="multipart/form-data">
+                                    <%
+                                        String savedTime = request.getParameter("savedTime");
+                                    %>
+                                    <p class="me-2">
+                                        <input type="datetime-local" id="deliveryTime" value="<%= savedTime != null ? savedTime : ""%>" name="deliveryTime" required> 
+                                        <input type="hidden" name="order_id" value="${orders.order_id}">
+                                        <button type="submit">Lưu thời gian giao hàng dự kiến</button>
+                                    </p>
+                                </form>
+                            </c:if>
                             <div><strong class="me-2">Trạng thái: </strong>
-
                                 <c:choose>
                                     <c:when test="${orders.status.status_name == 'Chờ xác nhận'}">
                                         <span class="badge rounded-pill badge-soft-success fs--2">
@@ -143,7 +141,7 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-6 col-lg-4 mb-4 mb-lg-0">
-                                    <h5 class="mb-3 fs-0">Địa chỉ thanh toán</h5>
+                                    <h5 class="mb-3 fs-0">Thông tin khách hàng</h5>
                                     <h6 class="mb-2">${orders.full_name}</h6>
                                     <p class="mb-1 fs--1">${orders.address}</p>
                                     <p class="mb-0 fs--1"> <strong>Email: </strong>${orders.account.email}</p>
@@ -157,12 +155,7 @@
                                 </div>
                                 <div class="col-md-6 col-lg-4">
                                     <h5 class="mb-3 fs-0">Phương thức thanh toán</h5>
-<!--                                    <div class="d-flex"><img class="me-3" src="${pageContext.request.contextPath}/assets/img/icons/visa.png" width="40" height="30" alt="" />
-                                        <div class="flex-1">
-                                    -->                                            <h6 class="mb-0">Thanh toán khi nhận hàng</h6><!--
-                                                                                <p class="mb-0 fs--1">**** **** **** 9809</p>
-                                                                            </div>
-                                                                        </div>-->
+                                    <h6 class="mb-0">${orders.payment_method}</h6>
                                 </div>
                             </div>
                         </div>
@@ -178,7 +171,8 @@
                                                 <th class="border-0 text-center">Số lượng</th>
                                                 <th class="border-0 text-end">Giá</th>
                                                 <th class="border-0 text-end">Số tiền</th>
-                                                <th class="border-0 text-center">Ảnh</th>
+                                                <th class="border-0 text-center">Ảnh trước khi giao</th>
+                                                <th class="border-0 text-center">Ảnh sau khi giao</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -195,19 +189,23 @@
                                                         <c:set var="totalAmount" value="${totalAmount + itemTotal}" />
                                                         ${itemTotal} đ
                                                     </td>
+                                                    <td class="align-middle text-end">
+                                                        <img src="${pageContext.request.contextPath}/${lod.image}"  width="100" class="mt-2"/>
+                                                    </td>
                                                     <td class="align-middle text-center">
                                                         <form action="shipdetail" method="post" enctype="multipart/form-data" class="d-inline" onsubmit="return validateForm(this);">
                                                             <input type="hidden" name="order_id" value="${orders.order_id}" />
                                                             <input type="hidden" name="orderDetailsId" value="${lod.order_details_id}" />
-                                                            <div class="custom-file mb-3">
-                                                                <input type="file" class="custom-file-input" id="fileUpload${lod.order_details_id}" name="fileUpload${lod.order_details_id}" accept="image/*">
-
-                                                            </div>
-                                                            <button type="submit" class="btn btn-primary">Upload</button>
-                                                            <c:if test="${not empty lod.image}">
-                                                                <img src="${pageContext.request.contextPath}/${lod.image}" width="100" class="mt-2"/>
+                                                            <input type="hidden" name="deliveryTime" value="<%= session.getAttribute("savedTime") != null ? session.getAttribute("savedTime") : ""%>">
+                                                            <c:if test="${orders.status.status_id != 3 && orders.status.status_id != 4}">
+                                                                <div class="custom-file mb-3">
+                                                                    <input type="file" class="custom-file-input" id="fileUpload${lod.order_details_id}" name="fileUpload${lod.order_details_id}" accept="image/*" onchange="previewImage(event, ${lod.order_details_id})">
+                                                                </div>
+                                                                <button type="submit" class="btn btn-primary">Upload</button>
                                                             </c:if>
-                                                            <div class="invalid-feedback d-none" id="error${lod.order_details_id}">Vui lòng chọn ảnh</div>
+                                                            <c:if test="${not empty lod.image_after_ship}">
+                                                                <img src="${pageContext.request.contextPath}/${lod.image_after_ship}" id="imagePreview${lod.order_details_id}" width="100" class="mt-2"/>
+                                                            </c:if>
                                                         </form>
                                                     </td>
                                                 </tr>
@@ -230,6 +228,24 @@
                     </div>
 
                     <script>
+                        function validateForm(form) {
+                            var fileInputs = form.querySelectorAll('input[type="file"]');
+                            var allFilesSelected = true;
+
+                            fileInputs.forEach(function (fileInput) {
+                                if (!fileInput.value) {
+                                    allFilesSelected = false;
+                                }
+                            });
+
+                            if (!allFilesSelected) {
+                                alert("Vui lòng chọn ảnh trước khi upload.");
+                                return false;
+                            }
+
+                            return true;
+                        }
+
                         function previewImage(event, orderDetailsId) {
                             var reader = new FileReader();
                             reader.onload = function () {
@@ -237,16 +253,6 @@
                                 output.src = reader.result;
                             };
                             reader.readAsDataURL(event.target.files[0]);
-                        }
-                        // Validate form before submission
-                        function validateForm(form) {
-                            var fileInput = form.querySelector('input[type="file"]');
-                            var errorMsg = form.querySelector('.invalid-feedback');
-                            if (fileInput.files.length === 0) {
-                                errorMsg.classList.remove('d-none');
-                                return false;
-                            }
-                            return true;
                         }
                     </script>
 
