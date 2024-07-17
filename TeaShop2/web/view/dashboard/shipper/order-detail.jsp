@@ -269,6 +269,33 @@
                             </div>
                         </div>
                     </footer>
+                    <div class="container mt-5">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h5>Note của Shipper</h5>
+                                <form id="shipperNoteForm" action="shipdetail" method="post" enctype="multipart/form-data">
+                                    <!-- Các trường form -->
+                                    <textarea id="shipperNote" name="shipperNote" class="form-control" rows="3" placeholder="Nhập note của Shipper">${orders.shipper_note}</textarea>
+                                    <input type="hidden" name="deliveryTime" value="<%= session.getAttribute("savedTime") != null ? session.getAttribute("savedTime") : ""%>">
+                                    <!-- Button submit -->
+                                    <c:if test="${orders.status.status_id != 3 && orders.status.status_id != 4}">
+                                    <button type="submit" class="btn btn-primary mt-2">Lưu</button>
+                                    </c:if>
+                                    <!-- Hidden field để truyền order_id -->
+                                    <input type="hidden" name="order_id" value="${orders.order_id}">
+                                </form>
+                            </div>
+                            <div class="col-md-4">
+                                <h5>Note của Customer</h5>
+                                <textarea class="form-control" rows="3" readonly>${orders.note}</textarea>
+                            </div>
+                            <div class="col-md-4">
+                                <h5>Note của Staff</h5>
+                                <textarea class="form-control" rows="3" readonly>${orders.staff_note}</textarea>
+                            </div>
+                        </div>
+                    </div>   
+                </div>
                 </div>
                 <div class="modal fade" id="authentication-modal" tabindex="-1" role="dialog" aria-labelledby="authentication-modal-label" aria-hidden="true">
                     <div class="modal-dialog mt-6" role="document">
