@@ -204,17 +204,35 @@
                                                     </c:choose>
                                                 </td>
                                         <script>
-                                            // JavaScript function to handle confirmation dialog
+                                            // JavaScript function to handle confirmation dialog and validation
                                             function confirmUpdateStatus(statusName, orderId, statusId) {
                                                 var confirmMessage = "Bạn có chắc muốn cập nhật trạng thái thành '" + statusName + "'?";
                                                 if (confirm(confirmMessage)) {
-                                                    // Nếu người dùng chọn OK trong hộp thoại xác nhận, submit form
+                                                    if (statusId === 3) {
+                                                        // Kiểm tra các thông tin cần thiết khi chuyển sang trạng thái Hoàn thành (3)
+                                                        var estimatedDeliveryDate = document.getElementById("estimatedDeliveryDate_${lo.order_id}").value.trim();
+                                                        
+                                                        if ( estimatedDeliveryDate === "") {
+                                                            alert("Vui lòng điền đầy đủ thông tin vận chuyển và ngày dự kiến giao hàng.");
+                                                            return false;
+                                                        }
+                                                    } else if (statusId === 4) {
+                                                        // Kiểm tra ghi chú cho shipper khi chuyển sang trạng thái Đơn hàng bị hủy (4)
+                                                        var shipperNote = document.getElementById("shipperNote_${lo.order_id}").value.trim();
+                                                        if (shipperNote === "") {
+                                                            alert("Vui lòng điền ghi chú cho shipper.");
+                                                            return false;
+                                                        }
+                                                    }
+
+                                                    // Nếu các điều kiện kiểm tra đều đã được đáp ứng, submit form để cập nhật trạng thái
                                                     document.querySelector('#updateStatusForm_' + orderId + '_' + statusId).submit();
                                                 } else {
                                                     // Nếu người dùng chọn Cancel, không làm gì cả
                                                     return false;
                                                 }
                                             }
+                                            
                                         </script>
                                         <td class="py-2 align-middle white-space-nowrap text-end">
                                             <c:if test="${lo.status.status_id == 2}">
