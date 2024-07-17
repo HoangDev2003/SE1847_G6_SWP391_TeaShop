@@ -11,7 +11,6 @@ package entity;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -31,19 +30,20 @@ import lombok.ToString;
 public class Orders {
 
     public int order_id, total_amount;
-    public String note, payment_method, phone_number, full_name, address;
-    public Timestamp order_date, estimated_delivery_date;
+    public Timestamp order_date;
+    public String note, shipper_note,staff_note, payment_method, phone_number, full_name, address;
     public Status status;
     public Product product;
     public Accounts account;
-    public List<OrderDetails> orderDetails;
-    public String formattedOrderDate, formattedEstimated_delivery_date;
+    public int status_feedback_id;
+    public Timestamp estimated_delivery_date;
+    public String formattedOrderDate, formattedEstimated_delivery_date; 
     
     public Timestamp getCurrentTimestamp() {
         LocalDateTime now = LocalDateTime.now();
         return Timestamp.valueOf(now);
     }
-    
+    // Phương thức để định dạng ngày và giờ
     public void setOrder_date(Timestamp order_date) {
         this.order_date = order_date;
         if (order_date != null) {
@@ -52,7 +52,6 @@ public class Orders {
             this.formattedOrderDate = localDateTime.format(formatter);
         }
     }
-    
     public void setEstimated_delivery_date(Timestamp estimated_delivery_date) {
         this.estimated_delivery_date = estimated_delivery_date;
         if (estimated_delivery_date != null) {
