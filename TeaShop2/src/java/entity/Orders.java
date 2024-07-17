@@ -11,6 +11,7 @@ package entity;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -38,6 +39,7 @@ public class Orders {
     public int status_feedback_id;
     public Timestamp estimated_delivery_date;
     public String formattedOrderDate, formattedEstimated_delivery_date; 
+    public List<OrderDetails> orderDetails;
     
     public Timestamp getCurrentTimestamp() {
         LocalDateTime now = LocalDateTime.now();
