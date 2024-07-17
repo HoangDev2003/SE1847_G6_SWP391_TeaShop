@@ -92,6 +92,14 @@
                                     <i class="fas fa-table me-1"></i>
                                     Product Manager
                                 </div>
+<!--                                <form action="productmanager" method="get">
+                                    <input type="hidden" name="service" value="searchByPriceRange" />
+                                    <label for="priceFrom">Min Price:</label>
+                                    <input type="number" id="priceFrom" name="priceFrom" step="0.01" required />
+                                    <label for="priceTo">Max Price:</label>
+                                    <input type="number" id="priceTo" name="priceTo" step="0.01" required />
+                                    <button type="submit">Search</button>
+                                </form>-->
                                 <!--List all Product-->
                                 <div class="card-body">
                                     <table id="datatablesSimple" >
