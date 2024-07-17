@@ -132,6 +132,7 @@
                                             <button class="btn ${statusOrder == 2 ? 'btn-primary' : 'btn'}" onclick="filterOrders(2)">Chờ giao hàng</button>
 
                                         <button class="btn ${statusOrder == 3 ? 'btn-primary' : 'btn'}" onclick="filterOrders(3)">Hoàn thành</button>
+                                        <button class="btn ${statusOrder == 4 ? 'btn-primary' : 'btn'}" onclick="filterOrders(4)">Đơn hàng bị hủy</button>
                                     </div>
                                 </div>
                                 <script>
