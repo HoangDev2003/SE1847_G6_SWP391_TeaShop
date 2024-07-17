@@ -58,7 +58,16 @@
 
 
     <body>
-
+        <%@ page import="java.util.List" %>
+        <%@ page import="entity.OrderDetails" %>
+        <%@ page import="entity.Orders" %>
+        <%
+            // Lưu giá trị thời gian giao hàng dự kiến vào session
+            if (request.getParameter("deliveryTime") != null) {
+                String savedTime = request.getParameter("deliveryTime");
+                session.setAttribute("savedTime", savedTime);
+            }
+        %>
         <!-- ===============================================-->
         <!--    Main Content-->
         <!-- ===============================================-->
