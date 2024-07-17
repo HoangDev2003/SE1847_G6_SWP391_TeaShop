@@ -462,6 +462,29 @@ public class OrdersDAO extends DBContext {
             ex.printStackTrace();
         }
     }
+    public void updateShipperNote(int orderId, String shipperNote) {
     
+    
+    String query = "UPDATE Orders SET shipper_note = ? WHERE order_id = ?";
+    try {
+        
+        connection = getConnection();
+        PreparedStatement ps = connection.prepareStatement(query);
+        ps.setString(1, shipperNote);
+        ps.setInt(2, orderId);
+        ps.executeUpdate();
+    } catch (SQLException e) {
+        e.printStackTrace();
+        // Handle SQLException
+    } finally {
+        try {
+                if (connection != null) {
+                    connection.close(); // Close the database connection
+                }
+            } catch (SQLException e) {
+                Logger.getLogger(OrdersDAO.class.getName()).log(Level.SEVERE, null, e);
+            }
+    }
+}
 
 }
