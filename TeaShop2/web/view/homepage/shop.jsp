@@ -112,49 +112,49 @@
                         <a href="contact.jsp" class="nav-item nav-link">Contact</a>
                     </div>
                     <div class="d-flex m-3 me-0">
-                            <%
-                int count = 0;
-                Enumeration<String> em = session.getAttributeNames();
-                while (em.hasMoreElements()) {
-                    String key = em.nextElement();
+                        <%
+            int count = 0;
+            Enumeration<String> em = session.getAttributeNames();
+            while (em.hasMoreElements()) {
+                String key = em.nextElement();
 
-                    if (key.startsWith("cartItem")) {
-                        count++;
-                    }
-                } 
-                            %>
-                            <a href="CartDetails?service=showcart" class="position-relative me-4 my-auto">
-                                <i class="fa fa-shopping-bag fa-2x"></i>
-                                <%if(count>0){%>
-                                <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;"><%=count%></span>
-                                <%}%>
+                if (key.startsWith("cartItem")) {
+                    count++;
+                }
+            } 
+                        %>
+                        <a href="CartDetails?service=showcart" class="position-relative me-4 my-auto">
+                            <i class="fa fa-shopping-bag fa-2x"></i>
+                            <%if(count>0){%>
+                            <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;"><%=count%></span>
+                            <%}%>
+                        </a>
+                        <% 
+Integer accountId = (Integer) session.getAttribute("accountId");
+if (accountId != null) {
+                        %>
+                        <div class="nav-item dropdown">
+                            <a href="#" class="nav-link" data-bs-toggle="dropdown" style="color: black;">
+                                <i class="fas fa-user fa-2x" style="color: black;"></i>
                             </a>
-                            <% 
-    Integer accountId = (Integer) session.getAttribute("accountId");
-    if (accountId != null) {
-                            %>
-                            <div class="nav-item dropdown">
-                                <a href="#" class="nav-link" data-bs-toggle="dropdown" style="color: black;">
-                                    <i class="fas fa-user fa-2x" style="color: black;"></i>
-                                </a>
-                                <div class="dropdown-menu m-0 bg-secondary rounded-0">
-                                    <a href="userprofile" class="dropdown-item">Thông tin</a>
-                                    <a href="MyOrder" class="dropdown-item">Đơn hàng</a>
-                                </div>
+                            <div class="dropdown-menu m-0 bg-secondary rounded-0">
+                                <a href="userprofile" class="dropdown-item">Thông tin</a>
+                                <a href="MyOrder" class="dropdown-item">Đơn hàng</a>
                             </div>
-                            <% 
-                                } else { 
-                            %>
-                            <a href="login"><i class="fas fa-user fa-2x" style="color: black;"></i></a>
-                                <% 
-                                    } 
-                                %>
                         </div>
+                        <% 
+                            } else { 
+                        %>
+                        <a href="login"><i class="fas fa-user fa-2x" style="color: black;"></i></a>
+                            <% 
+                                } 
+                            %>
                     </div>
-                </nav>
-            </div>
+                </div>
+            </nav>
         </div>
-        <!-- Navbar End -->
+    </div>
+    <!-- Navbar End -->
 
 
     <!-- Modal Search Start -->
@@ -274,11 +274,11 @@
                                                     <fmt:setLocale value="vi_VN" />
                                                     <div class="d-flex mb-2">
                                                         <a class="text-dark fs-5 fw-bold mb-0" href="product-details?id=${special.product_id}">
-                                                        <span style="text-decoration: line-through; opacity: 0.6; font-style: italic;">
-                                                            <fmt:formatNumber value="${special.price}" type="currency" currencySymbol="₫" />
-                                                        </span>
-                                                        &nbsp;
-                                                        <fmt:formatNumber value="${special.price - (special.price * (special.discount / 100))}" type="currency" currencySymbol="₫" />
+                                                            <span style="text-decoration: line-through; opacity: 0.6; font-style: italic;">
+                                                                <fmt:formatNumber value="${special.price}" type="currency" currencySymbol="₫" />
+                                                            </span>
+                                                            &nbsp;
+                                                            <fmt:formatNumber value="${special.price - (special.price * (special.discount / 100))}" type="currency" currencySymbol="₫" />
                                                         </a>
                                                     </div>
                                                 </div>
@@ -308,11 +308,18 @@
 
                                                 <div class="d-flex justify-content-between flex-lg-wrap">
                                                     <p class="text-dark fs-5 fw-bold mb-0">
-                                                        <span style="text-decoration: line-through; opacity: 0.6; font-style: italic;">
-                                                            <fmt:formatNumber value="${p.price}" type="currency" currencySymbol="₫" />
-                                                        </span>
-                                                        &nbsp;
-                                                        <fmt:formatNumber value="${p.price - (p.price * (p.discount / 100))}" type="currency" currencySymbol="₫" />
+                                                        <c:choose>
+                                                            <c:when test="${p.discount > 0}">
+                                                                <span style="text-decoration: line-through; opacity: 0.6; font-style: italic;">
+                                                                    <fmt:formatNumber value="${p.price}" type="currency" currencySymbol="₫" />
+                                                                </span>
+                                                                &nbsp;
+                                                                <fmt:formatNumber value="${p.price - (p.price * (p.discount / 100))}" type="currency" currencySymbol="₫" />
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <fmt:formatNumber value="${p.price}" type="currency" currencySymbol="₫" />
+                                                            </c:otherwise>
+                                                        </c:choose>
                                                     </p>
                                                     <a href="CartDetails?service=add2cart&product_id=${p.product_id}&link_id=1" class="btn border border-secondary rounded-pill px-3 text-primary">
                                                         <i class="fa fa-shopping-bag me-2 text-primary"></i> Mua ngay
