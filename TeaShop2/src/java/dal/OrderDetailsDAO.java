@@ -87,7 +87,8 @@ public class OrderDetailsDAO extends DBContext {
                 orderDetails.order_details_id = rs.getInt("order_details_id");
                 orderDetails.setProduct(new ProductDAO().getProductsById(rs.getInt("product_id")));
                 orderDetails.setOrders(new OrdersDAO().findByOrderId(rs.getInt("order_id")));
-                orderDetails.image = orderDetails.product.image;
+                orderDetails.image = rs.getString("image");
+                orderDetails.image_after_ship = rs.getString("image_after_ship");
                 orderDetails.quantity = rs.getInt("quantity");
                 orderDetails.setStatus_feedback_id(rs.getInt("status_feedback_id"));
                 orderDetailsList.add(orderDetails); // Add the order details to the list
@@ -119,7 +120,7 @@ public class OrderDetailsDAO extends DBContext {
      * ID.
      */
     public void updateImagePath(int orderDetailsId, String imagePath) {
-    String query = "UPDATE OrderDetails SET image = ? WHERE order_details_id = ?";
+    String query = "UPDATE OrderDetails SET image_after_ship = ? WHERE order_details_id = ?";
     try (Connection connection = getConnection();
          PreparedStatement ps = connection.prepareStatement(query)) {
         ps.setString(1, imagePath);

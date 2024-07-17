@@ -30,7 +30,8 @@ public class OrderDetails {
     public Product product;
     public Category category;
     public Orders orders;
-    public String image;
+    
     public int status_feedback_id;
+    public String image, image_after_ship;
     public List<Topping> topping;
 }

@@ -145,6 +145,16 @@
         <servlet-class>EditShipper</servlet-class>
     </servlet>
     <servlet>
+    <servlet-name>ShipDetailController</servlet-name>
+    <servlet-class>controller.ShipDetailController</servlet-class>
+    
+    <multipart-config>
+        <max-file-size>10485760</max-file-size>
+        <max-request-size>20971520</max-request-size>
+        <file-size-threshold>512000</file-size-threshold>
+    </multipart-config>
+    </servlet>
+    <servlet>
         <servlet-name>EditShipperController</servlet-name>
         <servlet-class>controller.EditShipperController</servlet-class>
     </servlet>
@@ -335,6 +345,11 @@
     <servlet-mapping>
         <servlet-name>SearchShipperController</servlet-name>
         <url-pattern>/searchShipper</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>ShipDetailController</servlet-name>
+        <url-pattern>/shipdetail</url-pattern>
     </servlet-mapping>
     
 </web-app>
