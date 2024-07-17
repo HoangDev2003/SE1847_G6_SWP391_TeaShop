@@ -89,6 +89,8 @@ public class OrdersDAO extends DBContext {
                 order.setOrder_date(rs.getTimestamp("order_date")); // Set order_date directly
                 order.setEstimated_delivery_date(rs.getTimestamp("estimated_delivery_date"));
                 order.setNote(rs.getString("note"));
+                order.setShipper_note(rs.getString("shipper_note"));
+                order.setStaff_note(rs.getString("staff_note"));
                 order.setAddress(rs.getString("address"));
                 order.setFull_name(rs.getString("full_name"));
                 order.setPayment_method(rs.getString("payment_method"));
@@ -145,10 +147,13 @@ public class OrdersDAO extends DBContext {
                 order.setOrder_date(rs.getTimestamp("order_date")); // Set order_date directly
                 order.setEstimated_delivery_date(rs.getTimestamp("estimated_delivery_date"));
                 order.setNote(rs.getString("note"));
+                order.setShipper_note(rs.getString("shipper_note"));
+                order.setStaff_note(rs.getString("staff_note"));
                 order.setAddress(rs.getString("address"));
                 order.setFull_name(rs.getString("full_name"));
                 order.setPayment_method(rs.getString("payment_method"));
                 order.setPhone_number(rs.getString("phone_number"));
+                ordersList.add(order);
             }
 
             rs.close(); // Close ResultSet
@@ -186,16 +191,20 @@ public class OrdersDAO extends DBContext {
 
             while (rs.next()) {
                 order = new Orders();
-                order.order_id = rs.getInt("order_id");
-                order.account = (new AccountDAO().getAccountByAccountID(rs.getInt("account_id")));
-                order.status = (new StatusDAO().getStatusByStatusID(rs.getInt("status_id")));
-                order.total_amount = rs.getInt("total_amount");
-                order.setOrder_date(rs.getTimestamp("order_date"));
-                order.setEstimated_delivery_date(rs.getTimestamp("estimated_delivery_date"));
-                // Retrieve the note
-                order.note = rs.getString("note");
+                order.setOrder_id(rs.getInt("order_id"));
 
-                // Add the order to the list
+                order.setAccount(new AccountDAO().getAccountByAccountID(rs.getInt("account_id")));
+                order.setStatus(new StatusDAO().getStatusByStatusID(rs.getInt("status_id")));
+                order.setTotal_amount(rs.getInt("total_amount"));
+                order.setOrder_date(rs.getTimestamp("order_date")); // Set order_date directly
+                order.setEstimated_delivery_date(rs.getTimestamp("estimated_delivery_date"));
+                order.setNote(rs.getString("note"));
+                order.setShipper_note(rs.getString("shipper_note"));
+                order.setStaff_note(rs.getString("staff_note"));
+                order.setAddress(rs.getString("address"));
+                order.setFull_name(rs.getString("full_name"));
+                order.setPayment_method(rs.getString("payment_method"));
+                order.setPhone_number(rs.getString("phone_number"));
                 ordersList.add(order);
             }
 
@@ -244,6 +253,8 @@ public class OrdersDAO extends DBContext {
                 order.setOrder_date(rs.getTimestamp("order_date")); // Set order_date directly
                 order.setEstimated_delivery_date(rs.getTimestamp("estimated_delivery_date"));
                 order.setNote(rs.getString("note"));
+                order.setShipper_note(rs.getString("shipper_note"));
+                order.setStaff_note(rs.getString("staff_note"));
                 order.setAddress(rs.getString("address"));
                 order.setFull_name(rs.getString("full_name"));
                 order.setPayment_method(rs.getString("payment_method"));
@@ -316,10 +327,13 @@ public class OrdersDAO extends DBContext {
                 order.setOrder_date(rs.getTimestamp("order_date")); // Set order_date directly
                 order.setEstimated_delivery_date(rs.getTimestamp("estimated_delivery_date"));
                 order.setNote(rs.getString("note"));
+                order.setShipper_note(rs.getString("shipper_note"));
+                order.setStaff_note(rs.getString("staff_note"));
                 order.setAddress(rs.getString("address"));
                 order.setFull_name(rs.getString("full_name"));
                 order.setPayment_method(rs.getString("payment_method"));
                 order.setPhone_number(rs.getString("phone_number"));
+                ordersList.add(order);
             }
 
             rs.close(); // Close ResultSet
@@ -370,10 +384,14 @@ public class OrdersDAO extends DBContext {
                 order.setOrder_date(rs.getTimestamp("order_date")); // Set order_date directly
                 order.setEstimated_delivery_date(rs.getTimestamp("estimated_delivery_date"));
                 order.setNote(rs.getString("note"));
+                order.setShipper_note(rs.getString("shipper_note"));
+                order.setStaff_note(rs.getString("staff_note"));
                 order.setAddress(rs.getString("address"));
                 order.setFull_name(rs.getString("full_name"));
                 order.setPayment_method(rs.getString("payment_method"));
                 order.setPhone_number(rs.getString("phone_number"));
+                
+                ordersList.add(order);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -406,12 +424,13 @@ public class OrdersDAO extends DBContext {
                 order.setOrder_date(rs.getTimestamp("order_date")); // Set order_date directly
                 order.setEstimated_delivery_date(rs.getTimestamp("estimated_delivery_date"));
                 order.setNote(rs.getString("note"));
+                order.setShipper_note(rs.getString("shipper_note"));
+                order.setStaff_note(rs.getString("staff_note"));
                 order.setAddress(rs.getString("address"));
                 order.setFull_name(rs.getString("full_name"));
                 order.setPayment_method(rs.getString("payment_method"));
                 order.setPhone_number(rs.getString("phone_number"));
-
-                // Add the order to the list
+                
                 ordersList.add(order);
             }
 
@@ -443,5 +462,6 @@ public class OrdersDAO extends DBContext {
             ex.printStackTrace();
         }
     }
+    
 
 }
