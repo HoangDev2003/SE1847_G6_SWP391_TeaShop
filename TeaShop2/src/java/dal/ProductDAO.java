@@ -258,6 +258,50 @@ public class ProductDAO extends DBContext {
         return list;
     }
 
+    public List<Product> getProductByPriceRange(int priceFrom, int priceTo) {
+        List<Product> list = new ArrayList<>();
+        connection = getConnection();
+        Category category = null;
+        String sql = "SELECT  *\n"
+                + "  FROM [TeaShop].[dbo].[Product]\n"
+                + "  Where price >= ? AND price <= ?";
+        try {
+            //Tạo đối tượng PrepareStatement
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, priceFrom);
+            statement.setInt(2, priceTo);
+
+            //thuc thi cau lenh o tren => tra ve ket qua
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                Product product = new Product();
+
+                int product_id = resultSet.getInt("product_id");
+                String product_name = resultSet.getString("product_name");
+                category = ((new CategoryDAO()).getCategoryById(resultSet.getInt("category_id")));
+                String image = resultSet.getString("image");
+                int price = resultSet.getInt("price");
+                float discount = resultSet.getFloat("discount");
+                Date create_at = resultSet.getDate("create_at");
+                product.setProduct_id(product_id);
+                product.setProduct_name(product_name);
+                product.setCategory(category);
+                product.setImage(image);
+                product.setPrice(price);
+                product.setDiscount(discount);
+                product.setCreate_at(create_at);
+                //add to collections
+                list.add(product);
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("Error " + ex.getMessage());
+        }
+
+        return list;
+    }
+
     public List<Product> findByPage(int page, String sort) {
         List<Product> list = new ArrayList<>();
         //ket noi duoc voi database
@@ -563,7 +607,7 @@ public class ProductDAO extends DBContext {
                     .getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public void updateDiscount(Product p, int pid) {
         connection = getConnection();
         PreparedStatement stm = null;
@@ -611,26 +655,28 @@ public class ProductDAO extends DBContext {
     }
 
     public static void main(String[] args) {
+
         ProductDAO productDAO = new ProductDAO();
 
-        // Tạo đối tượng Category (giả sử category_id là 1)
-        Category category = new Category();
-        category.setCategory_id(1);
+        int priceFrom = 40000; // giá tối thiểu
+        int priceTo = 50000;   // giá tối đa
 
-        // Tạo đối tượng Product với các thuộc tính cần thiết
-        Product product = new Product();
-        product.setProduct_name("Ô Long Nhài Sữa");
-        product.setCategory(category);
-        product.setPrice(45000);
-        product.setDiscount(20);
+        List<Product> products = productDAO.getProductByPriceRange(priceFrom, priceTo);
 
-        // Gọi phương thức updateDiscount với product và product_id (giả sử product_id là 1)
-        int productId = 5;
-        productDAO.updateDiscount(product, productId);
-
-        // In ra thông báo để xác nhận đã cập nhật
-        System.out.println("Product updated successfully!");
-        
+        if (products.isEmpty()) {
+            System.out.println("No products found in the given price range.");
+        } else {
+            for (Product product : products) {
+                System.out.println("Product ID: " + product.getProduct_id());
+                System.out.println("Product Name: " + product.getProduct_name());
+                System.out.println("Category: " + product.getCategory().getCategory_name());
+                System.out.println("Image: " + product.getImage());
+                System.out.println("Price: " + product.getPrice());
+                System.out.println("Discount: " + product.getDiscount());
+                System.out.println("Create Date: " + product.getCreate_at());
+                System.out.println("---------------------------------------");
+            }
+        }
     }
 
 }

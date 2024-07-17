@@ -53,6 +53,8 @@ public class ProductManagerController extends HttpServlet {
             req.getRequestDispatcher("view/dashboard/admin/productManagement.jsp").forward(req, resp);
         }
         
+       
+        
         if (service.equals("requestUpdate")) {
             List<Category> listCategorys = (new CategoryDAO().findAll());
             int productId = Integer.parseInt(req.getParameter("productId"));
