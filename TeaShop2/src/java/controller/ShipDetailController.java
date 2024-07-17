@@ -48,21 +48,28 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
     request.setCharacterEncoding("UTF-8");
     response.setContentType("text/html;charset=UTF-8");
 
+    // Lấy các thông tin từ form
+    int orderId = Integer.parseInt(request.getParameter("order_id"));
+    String deliveryTimeStr = request.getParameter("deliveryTime");
+    String shipperNote = request.getParameter("shipperNote");
+
+    // Cập nhật thời gian giao hàng (nếu có)
+    if (deliveryTimeStr != null && !deliveryTimeStr.isEmpty()) {
+        Timestamp deliveryTime = Timestamp.valueOf(deliveryTimeStr.replace("T", " ") + ":00");
+        OrdersDAO ordersDAO = new OrdersDAO();
+        ordersDAO.updateDeliveryTime(orderId, deliveryTime);
+    }
+
+    // Cập nhật note của Shipper (nếu có)
+    if (shipperNote != null && !shipperNote.isEmpty()) {
+        OrdersDAO ordersDAO = new OrdersDAO();
+        ordersDAO.updateShipperNote(orderId, shipperNote);
+    }
+
+    // Xử lý upload file (nếu có)
     String appPath = request.getServletContext().getRealPath("");
     String savePath = appPath + File.separator + "uploadImages";
 
-    File fileSaveDir = new File(savePath);
-    if (!fileSaveDir.exists()) {
-        fileSaveDir.mkdirs();
-    }
-
-    int orderId = Integer.parseInt(request.getParameter("order_id"));
-    String deliveryTimeStr = request.getParameter("deliveryTime");
-    Timestamp deliveryTime = Timestamp.valueOf(deliveryTimeStr.replace("T", " ") + ":00");
-    
-    OrdersDAO ordersDAO = new OrdersDAO();
-    ordersDAO.updateDeliveryTime(orderId, deliveryTime);
-    
     for (Part part : request.getParts()) {
         if (part.getName().startsWith("fileUpload")) {
             int orderDetailsId = Integer.parseInt(part.getName().substring(10));
@@ -83,22 +90,25 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
             orderDetailsDAO.updateImagePath(orderDetailsId, dbFilePath);
         }
     }
-    
+
+    // Lưu thời gian giao hàng vào session (nếu có)
     HttpSession session = request.getSession();
     session.setAttribute("savedTime", deliveryTimeStr);
-        
+
+    // Redirect về trang chi tiết đơn hàng
     response.sendRedirect("shipdetail?order_id=" + orderId);
 }
 
-private String extractFileName(Part part) {
-    String contentDisp = part.getHeader("content-disposition");
-    String[] items = contentDisp.split(";");
-    for (String s : items) {
-        if (s.trim().startsWith("filename")) {
-            return s.substring(s.indexOf("=") + 2, s.length() - 1);
+
+    private String extractFileName(Part part) {
+        String contentDisp = part.getHeader("content-disposition");
+        String[] items = contentDisp.split(";");
+        for (String s : items) {
+            if (s.trim().startsWith("filename")) {
+                return s.substring(s.indexOf("=") + 2, s.length() - 1);
+            }
         }
+        return "";
     }
-    return "";
-}
 
 }
