@@ -4,8 +4,10 @@
  */
 package controller;
 
+import dal.OrderDetailsDAO;
 import dal.OrdersDAO;
 import dal.StatusDAO;
+import entity.OrderDetails;
 import entity.Orders;
 import entity.Status;
 import java.io.IOException;
@@ -28,6 +30,8 @@ public class ShippingController extends HttpServlet {
             throws ServletException, IOException {
         OrdersDAO orderDAO = new OrdersDAO();
         StatusDAO statusDAO = new StatusDAO();
+        
+        
         String statusOrderParam = request.getParameter("statusOrder");
         int statusOrder = (statusOrderParam != null) ? Integer.parseInt(statusOrderParam) : 2;
         List<Orders> listOrders = orderDAO.findOrdersStatusId(statusOrder);
@@ -43,10 +47,15 @@ public class ShippingController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         OrdersDAO orderDAO = new OrdersDAO();
+        OrderDetailsDAO orderDetailsDAO = new OrderDetailsDAO();
+        
         String action = request.getParameter("action");
         if ("updateStatus".equals(action)) {
             int orderId = Integer.parseInt(request.getParameter("orderId"));
+            List<OrderDetails> listOrderDetails = orderDetailsDAO.findByOrderId(orderId);
             int statusId = Integer.parseInt(request.getParameter("statusId"));
+            HttpSession session = request.getSession();
+            session.setAttribute("listOrderDetails", listOrderDetails);
             orderDAO.updateOrderStatus(orderId, statusId);
             response.sendRedirect("ship"); // Redirect lại trang danh sách đơn hàng
         } else {
