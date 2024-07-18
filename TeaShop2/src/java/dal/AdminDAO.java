@@ -1153,6 +1153,41 @@ public class AdminDAO extends DBContext {
         }
 
     }
+     
+     public AccountStatus getStatusById(int id) {
+        String query = "SELECT acs.status_id,\n"
+                + "acs.status_name\n"
+                + "FROM AccountStatuses acs\n"
+                + "WHERE acs.status_id = ?;";
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(query);
+            statement.setInt(1, id);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                return new AccountStatus(resultSet.getInt(1), resultSet.getString(2));
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
+        }
+        return null;
+    }
+     
+     public void updateStatus(int id, String name) {
+        String query = "Update AccountStatuses\n"
+                + "set\n"
+                + "[status_name]=?\n"
+                + "where status_id = ?";
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(query);
+            statement.setInt(1, id);        
+            statement.setString(2, name);
+            statement.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
+        }
+    }
 
 
     public static void main(String[] args) {

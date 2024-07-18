@@ -57,7 +57,7 @@
                             </ol>
                             
                             <div style="margin-left: 15px; margin-bottom: 20px; margin-top: 20px">
-                                <a href="adduser"><button type="button" class="btn btn-danger">Add Status</button> </a>
+                                <a href="adduser"><button type="button" class="btn btn-danger">Thêm Status</button> </a>
                             </div>
                             <form action="searchRole">
                                 <input type="search" name="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" style="max-width: 95%" />
@@ -82,7 +82,7 @@
                                                 <tr>                                                 
                                                     <td>${ls.status_id}</td>
                                                     <td>${ls.status_name}</td>                                                   
-                                                    <td><a href="editStatus?id=${ls.status_id}">Edit</a>
+                                                    <td><a href="updatestatus?id=${ls.status_id}">Edit</a>
                                                         <a href="deletestatus?id=${ls.status_name}">Delete</a></td>
                                                 </tr>
                                             </c:forEach>

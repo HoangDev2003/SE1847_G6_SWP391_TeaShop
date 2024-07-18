@@ -57,7 +57,7 @@
                                 <li class="breadcrumb-item">Chỉnh sửa Status</li>
                             </ol>
                       
-                            <form action="editstatus" method="post">
+                            <form action="updatestatus" method="post">
                                 
                                 <div class="card mb-4">
                                     <div class="card-header" >
