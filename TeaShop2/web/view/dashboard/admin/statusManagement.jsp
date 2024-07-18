@@ -49,7 +49,7 @@
             <jsp:include page="../../common/admin/sidebarAdmin.jsp"></jsp:include>
                 <div id="layoutSidenav_content">
                     <main>
-                        <div class="container-fluid px-4">
+                        <div style="margin-top: 20px" class="container-fluid px-4">
                            
                             <ol class="breadcrumb mb-4">
                                 <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
@@ -57,7 +57,7 @@
                             </ol>
                             
                             <div style="margin-left: 15px; margin-bottom: 20px; margin-top: 20px">
-                                <a href="adduser"><button type="button" class="btn btn-danger">Add Role</button> </a>
+                                <a href="adduser"><button type="button" class="btn btn-danger">Add Status</button> </a>
                             </div>
                             <form action="searchRole">
                                 <input type="search" name="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" style="max-width: 95%" />

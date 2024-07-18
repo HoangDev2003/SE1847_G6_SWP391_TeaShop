@@ -189,6 +189,10 @@
         <servlet-name>DeleteRoleController</servlet-name>
         <servlet-class>controller.DeleteRoleController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>StatusManager</servlet-name>
+        <servlet-class>controller.StatusManager</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ShopController</servlet-name>
         <url-pattern>/shop</url-pattern>
@@ -369,4 +373,5 @@
         <servlet-name>DeleteRoleController</servlet-name>
         <url-pattern>/deleterole</url-pattern>
     </servlet-mapping>
+   
 </web-app>
