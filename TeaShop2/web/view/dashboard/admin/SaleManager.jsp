@@ -23,24 +23,24 @@
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-           
+
             <a class="navbar-brand ps-3" href="productmanager">Product Management</a>
-            
+
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
-          
+
             <c:if test="${showSearchProduct ne null}">
                 <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0" action="saleManager" id="searchByName">
                     <input type="hidden" name="service" value="searchByKeywords"/>
                     <div class="input-group">
                         <input class="form-control" type="text" placeholder="Search by Keywords" aria-label="Search by Keywords" aria-describedby="btnNavbarSearch" name="keywords"
                                value="${keywords}"/>
-                        <button class="btn btn-primary" id="btnNavbarSearch" type="submit"><i class="fas fa-search"></i></button>
+                        <button class="search-header" id="btnNavbarSearch" type="submit"><i class="fas fa-search"></i></button>
                     </div>
                 </form>
             </c:if>
 
 
-           
+
             <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
@@ -62,7 +62,6 @@
                     <main>                   
                         <div class="container-fluid px-4">
                             <ol class="breadcrumb mb-4" style="padding-top: 24px">
-                                
                             </ol>
 
                         <c:if test="${notFoundProduct ne null}">
@@ -70,84 +69,95 @@
                                 ${notFoundProduct}
                             </h4>
                         </c:if>
-
-                        <c:if test="${not empty listAllProduct}">
-                            <div class="card mb-4">
-
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h6><ion-icon name="filter-outline"></ion-icon> Lọc theo giá sản phẩm</h6>
+                                <form action="productmanager" method="get">
+                                    <input type="hidden" name="service" value="searchByPriceRange" />
+                                    <label for="priceFrom">Mức giá</label>
+                                    <input type="number" id="priceFrom" name="priceFrom" step="0.01" required />
+                                    <label for="priceTo">~</label>
+                                    <input type="number" id="priceTo" name="priceTo" step="0.01" required />
+                                    <button class="filerByPrice" type="submit">Tìm kiếm</button>
+                                </form>
                             </div>
-
-                            <div class="card mb-4">
-                                <div class="card-header">
-                                    <i class="fas fa-table me-1"></i>
-                                    Product Manager
-                                </div>
-                                <div class="card-body">
-                                    <table id="datatablesSimple" >
-                                        <thead>
-                                            <tr>
-                                                <th>ID</th>
-                                                <th>Tên sản phẩm</th>
-                                                <th>Danh mục</th>
-                                                <th>Giá</th>
-                                                <th>Giảm giá (%)</th>
-                                                <th>Chỉnh sửa</th> 
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <c:forEach items="${listAllProduct}" var="product">
-                                                <tr>
-                                                    <td>${product.product_id}</td>
-                                                    <td>${product.product_name}</td>
-                                                    <td>${product.category.category_name}</td>
-                                                    <fmt:setLocale value="vi_VN" />
-                                                    <td><fmt:formatNumber value="${product.price}" type="currency" currencySymbol="₫"/></td>
-                                                    <td>${product.discount}</td>
-                                                    <td><a href="saleManager?service=requestUpdate&productId=${product.product_id}"><ion-icon name="create-outline"></ion-icon></a></td>
-                                                </tr>  
-                                            </c:forEach>
-                                        </tbody>                                   
-                                    </table>
-                                </div>
-                            </div>
-                        </c:if>
-
-                        <c:if test="${UpdateDone ne null}">
-                            <h3 class="font-weight-semi-bold text-uppercase mb-3 text-center">
-                                ${UpdateDone}
-                            </h3>
-                        </c:if>
-                        <c:if test="${productUpdate ne null}">
-                            <form action="saleManager" id="updatedDiscount">
-                                <input type="hidden" name="service" value="sendUpdateDetail"/>
+                            <c:if test="${not empty listAllProduct}">
                                 <div class="card mb-4">
-                                    <div class="card-discount">
-                                        <table id="datatables-Discount">
+
+                                </div>
+
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        <i class="fas fa-table me-1"></i>
+                                        Quản lý Sale
+                                    </div>
+                                    <div class="card-body">
+                                        <table id="datatablesSimple" >
                                             <thead>
                                                 <tr>
-                                                    <th> ID</th>
+                                                    <th>ID</th>
+                                                    <th>Tên sản phẩm</th>
+                                                    <th>Danh mục</th>
+                                                    <th>Giá</th>
                                                     <th>Giảm giá (%)</th>
+                                                    <th>Chỉnh sửa</th> 
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td><input type="number" name="id" style="height: 35px; width: 60px" value="${productUpdate.product_id}" readonly />
-                                                    </td>
-                                                    <td><input type="number" name="discount" size="50" style="height: 35px" value="${productUpdate.discount}"/>
-                                                </tr>  
-                                            </tbody>         
+                                                <c:forEach items="${listAllProduct}" var="product">
+                                                    <tr>
+                                                        <td>${product.product_id}</td>
+                                                        <td>${product.product_name}</td>
+                                                        <td>${product.category.category_name}</td>
+                                                        <fmt:setLocale value="vi_VN" />
+                                                        <td><fmt:formatNumber value="${product.price}" type="currency" currencySymbol="₫"/></td>
+                                                        <td>${product.discount}</td>
+                                                        <td><a href="saleManager?service=requestUpdate&productId=${product.product_id}"><ion-icon name="create-outline"></ion-icon></a></td>
+                                                    </tr>  
+                                                </c:forEach>
+                                            </tbody>                                   
                                         </table>
                                     </div>
-
-                                    <button
-                                        class="button-update"
-                                        style="transform: translateX(70vw) ; width: 10%"
-                                        onclick="document.getElementById('updatedDiscount').submit();">
-                                        Chỉnh sửa
-                                    </button>                                
                                 </div>
-                            </form>
-                        </c:if>    
-                    </div>                    
+                            </c:if>
+
+                            <c:if test="${UpdateDone ne null}">
+                                <h3 class="font-weight-semi-bold text-uppercase mb-3 text-center">
+                                    ${UpdateDone}
+                                </h3>
+                            </c:if>
+                            <c:if test="${productUpdate ne null}">
+                                <form action="saleManager" id="updatedDiscount">
+                                    <input type="hidden" name="service" value="sendUpdateDetail"/>
+                                    <div class="card mb-4">
+                                        <div class="card-discount">
+                                            <table id="datatables-Discount">
+                                                <thead>
+                                                    <tr>
+                                                        <th> ID</th>
+                                                        <th>Giảm giá (%)</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><input type="number" name="id" style="height: 35px; width: 60px" value="${productUpdate.product_id}" readonly />
+                                                        </td>
+                                                        <td><input type="number" name="discount" size="50" style="height: 35px" value="${productUpdate.discount}"/>
+                                                    </tr>  
+                                                </tbody>         
+                                            </table>
+                                        </div>
+
+                                        <button
+                                            class="button-update"
+                                            style="transform: translateX(70vw) ; width: 10%"
+                                            onclick="document.getElementById('updatedDiscount').submit();">
+                                            Chỉnh sửa
+                                        </button>                                
+                                    </div>
+                                </form>
+                            </c:if>    
+                        </div>                    
                 </main>
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid px-4">
@@ -157,7 +167,41 @@
                     </div>
                 </footer>
                 <style>
-                     .datatable-table
+                    .search-header {
+                        background-color: #37697a; /* Màu nền */
+                        border: none; /* Bỏ viền */
+                        color: white;
+                        padding: 7px 12px;
+                    }
+                    .search-header:hover{
+                        background-color: #0B3649; /* Màu nền khi hover */
+                        color: white;
+                    }
+                    .filerByPrice {
+                        background-color: #37697a; /* Màu nền */
+                        border: none; /* Bỏ viền */
+                        color: white; /* Màu chữ */
+                        padding: 7px 12px; /* Khoảng cách trong */
+                        text-align: center; /* Canh giữa văn bản */
+                        text-decoration: none; /* Bỏ gạch chân */
+                        display: inline-block; /* Hiển thị dạng khối nội tuyến */
+                        font-size: 16px; /* Cỡ chữ */
+                        margin: 10px 0; /* Khoảng cách ngoài */
+                        cursor: pointer; /* Con trỏ chuột */
+                        border-radius: 5px; /* Bo góc */
+                        transition: background-color 0.3s ease; /* Hiệu ứng chuyển màu nền */
+                    }
+
+                    .filerByPrice:hover {
+                        background-color: #0B3649; /* Màu nền khi hover */
+                        color: white;
+                    }
+
+                    .filerByPrice:active {
+                        background-color: #3e8e41; /* Màu nền khi nhấn giữ */
+                        transform: translateY(2px); /* Hiệu ứng nhấn xuống */
+                    }
+                    .datatable-table
                     {
 
                         font-family: 'Verdana', sans-serif; /* Bạn có thể thay đổi phông chữ nếu muốn */
@@ -236,12 +280,12 @@
                         width: 25%;
                         color: #00a5bb;
                     }
-                    
-                     datatables-UpdateProduct {
+
+                    datatables-UpdateProduct {
                         width: 100%;
                         border-collapse: collapse;
                     }
-                   th, td {
+                    th, td {
                         padding: 12px;
                         border: 1px solid #ddd;
                         text-align: center; /* Căn giữa chữ */
@@ -286,27 +330,27 @@
                         border-color: #0B3649;/* Màu nền khi lướt chuột qua */
                         box-shadow: 0 0 10px #0056b3; /* Hiệu ứng đổ bóng khi lướt chuột qua */
                     }
-                    
+
                     datatables-Discount {
                         width: 100%;
                         border-collapse: collapse;
-                        
+
                     }
                     th, td {
-                        
+
                         text-align: center; /* Căn giữa chữ */
                     }
                     th {
                         background-color: #f2f2f2;
                     }
-                    
+
                     .card-discount {
                         display: flex;
                         justify-content: center;
                     }
-                    
-                   
-                    
+
+
+
 
                 </style>
             </div>

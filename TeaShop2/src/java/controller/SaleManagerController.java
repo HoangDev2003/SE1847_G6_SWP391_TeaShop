@@ -58,6 +58,24 @@ public class SaleManagerController extends HttpServlet {
             req.setAttribute("showSearchProduct", "Yes");
             req.getRequestDispatcher("view/dashboard/admin/SaleManager.jsp").forward(req, resp);
         }
+        
+        if (service.equals("searchByPriceRange")) {
+            int priceFrom = Integer.parseInt(req.getParameter("priceFrom"));
+            int priceTo = Integer.parseInt(req.getParameter("priceTo"));
+
+            List<Product> products = (new ProductDAO()).getProductByPriceRange(priceFrom, priceTo);
+
+            if (products == null || products.isEmpty()) {
+                req.setAttribute("notFoundProduct", "No products found in the given price range");
+                products = (new ProductDAO()).findAll();
+            }
+
+            req.setAttribute("listAllProduct", products);
+            req.setAttribute("priceFrom", priceFrom);
+            req.setAttribute("priceTo", priceTo);
+            req.setAttribute("showSearchProduct", "Yes");
+            req.getRequestDispatcher("view/dashboard/admin/SaleManager.jsp").forward(req, resp);
+        }
 
         if (service.equals("requestUpdate")) {
             List<Category> listCategorys = (new CategoryDAO().findAll());

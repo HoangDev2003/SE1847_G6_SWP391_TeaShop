@@ -32,9 +32,9 @@
                 <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0" action="productmanager" id="searchByName">
                     <input type="hidden" name="service" value="searchByKeywords"/>
                     <div class="input-group">
-                        <input class="form-control" type="text" placeholder="Tìm kiếm theo tên..." aria-label="Search by Keywords" aria-describedby="btnNavbarSearch" name="keywords"
+                        <input class="form-control" type="text" placeholder="Nhập tên sản phẩm..." aria-label="Search by Keywords" aria-describedby="btnNavbarSearch" name="keywords"
                                value="${keywords}"/>
-                        <button class="btn btn-primary" id="btnNavbarSearch" type="submit"><i class="fas fa-search"></i></button>
+                        <button class="search-header" id="btnNavbarSearch" type="submit"><i class="fas fa-search"></i></button>
                     </div>
                 </form>
             </c:if>
@@ -96,7 +96,7 @@
                                         <input type="number" id="priceFrom" name="priceFrom" step="0.01" required />
                                         <label for="priceTo">~</label>
                                         <input type="number" id="priceTo" name="priceTo" step="0.01" required />
-                                        <button type="submit">Tìm kiếm</button>
+                                        <button class="filerByPrice" type="submit">Tìm kiếm</button>
                                     </form>
 
                                 </div>
@@ -104,7 +104,7 @@
                                 <!--List all Product-->
                                 <div class="card-body">
                                     <table id="datatablesSimple" >  
-                                        
+
                                         <thead>
                                             <tr>
                                                 <th>ID</th>
@@ -147,6 +147,40 @@
                     </div>
                 </footer>
                 <style>
+                    .search-header {
+                        background-color: #37697a; /* Màu nền */
+                        border: none; /* Bỏ viền */
+                        color: white;
+                        padding: 7px 12px;
+                    }
+                    .search-header:hover{
+                        background-color: #0B3649; /* Màu nền khi hover */
+                        color: white;
+                    }
+                    .filerByPrice {
+                        background-color: #37697a; /* Màu nền */
+                        border: none; /* Bỏ viền */
+                        color: white; /* Màu chữ */
+                        padding: 7px 12px; /* Khoảng cách trong */
+                        text-align: center; /* Canh giữa văn bản */
+                        text-decoration: none; /* Bỏ gạch chân */
+                        display: inline-block; /* Hiển thị dạng khối nội tuyến */
+                        font-size: 16px; /* Cỡ chữ */
+                        margin: 10px 0; /* Khoảng cách ngoài */
+                        cursor: pointer; /* Con trỏ chuột */
+                        border-radius: 5px; /* Bo góc */
+                        transition: background-color 0.3s ease; /* Hiệu ứng chuyển màu nền */
+                    }
+
+                    .filerByPrice:hover {
+                        background-color: #0B3649; /* Màu nền khi hover */
+                        color: white;
+                    }
+
+                    .filerByPrice:active {
+                        background-color: #3e8e41; /* Màu nền khi nhấn giữ */
+                        transform: translateY(2px); /* Hiệu ứng nhấn xuống */
+                    }
                     .datatable-table
                     {
 
@@ -225,6 +259,14 @@
                         transform: translateX(25vw);
                         width: 25%;
                         color: #00a5bb;
+                    }
+                    
+                    h6 ion-icon {
+                        font-size: 26px;
+                        text-align: center; /* Căn giữa ngang */
+                        vertical-align: middle; /* Căn giữa dọc */
+                        margin-right: 5px; /* Khoảng cách giữa icon và chữ */
+                        
                     }
 
                 </style>
