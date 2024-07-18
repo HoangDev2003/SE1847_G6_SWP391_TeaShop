@@ -181,6 +181,14 @@
         <servlet-name>RoleManager</servlet-name>
         <servlet-class>controller.RoleManager</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>EditRoleController</servlet-name>
+        <servlet-class>controller.EditRoleController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteRoleController</servlet-name>
+        <servlet-class>controller.DeleteRoleController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ShopController</servlet-name>
         <url-pattern>/shop</url-pattern>
@@ -353,5 +361,12 @@
         <servlet-name>ShipDetailController</servlet-name>
         <url-pattern>/shipdetail</url-pattern>
     </servlet-mapping>
-   
+    <servlet-mapping>
+        <servlet-name>EditRoleController</servlet-name>
+        <url-pattern>/editRole</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteRoleController</servlet-name>
+        <url-pattern>/deleterole</url-pattern>
+    </servlet-mapping>
 </web-app>

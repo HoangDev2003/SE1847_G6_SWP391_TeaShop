@@ -5,23 +5,18 @@
 package controller;
 
 import dal.AdminDAO;
-import entity.Accounts;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.Part;
-import java.io.File;
 
 /**
  *
  * @author Huyen Tranq
  */
-@MultipartConfig
-public class EditStaff extends HttpServlet {
+public class DeleteRoleController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,12 +31,13 @@ public class EditStaff extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
             AdminDAO dao = new AdminDAO();
             String id = request.getParameter("id");
-            int account_id = Integer.parseInt(id);
-            Accounts a = dao.getAccountById(account_id);
-            request.setAttribute("acc", a);
-            request.getRequestDispatcher("EditStaff.jsp").forward(request, response);
+            int rid = Integer.parseInt(id);
+            System.out.println(rid);
+            dao.deleteRole(rid);
+            response.sendRedirect("rolemanager");
         }
     }
 
@@ -71,46 +67,7 @@ public class EditStaff extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        AdminDAO dao = new AdminDAO();
-        String user_name = request.getParameter("user_name");
-        String email = request.getParameter("email");
-        String phone_number = request.getParameter("phone_number");
-        String gender = request.getParameter("gender");
-        String address = request.getParameter("address");
-        String role = request.getParameter("role");
-        String status = request.getParameter("status");
-        String img = request.getParameter("img");
-
-        String imgUpload = null;
-        try {
-            Part filePart = request.getPart("img");
-            if (filePart.getSize() > 0) {
-                String fileName = getFileName(filePart);
-
-                String savePath = getServletContext().getRealPath("/") + "images/";
-                File fileSaveDir = new File(savePath);
-                if (!fileSaveDir.exists()) {
-                    fileSaveDir.mkdir();
-                }
-
-                File file = new File(savePath + fileName);
-                filePart.write(file.getAbsolutePath());
-
-                imgUpload = "images/" + fileName;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        Accounts a = dao.getUserInfor(email);
-        int role_id = Integer.parseInt(role);
-        int status_id = Integer.parseInt(status);
-        if (imgUpload == null) {
-            imgUpload = dao.getProductImage1ById(a.getAccount_id()); // Lấy đường dẫn ảnh 1 cũ
-        }
-        dao.editUserById(role_id, status_id, a.getAccount_id());
-        response.sendRedirect("staffmanager");
+        processRequest(request, response);
     }
 
     /**
@@ -122,14 +79,5 @@ public class EditStaff extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
-    private String getFileName(final Part part) {
-        for (String content : part.getHeader("content-disposition").split(";")) {
-            if (content.trim().startsWith("filename")) {
-                return content.substring(content.indexOf('=') + 1).trim().replace("\"", "");
-            }
-        }
-        return null;
-    }
 
 }

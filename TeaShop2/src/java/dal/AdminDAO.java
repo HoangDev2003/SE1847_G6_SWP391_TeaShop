@@ -308,7 +308,7 @@ public class AdminDAO extends DBContext {
         }
         return 0;
     }
-    
+
     public int countFemaleStaff() {
         String query = "select count(*) from Accounts where gender = 'Female' and a.role_id = 3";
         try {
@@ -323,8 +323,8 @@ public class AdminDAO extends DBContext {
         }
         return 0;
     }
-    
-     public int countFemaleShipper() {
+
+    public int countFemaleShipper() {
         String query = "select count(*) from Accounts where gender = 'Female' and a.role_id = 4";
         try {
             connection = getConnection();
@@ -353,8 +353,8 @@ public class AdminDAO extends DBContext {
         }
         return 0;
     }
-    
-     public int countMaleStaff() {
+
+    public int countMaleStaff() {
         String query = "select count(*) from Accounts where gender = 'Male' and a.role_id = 3";
         try {
             connection = getConnection();
@@ -368,8 +368,8 @@ public class AdminDAO extends DBContext {
         }
         return 0;
     }
-     
-     public int countMaleShipper() {
+
+    public int countMaleShipper() {
         String query = "select count(*) from Accounts where gender = 'Male' and a.role_id = 4";
         try {
             connection = getConnection();
@@ -416,7 +416,7 @@ public class AdminDAO extends DBContext {
         }
         return list;
     }
-    
+
     public List<Accounts> getAllAccountMaleStaff(int index) {
         List<Accounts> list = new ArrayList<>();
         String query = "SELECT a.account_id,\n"
@@ -449,8 +449,8 @@ public class AdminDAO extends DBContext {
         }
         return list;
     }
-    
-     public List<Accounts> getAllAccountMaleShipper(int index) {
+
+    public List<Accounts> getAllAccountMaleShipper(int index) {
         List<Accounts> list = new ArrayList<>();
         String query = "SELECT a.account_id,\n"
                 + "a.user_name,\n"
@@ -515,7 +515,7 @@ public class AdminDAO extends DBContext {
         }
         return list;
     }
-    
+
     public List<Accounts> getAllAccountFemaleStaff(int index) {
         List<Accounts> list = new ArrayList<>();
         String query = "SELECT a.account_id,\n"
@@ -548,7 +548,7 @@ public class AdminDAO extends DBContext {
         }
         return list;
     }
-    
+
     public List<Accounts> getAllAccountFemaleShipper(int index) {
         List<Accounts> list = new ArrayList<>();
         String query = "SELECT a.account_id,\n"
@@ -596,7 +596,7 @@ public class AdminDAO extends DBContext {
         }
         return 0;
     }
-    
+
     public int countActiveAccountStaff() {
         String query = "select count(*) from Accounts where status_id = 1 and a.role_id = 3";
         try {
@@ -611,7 +611,7 @@ public class AdminDAO extends DBContext {
         }
         return 0;
     }
-    
+
     public int countActiveAccountShipper() {
         String query = "select count(*) from Accounts where status_id = 1 and a.role_id = 4";
         try {
@@ -641,7 +641,7 @@ public class AdminDAO extends DBContext {
         }
         return 0;
     }
-    
+
     public int countInActiveAccountStaff() {
         String query = "select count(*) from Accounts where status_id = 2 and a.role_id = 3";
         try {
@@ -656,7 +656,7 @@ public class AdminDAO extends DBContext {
         }
         return 0;
     }
-    
+
     public int countInActiveAccountShipper() {
         String query = "select count(*) from Accounts where status_id = 2 and a.role_id = 4";
         try {
@@ -703,8 +703,8 @@ public class AdminDAO extends DBContext {
             e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
         }
         return list;
-    } 
-    
+    }
+
     public List<Accounts> getAccountsActiveStaff(int index) {
         List<Accounts> list = new ArrayList<>();
         String query = "SELECT a.account_id,\n"
@@ -736,8 +736,8 @@ public class AdminDAO extends DBContext {
             e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
         }
         return list;
-    } 
-    
+    }
+
     public List<Accounts> getAccountsActiveShipper(int index) {
         List<Accounts> list = new ArrayList<>();
         String query = "SELECT a.account_id,\n"
@@ -769,8 +769,8 @@ public class AdminDAO extends DBContext {
             e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
         }
         return list;
-    } 
-    
+    }
+
     public List<Accounts> getAccountsInActive(int index) {
         List<Accounts> list = new ArrayList<>();
         String query = "SELECT a.account_id,\n"
@@ -803,7 +803,7 @@ public class AdminDAO extends DBContext {
         }
         return list;
     }
-    
+
     public List<Accounts> getAccountsInActiveStaff(int index) {
         List<Accounts> list = new ArrayList<>();
         String query = "SELECT a.account_id,\n"
@@ -836,7 +836,7 @@ public class AdminDAO extends DBContext {
         }
         return list;
     }
-    
+
     public List<Accounts> getAccountsInActiveShipper(int index) {
         List<Accounts> list = new ArrayList<>();
         String query = "SELECT a.account_id,\n"
@@ -869,54 +869,54 @@ public class AdminDAO extends DBContext {
         }
         return list;
     }
-    
-     public int countAccountByGenderAndStatus(String gender, int status) {
+
+    public int countAccountByGenderAndStatus(String gender, int status) {
         String query = "select count(*) from Accounts where gender = ? and status_id = ? and a.role_id = 2";
         try {
             connection = getConnection();
             statement = connection.prepareStatement(query);
-            statement.setString(1, gender);          
+            statement.setString(1, gender);
             statement.setInt(2, status);
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 return resultSet.getInt(1);
             }
         } catch (Exception e) {
-             e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
+            e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
         }
         return 0;
     }
-     
-      public int countAccountByGenderAndStatusStaff(String gender, int status) {
+
+    public int countAccountByGenderAndStatusStaff(String gender, int status) {
         String query = "select count(*) from Accounts where gender = ? and status_id = ? and a.role_id = 3";
         try {
             connection = getConnection();
             statement = connection.prepareStatement(query);
-            statement.setString(1, gender);          
+            statement.setString(1, gender);
             statement.setInt(2, status);
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 return resultSet.getInt(1);
             }
         } catch (Exception e) {
-             e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
+            e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
         }
         return 0;
     }
-      
-       public int countAccountByGenderAndStatusShipper(String gender, int status) {
+
+    public int countAccountByGenderAndStatusShipper(String gender, int status) {
         String query = "select count(*) from Accounts where gender = ? and status_id = ? and a.role_id = 4";
         try {
             connection = getConnection();
             statement = connection.prepareStatement(query);
-            statement.setString(1, gender);          
+            statement.setString(1, gender);
             statement.setInt(2, status);
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 return resultSet.getInt(1);
             }
         } catch (Exception e) {
-             e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
+            e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
         }
         return 0;
     }
@@ -955,7 +955,7 @@ public class AdminDAO extends DBContext {
         }
         return list;
     }
-    
+
     public List<Accounts> getAccountByGenderAndStatusStaff(String gender, int status, int index) {
         List<Accounts> list = new ArrayList<>();
         String query = "SELECT a.account_id,\n"
@@ -1025,7 +1025,7 @@ public class AdminDAO extends DBContext {
         }
         return list;
     }
-    
+
     public List<Role> getAllRole() {
         //khởi tạo 1 list để load sản phẩm lên và lưu trong đấy
         List<Role> list = new ArrayList<>();
@@ -1035,14 +1035,78 @@ public class AdminDAO extends DBContext {
             statement = connection.prepareStatement(query);
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                list.add(new Role(resultSet.getInt(1),resultSet.getString(2)));
+                list.add(new Role(resultSet.getInt(1), resultSet.getString(2)));
             }
         } catch (Exception e) {
             e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
         }
         return list;
     }
+
+    public Role getRoleById(int id) {
+        String query = "SELECT r.role_id,\n"
+                + "r.role_name\n"
+                + "FROM Role r\n"
+                + "WHERE r.role_id = ?;";
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(query);
+            statement.setInt(1, id);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                return new Role(resultSet.getInt(1), resultSet.getString(2));
+            }
+        } catch (Exception e) {
+        }
+        return null;
+    }
     
+    public Role getRoleInfor(String role_name) {
+        String query = "SELECT r.role_id,\n"
+                + "r.role_name\n"
+                + "FROM Role r\n"
+                + "WHERE r.role_name = ?;";
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(query);
+            statement.setString(1, role_name);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                return new Role(resultSet.getInt(1), resultSet.getString(2));
+            }
+        } catch (Exception e) {
+        }
+        return null;
+    }
+    
+    public void editRoleById(String role_name, int id) {
+        String query = "Update Role\n"
+                + "set\n"
+                + "[role_name]=?\n"
+                + "where role_id = ?";
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(query);
+            statement.setString(1, role_name);        
+            statement.setInt(2, id);
+            statement.executeUpdate();
+        } catch (Exception e) {
+        }
+    }
+    
+     public void deleteRole(int id) {
+        String query = "Delete from Role where role_id = ?";
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(query);
+            statement.setInt(1, id);
+            resultSet = statement.executeQuery();
+        } catch (Exception e) {
+        }
+
+    }
+
+
     public static void main(String[] args) {
         AdminDAO dao = new AdminDAO();
         List<Role> roleList = dao.getAllRole();
