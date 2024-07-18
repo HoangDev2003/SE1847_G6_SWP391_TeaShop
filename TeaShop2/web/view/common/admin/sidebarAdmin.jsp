@@ -25,10 +25,10 @@
                             </a>
                             <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="productmanager">Product Management</a>
-                                    <a class="nav-link" href="categorymanager">Category Management</a>                                   
-                                    <a class="nav-link" href="staffmanager">Staff Management</a>
-                                    <a class="nav-link" href="shippermanager">Shipper Management</a>
+                                    <a class="nav-link" href="productmanager">Quản lý Sản phẩm</a>
+                                    <a class="nav-link" href="categorymanager">Quản lý Danh mục</a>                                   
+                                    <a class="nav-link" href="staffmanager">Quản lý Nhân viên</a>
+                                    <a class="nav-link" href="shippermanager">Quản lý Shipper</a>
                                 </nav>
                             </div>
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
