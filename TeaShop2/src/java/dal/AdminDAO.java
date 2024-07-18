@@ -1135,6 +1135,18 @@ public class AdminDAO extends DBContext {
         }
         return list;
     }
+     
+     public void deleteTopping(int id) {
+        String query = "Delete from Topping where topping_id = ?";
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(query);
+            statement.setInt(1, id);
+            resultSet = statement.executeQuery();
+        } catch (Exception e) {
+        }
+
+    }
 
 
     public static void main(String[] args) {

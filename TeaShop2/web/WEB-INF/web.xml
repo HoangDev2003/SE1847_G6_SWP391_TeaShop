@@ -201,6 +201,10 @@
         <servlet-name>ToppingManager</servlet-name>
         <servlet-class>controller.ToppingManager</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DeleteToppingController</servlet-name>
+        <servlet-class>controller.DeleteToppingController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ShopController</servlet-name>
         <url-pattern>/shop</url-pattern>
@@ -385,5 +389,8 @@
         <servlet-name>DeleteStatusController</servlet-name>
         <url-pattern>/deletestatus</url-pattern>
     </servlet-mapping>
-   
+    <servlet-mapping>
+        <servlet-name>DeleteToppingController</servlet-name>
+        <url-pattern>/deletetopping</url-pattern>
+    </servlet-mapping>
 </web-app>
