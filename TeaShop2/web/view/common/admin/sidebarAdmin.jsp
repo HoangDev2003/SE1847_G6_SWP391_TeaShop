@@ -20,7 +20,7 @@
                             <div class="sb-sidenav-menu-heading">Admin Manager</div>
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                                 <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                                Management
+                                Quản lý
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
                             <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
@@ -28,8 +28,27 @@
                                     <a class="nav-link" href="productmanager">Quản lý Sản phẩm</a>
                                     <a class="nav-link" href="categorymanager">Quản lý Danh mục</a>                                   
                                     <a class="nav-link" href="staffmanager">Quản lý Nhân viên</a>
-                                    <a class="nav-link" href="shippermanager">Quản lý Shipper</a>
+                                    <a class="nav-link" href="shippermanager">Quản lý Shipper</a>                                    
                                 </nav>
+                                <nav class="sb-sidenav-menu-nested nav">
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseOrderManagement" aria-expanded="false" aria-controls="collapseOrderManagement">
+                            Quản lý Setting cửa hàng
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a>
+                        <div class="collapse" id="collapseOrderManagement" aria-labelledby="headingOne" data-bs-parent="#collapseLayouts">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" href="dashboardAdmin.jsp">
+                                    Quản lý Role
+                                </a>
+                                <a class="nav-link" href="dashboardAdmin.jsp">
+                                    Quản lý Status
+                                </a>
+                                <a class="nav-link" href="dashboardAdmin.jsp">
+                                    Quản lý Topping
+                                </a>                      
+                            </nav>
+                        </div>
+                    </nav>
                             </div>
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
                                 <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>

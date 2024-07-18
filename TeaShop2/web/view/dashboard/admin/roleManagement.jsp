@@ -1,5 +1,5 @@
 <%-- 
-    Document   : settingManagement.jsp
+    Document   : roleManagement.jsp
     Created on : Jul 18, 2024, 12:32:23 PM
     Author     : Huyen Tranq
 --%>
@@ -22,7 +22,7 @@
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
-            <a class="navbar-brand ps-3" href="index.html">Shipper Management</a>
+            <a class="navbar-brand ps-3" href="index.html">Quản lý Setting cửa hàng</a>
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
             <!-- Navbar Search-->
@@ -50,73 +50,40 @@
                 <div id="layoutSidenav_content">
                     <main>
                         <div class="container-fluid px-4">
-                            <h1 class="mt-4">Tables</h1>
+                           
                             <ol class="breadcrumb mb-4">
                                 <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                                <li class="breadcrumb-item active">Tables</li>
+                                <li class="breadcrumb-item active">Quản lý Setting cửa hàng</li>
                             </ol>
-                            <div class="card mb-4">
-                                <div class="card-body">
-                                    DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, please visit the
-                                    <a target="_blank" href="https://datatables.net/">official DataTables documentation</a>
-                                    .
-                                </div>
-                            </div>
-                            <div class="filter1">
-                                <form action="filtershipper">
-                                    <div class="filter" style="display: flex; align-items: center;">
-                                        <a class="texta" style="color: #454444f7; margin-right: 10px;">Filter:</a>
-                                        <select name="gender" style="margin-right: 10px;">
-                                            <option>Gender</option>
-                                            <option value="Female" ${'Female' == gender ? "selected" : ""}>Female</option>        
-                                        <option value="Male" ${'Male' == gender ? "selected" : ""}>Male</option>   
-                                    </select>                                                                   
-                                    <select name="status" style="margin-right: 10px;">
-                                        <option>Status</option>
-                                        <c:forEach items="${listas}" var="s">
-                                            <option value="${s.getStatus_id()}" ${s.getStatus_id() == status ? "selected" : ""}>${s.getStatus_name()}</option>                  
-                                        </c:forEach>
-                                    </select>
-                                    <input type="submit" value="Filter"/>                                              
-                                </div>
-                            </form>                             
-                        </div>
+                            
                             <div style="margin-left: 15px; margin-bottom: 20px; margin-top: 20px">
-                                <a href="adduser"><button type="button" class="btn btn-danger">Add Shipper</button> </a>
+                                <a href="adduser"><button type="button" class="btn btn-danger">Add Role</button> </a>
                             </div>
-                            <form action="searchShipper">
+                            <form action="searchRole">
                                 <input type="search" name="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" style="max-width: 95%" />
                             </form>
                             <div class="card mb-4">
                                 <div class="card-header">
                                     <i class="fas fa-table me-1"></i>
-                                    DataTable Example
+                                    Quản lý Role
                                 </div>
-                                <form action="staffmanager">
+                                <form action="rolemanager">
                                     <div class="card-body">
                                         <table id="datatablesSimple">
                                             <thead>
-                                                <tr>
-                                                    <th>Name</th>
-                                                    <th>Gender</th>
-                                                    <th>Email</th>
-                                                    <th>Phone Number</th>
-                                                    <th>Role</th>
-                                                    <th>Status</th>
+                                                <tr>                                             
+                                                    <th>Role ID</th>
+                                                    <th>Tên Role</th>
                                                     <th>Feature</th>
                                                 </tr>
                                             </thead>                                           
                                             <tbody>
-                                            <c:forEach items="${listShipper}" var="lp">
+                                            <c:forEach items="${listRole}" var="lr">
                                                 <tr>                                                 
-                                                    <td>${lp.user_name}</td>
-                                                    <td>${lp.gender}</td>
-                                                    <td>${lp.email}</td>
-                                                    <td>${lp.phone_number}</td>
-                                                    <td>${lp.role_name}</td>
-                                                    <td>${lp.status_name}</td>
-                                                    <td><a href="editShipper?id=${lp.account_id}">Edit</a>
-                                                        <a href="deleteshipper?id=${lp.account_id}">Delete</a></td>
+                                                    <td>${lr.role_id}</td>
+                                                    <td>${lr.role_name}</td>                                                   
+                                                    <td><a href="editRole?id=${lr.role_id}">Edit</a>
+                                                        <a href="deleterole?id=${lr.role_id}">Delete</a></td>
                                                 </tr>
                                             </c:forEach>
                                         </tbody>
