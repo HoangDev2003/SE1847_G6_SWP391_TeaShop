@@ -82,7 +82,7 @@
                                                 <tr>                                                 
                                                     <td>${ltp.topping_id}</td>
                                                     <td>${ltp.topping_name}</td>                                                   
-                                                    <td><a href="editTopping?id=${ltp.topping_id}">Edit</a>
+                                                    <td><a href="updatetopping?id=${ltp.topping_id}">Edit</a>
                                                         <a href="deletetopping?id=${ltp.topping_id}">Delete</a></td>
                                                 </tr>
                                             </c:forEach>

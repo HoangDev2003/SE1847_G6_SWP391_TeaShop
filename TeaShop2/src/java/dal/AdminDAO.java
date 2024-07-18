@@ -1188,6 +1188,41 @@ public class AdminDAO extends DBContext {
             e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
         }
     }
+     
+     public Topping getToppingById(int id) {
+        String query = "SELECT t.topping_id,\n"
+                + "t.topping_name\n"
+                + "FROM Topping t\n"
+                + "WHERE t.topping_id = ?;";
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(query);
+            statement.setInt(1, id);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                return new Topping(resultSet.getInt(1), resultSet.getString(2));
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
+        }
+        return null;
+    }
+     
+      public void updateTopping(int id, String name) {
+        String query = "Update Topping\n"
+                + "set\n"
+                + "[topping_name]=?\n"
+                + "where topping_id = ?";
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(query);
+            statement.setInt(1, id);        
+            statement.setString(2, name);
+            statement.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
+        }
+    }
 
 
     public static void main(String[] args) {
