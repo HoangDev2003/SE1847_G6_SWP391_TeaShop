@@ -1,6 +1,6 @@
 <%-- 
-    Document   : UpdateStatus.jsp
-    Created on : Jul 18, 2024, 7:01:50 PM
+    Document   : UpdateTopping.jsp
+    Created on : Jul 18, 2024, 7:15:55 PM
     Author     : Huyen Tranq
 --%>
 
@@ -53,11 +53,11 @@
                     <main>                   
                         <div class="container-fluid px-4">
                             <ol class="breadcrumb mb-4" style="padding-top: 24px">                              
-                                <li class="breadcrumb-item active"><a href="statusmanager">Quản lý Status</a></li>
-                                <li class="breadcrumb-item">Chỉnh sửa Status</li>
+                                <li class="breadcrumb-item active"><a href="toppingmanager">Quản lý Topping</a></li>
+                                <li class="breadcrumb-item">Chỉnh sửa Topping</li>
                             </ol>
                       
-                            <form action="updatestatus" method="post">
+                            <form action="updatetopping" method="post">
                                 
                                 <div class="card mb-4">
                                     <div class="card-header" >
@@ -69,17 +69,17 @@
                                         <table>
                                             <thead>
                                                 <tr>
-                                                    <th>Status ID</th>
-                                                    <th>Tên Status</th>                                                    
+                                                    <th>Topping ID</th>
+                                                    <th>Tên Topping</th>                                                    
                                                 </tr>
                                             </thead>
                                             <tbody>                                       
                                                 <tr>
                                                     <td>
-                                                        <input type="number" name="id" style="height: 35px; width: 60px" value="${status.status_id}" readonly />
+                                                        <input type="number" name="id" style="height: 35px; width: 60px" value="${topping.topping_id}" readonly />
                                                     </td>
                                                     <td>
-                                                        <input type="text" name="name" size="30" style="height: 35px" value="${status.status_name}"/>
+                                                        <input type="text" name="name" size="30" style="height: 35px" value="${topping.topping_name}"/>
                                                     </td>
                                                 </tr>                                         
                                             </tbody>
@@ -173,3 +173,4 @@
         <script src="${pageContext.request.contextPath}/js/datatables-simple-demo.js"></script>
     </body>
 </html>
+
