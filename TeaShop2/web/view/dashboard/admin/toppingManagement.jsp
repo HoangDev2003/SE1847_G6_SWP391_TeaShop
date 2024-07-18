@@ -49,7 +49,7 @@
             <jsp:include page="../../common/admin/sidebarAdmin.jsp"></jsp:include>
                 <div id="layoutSidenav_content">
                     <main>
-                        <div class="container-fluid px-4">
+                        <div style="margin-top: 20px" class="container-fluid px-4">
                            
                             <ol class="breadcrumb mb-4">
                                 <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
@@ -57,7 +57,7 @@
                             </ol>
                             
                             <div style="margin-left: 15px; margin-bottom: 20px; margin-top: 20px">
-                                <a href="adduser"><button type="button" class="btn btn-danger">Add Role</button> </a>
+                                <a href="adduser"><button type="button" class="btn btn-danger">Thêm Topping</button> </a>
                             </div>
                             <form action="searchRole">
                                 <input type="search" name="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" style="max-width: 95%" />
@@ -67,7 +67,7 @@
                                     <i class="fas fa-table me-1"></i>
                                     Quản lý Topping
                                 </div>
-                                <form action="rolemanager">
+                                <form action="toppingmanager">
                                     <div class="card-body">
                                         <table id="datatablesSimple">
                                             <thead>
@@ -82,8 +82,8 @@
                                                 <tr>                                                 
                                                     <td>${ltp.topping_id}</td>
                                                     <td>${ltp.topping_name}</td>                                                   
-                                                    <td><a href="editTopping?id=${ltp.status_id}">Edit</a>
-                                                        <a href="deletetopping?id=${ltp.status_name}">Delete</a></td>
+                                                    <td><a href="editTopping?id=${ltp.topping_id}">Edit</a>
+                                                        <a href="deletetopping?id=${ltp.topping_name}">Delete</a></td>
                                                 </tr>
                                             </c:forEach>
                                         </tbody>

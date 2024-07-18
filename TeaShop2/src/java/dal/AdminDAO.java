@@ -7,6 +7,7 @@ package dal;
 import entity.AccountStatus;
 import entity.Accounts;
 import entity.Role;
+import entity.Topping;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDate;
@@ -1116,6 +1117,23 @@ public class AdminDAO extends DBContext {
         } catch (Exception e) {
         }
 
+    }
+     
+     public List<Topping> getAllTopping() {
+        //khởi tạo 1 list để load sản phẩm lên và lưu trong đấy
+        List<Topping> list = new ArrayList<>();
+        String query = "select * from Topping";
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(query);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                list.add(new Topping(resultSet.getInt(1), resultSet.getString(2)));
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
+        }
+        return list;
     }
 
 

@@ -43,7 +43,7 @@
                                 <a class="nav-link" href="statusmanager">
                                     Quản lý Status
                                 </a>
-                                <a class="nav-link" href="dashboardAdmin.jsp">
+                                <a class="nav-link" href="toppingmanager">
                                     Quản lý Topping
                                 </a>                      
                             </nav>

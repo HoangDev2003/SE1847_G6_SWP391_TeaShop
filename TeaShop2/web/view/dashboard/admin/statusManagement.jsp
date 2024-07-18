@@ -67,7 +67,7 @@
                                     <i class="fas fa-table me-1"></i>
                                     Quản lý Status
                                 </div>
-                                <form action="rolemanager">
+                                <form action="statusmanager">
                                     <div class="card-body">
                                         <table id="datatablesSimple">
                                             <thead>
