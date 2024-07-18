@@ -1105,6 +1105,18 @@ public class AdminDAO extends DBContext {
         }
 
     }
+     
+     public void deleteStatus(int id) {
+        String query = "Delete from AccountStatuses where status_id = ?";
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(query);
+            statement.setInt(1, id);
+            resultSet = statement.executeQuery();
+        } catch (Exception e) {
+        }
+
+    }
 
 
     public static void main(String[] args) {

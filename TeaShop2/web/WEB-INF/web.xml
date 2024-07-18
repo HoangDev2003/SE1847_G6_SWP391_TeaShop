@@ -193,6 +193,10 @@
         <servlet-name>StatusManager</servlet-name>
         <servlet-class>controller.StatusManager</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DeleteStatusController</servlet-name>
+        <servlet-class>controller.DeleteStatusController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ShopController</servlet-name>
         <url-pattern>/shop</url-pattern>
@@ -373,5 +377,8 @@
         <servlet-name>DeleteRoleController</servlet-name>
         <url-pattern>/deleterole</url-pattern>
     </servlet-mapping>
-   
+    <servlet-mapping>
+        <servlet-name>DeleteStatusController</servlet-name>
+        <url-pattern>/deletestatus</url-pattern>
+    </servlet-mapping>
 </web-app>
