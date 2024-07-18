@@ -39,10 +39,10 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#!">Settings</a></li>
-                        <li><a class="dropdown-item" href="#!">Activity Log</a></li>
+                        <li><a class="dropdown-item" href="#!">Cài đặt</a></li>
+                        <li><a class="dropdown-item" href="#!">Hồ sơ</a></li>
                         <li><hr class="dropdown-divider" /></li>
-                        <li><a class="dropdown-item" href="#!">Logout</a></li>
+                        <li><a class="dropdown-item" href="#!">Đăng xuất</a></li>
                     </ul>
                 </li>
             </ul>
@@ -70,7 +70,7 @@
                         <div class="container-fluid px-4">
                             <ol class="breadcrumb mb-4" style="padding-top: 24px">
                                 <li class="breadcrumb-item"><a href="dashboardAdmin.jsp">Dashboard</a></li>
-                                <li class="breadcrumb-item active">Category Management</li>
+                                <li class="breadcrumb-item active">Quản lý danh mục</li>
                             </ol>    
                         <c:if test="${deleteDone ne null}">
                             <h4 class="font-weight-semi-bold text-uppercase mb-3 text-center">
@@ -85,7 +85,7 @@
                             <div class="card mb-4">
                                 <div class="h1">                                
                                     <a  
-                                        href="categorymanager?service=sendRequestInsert"><ion-icon name="add-circle-outline" ></ion-icon>  Add a new Category</a>                                   
+                                        href="categorymanager?service=sendRequestInsert"><ion-icon name="add-circle-outline" ></ion-icon>  Thêm danh mục mới</a>                                   
                                 </div>  
                             </div>
                             <div class="card mb-4">
@@ -93,10 +93,10 @@
                                 <div class="card-body">
                                     <table id="datatable-category">
                                         <thead>
-                                        <th>Category ID</th>
-                                        <th>Category Name</th>
-                                        <th>Update</th>
-                                        <th>Delete</th>
+                                        <th>ID</th>
+                                        <th>Tên danh mục</th>
+                                        <th>Chỉnh sửa</th>
+                                        <th>Xóa</th>
                                         </thead>
                                         <tbody>
                                             <c:forEach items="${listAllCategory}" var="category">
@@ -130,7 +130,7 @@
                                         <table >
                                             <thead>
                                                 <tr>
-                                                    <th>Category Name</th>
+                                                    <th>Tên danh mục</th>
                                                 </tr>
                                             </thead>
                                             <tbody>                                       
@@ -147,7 +147,7 @@
                                         class="button-insert"
                                         style="transform: translateX(70vw) ; width: 10%"
                                         onclick="document.getElementById('insertCategory').submit();">
-                                        ADD Category
+                                        Thêm danh mục
                                     </button>                                
                                 </div>
                             </form>
@@ -169,8 +169,8 @@
                                         <table>
                                             <thead>
                                                 <tr>
-                                                    <th>Category ID</th>
-                                                    <th>Category Name</th>
+                                                    <th>ID</th>
+                                                    <th>Tên danh mục</th>
                                                 </tr>
                                             </thead>
                                             <tbody>                                       
@@ -190,7 +190,7 @@
                                         class="button-insert"
                                         style="transform: translateX(70vw) ; width: 10%"
                                         onclick="document.getElementById('updatedCategory').submit();">
-                                        Update Category
+                                        Chỉnh sửa danh mục
                                     </button>                                
                                 </div>
                             </form>

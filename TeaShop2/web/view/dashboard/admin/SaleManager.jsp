@@ -45,10 +45,10 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#!">Settings</a></li>
-                        <li><a class="dropdown-item" href="#!">Activity Log</a></li>
+                        <li><a class="dropdown-item" href="#!">Cài đặt</a></li>
+                        <li><a class="dropdown-item" href="#!">Hồ sơ</a></li>
                         <li><hr class="dropdown-divider" /></li>
-                        <li><a class="dropdown-item" href="#!">Logout</a></li>
+                        <li><a class="dropdown-item" href="#!">Đăng xuất</a></li>
                     </ul>
                 </li>
             </ul>
@@ -62,8 +62,7 @@
                     <main>                   
                         <div class="container-fluid px-4">
                             <ol class="breadcrumb mb-4" style="padding-top: 24px">
-                                <li class="breadcrumb-item"><a href="dashboardAdmin.jsp">Dashboard</a></li>
-                                <li class="breadcrumb-item active">Product Management</li>
+                                
                             </ol>
 
                         <c:if test="${notFoundProduct ne null}">
@@ -86,12 +85,12 @@
                                     <table id="datatablesSimple" >
                                         <thead>
                                             <tr>
-                                                <th>Product ID</th>
-                                                <th>Product Name</th>
-                                                <th>Category</th>
-                                                <th>Price</th>
-                                                <th>Discount (%)</th>
-                                                <th>Update</th> 
+                                                <th>ID</th>
+                                                <th>Tên sản phẩm</th>
+                                                <th>Danh mục</th>
+                                                <th>Giá</th>
+                                                <th>Giảm giá (%)</th>
+                                                <th>Chỉnh sửa</th> 
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -125,8 +124,8 @@
                                         <table id="datatables-Discount">
                                             <thead>
                                                 <tr>
-                                                    <th>Product ID</th>
-                                                    <th>Discount (%)</th>
+                                                    <th> ID</th>
+                                                    <th>Giảm giá (%)</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -143,7 +142,7 @@
                                         class="button-update"
                                         style="transform: translateX(70vw) ; width: 10%"
                                         onclick="document.getElementById('updatedDiscount').submit();">
-                                        Update Discount
+                                        Chỉnh sửa
                                     </button>                                
                                 </div>
                             </form>

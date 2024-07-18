@@ -24,7 +24,7 @@
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
-            <a class="navbar-brand ps-3" href="productmanager">Product Management</a>
+            <a class="navbar-brand ps-3" href="productmanager">Quản lý sản phẩm</a>
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
             <!-- Navbar Search-->
@@ -32,7 +32,7 @@
                 <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0" action="productmanager" id="searchByName">
                     <input type="hidden" name="service" value="searchByKeywords"/>
                     <div class="input-group">
-                        <input class="form-control" type="text" placeholder="Search by Keywords" aria-label="Search by Keywords" aria-describedby="btnNavbarSearch" name="keywords"
+                        <input class="form-control" type="text" placeholder="Tìm kiếm theo tên..." aria-label="Search by Keywords" aria-describedby="btnNavbarSearch" name="keywords"
                                value="${keywords}"/>
                         <button class="btn btn-primary" id="btnNavbarSearch" type="submit"><i class="fas fa-search"></i></button>
                     </div>
@@ -45,10 +45,10 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#!">Settings</a></li>
-                        <li><a class="dropdown-item" href="#!">Activity Log</a></li>
+                        <li><a class="dropdown-item" href="#!">Cài đặt</a></li>
+                        <li><a class="dropdown-item" href="#!">Hồ sơ</a></li>
                         <li><hr class="dropdown-divider" /></li>
-                        <li><a class="dropdown-item" href="#!">Logout</a></li>
+                        <li><a class="dropdown-item" href="#!">Đăng xuất</a></li>
                     </ul>
                 </li>
             </ul>
@@ -62,8 +62,8 @@
                     <main>                   
                         <div class="container-fluid px-4">
                             <ol class="breadcrumb mb-4" style="padding-top: 24px">
-                                <li class="breadcrumb-item"><a href="dashboardAdmin.jsp">Dashboard</a></li>
-                                <li class="breadcrumb-item active">Product Management</li>
+
+
                             </ol>
 
                         <c:if test="${notFoundProduct ne null}">
@@ -83,36 +83,38 @@
                             <div class="card mb-4">
                                 <div class="h1">                                
                                     <a  
-                                        href="addProductManager"><ion-icon name="add-circle-outline" ></ion-icon>  Add a new Product</a>                                   
+                                        href="addProductManager"><ion-icon name="add-circle-outline" ></ion-icon>  Thêm sản phẩm mới</a>                                   
                                 </div>  
                             </div>
 
                             <div class="card mb-4">
                                 <div class="card-header">
-                                    <i class="fas fa-table me-1"></i>
-                                    Product Manager
+                                    <h6><ion-icon name="filter-outline"></ion-icon> Lọc theo giá sản phẩm</h6>
+                                    <form action="productmanager" method="get">
+                                        <input type="hidden" name="service" value="searchByPriceRange" />
+                                        <label for="priceFrom">Mức giá</label>
+                                        <input type="number" id="priceFrom" name="priceFrom" step="0.01" required />
+                                        <label for="priceTo">~</label>
+                                        <input type="number" id="priceTo" name="priceTo" step="0.01" required />
+                                        <button type="submit">Tìm kiếm</button>
+                                    </form>
+
                                 </div>
-                                <form action="productmanager" method="get">
-                                    <input type="hidden" name="service" value="searchByPriceRange" />
-                                    <label for="priceFrom">Min Price:</label>
-                                    <input type="number" id="priceFrom" name="priceFrom" step="0.01" required />
-                                    <label for="priceTo">Max Price:</label>
-                                    <input type="number" id="priceTo" name="priceTo" step="0.01" required />
-                                    <button type="submit">Search</button>
-                                </form>
+
                                 <!--List all Product-->
                                 <div class="card-body">
-                                    <table id="datatablesSimple" >
+                                    <table id="datatablesSimple" >  
+                                        
                                         <thead>
                                             <tr>
-                                                <th>Product ID</th>
-                                                <th>Product Name</th>
-                                                <th>Category</th>
-                                                <th>Image</th>
-                                                <th>Price</th>
-                                                <th>Date</th>
-                                                <th>Update</th>
-                                                <th>Delete</th>   
+                                                <th>ID</th>
+                                                <th>Tên sản phẩm</th>
+                                                <th>Danh mục</th>
+                                                <th>Hình ảnh</th>
+                                                <th>Giá</th>
+                                                <th>Ngày thêm sản phẩm</th>
+                                                <th>Chỉnh sửa</th>
+                                                <th>Xóa</th>   
                                             </tr>
                                         </thead>
                                         <tbody>

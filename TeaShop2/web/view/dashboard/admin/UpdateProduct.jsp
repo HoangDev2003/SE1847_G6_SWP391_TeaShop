@@ -36,10 +36,10 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#!">Settings</a></li>
-                        <li><a class="dropdown-item" href="#!">Activity Log</a></li>
+                        <li><a class="dropdown-item" href="#!">Cài đặt</a></li>
+                        <li><a class="dropdown-item" href="#!">Hồ sơ</a></li>
                         <li><hr class="dropdown-divider" /></li>
-                        <li><a class="dropdown-item" href="#!">Logout</a></li>
+                        <li><a class="dropdown-item" href="#!">Đăng xuất</a></li>
                     </ul>
                 </li>
             </ul>
@@ -53,8 +53,8 @@
                     <main>                   
                         <div class="container-fluid px-4">
                             <ol class="breadcrumb mb-4" style="padding-top: 24px">                              
-                                <li class="breadcrumb-item active"><a href="productmanager">Product Management</a></li>
-                                <li class="breadcrumb-item">Update Product</li>
+                                <li class="breadcrumb-item active"><a href="productmanager">Quản lý sản phẩm</a></li>
+                                <li class="breadcrumb-item">Chỉnh sửa sản phẩm</li>
                             </ol>
                         <c:if test="${UpdateDone ne null}">
                             <h3 class="update-productDone"   >
@@ -75,12 +75,12 @@
                                             <thead>
                                                 <tr>
                                                     <th>ID</th>
-                                                    <th>Product Name</th>
-                                                    <th>Category</th>
-                                                    <th>Image</th>
-                                                    <th>Price</th>
-                                                    <th>Date</th>
-                                                    <th>Description</th>
+                                                    <th>Tên sản phẩm</th>
+                                                    <th>Danh mục</th>
+                                                    <th>Hình ảnh</th>
+                                                    <th>Giá</th>
+                                                    <th>Ngày chỉnh sửa</th>
+                                                    <th>Mô tả</th>
                                                 </tr>
                                             </thead>
                                             <tbody>                                       
@@ -114,7 +114,7 @@
                                         class="button-update"
                                         style="transform: translateX(70vw) ; width: 10%"
                                         onclick="document.getElementById('updatedProduct').submit();">
-                                        UPDATE
+                                        Chỉnh sửa
                                     </button>
                                 </div>
                             </form>

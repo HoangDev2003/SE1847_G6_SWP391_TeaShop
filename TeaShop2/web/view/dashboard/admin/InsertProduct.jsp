@@ -36,9 +36,9 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#!">Settings</a></li>
-                        <li><a class="dropdown-item" href="#!">Activity Log</a></li>                      
-                        <li><a class="dropdown-item" href="#!">Logout</a></li>
+                        <li><a class="dropdown-item" href="#!">Cài đặt</a></li>
+                        <li><a class="dropdown-item" href="#!">Hồ sơ</a></li>                      
+                        <li><a class="dropdown-item" href="#!">Đăng xuất</a></li>
                     </ul>
                 </li>
             </ul>
@@ -52,8 +52,8 @@
                     <main>                   
                         <div class="container-fluid px-4">
                             <ol class="breadcrumb mb-4" style="padding-top: 24px">                              
-                                <li class="breadcrumb-item active"><a href="productmanager">Product Management</a></li>
-                                <li class="breadcrumb-item">Insert Product</li>
+                                <li class="breadcrumb-item active"><a href="productmanager">Quản lý sản phẩm</a></li>
+                                <li class="breadcrumb-item">Thêm sản phẩm</li>
                             </ol>
 
                         <c:if test="${InsertDone ne null}">
@@ -77,12 +77,12 @@
                                         <table id="datatable-insertProduct">
                                             <thead>
                                                 <tr>
-                                                    <th>Product Name</th>
-                                                    <th>Category</th>
-                                                    <th>Image</th>
-                                                    <th>Price</th>
-                                                    <th>Date</th>
-                                                    <th>Description</th>
+                                                    <th>Tên sản phẩm</th>
+                                                    <th>Danh mục</th>
+                                                    <th>Hình ảnh</th>
+                                                    <th>Giá</th>
+                                                    <th>Ngày thêm</th>
+                                                    <th>Mô tả sản phẩm</th>
                                                 </tr>
                                             </thead>
                                             <tbody>                                       
@@ -113,7 +113,7 @@
                                         class="button-insert"
                                         style="transform: translateX(70vw) ; width: 10%"
                                         onclick="document.getElementById('insertProduct').submit();">
-                                        ADD PRODUCT
+                                        Thêm sản phẩm
                                     </button>                                
                                 </div>
                             </form>
