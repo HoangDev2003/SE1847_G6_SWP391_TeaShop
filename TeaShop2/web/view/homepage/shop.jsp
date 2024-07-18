@@ -100,16 +100,7 @@
                         <a href ="${pageContext.request.contextPath}/blog" class="nav-item nav-link">Blog</a>
                         <a href="${pageContext.request.contextPath}/shop" class="nav-item nav-link active">Shop</a>
 
-                        <div class="nav-item dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
-                            <div class="dropdown-menu m-0 bg-secondary rounded-0">
-                                <a href="cart.jsp" class="dropdown-item">Cart</a>
-                                <a href="chackout.jsp" class="dropdown-item">Checkout</a>
-                                <a href="testimonial.jsp" class="dropdown-item">Testimonial</a>
-                                <a href="404.jsp" class="dropdown-item">404 Page</a>
-                            </div>
-                        </div>
-                        <a href="contact.jsp" class="nav-item nav-link">Contact</a>
+                        
                     </div>
                     <div class="d-flex m-3 me-0">
                         <%

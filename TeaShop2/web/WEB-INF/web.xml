@@ -9,6 +9,14 @@
         <servlet-class>controller.AuthorizationController</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>chartOrderDay</servlet-name>
+        <servlet-class>controller.chart.chartOrderDay</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>chartOrderWeek</servlet-name>
+        <servlet-class>controller.chart.chartOrderWeek</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>VerifyAccountController</servlet-name>
         <servlet-class>controller.VerifyAccountController</servlet-class>
     </servlet>
@@ -213,6 +221,42 @@
         <servlet-name>UpdateToppingController</servlet-name>
         <servlet-class>controller.UpdateToppingController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ManageSlide</servlet-name>
+        <servlet-class>controller.ManageSlider.ManageSlide</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SlideDetail</servlet-name>
+        <servlet-class>controller.ManageSlider.SlideDetail</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>activeSlider</servlet-name>
+        <servlet-class>controller.ManageSlider.activeSlider</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>inactiveSlider</servlet-name>
+        <servlet-class>controller.ManageSlider.inactiveSlider</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>updateSlider</servlet-name>
+        <servlet-class>controller.ManageSlider.updateSlider</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>deleteSlider</servlet-name>
+        <servlet-class>controller.ManageSlider.deleteSlider</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>updateSliderDetail</servlet-name>
+        <servlet-class>controller.ManageSlider.updateSliderDetail</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>filterSlide</servlet-name>
+        <servlet-class>controller.ManageSlider.filterSlide</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>addSlider</servlet-name>
+        <servlet-class>controller.ManageSlider.addSlider</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ShopController</servlet-name>
         <url-pattern>/shop</url-pattern>
@@ -408,5 +452,49 @@
     <servlet-mapping>
         <servlet-name>UpdateToppingController</servlet-name>
         <url-pattern>/updatetopping</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>chartOrderDay</servlet-name>
+        <url-pattern>/chartorderday</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>chartOrderWeek</servlet-name>
+        <url-pattern>/chartorderweek</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ManageSlide</servlet-name>
+        <url-pattern>/manageslide</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SlideDetail</servlet-name>
+        <url-pattern>/slidedetail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>activeSlider</servlet-name>
+        <url-pattern>/activeslider</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>inactiveSlider</servlet-name>
+        <url-pattern>/inactiveslider</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>updateSlider</servlet-name>
+        <url-pattern>/updateslider</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>deleteSlider</servlet-name>
+        <url-pattern>/deleteslider</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>updateSliderDetail</servlet-name>
+        <url-pattern>/updatesliderdetail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>filterSlide</servlet-name>
+        <url-pattern>/filterslide</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>addSlider</servlet-name>
+        <url-pattern>/addslider</url-pattern>
     </servlet-mapping>
 </web-app>

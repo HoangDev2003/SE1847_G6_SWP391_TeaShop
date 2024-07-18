@@ -12,12 +12,12 @@ package entity;
 public class Slider {
     private int id;
     public String name,description,url,image;
-    public int status;  
+    public boolean status;  
 
     public Slider() {
     }
 
-    public Slider(int id, String name, String description, String url, String image, int status) {
+    public Slider(int id, String name, String description, String url, String image, boolean status) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -66,11 +66,11 @@ public class Slider {
         this.image = image;
     }
 
-    public int getStatus() {
+    public boolean getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(boolean status) {
         this.status = status;
     }
 

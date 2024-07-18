@@ -13,7 +13,7 @@
                     <div class="sb-sidenav-menu">
                         <div class="nav">
                             <div class="sb-sidenav-menu-heading">Core</div>
-                            <a class="nav-link" href="dashboardAdmin.jsp">
+                            <a class="nav-link" href="chartorderday">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Dashboard
                             </a>
@@ -29,6 +29,8 @@
                                     <a class="nav-link" href="categorymanager">Quản lý Danh mục</a>                                   
                                     <a class="nav-link" href="staffmanager">Quản lý Nhân viên</a>
                                     <a class="nav-link" href="shippermanager">Quản lý Shipper</a>                                    
+                                    <a class="nav-link" href="postlist">Quản lý Bài viết</a>
+                                    <a class="nav-link" href="manageslide">Quản lý Slide </a>
                                 </nav>
                                 <nav class="sb-sidenav-menu-nested nav">
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseOrderManagement" aria-expanded="false" aria-controls="collapseOrderManagement">

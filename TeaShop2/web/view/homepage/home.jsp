@@ -251,7 +251,7 @@
                         <div class="col-md-6 col-lg-4">
                             <a href="blogdetail?bid=${b.getId()}">
                                 <div class="service-item bg-secondary rounded border border-secondary">
-                                    <img  src=${b.getImg()} class="img-fluid" alt="hhh">
+                                    <img  src="/TeaShop/img/"${b.getImg()} class="img-fluid" alt="hhh">
                                     <div class=" rounded-bottom">
                                         <div class=" bg-primary text-center p-4 rounded">
                                             <h5 class="text-white">${b.getBlog_name()}</h5>
