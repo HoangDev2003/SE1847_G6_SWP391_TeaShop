@@ -1058,6 +1058,7 @@ public class AdminDAO extends DBContext {
                 return new Role(resultSet.getInt(1), resultSet.getString(2));
             }
         } catch (Exception e) {
+            e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
         }
         return null;
     }
@@ -1076,11 +1077,12 @@ public class AdminDAO extends DBContext {
                 return new Role(resultSet.getInt(1), resultSet.getString(2));
             }
         } catch (Exception e) {
+            e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
         }
         return null;
     }
     
-    public void editRoleById(String role_name, int id) {
+    public void updateRole(int id, String name) {
         String query = "Update Role\n"
                 + "set\n"
                 + "[role_name]=?\n"
@@ -1088,10 +1090,11 @@ public class AdminDAO extends DBContext {
         try {
             connection = getConnection();
             statement = connection.prepareStatement(query);
-            statement.setString(1, role_name);        
-            statement.setInt(2, id);
+            statement.setInt(1, id);        
+            statement.setString(2, name);
             statement.executeUpdate();
         } catch (Exception e) {
+            e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
         }
     }
     
@@ -1103,6 +1106,7 @@ public class AdminDAO extends DBContext {
             statement.setInt(1, id);
             resultSet = statement.executeQuery();
         } catch (Exception e) {
+            e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
         }
 
     }
@@ -1115,6 +1119,7 @@ public class AdminDAO extends DBContext {
             statement.setInt(1, id);
             resultSet = statement.executeQuery();
         } catch (Exception e) {
+            e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
         }
 
     }
@@ -1144,6 +1149,7 @@ public class AdminDAO extends DBContext {
             statement.setInt(1, id);
             resultSet = statement.executeQuery();
         } catch (Exception e) {
+            e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
         }
 
     }

@@ -70,15 +70,16 @@
                                             <thead>
                                                 <tr>
                                                     <th>Role ID</th>
-                                                    <th>Role Name</th>                                                    
+                                                    <th>Tên Role</th>                                                    
                                                 </tr>
                                             </thead>
                                             <tbody>                                       
                                                 <tr>
-                                                    <td><input type="number" name="id" style="height: 35px; width: 60px" value="${acc.role_id}" readonly />
+                                                    <td>
+                                                        <input type="number" name="id" style="height: 35px; width: 60px" value="${role.role_id}" readonly />
                                                     </td>
                                                     <td>
-                                                        <input type="text" name="name" size="30" style="height: 35px" value="${acc.role_name}"/>
+                                                        <input type="text" name="name" size="30" style="height: 35px" value="${role.role_name}"/>
                                                     </td>
                                                 </tr>                                         
                                             </tbody>
@@ -94,7 +95,7 @@
                                     </button>
                                 </div>
                             </form>
-                        </c:if>
+                      
                     </div>                    
                 </main>
                 <footer class="py-4 bg-light mt-auto">

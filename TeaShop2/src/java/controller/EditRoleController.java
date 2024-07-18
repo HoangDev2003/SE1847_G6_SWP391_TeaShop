@@ -13,6 +13,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import java.io.File;
 import java.nio.file.Files;
@@ -40,13 +41,19 @@ public class EditRoleController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-       try (PrintWriter out = response.getWriter()) {
-            AdminDAO dao = new AdminDAO();
-            String id = request.getParameter("id");
-            int role_id = Integer.parseInt(id);
-            Role a = dao.getRoleById(role_id);
-            request.setAttribute("acc", a);
-            request.getRequestDispatcher("view/dashboard/admin/UpdateProduct.jsp").forward(request, response);
+        try ( PrintWriter out = response.getWriter()) {
+            HttpSession session = request.getSession();
+            if (!AuthorizationController.isAdmin((Accounts) session.getAttribute("acc"))) {
+                AuthorizationController.redirectToHome(session, response);
+            } else {
+                AdminDAO dao = new AdminDAO();              
+                String id = request.getParameter("id");
+                int rid = Integer.parseInt(id);
+                Role role = dao.getRoleById(rid);
+                request.setAttribute("role", role);
+                request.getRequestDispatcher("view/dashboard/admin/editRole.jsp").forward(request, response);
+            }
+
         }
     }
 
@@ -76,10 +83,22 @@ public class EditRoleController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        AdminDAO dao = new AdminDAO();
-        int roleId = Integer.parseInt(request.getParameter("id"));
-        String roleName = request.getParameter("role_name");
-        dao.editRoleById(roleName, roleId);
+//        AdminDAO dao = new AdminDAO();
+//        int roleId = Integer.parseInt(request.getParameter("id"));
+//        String roleName = request.getParameter("role_name");
+//        dao.editRoleById(roleName, roleId);
+//        response.sendRedirect("rolemanager");
+        
+         AdminDAO dao = new AdminDAO();
+        String id = request.getParameter("id");
+        String name = request.getParameter("name");
+             
+        int rid = Integer.parseInt(id);
+        
+        System.out.println(name);
+        System.out.println(id);
+
+        dao.updateRole(rid, name);
         response.sendRedirect("rolemanager");
     }
 
