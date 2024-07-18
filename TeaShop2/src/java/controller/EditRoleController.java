@@ -93,7 +93,7 @@ public class EditRoleController extends HttpServlet {
         System.out.println(name);
         System.out.println(id);
 
-        dao.updateRole(rid, name);
+        dao.updateRole(name, rid);
         response.sendRedirect("rolemanager");
     }
 

@@ -83,7 +83,7 @@ public class UpdateStatusController extends HttpServlet {
         System.out.println(name);
         System.out.println(id);
 
-        dao.updateStatus(sid, name);
+        dao.updateStatus(name, sid);
         response.sendRedirect("statusmanager");
     }
 

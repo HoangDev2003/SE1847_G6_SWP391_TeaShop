@@ -85,7 +85,7 @@ public class UpdateToppingController extends HttpServlet {
         System.out.println(name);
         System.out.println(id);
 
-        dao.updateTopping(tid, name);
+        dao.updateTopping(name, tid);
         response.sendRedirect("toppingmanager");
     }
 

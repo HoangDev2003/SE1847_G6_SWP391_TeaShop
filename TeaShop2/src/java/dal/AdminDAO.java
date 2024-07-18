@@ -1082,7 +1082,7 @@ public class AdminDAO extends DBContext {
         return null;
     }
     
-    public void updateRole(int id, String name) {
+    public void updateRole(String name, int id) {
         String query = "Update Role\n"
                 + "set\n"
                 + "[role_name]=?\n"
@@ -1090,8 +1090,8 @@ public class AdminDAO extends DBContext {
         try {
             connection = getConnection();
             statement = connection.prepareStatement(query);
-            statement.setInt(1, id);        
-            statement.setString(2, name);
+            statement.setString(1, name);        
+            statement.setInt(2, id);
             statement.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
@@ -1173,7 +1173,7 @@ public class AdminDAO extends DBContext {
         return null;
     }
      
-     public void updateStatus(int id, String name) {
+     public void updateStatus(String name, int id) {
         String query = "Update AccountStatuses\n"
                 + "set\n"
                 + "[status_name]=?\n"
@@ -1181,8 +1181,8 @@ public class AdminDAO extends DBContext {
         try {
             connection = getConnection();
             statement = connection.prepareStatement(query);
-            statement.setInt(1, id);        
-            statement.setString(2, name);
+            statement.setString(1, name);        
+            statement.setInt(2, id);
             statement.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
@@ -1208,16 +1208,16 @@ public class AdminDAO extends DBContext {
         return null;
     }
      
-      public void updateTopping(int id, String name) {
+      public void updateTopping(String name, int id) {
         String query = "Update Topping\n"
                 + "set\n"
-                + "[topping_name]=?\n"
+                + " topping_name =?\n"
                 + "where topping_id = ?";
         try {
             connection = getConnection();
             statement = connection.prepareStatement(query);
-            statement.setInt(1, id);        
-            statement.setString(2, name);
+            statement.setString(1, name);        
+            statement.setInt(2, id);
             statement.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
@@ -1227,10 +1227,8 @@ public class AdminDAO extends DBContext {
 
     public static void main(String[] args) {
         AdminDAO dao = new AdminDAO();
-        List<Role> roleList = dao.getAllRole();
-        for (Role role : roleList) {
-            System.out.println(role);
-        }
+        dao.updateTopping("Trân Châu Hoa Mộc Lan", 4);
+        
 
     }
 
