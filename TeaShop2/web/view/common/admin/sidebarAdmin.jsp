@@ -37,7 +37,7 @@
                         </a>
                         <div class="collapse" id="collapseOrderManagement" aria-labelledby="headingOne" data-bs-parent="#collapseLayouts">
                             <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href="dashboardAdmin.jsp">
+                                <a class="nav-link" href="rolemanager">
                                     Quản lý Role
                                 </a>
                                 <a class="nav-link" href="dashboardAdmin.jsp">

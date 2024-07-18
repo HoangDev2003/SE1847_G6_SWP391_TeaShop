@@ -6,6 +6,7 @@ package dal;
 
 import entity.AccountStatus;
 import entity.Accounts;
+import entity.Role;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDate;
@@ -1025,11 +1026,28 @@ public class AdminDAO extends DBContext {
         return list;
     }
     
+    public List<Role> getAllRole() {
+        //khởi tạo 1 list để load sản phẩm lên và lưu trong đấy
+        List<Role> list = new ArrayList<>();
+        String query = "select * from Role";
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(query);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                list.add(new Role(resultSet.getInt(1),resultSet.getString(2)));
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
+        }
+        return list;
+    }
+    
     public static void main(String[] args) {
         AdminDAO dao = new AdminDAO();
-        List<Accounts> staffList = dao.getAccountByGenderAndStatus("Male", 1, 2);
-        for (Accounts staff : staffList) {
-            System.out.println(staff);
+        List<Role> roleList = dao.getAllRole();
+        for (Role role : roleList) {
+            System.out.println(role);
         }
 
     }
