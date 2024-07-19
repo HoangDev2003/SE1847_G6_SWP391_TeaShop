@@ -57,7 +57,7 @@
 
 
         <div id="layoutSidenav">
-            <jsp:include page="../../common/admin/sidebarAdmin.jsp"></jsp:include>
+            <jsp:include page="../../common/staff/sidebarStaff.jsp"></jsp:include>         
                 <div id="layoutSidenav_content">
                     <main>                   
                         <div class="container-fluid px-4">
@@ -70,26 +70,23 @@
                             </h4>
                         </c:if>
                         <div class="card mb-4">
-                            <div class="card-header">
-                                <h6><ion-icon name="filter-outline"></ion-icon> Lọc theo giá sản phẩm</h6>
-                                <form action="productmanager" method="get">
-                                    <input type="hidden" name="service" value="searchByPriceRange" />
-                                    <label for="priceFrom">Mức giá</label>
-                                    <input type="number" id="priceFrom" name="priceFrom" step="0.01" required />
-                                    <label for="priceTo">~</label>
-                                    <input type="number" id="priceTo" name="priceTo" step="0.01" required />
-                                    <button class="filerByPrice" type="submit">Tìm kiếm</button>
-                                </form>
-                            </div>
+
                             <c:if test="${not empty listAllProduct}">
-                                <div class="card mb-4">
-
-                                </div>
-
                                 <div class="card mb-4">
                                     <div class="card-header">
                                         <i class="fas fa-table me-1"></i>
                                         Quản lý Sale
+                                    </div>
+                                    <div class="card-header">
+                                        <h6><ion-icon name="filter-outline"></ion-icon> Lọc theo giá sản phẩm</h6>
+                                        <form action="productmanager" method="get">
+                                            <input type="hidden" name="service" value="searchByPriceRange" />
+                                            <label for="priceFrom">Mức giá</label>
+                                            <input type="number" id="priceFrom" name="priceFrom" step="0.01" required />
+                                            <label for="priceTo">~</label>
+                                            <input type="number" id="priceTo" name="priceTo" step="0.01" required />
+                                            <button class="filerByPrice" type="submit">Tìm kiếm</button>
+                                        </form>
                                     </div>
                                     <div class="card-body">
                                         <table id="datatablesSimple" >
@@ -348,7 +345,13 @@
                         display: flex;
                         justify-content: center;
                     }
+                    h6 ion-icon {
+                        font-size: 26px;
+                        text-align: center; /* Căn giữa ngang */
+                        vertical-align: middle; /* Căn giữa dọc */
+                        margin-right: 5px; /* Khoảng cách giữa icon và chữ */
 
+                    }
 
 
 

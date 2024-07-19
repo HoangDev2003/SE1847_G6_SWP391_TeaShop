@@ -86,7 +86,6 @@
                                         href="addProductManager"><ion-icon name="add-circle-outline" ></ion-icon>  Thêm sản phẩm mới</a>                                   
                                 </div>  
                             </div>
-
                             <div class="card mb-4">
                                 <div class="card-header">
                                     <h6><ion-icon name="filter-outline"></ion-icon> Lọc theo giá sản phẩm</h6>
@@ -98,7 +97,6 @@
                                         <input type="number" id="priceTo" name="priceTo" step="0.01" required />
                                         <button class="filerByPrice" type="submit">Tìm kiếm</button>
                                     </form>
-
                                 </div>
 
                                 <!--List all Product-->

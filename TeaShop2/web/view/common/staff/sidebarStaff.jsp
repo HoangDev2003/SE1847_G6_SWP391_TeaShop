@@ -32,6 +32,7 @@
                             Quản lý đơn hàng
                             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>
+                        <a class="nav-link" href="saleManager">Quản lý Sale</a>
                         <div class="collapse" id="collapseOrderManagement" aria-labelledby="headingOne" data-bs-parent="#collapseLayouts">
                             <nav class="sb-sidenav-menu-nested nav">
                                 <a class="nav-link ${current_status_id == '0' ? 'text-white' : ''}" href="Staff">
