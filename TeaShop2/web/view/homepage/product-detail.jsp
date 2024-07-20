@@ -52,7 +52,7 @@
 
         <!-- Navbar start -->
         <div class="container-fluid fixed-top">
-            <jsp:include page="../common/homePage/topbar.jsp"></jsp:include>
+            <jsp:include page="../common/homePage/header-start.jsp"></jsp:include>
                 <div class="container px-0">
                     <nav class="navbar navbar-light bg-white navbar-expand-xl">
                         <a href="shop" class="navbar-brand"><h1 class="text-primary display-6">Dreamy Coffee</h1></a>

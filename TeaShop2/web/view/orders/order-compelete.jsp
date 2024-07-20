@@ -48,7 +48,7 @@
 
         <!-- Navbar start -->
         <div class="container-fluid fixed-top">
-            <jsp:include page="../common/homePage/topbar.jsp"></jsp:include>
+            <jsp:include page="../common/homePage/header-start.jsp"></jsp:include>
                 <div class="container px-0">
                     <nav class="navbar navbar-light bg-white navbar-expand-xl">
                         <a href="index.html" class="navbar-brand"><h1 class="text-primary display-6"></h1></a>
@@ -196,11 +196,11 @@
                                         </c:if>
                                         <c:if test="${lo.status_feedback_id == 1}">
                                             <a href="product-details?id=${lo.product.product_id}">
-                                            <button class="btn btn-md bg-light border mt-4"
-                                                    onclick="viewFeedback(${lo.product.product_id}, ${lo.orders.account.account_id})">
-                                                Xem đánh giá của bạn
-                                            </button>
-                                                </a>
+                                                <button class="btn btn-md bg-light border mt-4"
+                                                        onclick="viewFeedback(${lo.product.product_id}, ${lo.orders.account.account_id})">
+                                                    Xem đánh giá của bạn
+                                                </button>
+                                            </a>
                                         </c:if>
                                     </td>
                                 </tr>
@@ -212,7 +212,7 @@
         </div>
 
         <script>
-           
+
             function filterOrders(statusFeedback) {
                 window.location.href = 'orderCompelete?statusFeedback=' + statusFeedback;
             }
