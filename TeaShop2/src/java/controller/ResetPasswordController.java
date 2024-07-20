@@ -76,7 +76,7 @@ public class ResetPasswordController extends HttpServlet {
 
             Email e = new Email();
             long expirationTimeMillis = System.currentTimeMillis() + (1 * 60 * 1000);
-            String verifyLink = "http://localhost:8080/TeaShop/newresetpass?expires=" + expirationTimeMillis; // Thay đổi URL theo link xác nhận của bạn
+            String verifyLink = "http://localhost:9999/TeaShop/newresetpass?expires=" + expirationTimeMillis; // Thay đổi URL theo link xác nhận của bạn
 
             String emailContent = "<!DOCTYPE html>\n"
                     + "<html>\n"
@@ -89,12 +89,12 @@ public class ResetPasswordController extends HttpServlet {
                     + "</body>\n"
                     + "</html>";
 
-            e.sendEmail(emailc, "Reset your password", emailContent);
-            request.setAttribute("Notification", "You need confirm Email to Reset Password");
+            e.sendEmail(emailc, "Reset mật khẩu của bạn", emailContent);
+            request.setAttribute("Notification", "Bạn cần xác nhận email để reset mật khẩu!");
             session.setAttribute("emailReset", emailc);
             request.getRequestDispatcher("login.jsp").forward(request, response);
         } else {
-            request.setAttribute("error", "This email don't exist");
+            request.setAttribute("error", "Email không tồn tại!");
             request.getRequestDispatcher("resetpass.jsp").forward(request, response);
         }
     }

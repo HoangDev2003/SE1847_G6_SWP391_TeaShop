@@ -63,7 +63,6 @@ public class SignupController extends HttpServlet {
             throws ServletException, IOException {
         AccountDAO dao = new AccountDAO();
 
-  
         if (request.getParameter("mode") != null && request.getParameter("mode").equals("1")) {
 
             request.getRequestDispatcher(SIGNUP_JSP).forward(request, response);
@@ -89,7 +88,7 @@ public class SignupController extends HttpServlet {
         String phone_number = request.getParameter("phone_number");
         String address = request.getParameter("address");
         String gender = request.getParameter("gender");
-        
+
         // Kiểm tra khoảng trắng trong email, tên người dùng, mật khẩu và nhập lại mật khẩu
         if (containsSpace(email) || containsSpace(user_name) || containsSpace(pass_word) || containsSpace(re_pass)) {
             request.setAttribute("mess", "Check Space!");
@@ -101,7 +100,7 @@ public class SignupController extends HttpServlet {
             request.setAttribute("address", address);
             request.setAttribute("gender", gender);
             request.getRequestDispatcher(SIGNUP_JSP).forward(request, response);
-        
+
         }
         // Kiểm tra số điện thoại không hợp lệ
         if (phone_number == null || !phone_number.matches("0\\d{9}")) {
@@ -135,53 +134,53 @@ public class SignupController extends HttpServlet {
         if (pass_word != null && !(pass_word.equals(re_pass))) {
             request.setAttribute("mess", "Password and Re-enter Password are not the same!");
             request.setAttribute("email", email);
-            
+
             request.getRequestDispatcher(SIGNUP_JSP).forward(request, response);
         } else {
             AccountDAO dao = new AccountDAO();
             Accounts a = dao.checkAccountExist(email);
             if (a == null) {
-             
+
                 Accounts a1 = dao.checkAccountName(user_name);
-                if(a1 == null){
-                HttpSession session = request.getSession();
-                session.setAttribute("user", user_name);
-                session.setAttribute("pass", pass_word);
-                session.setAttribute("phone_number", phone_number);
-                session.setAttribute("email", email);
-                session.setAttribute("address", address);
-                session.setAttribute("gender", gender);
-                Email e = new Email();
-                String verifyLink = "http://localhost:8080/TeaShop/verifyaccount"; // Thay đổi URL theo link xác nhận 
+                if (a1 == null) {
+                    HttpSession session = request.getSession();
+                    session.setAttribute("user", user_name);
+                    session.setAttribute("pass", pass_word);
+                    session.setAttribute("phone_number", phone_number);
+                    session.setAttribute("email", email);
+                    session.setAttribute("address", address);
+                    session.setAttribute("gender", gender);
+                    System.out.println("Genderabc: " + gender);
+                    Email e = new Email();
+                    String verifyLink = "http://localhost:9999/TeaShop/verifyaccount"; // Thay đổi URL theo link xác nhận 
 
-                String emailContent = "<!DOCTYPE html>\n"
-                        + "<html>\n"
-                        + "<head>\n"
-                        + "</head>\n"
-                        + "<body>\n"
-                        + "<p>Please verify your email by clicking the following link:</p>\n"
-                        + "<a href=\"" + verifyLink + "\">Verify Email</a>\n"
-                        + "\n"
-                        + "</body>\n"
-                        + "</html>";
+                    String emailContent = "<!DOCTYPE html>\n"
+                            + "<html>\n"
+                            + "<head>\n"
+                            + "</head>\n"
+                            + "<body>\n"
+                            + "<p>Please verify your email by clicking the following link:</p>\n"
+                            + "<a href=\"" + verifyLink + "\">Verify Email</a>\n"
+                            + "\n"
+                            + "</body>\n"
+                            + "</html>";
 
-                e.sendEmail(email, "Verify your email", emailContent);
-                request.setAttribute("Notification", "You need confirm Email to login");
-                request.getRequestDispatcher(LOGIN_JSP).forward(request, response);
-                }
-                else{
-                request.setAttribute("error", "This username is exist!");
-                request.getRequestDispatcher(SIGNUP_JSP).forward(request, response);
+                    e.sendEmail(email, "Verify your email", emailContent);
+                    request.setAttribute("Notification", "You need confirm Email to login");
+                    request.getRequestDispatcher(LOGIN_JSP).forward(request, response);
+                } else {
+                    request.setAttribute("error", "This username is exist!");
+                    request.getRequestDispatcher(SIGNUP_JSP).forward(request, response);
                 }
 
             } else {
-                
+
                 request.setAttribute("mess", "Email are exist! Please enter another email!");
                 request.getRequestDispatcher(SIGNUP_JSP).forward(request, response);
             }
         }
     }
-    
+
     /**
      * Returns a short description of the servlet.
      *
@@ -192,6 +191,7 @@ public class SignupController extends HttpServlet {
         return "Short description";
     }// </editor-fold>
     // Hàm kiểm tra khoảng trắng
+
     private boolean containsSpace(String input) {
         return input != null && input.contains(" ");
     }

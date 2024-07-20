@@ -193,9 +193,9 @@
                                 <form action="userprofile?service=UpdateProfile" method="POST">
                                     <div class="row mb-3">
                                         <div class="col-sm-3">
-                                            <h6 class="mb-0">Full Name</h6>
+                                            <h6 class="mb-0">User Name</h6>
                                         </div><div class="col-sm-9 text-secondary">
-                                            <input type="text" name="fullName" class="form-control" value="${a.full_name}">
+                                            <input type="text" name="name" class="form-control" value="${a.user_name}">
                                         </div>
                                     </div>
                                     <input type="hidden" name="email" value="${a.email}">
@@ -222,10 +222,10 @@
                                         </div>
                                         <div class="col-sm-9 text-secondary">
                                             <c:if test="${a.role_id == 1}">
-                                                <input name="role" class="form-control" value="1" >
+                                                <input name="role" class="form-control" value="Admin" >
                                             </c:if>
                                             <c:if test="${a.role_id == 2}">
-                                                <input name="role" class="form-control" value="2" >
+                                                <input name="role" class="form-control" value="Customer" readonly />
                                             </c:if><h9 class="mb-0">Customer(You can not change your role)</h9>
                                         </div>
                                     </div>

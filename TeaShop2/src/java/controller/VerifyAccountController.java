@@ -59,7 +59,7 @@ public class VerifyAccountController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        request.setAttribute("Notification", "You have successfully verified");
+        request.setAttribute("Notification", "Bạn đã xác nhận email thành công!");
 
         HttpSession session = request.getSession();
 
@@ -69,10 +69,11 @@ public class VerifyAccountController extends HttpServlet {
         String email = (String) session.getAttribute("email");
         String address = (String) session.getAttribute("address");
         String gender = (String) session.getAttribute("gender");
-
+        System.out.println("Gender: " + gender);
         AccountDAO dao = new AccountDAO();
 
         Accounts a = dao.checkAccountExist(email);
+        System.out.println(a);
         if (a == null) {
             // duoc sign up
             dao.Signup(user_name, pass_word, email, gender, address, phone_number);

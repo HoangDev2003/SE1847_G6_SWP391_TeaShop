@@ -50,8 +50,8 @@
                            <input type="text" name="address" value="${address}" id="address" placeholder="Address" required/>
                         </div>
                         <div>
-                            Gender:<input id="rd" type="radio" name="gender" value="1" ${gender == 1 ? "checked" : ""} required="">Male
-                            <input id="rd" type="radio" name="gender" value="0" ${gender == 0 ? "checked" : ""} required="">Female
+                            Gender:<input id="rd" type="radio" name="gender" value="Male" required="">Male
+                            <input id="rd" type="radio" name="gender" value="Female" required="">Female
                         </div>
 
                         <div class="form-group">

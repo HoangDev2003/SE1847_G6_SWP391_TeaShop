@@ -89,9 +89,10 @@ public class AdminDAO extends DBContext {
     public Accounts getUserInfor(String email) {
         String query = "SELECT a.account_id,\n"
                 + "                a.user_name,\n"
-                + "                r.role_name,\n"
+                + "                a.pass_word,\n"
+                + "                r.role_id,\n"
                 + "                a.email,\n"
-                + "                acs.status_name,\n"
+                + "                acs.status_id,\n"
                 + "                a.gender,\n"
                 + "                a.address,\n"
                 + "                a.phone_number,\n"
@@ -109,10 +110,9 @@ public class AdminDAO extends DBContext {
             statement.setString(1, email);
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                return new Accounts(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3),
-                        resultSet.getString(4), resultSet.getString(5),
-                        resultSet.getString(6), resultSet.getString(7), resultSet.getString(8),
-                        resultSet.getDate(9), resultSet.getString(10), resultSet.getString(11));
+                return new Accounts(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getInt(4),
+                        resultSet.getString(5), resultSet.getInt(6), resultSet.getString(7),
+                        resultSet.getString(8), resultSet.getString(9), resultSet.getDate(10), resultSet.getString(11), resultSet.getString(12));
             }
         } catch (Exception e) {
         }
