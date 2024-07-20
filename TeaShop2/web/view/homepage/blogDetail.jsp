@@ -43,6 +43,7 @@
 
 
         <!-- Navbar start -->
+         <jsp:include page="../common/homePage/header-start.jsp"></jsp:include>
         <div class="container-fluid fixed-top">
 
             <div class="container topbar bg-primary d-none d-lg-block">

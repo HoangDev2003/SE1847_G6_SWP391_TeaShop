@@ -42,98 +42,96 @@
         </div>
         <!-- Spinner End -->
 
-<!-- Navbar start -->
-<div class="container-fluid fixed-top">
+        <!-- Navbar start -->
+        <jsp:include page="../common/homePage/header-start.jsp"></jsp:include>
+            <div class="container-fluid fixed-top">
 
-    <div class="container topbar bg-primary d-none d-lg-block">    
-        <div class="d-flex justify-content-between">
-            <div class="top-info ps-2">
-                <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#" class="text-white">Lê Thái Tổ, Hàng Trống, Quận Hoàn Kiếm, Hà Nội</a></small>
-                <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i><a href="#" class="text-white">dreamycoffee@gmail.com</a></small>
-            </div>
-            <div class="top-link pe-2">
-                <c:choose>
-                    <c:when test="${empty sessionScope.account}">
-                        <a href="${pageContext.request.contextPath}/Signup.jsp" class="text-white"><small class="text-white mx-2">Đăng ký</small>/</a>
-                        <a href="${pageContext.request.contextPath}/login" class="text-white"><small class="text-white mx-2">Đăng nhập</small></a>
-                    </c:when>
-                    <c:otherwise>
-                        <a href="#" class="text-white"><small class="text-white mx-2"> ${sessionScope.account.user_name}</small>/</a>
-                        <a href="logout" class="text-white"><small class="text-white ms-2">Đăng xuất</small></a>
-                    </c:otherwise>
-                </c:choose>
+                <div class="container topbar bg-primary d-none d-lg-block">    
+                    <div class="d-flex justify-content-between">
 
-            </div>
-        </div>
-    </div>
-
-    <div class="container px-0">
-        <nav class="navbar navbar-light bg-white navbar-expand-xl">
-            <a href="home" class="navbar-brand"><h1 class="text-primary display-6"  >Dreamy Coffee</h1></a>
-            <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                <span class="fa fa-bars text-primary"></span>
-            </button>
-            <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
-                <div class="navbar-nav mx-auto">
-                    <a href="home" class="nav-item nav-link ">Home</a>
-                    <a href ="blog" class="nav-item nav-link active">Blog</a>
-                    <a href="shop" class="nav-item nav-link">Shop</a>
-
+                    <c:if test="${sessionScope.acc==null}">                                                                    
+                        <div class="top-info ps-2">
+                            <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#" class="text-white">Lê Thái Tổ, Hàng Trống, Quận Hoàn Kiếm, Hà Nội</a></small>
+                            <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i><a href="#" class="text-white">dreamycoffee@gmail.com</a></small>            
+                        </div>
+                        <div class="top-link pe-2">            
+                            <a href="${pageContext.request.contextPath}/Signup.jsp" class="text-white"><small class="text-white mx-2">Đăng ký</small>/</a>
+                            <a href="${pageContext.request.contextPath}/login" class="text-white"><small class="text-white mx-2">Đăng nhập</small></a>                 
+                        </div>           
+                    </c:if>
                 </div>
-                <div class="d-flex m-3 me-0">
-                    <%
-                int count = 0;
-                Enumeration<String> em = session.getAttributeNames();
-                while (em.hasMoreElements()) {
-                    String key = em.nextElement();
+            </div>
 
-                    if (key.startsWith("cartItem")) {
-                        count++;
-                    }
-                } 
-                            %>
-                            <a href="CartDetails?service=showcart" class="position-relative me-4 my-auto">
-                                <i class="fa fa-shopping-bag fa-2x"></i>
-                                <%if(count>0){%>
-                                <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;"><%=count%></span>
-                                <%}%>
-                            </a>
-                    <% 
-    Integer accountId = (Integer) session.getAttribute("accountId");
-    if (accountId != null) {
-                            %>
-                            <div class="nav-item dropdown">
-                                <a href="#" class="nav-link" data-bs-toggle="dropdown" style="color: black;">
-                                    <i class="fas fa-user fa-2x" style="color: black;"></i>
+            <div class="container px-0">
+                <nav class="navbar navbar-light bg-white navbar-expand-xl">
+                    <a href="home" class="navbar-brand"><h1 class="text-primary display-6"  >Dreamy Coffee</h1></a>
+                    <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                        <span class="fa fa-bars text-primary"></span>
+                    </button>
+                    <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
+                        <div class="navbar-nav mx-auto">
+                            <a href="home" class="nav-item nav-link ">Home</a>
+                            <a href ="blog" class="nav-item nav-link active">Blog</a>
+                            <a href="shop" class="nav-item nav-link">Shop</a>
+
+                        </div>
+                        <c:if test="${sessionScope.acc==null}">  
+                            <div class="d-flex m-3 me-0">
+                                <%
+                            int count = 0;
+                            Enumeration<String> em = session.getAttributeNames();
+                            while (em.hasMoreElements()) {
+                                String key = em.nextElement();
+
+                                if (key.startsWith("cartItem")) {
+                                    count++;
+                                }
+                            } 
+                                %>
+                                <a href="CartDetails?service=showcart" class="position-relative me-4 my-auto">
+                                    <i class="fa fa-shopping-bag fa-2x"></i>
+                                    <%if(count>0){%>
+                                    <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;"><%=count%></span>
+                                    <%}%>
                                 </a>
-                                <div class="dropdown-menu m-0 bg-secondary rounded-0">
-                                    <a href="userprofile" class="dropdown-item">Thông tin</a>
-                                    <a href="MyOrder" class="dropdown-item">Đơn hàng</a>
+                                <% 
+                Integer accountId = (Integer) session.getAttribute("accountId");
+                if (accountId != null) {
+                                %>
+
+                                <div class="nav-item dropdown">
+                                    <a href="#" class="nav-link" data-bs-toggle="dropdown" style="color: black;">
+                                        <i class="fas fa-user fa-2x" style="color: black;"></i>
+                                    </a>
+                                    <div class="dropdown-menu m-0 bg-secondary rounded-0">
+                                        <a href="MyOrder" class="dropdown-item">Đơn hàng</a>
+                                    </div>
                                 </div>
-                            </div>
-                            <% 
-                                } else { 
-                            %>
-                            <a href="login"><i class="fas fa-user fa-2x" style="color: black;"></i></a>
+                                <% 
+                                    }                     else { 
+                                %>
+
                                 <% 
                                     } 
                                 %>
-                        </div>
+
+                            </div>
+                        </c:if> 
                     </div>
                 </nav>
             </div>
         </div>
         <!-- Navbar End -->
-        
-      
-<!--        <div class="container-fluid page-header bg-primary py-5">
-            <h1 class="text-center text-white display-6">Blog </h1>
-                        <ol class="breadcrumb justify-content-center mb-0">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item"><a href="#"> </a></li>
-                            <li class="breadcrumb-item active text-white">Shop Detail</li>
-                        </ol>
-        </div>
+
+
+        <!--        <div class="container-fluid page-header bg-primary py-5">
+                    <h1 class="text-center text-white display-6">Blog </h1>
+                                <ol class="breadcrumb justify-content-center mb-0">
+                                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                    <li class="breadcrumb-item"><a href="#"> </a></li>
+                                    <li class="breadcrumb-item active text-white">Shop Detail</li>
+                                </ol>
+                </div>
         -->
 
 
@@ -179,10 +177,10 @@
                                                         <li>
                                                             <div class="d-flex justify-content-between fruite-name">
                                                                 <a href="blogdetail?bid=${b.getId()}"><i class="fas fa-alt me-2"></i>${b.getBlog_name()}</a>
-                                                           
-                                                            
+
+
                                                             </div>
-                                                                <i class="fas fa-alt me-2">${b.getCreated_at()}</i> 
+                                                            <i class="fas fa-alt me-2">${b.getCreated_at()}</i> 
                                                         </li>
                                                     </ul>
                                                 </c:forEach>

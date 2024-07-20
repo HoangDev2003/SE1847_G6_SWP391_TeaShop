@@ -122,7 +122,7 @@
                             <li class="nav-divider">
                                 Menu
                             </li>
-                          
+
 
                             <li class="nav-item">
                                 <a class="nav-link active" href="usermanager" >
@@ -131,7 +131,7 @@
                                 </a>
                             </li>
 
-                        
+
                     </div>
                 </nav>
             </div>
@@ -149,14 +149,14 @@
                         <fieldset>
                             <!-- Form Name -->
                             <legend>Add User </legend>
-                            
+
                             <section style="background-color: #eee;">
                                 <div class="container py-5">
                                     <div class="row">
                                         <div class="col">
                                             <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
                                                 <ol class="breadcrumb mb-0">
-                                               
+
                                                     <li class="breadcrumb-item active" aria-current="page">User Profile</li>
                                                 </ol>
                                             </nav>
@@ -246,8 +246,7 @@
                                                         </div>
                                                         <div class="col-sm-9">
                                                             <select class="input-like-p" name="role">
-                                                                  <option value="1">Admin</option>   
-                                                                <option value="2">User</option>   
+                                                                <option value="1">Admin</option>                                                                  
                                                                 <option value="3">Staff</option>   
                                                                 <option value="4">Shipper</option>      
                                                             </select>
