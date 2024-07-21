@@ -257,6 +257,10 @@
         <servlet-name>addSlider</servlet-name>
         <servlet-class>controller.ManageSlider.addSlider</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>StaffOrderDetailsController</servlet-name>
+        <servlet-class>controller.StaffOrderDetailsController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ShopController</servlet-name>
         <url-pattern>/shop</url-pattern>
@@ -496,5 +500,9 @@
     <servlet-mapping>
         <servlet-name>addSlider</servlet-name>
         <url-pattern>/addslider</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StaffOrderDetailsController</servlet-name>
+        <url-pattern>/stafforderdetails</url-pattern>
     </servlet-mapping>
 </web-app>
