@@ -37,14 +37,15 @@ public class Orders {
     public Product product;
     public Accounts account;
     public int status_feedback_id;
-    public Timestamp estimated_delivery_date;
-    public String formattedOrderDate, formattedEstimated_delivery_date; 
+    public Timestamp estimated_delivery_date, shipper_delivery_time;
+    public String formattedOrderDate, formattedEstimated_delivery_date, formattedShipper_delivery_time;
     public List<OrderDetails> orderDetails;
-    
+
     public Timestamp getCurrentTimestamp() {
         LocalDateTime now = LocalDateTime.now();
         return Timestamp.valueOf(now);
     }
+
     // Phương thức để định dạng ngày và giờ
     public void setOrder_date(Timestamp order_date) {
         this.order_date = order_date;
@@ -54,6 +55,7 @@ public class Orders {
             this.formattedOrderDate = localDateTime.format(formatter);
         }
     }
+
     public void setEstimated_delivery_date(Timestamp estimated_delivery_date) {
         this.estimated_delivery_date = estimated_delivery_date;
         if (estimated_delivery_date != null) {
@@ -61,5 +63,30 @@ public class Orders {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy, HH:mm");
             this.formattedEstimated_delivery_date = localDateTime.format(formatter);
         }
+    }
+
+    public void setShipper_delivery_time(Timestamp shipper_delivery_time) {
+        this.shipper_delivery_time = shipper_delivery_time;
+        if (shipper_delivery_time != null) {
+            LocalDateTime localDateTime = shipper_delivery_time.toLocalDateTime();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy, HH:mm");
+            this.formattedShipper_delivery_time = localDateTime.format(formatter);
+        }
+    }
+
+    public String getDeliveryTimeMessage() {
+        if (shipper_delivery_time != null && estimated_delivery_date != null) {
+            long millisecondsDifference = shipper_delivery_time.getTime() - estimated_delivery_date.getTime();
+            long minutesDifference = millisecondsDifference / (1000 * 60);
+            long hoursDifference = minutesDifference / 60;
+            minutesDifference = minutesDifference % 60;
+
+            if (millisecondsDifference <= 0) {
+                return "Đúng giờ";
+            } else {
+                return String.format("Muộn %d giờ %d phút", hoursDifference, minutesDifference);
+            }
+        }
+        return "";
     }
 }

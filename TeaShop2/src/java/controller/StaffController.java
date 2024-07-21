@@ -5,8 +5,10 @@
 package controller;
 
 import com.google.gson.JsonObject;
+import dal.OrderDetailsDAO;
 import dal.OrdersDAO;
 import dal.StaffDAO;
+import entity.OrderDetails;
 import entity.Orders;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -54,14 +56,43 @@ public class StaffController extends HttpServlet {
             }
 
             if (service.equals("update")) {
+                OrdersDAO orderDAO = new OrdersDAO();
+                OrderDetailsDAO orderDetailsDAO = new OrderDetailsDAO();
                 String current_status_id = request.getParameter("current_status_id");
                 int order_id = Integer.parseInt(request.getParameter("order_id"));
                 int status_id = Integer.parseInt(request.getParameter("status_id"));
+
+                Orders order = orderDAO.findByOrderId(order_id);
+                if (status_id == 3) {  // Kiểm tra khi chuyển sang trạng thái hoàn thành
+                    List<OrderDetails> listOrderDetails = orderDetailsDAO.findByOrderId(order_id);
+                    boolean imageMissing = false;
+                    for (OrderDetails od : listOrderDetails) {
+                        if (od.getImage() == null || od.getImage().isEmpty()) {
+                            imageMissing = true;
+                            break;
+                        }
+                    }
+                    if (order.getFormattedEstimated_delivery_date() == null) {
+                        
+                        request.setAttribute("errorMessage", "Vui lòng điền thời gian giao hàng dự kiến.");
+                        String link = "Staff?service=show&current_status_id=" + 2;
+                        request.getRequestDispatcher(link).forward(request, response); // Hiển thị lại danh sách đơn hàng với thông báo lỗi
+                        return;
+                    }
+                    if (imageMissing) {
+                        request.setAttribute("errorMessage", "Vui lòng tải lên 'Ảnh trước khi giao hàng' để giao cho shipper.");
+                        String link = "Staff?service=show&current_status_id=" + 2;
+                        request.getRequestDispatcher(link).forward(request, response);// Hiển thị lại danh sách đơn hàng với thông báo lỗi
+                        return;
+                    }
+                }
+
                 staffDAO.updateOrderStatus(order_id, status_id);
 
                 String link = "Staff?service=show&current_status_id=" + current_status_id;
                 request.getRequestDispatcher(link).forward(request, response);
             }
+
 
             if (service.equals("show")) {
                 String current_status_id = request.getParameter("current_status_id");
