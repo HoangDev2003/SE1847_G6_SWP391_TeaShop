@@ -202,7 +202,7 @@
                         <form id="feedbackForm" method="get" action="feedback">
                             <input type="hidden" name="product_id" id="product_id" value="">
                             <input type="hidden" name="order_details_id" id="order_details_id" value="">
-                            <input type="hidden" name="account_id" value="${sessionScope.account.account_id}">
+                            <input type="hidden" name="account_id" value="${sessionScope.acc.account_id}">
                             <div class="mb-3">
                                 <label for="feedback" class="form-label">Đánh giá của bạn</label>
                                 <textarea class="form-control" id="feedback" name="feedback" rows="3" required></textarea>
