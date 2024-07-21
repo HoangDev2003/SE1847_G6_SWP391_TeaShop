@@ -67,8 +67,8 @@ public class CartDetailsController extends HttpServlet {
                     cartItem.product.setProduct_id(cartInfo.product.getProduct_id());
                     cartItem.product.setProduct_name(cartInfo.product.getProduct_name());
                     cartItem.product.setImage(cartInfo.product.getImage());
-                    int price = (int) (cartInfo.product.price - (cartInfo.product.price*(cartInfo.product.discount)/100));
-                    cartItem.product.setPrice(price);
+                    int price = (int) (cartInfo.product.price - (cartInfo.product.price * (cartInfo.product.discount) / 100));
+
                     int intQuantity = 1;
                     if (!(quantity == null || quantity.isEmpty())) {
                         intQuantity = Integer.parseInt(quantity);
@@ -81,8 +81,9 @@ public class CartDetailsController extends HttpServlet {
                             topping.setTopping_name(topping_name);
                             cartItem.topping.add(topping);
                         }
+                        price += 6000;
                     }
-
+                    cartItem.product.setPrice(price);
                     session.setAttribute("cartItem" + product_id, cartItem);
                 }
 
@@ -155,6 +156,8 @@ public class CartDetailsController extends HttpServlet {
                 String[] topping_names = request.getParameterValues("topping_names");
                 String product_id = request.getParameter("product_id");
                 CartDetails cartItem = (CartDetails) session.getAttribute("cartItem" + product_id);
+                int price = cartItem.product.price - (6000 * cartItem.topping.size());
+
                 cartItem.topping = new ArrayList<>();
                 if (topping_names != null) {
                     for (String topping_name : topping_names) {
@@ -162,9 +165,39 @@ public class CartDetailsController extends HttpServlet {
                         topping.setTopping_id(new OrderDetailsDAO().retrieveToppingIdByName(topping_name));
                         topping.setTopping_name(topping_name);
                         cartItem.topping.add(topping);
+                        price += 6000;
                     }
                 }
-                response.sendRedirect("CartDetails?service=showcart");
+                cartItem.product.setPrice(price);
+
+                // Calculate total cart amount
+                List<CartDetails> cartInfo = new ArrayList<>();
+                Enumeration<String> em = session.getAttributeNames();
+                while (em.hasMoreElements()) {
+                    String key = em.nextElement();
+                    if (key.startsWith("cartItem")) {
+                        CartDetails cartItems = (CartDetails) session.getAttribute(key);
+                        cartInfo.add(cartItems);
+                    }
+                }
+                int totalCartAmount = 0;
+                for (CartDetails item : cartInfo) {
+                    int itemPrice = item.product.getPrice();
+                    int quantities = item.getQuantity();
+                    totalCartAmount += itemPrice * quantities;
+                }
+
+                // Prepare JSON response manually
+                String jsonResponse = "{";
+                jsonResponse += "\"totalPrice\": " + (cartItem.product.getPrice() * cartItem.getQuantity()) + ",";
+                jsonResponse += "\"totalCartAmount\": " + totalCartAmount + ",";
+                jsonResponse += "\"pricePerProduct\": " + cartItem.product.getPrice() + ",";
+                jsonResponse += "\"toppingCount\": " + cartItem.topping.size();
+                jsonResponse += "}";
+
+                // Return JSON response
+                response.setContentType("application/json");
+                response.getWriter().write(jsonResponse);
             }
             if (service.equals("delete")) {
                 String product_id = request.getParameter("product_id");
