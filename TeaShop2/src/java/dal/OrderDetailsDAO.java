@@ -33,7 +33,7 @@ public class OrderDetailsDAO extends DBContext {
                     + "      ,od.[status_feedback_id]\n"
                     + "FROM [dbo].[OrderDetails] od\n"
                     + "JOIN [dbo].[Orders] o ON od.[order_id] = o.[order_id]\n"
-                    + "WHERE o.[status_id] = 3\n"
+                    + "WHERE o.[status_id] = 4\n"
                     + "  AND o.[account_id] = ?\n"
                     + "  AND od.[status_feedback_id] = ?;";
             PreparedStatement ps = connection.prepareStatement(query);
@@ -331,8 +331,8 @@ public class OrderDetailsDAO extends DBContext {
             while (resultSet.next()) {
                 OrderDetails orderDetails = new OrderDetails();
                 orderDetails.setOrder_details_id(resultSet.getInt("order_details_id"));
-                orderDetails.setProduct_id(resultSet.getInt("product_id"));
-                orderDetails.setOrder_id(resultSet.getInt("order_id"));
+                orderDetails.setProduct(new ProductDAO().getProductsById(resultSet.getInt("product_id")));
+                orderDetails.setOrders(new OrdersDAO().findByOrderId(resultSet.getInt("order_id")));
                 orderDetails.setQuantity(resultSet.getInt("quantity"));
 
                 Product product = new Product();
@@ -341,7 +341,7 @@ public class OrderDetailsDAO extends DBContext {
 
                 Category category = new Category();
                 category.setCategory_name(resultSet.getString("category_name"));
-                orderDetails.setCategory(category);
+               
 
                 List<Topping> toppings = new ArrayList<>();
                 do {
@@ -388,7 +388,7 @@ public class OrderDetailsDAO extends DBContext {
     }
 
     public int insertOrderDetails(int productId, int orderId, int quantity) {
-        String insertSQL = "INSERT INTO [dbo].[OrderDetails] ([product_id], [order_id], [quantity]) VALUES (?, ?, ?)";
+        String insertSQL = "INSERT INTO [dbo].[OrderDetails] ([product_id], [order_id], [quantity], [status_feedback_id]) VALUES (?, ?, ?, ?)";
         int orderDetailsId = -1; // Default value if insertion fails
 
         try {
@@ -399,6 +399,7 @@ public class OrderDetailsDAO extends DBContext {
             statement.setInt(1, productId);
             statement.setInt(2, orderId);
             statement.setInt(3, quantity);
+            statement.setInt(4, 2);
 
             // Execute the update
             int affectedRows = statement.executeUpdate();
@@ -439,4 +440,15 @@ public class OrderDetailsDAO extends DBContext {
         }
         return toppingId;
     }
+
+    public void updateImageBeforePath(int orderDetailsId, String imagePath) {
+    String query = "UPDATE OrderDetails SET image = ? WHERE order_details_id = ?";
+    try (Connection connection = getConnection();
+         PreparedStatement ps = connection.prepareStatement(query)) {
+        ps.setString(1, imagePath);
+        ps.setInt(2, orderDetailsId);
+        ps.executeUpdate();
+    } catch (SQLException ex) {
+        ex.printStackTrace();
+    }}
 }
