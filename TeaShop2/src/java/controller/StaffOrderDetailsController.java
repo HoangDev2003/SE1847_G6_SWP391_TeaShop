@@ -16,6 +16,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -58,7 +59,29 @@ public class StaffOrderDetailsController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        
+        // Lấy các thông tin từ form
+    int orderID = Integer.parseInt(request.getParameter("orderID"));
+    String deliveryTimeStr = request.getParameter("deliveryTime");
+    String staffNote = request.getParameter("staffNote");
+
+   
+        // Lấy thông tin đơn hàng từ database
+        OrdersDAO ordersDAO = new OrdersDAO();
+        Orders order = ordersDAO.findByOrderId(orderID);
+        Timestamp orderDate = order.getOrder_date();
+
+        // Kiểm tra thời gian giao hàng (nếu có)
+        if (deliveryTimeStr != null && !deliveryTimeStr.isEmpty()) {
+            Timestamp deliveryTime = Timestamp.valueOf(deliveryTimeStr.replace("T", " ") + ":00");
+
+            if (deliveryTime.before(orderDate)) {
+                request.setAttribute("errorMessage", "Thời gian giao hàng phải sau thời gian tạo đơn hàng.");
+                request.getRequestDispatcher("view/dashboard/staff1/orderdetail-manage.jsp").forward(request, response);
+                return;
+            } else {
+                ordersDAO.updateDeliveryTime(orderID, deliveryTime);
+            }
+        }
     }
 
 }
