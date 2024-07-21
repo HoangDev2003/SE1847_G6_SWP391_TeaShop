@@ -21,6 +21,10 @@
         <servlet-class>controller.VerifyAccountController</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>LogoutController</servlet-name>
+        <servlet-class>controller.LogoutController</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>NewResetPasswordController</servlet-name>
         <servlet-class>controller.NewResetPasswordController</servlet-class>
     </servlet>
@@ -29,8 +33,16 @@
         <servlet-class>controller.ProductDetailController</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>OrderCompeleteController</servlet-name>
+        <servlet-class>controller.OrderCompeleteController</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>BlogController</servlet-name>
         <servlet-class>controller.Blog.BlogController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>FeedBackController</servlet-name>
+        <servlet-class>controller.FeedBackController</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>BlogDetailController</servlet-name>
@@ -260,6 +272,11 @@
     <servlet>
         <servlet-name>StaffOrderDetailsController</servlet-name>
         <servlet-class>controller.StaffOrderDetailsController</servlet-class>
+       <multipart-config>
+            <max-file-size>10485760</max-file-size>
+            <max-request-size>20971520</max-request-size>
+            <file-size-threshold>512000</file-size-threshold>
+        </multipart-config> 
     </servlet>
     <servlet-mapping>
         <servlet-name>ShopController</servlet-name>
@@ -280,6 +297,10 @@
     <servlet-mapping>
         <servlet-name>HomeController</servlet-name>
         <url-pattern>/home</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LogoutController</servlet-name>
+        <url-pattern>/logout</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>CartDetails</servlet-name>
@@ -504,5 +525,13 @@
     <servlet-mapping>
         <servlet-name>StaffOrderDetailsController</servlet-name>
         <url-pattern>/stafforderdetails</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OrderCompeleteController</servlet-name>
+        <url-pattern>/orderCompelete</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FeedBackController</servlet-name>
+        <url-pattern>/feedback</url-pattern>
     </servlet-mapping>
 </web-app>
