@@ -238,7 +238,7 @@
                                     <div class="tab-pane" id="nav-mission" role="tabpanel" aria-labelledby="nav-mission-tab">
                                         <c:forEach items="${feedbackList}" var="fb">
                                             <div class="d-flex">
-                                                <img src="https://m.yodycdn.com/blog/hinh-nen-thien-nhien-4k-yody-vn-11.jpg" class="img-fluid rounded-circle p-3" style="width: 100px; height: 100px;" alt="">
+                                                <img src="${fb.account.avartar}" class="img-fluid rounded-circle p-3" style="width: 100px; height: 100px;" alt="">
                                                 <div class="">
                                                     <p class="mb-2" style="font-size: 14px;">${fb.formattedCreatedAt}</p>
                                                     <div class="d-flex justify-content-between">

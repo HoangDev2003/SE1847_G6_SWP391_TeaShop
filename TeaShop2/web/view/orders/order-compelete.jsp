@@ -5,13 +5,12 @@
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="java.util.Enumeration"%>
 <!DOCTYPE html>
 <html lang="en">
 
     <head>
         <meta charset="utf-8">
-        <title>Fruitables - Vegetable Website Template</title>
+        <title>Dreamy Coffee</title>
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
         <meta content="" name="keywords">
         <meta content="" name="description">
@@ -101,19 +100,7 @@
                             <div class="nav-item dropdown">
                                 <a href="#" class="nav-link" data-bs-toggle="dropdown" style="color: black;">
                                     <i class="fas fa-user fa-2x" style="color: black;"></i>
-                                </a>
-                                <div class="dropdown-menu m-0 bg-secondary rounded-0">
-                                    <a href="userprofile" class="dropdown-item">Thông tin</a>
-                                    <a href="MyOrder" class="dropdown-item">Đơn hàng</a>
-                                </div>
-                            </div>
-                            <% 
-                                } else { 
-                            %>
-                            <a href="login"><i class="fas fa-user fa-2x" style="color: black;"></i></a>
-                                <% 
-                                    } 
-                                %>
+                            </a>
                         </div>
                     </div>
                 </nav>
@@ -196,11 +183,11 @@
                                         </c:if>
                                         <c:if test="${lo.status_feedback_id == 1}">
                                             <a href="product-details?id=${lo.product.product_id}">
-                                                <button class="btn btn-md bg-light border mt-4"
-                                                        onclick="viewFeedback(${lo.product.product_id}, ${lo.orders.account.account_id})">
-                                                    Xem đánh giá của bạn
-                                                </button>
-                                            </a>
+                                            <button class="btn btn-md bg-light border mt-4"
+                                                    onclick="viewFeedback(${lo.product.product_id}, ${lo.orders.account.account_id})">
+                                                Xem đánh giá của bạn
+                                            </button>
+                                                </a>
                                         </c:if>
                                     </td>
                                 </tr>
@@ -212,7 +199,7 @@
         </div>
 
         <script>
-
+           
             function filterOrders(statusFeedback) {
                 window.location.href = 'orderCompelete?statusFeedback=' + statusFeedback;
             }
