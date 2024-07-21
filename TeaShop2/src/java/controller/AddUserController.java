@@ -18,6 +18,8 @@ import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.logging.Level;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -77,8 +79,7 @@ public class AddUserController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        AdminDAO dao = new AdminDAO();
-        AccountDAO da = new AccountDAO();
+
         String name = request.getParameter("name");
         String email = request.getParameter("email");
         String pass = request.getParameter("pass");
@@ -88,31 +89,87 @@ public class AddUserController extends HttpServlet {
         String role = request.getParameter("role");
         String status = request.getParameter("status");
 
-        int role_id = Integer.parseInt(role);
-        int status_id = Integer.parseInt(status);
-        System.out.println(name);
-        System.out.println(email);
-        System.out.println(pass);
-        System.out.println(phone);
-        System.out.println(gender);
-        System.out.println(address);
-        System.out.println(role);
-        System.out.println(status);
-        Accounts a = da.checkAccountExist(email);
-        if (a == null) {
-            if (role_id == 3) {
-                dao.addUser(email, pass, name, role_id, status_id, phone, gender, address);
-                response.sendRedirect("staffmanager");
-            } else if (role_id == 4) {
-                dao.addUser(email, pass, name, role_id, status_id, phone, gender, address);
-                response.sendRedirect("shippermanager");
-            } else {
-                dao.addUser(email, pass, name, role_id, status_id, phone, gender, address);
-                response.sendRedirect("customerManagement");
-            }
+        // Kiểm tra khoảng trắng trong email, tên người dùng, mật khẩu và nhập lại mật khẩu
+        if (containsSpace(email) || containsSpace(name) || containsSpace(pass)) {
+            request.setAttribute("mess", "Kiểm tra khoảng trắng!");
+            request.setAttribute("email", email);
+            request.setAttribute("pass", pass);
+            request.setAttribute("name", name);
+            request.setAttribute("phone", phone);
+            request.setAttribute("address", address);
+            request.setAttribute("gender", gender);
+            request.getRequestDispatcher("AddUser.jsp").forward(request, response);
+            return;
+        }
+        
+         if (!isValidEmail(email)) {
+            request.setAttribute("mess", "Email không hợp lệ!");
+            request.setAttribute("email", email);
+            request.setAttribute("pass", pass);
+            request.setAttribute("name", name);
+            request.setAttribute("phone", phone);
+            request.setAttribute("address", address);
+            request.setAttribute("gender", gender);
+            request.getRequestDispatcher("AddUser.jsp").forward(request, response);
+            return;
+        }
+         
+        // Kiểm tra số điện thoại không hợp lệ
+        if (phone == null || !phone.matches("0\\d{9}")) {
+            // Số điện thoại không hợp lệ
+            request.setAttribute("mess", "Số điện thoại phải bắt đầu bằng 0 và bao gồm 10 số!");
+            request.setAttribute("name", name);
+            request.setAttribute("email", email);
+            request.setAttribute("pass", pass);
+            request.setAttribute("phone", phone);
+            request.setAttribute("address", address);
+            request.setAttribute("gender", gender);
+            request.getRequestDispatcher("AddUser.jsp").forward(request, response);
+            return;
+        }
+
+        // check password
+        if (pass.length() < 8 || pass.length() > 32) {
+            // pass_word không hợp lệ
+            request.setAttribute("mess", "Mật khẩu phải chứa từ 8-32 ký tự");
+            request.setAttribute("email", email);
+            request.setAttribute("pass", pass);
+            request.setAttribute("name", name);
+            request.setAttribute("phone", phone);
+            request.setAttribute("address", address);
+            request.setAttribute("gender", gender);
+            request.getRequestDispatcher("AddUser.jsp").forward(request, response);
+            return;
         } else {
-            request.setAttribute("error", "This username already exists");
-            request.getRequestDispatcher("view/dashboard/staff1/customerManagement.jsp").forward(request, response);
+            AdminDAO dao = new AdminDAO();
+            AccountDAO da = new AccountDAO();
+            int role_id = Integer.parseInt(role);
+            int status_id = Integer.parseInt(status);
+            System.out.println(name);
+            System.out.println(email);
+            System.out.println(pass);
+            System.out.println(phone);
+            System.out.println(gender);
+            System.out.println(address);
+            System.out.println(role);
+            System.out.println(status);
+            Accounts a = da.checkAccountExist(email);
+            System.out.println(a);
+            if (a == null) {
+                if (role_id == 3) {
+                    dao.addUser(email, pass, name, role_id, status_id, phone, gender, address);
+                    response.sendRedirect("staffmanager");
+                } else if (role_id == 4) {
+                    dao.addUser(email, pass, name, role_id, status_id, phone, gender, address);
+                    response.sendRedirect("shippermanager");
+                } else {
+                    dao.addUser(email, pass, name, role_id, status_id, phone, gender, address);
+                    response.sendRedirect("customerManagement");
+                }
+            } else {
+                request.setAttribute("error", "This username already exists");
+                request.getRequestDispatcher("view/dashboard/staff1/customerManagement.jsp").forward(request, response);
+            }
         }
     }
 
@@ -125,5 +182,22 @@ public class AddUserController extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+    // Hàm kiểm tra khoảng trắng
+
+    private boolean containsSpace(String input) {
+        return input != null && input.contains(" ");
+    }
+    private static final String EMAIL_PATTERN = 
+        "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+
+    private static final Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+
+    private boolean isValidEmail(String email) {
+        if (email == null) {
+            return false;
+        }
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
 
 }

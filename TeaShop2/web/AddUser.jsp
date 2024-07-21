@@ -148,7 +148,7 @@
                     <form id="switchForm"  action="adduser" class="form-horizontal" method="post">
                         <fieldset>
                             <!-- Form Name -->
-                            <legend>Add User </legend>
+                            <legend>Thêm người dùng </legend>
 
                             <section style="background-color: #eee;">
                                 <div class="container py-5">
@@ -185,10 +185,10 @@
                                                 <div class="card-body increase-font">
                                                     <div class="row">
                                                         <div class="col-sm-3">
-                                                            <p class="mb-0">Full Name</p>
+                                                            <p class="mb-0">Tên người dùng</p>
                                                         </div>
                                                         <div class="col-sm-9">
-                                                            <input type="text"  name="name" class="input-like-p" >
+                                                            <input type="text"  name="name" value="${name}" class="input-like-p" required/>
                                                         </div>
                                                     </div>
                                                     <hr>
@@ -197,46 +197,46 @@
                                                             <p class="mb-0">Email</p>
                                                         </div>
                                                         <div class="col-sm-9">
-                                                            <input type="text"  name="email" class="input-like-p" >
+                                                            <input type="text"  name="email" value="${email}" class="input-like-p" required/>
                                                         </div>
                                                     </div>
                                                     <hr>
                                                     <div class="row">
                                                         <div class="col-sm-3">
-                                                            <p class="mb-0">Password</p>
+                                                            <p class="mb-0">Mật khẩu</p>
                                                         </div>
                                                         <div class="col-sm-9">
-                                                            <input type="text"  name="pass" class="input-like-p" >
+                                                            <input type="text"  name="pass" value="${pass}"  class="input-like-p" required/>
                                                         </div>
                                                     </div>
                                                     <hr>
                                                     <div class="row">
                                                         <div class="col-sm-3">
-                                                            <p class="mb-0">Phone</p>
+                                                            <p class="mb-0">Số điện thoại</p>
                                                         </div>
                                                         <div class="col-sm-9">
-                                                            <input type="text"  name="phone" class="input-like-p" >
+                                                            <input type="text"  name="phone" value="${phone}" class="input-like-p" required/>
                                                         </div>
                                                     </div>
                                                     <hr>
                                                     <div class="row">
                                                         <div class="col-sm-3">
-                                                            <p class="mb-0">Gender</p>
+                                                            <p class="mb-0">Giới tính</p>
                                                         </div>
                                                         <div class="col-sm-9">
                                                             <select name="gender" class="input-like-p">
-                                                                <option value="Male">Male</option>
-                                                                <option value="Female">Female</option>                                                          
+                                                                <option value="Male" required="">Male</option>
+                                                                <option value="Female" required="">Female</option>                                                          
                                                             </select>
                                                         </div>
                                                     </div>
                                                     <hr>
                                                     <div class="row">
                                                         <div class="col-sm-3">
-                                                            <p class="mb-0">Address</p>
+                                                            <p class="mb-0">Địa chỉ</p>
                                                         </div>
                                                         <div class="col-sm-9">
-                                                            <input class="input-like-p" type="text"  name="address" >
+                                                            <input class="input-like-p" type="text"  name="address" value="${address}" required/>
                                                         </div>
                                                     </div>
                                                     <hr>
@@ -246,9 +246,9 @@
                                                         </div>
                                                         <div class="col-sm-9">
                                                             <select class="input-like-p" name="role">
-                                                                <option value="1">Admin</option>                                                                  
-                                                                <option value="3">Staff</option>   
-                                                                <option value="4">Shipper</option>      
+                                                                <option value="1" required="">Admin</option>                                                                  
+                                                                <option value="3" required="">Staff</option>   
+                                                                <option value="4" required="">Shipper</option>      
                                                             </select>
 
                                                         </div>
@@ -260,17 +260,18 @@
                                                         </div>
                                                         <div class="col-sm-9" style="display: flex">                                                           
                                                             <select class="input-like-p" name="status">
-                                                                <option value="1">Active</option>   
-                                                                <option value="2">Inactive</option>  
+                                                                <option value="1" required="">Active</option>   
+                                                                <option value="2" required="">Inactive</option>  
                                                             </select>
 
 
                                                         </div>
                                                         <div class="form-group">
                                                             <div class="col-md-8 col-md-offset-4">
-                                                                <button id="singlebutton" name="singlebutton" class="btn btn-primary">ADD</button>
+                                                                <button id="singlebutton" name="singlebutton" class="btn btn-primary">Thêm</button>
                                                             </div>
                                                         </div>
+                                                        <p>${mess}</p>
                                                     </div>
                                                 </div>
                                             </div>
