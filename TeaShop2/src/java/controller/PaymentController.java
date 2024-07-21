@@ -62,32 +62,28 @@ public class PaymentController extends HttpServlet {
 
         String service = request.getParameter("service");
         if (service.equals("pay-online")) {
-            em = session.getAttributeNames();
-            while (em.hasMoreElements()) {
-                String key = em.nextElement();
-                if (key.startsWith("billItem")) {
-                    session.removeAttribute(key);
-                }
-            }
-            session.removeAttribute("formattedDate");
-            session.removeAttribute("formattedTime");
-            
             request.setAttribute("totalCartAmount", totalCartAmount);
             request.getRequestDispatcher("view/cart/pay-via-online.jsp").forward(request, response);
         }
         if (service.equals("pay-on-delivery")) {
-            em = session.getAttributeNames();
-            while (em.hasMoreElements()) {
-                String key = em.nextElement();
-                if (key.startsWith("billItem")) {
-                    session.removeAttribute(key);
-                }
-            }
-            session.removeAttribute("formattedDate");
-            session.removeAttribute("formattedTime");
-            
             request.setAttribute("totalCartAmount", totalCartAmount);
             request.getRequestDispatcher("view/cart/pay-on-delivery.jsp").forward(request, response);
+        }
+        if (service.equals("COD")) {
+            session.setAttribute("payment-flag", "on");
+            String amount = String.valueOf(totalCartAmount);
+            String fullname = request.getParameter("fullname");
+            String address = request.getParameter("address");
+            String district = request.getParameter("district");
+            String ward = request.getParameter("ward");
+            String phone_number = request.getParameter("phone_number");
+            request.setAttribute("amount", amount);
+            request.setAttribute("fullname", fullname);
+            request.setAttribute("address", address);
+            request.setAttribute("district", district);
+            request.setAttribute("ward", ward);
+            request.setAttribute("phone_number", phone_number);
+            request.getRequestDispatcher("view/cart/process-payment.jsp").forward(request, response);
         }
         if (service.equals("VNPay")) {
             String vnp_Version = "2.1.0";
@@ -101,12 +97,12 @@ public class PaymentController extends HttpServlet {
             String address = request.getParameter("address");
             String district = request.getParameter("district");
             String ward = request.getParameter("ward");
-            String phonenumber = request.getParameter("phonenumber");
+            String phonenumber = request.getParameter("phone_number");
 
             session.setAttribute("address", address);
             session.setAttribute("district", district);
             session.setAttribute("ward", ward);
-            session.setAttribute("phonenumber", phonenumber);
+            session.setAttribute("phone_number", phonenumber);
 
             int amount = totalCartAmount * 100;
             Map vnp_Params = new HashMap<>();
