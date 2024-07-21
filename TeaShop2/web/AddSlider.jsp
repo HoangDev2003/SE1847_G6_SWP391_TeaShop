@@ -1,8 +1,3 @@
-<%-- 
-    Document   : EditSlider
-    Created on : Mar 11, 2024, 8:40:27 PM
-    Author     : Acer
---%>
 
 <!DOCTYPE html>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -139,45 +134,46 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h3>Update Slider</h3>
-                        <form method="post" id="addSliderForm" action="updateslider" enctype="multipart/form-data">
-                            <div class="modal-body">                                
-                                <input type="hidden" name="id" value="${requestScope.slider.id}">
-                                <div class="form-group">
-                                    <label>Tên</label>
-                                    <input name="name" type="text" class="form-control" value="${requestScope.slider.name}">
-                                </div>
-                                <div class="form-group">
-                                    <label>Ảnh</label>
-                                    <input type="hidden" name="original_image" value="${requestScope.slider.image}">
-                                    <input name="image" type="file" class="form-control" size="60">
-                                </div>
-                                <div class="form-group">
-                                    <label>Miêu tả</label>
-                                    <input name="description" type="text" class="form-control" value="${requestScope.slider.description}">
-                                </div>
-                                <div class="form-group">
-                                    <label>Url</label>
-                                    <input name="url" type="text" class="form-control" value="${requestScope.slider.url}">
-                                </div>
-                                <div class="form-group">
-                                    <label>Status</label>
-                                    <select name="status" class="form-select" aria-label="Default select example" onchange="updateAction(this)">
-                                        <option value="1" ${requestScope.slider.status == true ? 'selected' : ''}>Active</option>
-                                        <option value="0" ${requestScope.slider.status == false ? 'selected' : ''}>Inactive</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <br/>
-                            <div style="justify-content: flex-start;">
-                                <input type="submit" name="submit" class="btn btn-success" value="Cập nhật">
-                                <button type="button" class="btn btn-secondary" onclick="cancelAdd()">Hủy</button>
-                            </div>
-                        </form>
+                        <h3>Thêm Slider</h3>
+                        <form method="post" id="addSliderForm" action="addslider" enctype="multipart/form-data" onsubmit="return validateForm()">
+            <div class="modal-body">
+              <div class="form-group">
+                <label>Tên</label>
+                <input name="name" type="text" class="form-control" required>
+                <span id="nameError" class="text-danger"></span>
+              </div>
+              <div class="form-group">
+                <label>Ảnh</label>
+                <input name="image" type="file" size="60" class="form-control" required>
+                <span id="imageError" class="text-danger"></span>
+              </div>
+              <div class="form-group">
+                <label>Miêu tả</label>
+                <input name="description" type="text" class="form-control" required>
+                <span id="descriptionError" class="text-danger"></span>
+              </div>
+              <div class="form-group">
+                <label>Url</label>
+                <input name="url" type="text" class="form-control" required>
+                <span id="urlError" class="text-danger"></span>
+              </div>
+              <div class="form-group">
+                <label>Status</label>
+                <select name="status" class="form-select" aria-label="Default select example">
+                  <option value="1">Active</option>
+                  <option value="0">Inactive</option>
+                </select>
+              </div>
+            </div>
+            <br />
+            <div style="justify-content: flex-start;">
+              <input type="submit" name="submit" class="btn btn-success" value="Thêm">
+              <button type="button" class="btn btn-secondary" onclick="cancelAdd()">Hủy</button>
+            </div>
+          </form>
                     </div>
-                    <br/>
                     <div class="container-fluid px-4">
-                        <button type="button" class="btn btn-primary" onclick="window.location.href = 'manageslide'">Quay lại </button>
+                        <a href="manageslide">Back to page</a>
                     </div>
                     <% String updateMessage = (String) request.getAttribute("updateMessage");
                         if (updateMessage != null && !updateMessage.isEmpty()) { %>
@@ -205,17 +201,92 @@
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         <script src="js/datatables-simple-demo.js"></script>
         <script type="text/javascript">
-                            function doDelete(id) {
-                                if (confirm("Do you really want to delete this slider?")) {
-                                    window.location.href = "deleteslider?id=" + id;
-                                }
-                            }
+                                    function doDelete(id) {
+                                        if (confirm("Do you really want to delete this slider?")) {
+                                            window.location.href = "deleteSlider?id=" + id;
+                                        }
+                                    }
         </script>
         <script type="text/javascript">
             function cancelAdd() {
                 // Reset the form
                 document.getElementById("addSliderForm").reset();
             }
+            
+            </script>
+        <script type="text/javascript">
+            function validateForm() {
+  // Get the input values
+  const nameInput = document.getElementById('name');
+  const imageInput = document.getElementById('image');
+  const descriptionInput = document.getElementById('description');
+  const urlInput = document.getElementById('url');
+
+  // Clear any previous error messages
+  clearErrorMessages();
+
+  // Validate name
+  const nameValue = nameInput.value.trim();
+  if (nameValue.length === 0) {
+    showError('nameError', 'Tên không được để trống');
+    return false;
+  } else if (nameValue.match(/[^a-zA-Z0-9\s]/g)) {
+    showError('nameError', 'Tên chỉ được chứa chữ cái, số và dấu cách');
+    return false;
+  }
+
+  // Validate image
+  const imageFile = imageInput.files[0];
+  if (!imageFile) {
+    showError('imageError', 'Vui lòng chọn ảnh');
+    return false;
+  } else if (imageFile.size > 1024 * 1024) {
+    showError('imageError', 'Ảnh tối đa 1MB');
+    return false;
+  } else if (!imageFile.type.match(/image\//)) {
+    showError('imageError', 'Chỉ chọn ảnh');
+    return false;
+  }
+
+  // Validate description
+  const descriptionValue = descriptionInput.value.trim();
+  if (descriptionValue.length === 0) {
+    showError('descriptionError', 'Mô tả không được để trống');
+    return false;
+  } else if (descriptionValue.length > 255) {
+    showError('descriptionError', 'Mô tả tối đa 255 ký tự');
+    return false;
+  }
+
+  // Validate url
+  const urlValue = urlInput.value.trim();
+  if (urlValue.length === 0) {
+    showError('urlError', 'URL không được để trống');
+    return false;
+  } else if (!urlValue.match(/^(https?:\/\/)(www.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+~#?&//=]*)$/)) {
+    showError('urlError', 'URL không hợp lệ');
+    return false;
+  }
+
+  // If all validations pass, return true to allow form submission
+  return true;
+}
+
+// Function to clear error messages
+function clearErrorMessages() {
+  const errorElements = document.querySelectorAll('.text-danger');
+  for (const errorElement of errorElements) {
+    errorElement.textContent = '';
+  }
+}
+
+// Function to show error message
+function showError(errorId, errorMessage) {
+  const errorElement = document.getElementById(errorId);
+  errorElement.textContent = errorMessage;
+}
+
         </script>
     </body>
 </html>
+

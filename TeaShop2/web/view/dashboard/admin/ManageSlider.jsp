@@ -86,7 +86,7 @@
                         <div class="card mb-4">
                             <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
                                 <i class="fas fa-table me-1"></i>
-                                <a href="EditSlider.jsp" class="btn btn-success" style="display: flex; justify-content: center; align-items: center;">
+                                <a href="AddSlider.jsp" class="btn btn-success" style="display: flex; justify-content: center; align-items: center;">
                                     <i class="material-icons"></i> <span>Thêm mới slide</span>
                                 </a>
                             </div>

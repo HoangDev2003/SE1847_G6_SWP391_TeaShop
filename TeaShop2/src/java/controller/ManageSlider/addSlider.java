@@ -54,7 +54,7 @@ public class addSlider extends HttpServlet {
         request.setAttribute("updateMessage", "Add Successfully!");
         // Redirects to the management page
         //response.sendRedirect("manageSlider");  
-        request.getRequestDispatcher("editSlider.jsp").forward(request, response);
+        request.getRequestDispatcher("AddSlider.jsp").forward(request, response);
     }
 
     @Override
