@@ -41,12 +41,18 @@ public class StaffDAO extends DBContext {
                 order = new Orders();
                 order.order_id = rs.getInt("order_id");
                 int account_id = rs.getInt("account_id");
+                order.setAccount(new AccountDAO().getAccountByAccountID(rs.getInt("account_id")));
                 order.phone_number = rs.getString("phone_number");
                 order.full_name = rs.getString("full_name");
                 order.status = (new StatusDAO().getStatusByStatusID(rs.getInt("status_id")));
                 order.orderDetails = (new OrderDetailsDAO().findByOrderId(rs.getInt("order_id")));
                 order.total_amount = rs.getInt("total_amount");
                 order.setOrder_date(rs.getTimestamp("order_date"));
+                order.setEstimated_delivery_date(rs.getTimestamp("estimated_delivery_date"));
+                order.setShipper_delivery_time(rs.getTimestamp("shipper_delivery_time"));
+                order.setNote(rs.getString("note"));
+                order.setShipper_note(rs.getString("shipper_note"));
+                order.setStaff_note(rs.getString("staff_note"));
                 order.note = rs.getString("note");
                 order.payment_method = rs.getString("payment_method");
                 order.address = rs.getString("address");
@@ -94,11 +100,16 @@ public class StaffDAO extends DBContext {
             while (rs.next()) {
                 order = new Orders();
                 order.order_id = rs.getInt("order_id");
+                 order.setAccount(new AccountDAO().getAccountByAccountID(rs.getInt("account_id")));
                 order.status = (new StatusDAO().getStatusByStatusID(rs.getInt("status_id")));
                 order.orderDetails = (new OrderDetailsDAO().findByOrderId(rs.getInt("order_id")));
                 order.total_amount = rs.getInt("total_amount");
                 order.setOrder_date(rs.getTimestamp("order_date"));
-                order.note = rs.getString("note");
+                order.setEstimated_delivery_date(rs.getTimestamp("estimated_delivery_date"));
+                order.setShipper_delivery_time(rs.getTimestamp("shipper_delivery_time"));
+                order.setNote(rs.getString("note"));
+                order.setShipper_note(rs.getString("shipper_note"));
+                order.setStaff_note(rs.getString("staff_note"));
                 order.phone_number = rs.getString("phone_number");
                 order.full_name = rs.getString("full_name");
                 order.address = rs.getString("address");
