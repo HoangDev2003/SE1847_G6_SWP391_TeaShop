@@ -52,16 +52,7 @@ public class OrderInformationController extends HttpServlet {
             Orders orderInfo = orderDAO.findByOrderId(orderId);
             Accounts accInfo = orderDetailsDAO.accInfo(orderId);
 
-            // Calculate the total order amount
-            int totalOrderAmount = 0;
-            for (OrderDetails item : infoList) {
-                int price = item.product.price; // Convert price to integer
-                int quantity = item.quantity; // Convert quantity to integer
-                totalOrderAmount += price * quantity; // Calculate total order amount
-            }
 
-            // Set the attributes to be accessed in the JSP page
-            request.setAttribute("totalOrderAmount", totalOrderAmount);
             request.setAttribute("infoList", infoList);
             request.setAttribute("accInfo", accInfo);
             request.setAttribute("orderInfo", orderInfo);

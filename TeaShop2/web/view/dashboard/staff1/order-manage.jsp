@@ -79,6 +79,9 @@
                                             <c:when test="${current_status_id == 4}">
                                                 <h4>Hiện tại không có đơn hàng đã hoàn thành</h4>
                                             </c:when>
+                                            <c:when test="${current_status_id == 6}">
+                                                <h4>Hiện tại không có đơn hàng đã bị hủy</h4>
+                                            </c:when>
                                         </c:choose>
                                     </div>
                                 </div>
@@ -108,6 +111,7 @@
                                             <p>Số điện thoại: ${p.phone_number}</p>
                                             <p>Ngày: ${p.formattedOrderDate}</p>
                                             <p>Tổng tiền hóa đơn: <fmt:formatNumber value="${p.total_amount}" type="number" groupingUsed="true"/> đồng</p>
+                                            <p>Phương thức thanh toán: ${p.payment_method}</p>
                                             <p>Ghi chú: ${p.note}</p>
                                         </div>
                                         <div class="col-lg-6">
@@ -152,65 +156,115 @@
                                         <div class="col-lg-3">
                                             <h5>Trạng thái: ${p.status.status_name}</h5>
                                             <c:choose>
-                                                <c:when test="${current_status_id == 0}">
+    <c:when test="${current_status_id == 0}">
+        <c:choose>
+            <c:when test="${p.status.status_id == 1}">
+                <!-- Confirm Order Form -->
+                <form action="Staff" method="post" onsubmit="return confirm('Bạn có chắc chắn muốn xác nhận đơn hàng?')">
+                    <input type="hidden" name="service" value="update">
+                    <input type="hidden" name="order_id" value="${p.order_id}">
+                    <input type="hidden" name="current_status_id" value="${current_status_id}">
+                    <input type="hidden" name="status_id" value="2">
+                    <div style="display: flex; align-items: center;">
+                        <button type="submit" class="btn border border-secondary rounded-pill px-3 confirm-green custom-btn">Xác nhận đơn hàng</button>
+                    </div>
+                </form>
 
-                                                    <c:choose>
-                                                        <c:when test="${p.status.status_id == 1}">
-                                                            <form action="Staff" method="post" onsubmit="return confirm('Bạn có chắc chắn muốn xác nhận đơn hàng?')">
-                                                                <input type="hidden" name="service" value="update">
-                                                                <input type="hidden" name="order_id" value="${p.order_id}">
-                                                                <input type="hidden" name="current_status_id" value="${current_status_id}">
-                                                                <input type="hidden" name="status_id" value="2">
-                                                                <div style="display: flex; align-items: center;">
-                                                                    <button type="submit" class="btn border border-secondary rounded-pill px-3 confirm-green custom-btn">Xác nhận đơn hàng</button>
-                                                                </div>
-                                                            </form>
+                <!-- Cancel Order Form -->
+                <form action="Staff" method="post" onsubmit="return validateRefundForm(this)">
+                    <input type="hidden" name="service" value="refund">
+                    <input type="hidden" name="order_id" value="${p.order_id}">
+                    <input type="hidden" name="amount" value="${p.total_amount}">
+                    <input type="hidden" name="current_status_id" value="${current_status_id}">
+                    <input type="hidden" name="payment_method" value="${p.payment_method}">
+                    <input type="hidden" name="status_id" value="6">
+                    <div style="display: flex; align-items: center; margin-top: 16px;">
+                        <button type="submit" class="btn border border-secondary rounded-pill px-3 confirm-red custom-btn">Huỷ đơn hàng</button>
+                    </div>
+                </form>
 
-                                                            <div style="display: flex; align-items: center; margin-top: 16px;">
-                                                                <button type="submit" class="btn border border-secondary rounded-pill px-3 custom-btn" disabled>Đã xong đơn hàng</button>
-                                                                <span style="color: red; margin-left: 10px;">Chờ xác nhận</span>
-                                                            </div>
-                                                        </c:when>
+                <!-- Complete Order Button -->
+                <div style="display: flex; align-items: center; margin-top: 16px;">
+                    <button type="submit" class="btn border border-secondary rounded-pill px-3 custom-btn" disabled>Đã xong đơn hàng</button>
+                    <span style="color: red; margin-left: 10px;">Chờ xác nhận</span>
+                </div>
+            </c:when>
 
-                                                        <c:when test="${p.status.status_id == 2}">
-                                                            <div style="display: flex; align-items: center;">
-                                                                <button type="submit" class="btn border border-secondary rounded-pill px-3 custom-btn" disabled>Xác nhận đơn hàng</button>
-                                                                <span style="color: red; margin-left: 10px;">Đã xác nhận</span>
-                                                            </div>
+            <c:when test="${p.status.status_id == 2}">
+                <!-- Confirm Order Form (Already Confirmed) -->
+                <div style="display: flex; align-items: center;">
+                    <button type="submit" class="btn border border-secondary rounded-pill px-3 custom-btn" disabled>Xác nhận đơn hàng</button>
+                    <span style="color: red; margin-left: 10px;">Đã xác nhận</span>
+                </div>
 
-                                                            <form action="Staff" method="post" onsubmit="return confirm('Bạn có chắc chắn rằng đơn hàng đã hoàn thành?')">
-                                                                <input type="hidden" name="service" value="update">
-                                                                <input type="hidden" name="order_id" value="${p.order_id}">
-                                                                <input type="hidden" name="current_status_id" value="${current_status_id}">
-                                                                <input type="hidden" name="status_id" value="3">
-                                                                <div style="display: flex; align-items: center; margin-top: 16px;">
-                                                                    <button type="submit" class="btn border border-secondary rounded-pill px-3 custom-btn confirm-green">Đã xong đơn hàng</button>
-                                                                </div>
-                                                            </form>
-                                                        </c:when>
-                                                    </c:choose>
-                                                </c:when>
+                <!-- Complete Order Form -->
+                <form action="Staff" method="post" onsubmit="return confirm('Bạn có chắc chắn rằng đơn hàng đã hoàn thành?')">
+                    <input type="hidden" name="service" value="update">
+                    <input type="hidden" name="order_id" value="${p.order_id}">
+                    <input type="hidden" name="current_status_id" value="${current_status_id}">
+                    <input type="hidden" name="status_id" value="3">
+                    <div style="display: flex; align-items: center; margin-top: 16px;">
+                        <button type="submit" class="btn border border-secondary rounded-pill px-3 custom-btn confirm-green">Đã xong đơn hàng</button>
+                    </div>
+                </form>
+            </c:when>
+        </c:choose>
+    </c:when>
 
-                                                <c:when test="${p.status.status_id == 1}">
-                                                    <form action="Staff" method="post" onsubmit="return confirm('Bạn có chắc chắn muốn xác nhận đơn hàng?')">
-                                                        <input type="hidden" name="service" value="update">
-                                                        <input type="hidden" name="order_id" value="${p.order_id}">
-                                                        <input type="hidden" name="current_status_id" value="${current_status_id}">
-                                                        <input type="hidden" name="status_id" value="2">
-                                                        <button type="submit" class="btn border border-secondary rounded-pill px-3 custom-btn confirm-green">Xác nhận đơn hàng</button>
-                                                    </form>
+    <c:when test="${p.status.status_id == 1}">
+        <!-- Confirm Order Form -->
+        <form action="Staff" method="post" onsubmit="return confirm('Bạn có chắc chắn muốn xác nhận đơn hàng?')">
+            <input type="hidden" name="service" value="update">
+            <input type="hidden" name="order_id" value="${p.order_id}">
+            <input type="hidden" name="current_status_id" value="${current_status_id}">
+            <input type="hidden" name="status_id" value="2">
+            <button type="submit" class="btn border border-secondary rounded-pill px-3 custom-btn confirm-green">Xác nhận đơn hàng</button>
+        </form>
 
-                                                </c:when>
-                                                <c:when test="${p.status.status_id == 2}">
-                                                    <form action="Staff" method="post" onsubmit="return confirm('Bạn có chắc chắn rằng đơn hàng đã hoàn thành?')">
-                                                        <input type="hidden" name="service" value="update">
-                                                        <input type="hidden" name="order_id" value="${p.order_id}">
-                                                        <input type="hidden" name="current_status_id" value="${current_status_id}">
-                                                        <input type="hidden" name="status_id" value="3">
-                                                        <button type="submit" class="btn border border-secondary rounded-pill px-3 custom-btn confirm-green">Đã xong đơn hàng</button>
-                                                    </form>
-                                                </c:when>
-                                            </c:choose>
+        <!-- Cancel Order Form -->
+        <form action="Staff" method="post" onsubmit="return validateRefundForm(this)">
+            <input type="hidden" name="service" value="refund">
+            <input type="hidden" name="order_id" value="${p.order_id}">
+            <input type="hidden" name="amount" value="${p.total_amount}">
+            <input type="hidden" name="current_status_id" value="${current_status_id}">
+            <input type="hidden" name="payment_method" value="${p.payment_method}">
+            <input type="hidden" name="status_id" value="6">
+            <div style="display: flex; align-items: center; margin-top: 16px;">
+                <button type="submit" class="btn border border-secondary rounded-pill px-3 confirm-red custom-btn">Huỷ đơn hàng</button>
+            </div>
+        </form>
+    </c:when>
+
+    <c:when test="${p.status.status_id == 2}">
+        <!-- Complete Order Form -->
+        <form action="Staff" method="post" onsubmit="return confirm('Bạn có chắc chắn rằng đơn hàng đã hoàn thành?')">
+            <input type="hidden" name="service" value="update">
+            <input type="hidden" name="order_id" value="${p.order_id}">
+            <input type="hidden" name="current_status_id" value="${current_status_id}">
+            <input type="hidden" name="status_id" value="3">
+            <button type="submit" class="btn border border-secondary rounded-pill px-3 custom-btn confirm-green">Đã xong đơn hàng</button>
+        </form>
+    </c:when>
+</c:choose>
+
+<script>
+    function validateRefundForm(form) {
+        const staffNote = prompt("Vui lòng nhập lý do huỷ đơn hàng:");
+        if (staffNote && staffNote.trim() !== "") {
+            // Add the staff_note to the form
+            const noteInput = document.createElement('input');
+            noteInput.type = 'hidden';
+            noteInput.name = 'staff_note';
+            noteInput.value = staffNote.trim();
+            form.appendChild(noteInput);
+            return true; // Allow form submission
+        } else {
+            alert("Bạn phải nhập lý do huỷ đơn hàng.");
+            return false; // Prevent form submission
+        }
+    }
+</script>
+
                                         </div>
                                     </div>
                                 </div>

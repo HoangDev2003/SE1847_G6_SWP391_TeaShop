@@ -22,8 +22,8 @@ import java.util.Vector;
  */
 public class OrdersDAO extends DBContext {
 
-    public int insertOrder(Integer accountId, String orderDate, String estimatedDeliveryDate, int totalAmount, int statusId, String note, String paymentMethod, String phoneNumber, String fullName, String address) {
-        String insertSQL = "INSERT INTO [dbo].[Orders] ([account_id], [order_date], [estimated_delivery_date], [total_amount], [status_id], [note], [payment_method], [phone_number], [full_name], [address]) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    public int insertOrder(Integer accountId, String orderDate, String estimatedDeliveryDate, int totalAmount, int statusId, String note, String paymentMethod, String phoneNumber, String fullName, String address, String vnp_TxnRef) {
+        String insertSQL = "INSERT INTO [dbo].[Orders] ([account_id], [order_date], [estimated_delivery_date], [total_amount], [status_id], [note], [payment_method], [phone_number], [full_name], [address] ,[vnp_TxnRef]) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         int orderId = -1; // Default value if insertion fails
 
         try {
@@ -45,6 +45,7 @@ public class OrdersDAO extends DBContext {
             statement.setString(8, phoneNumber);
             statement.setString(9, fullName);
             statement.setString(10, address);
+            statement.setString(11, vnp_TxnRef);
 
             // Execute the update
             int affectedRows = statement.executeUpdate();
@@ -129,7 +130,10 @@ public class OrdersDAO extends DBContext {
         List<Orders> ordersList = new ArrayList<>();
         Orders order = null;
         connection = getConnection(); // Obtain database connection
-        String sql = "SELECT * FROM Orders WHERE account_id = ?";
+        String sql = "SELECT * \n"
+                + "FROM Orders \n"
+                + "WHERE account_id = ? \n"
+                + "ORDER BY order_date DESC;";
 
         try {
             PreparedStatement pre = connection.prepareStatement(
@@ -179,7 +183,11 @@ public class OrdersDAO extends DBContext {
     public List<Orders> findByAccountIdAndStatusId(int accountId, int statusId) {
         List<Orders> ordersList = new ArrayList<>();
         Orders order = null;
-        String sql = "SELECT * FROM Orders WHERE account_id = ? and status_id = ?";
+        String sql = "SELECT * \n"
+                + "FROM Orders \n"
+                + "WHERE account_id = ? \n"
+                + "  AND status_id = ? \n"
+                + "ORDER BY order_date DESC;";
 
         try {
             connection = getConnection();
@@ -303,6 +311,7 @@ public class OrdersDAO extends DBContext {
             }
         }
     }
+
     public List<Orders> getOrderByStatusCompeleteAndAccountID(int account_id) {
         List<Orders> ordersList = new ArrayList<>();
         connection = getConnection();
@@ -357,14 +366,6 @@ public class OrdersDAO extends DBContext {
         return ordersList;
     }
 
-    public static void main(String[] args) {
-
-        OrdersDAO orderDAO = new OrdersDAO();
-        List<Orders> orderlist = orderDAO.getAllListOrder();
-        System.out.println(orderlist.size());
-
-    }
-
     public List<Orders> getOrderByStatusCompeleteAndAccountIDAndFeedback(int account_id, int statusFeedback) {
         List<Orders> ordersList = new ArrayList<>();
         Orders order = null;
@@ -392,7 +393,7 @@ public class OrdersDAO extends DBContext {
                 order.setFull_name(rs.getString("full_name"));
                 order.setPayment_method(rs.getString("payment_method"));
                 order.setPhone_number(rs.getString("phone_number"));
-                
+
                 ordersList.add(order);
             }
         } catch (Exception e) {
@@ -432,7 +433,7 @@ public class OrdersDAO extends DBContext {
                 order.setFull_name(rs.getString("full_name"));
                 order.setPayment_method(rs.getString("payment_method"));
                 order.setPhone_number(rs.getString("phone_number"));
-                
+
                 ordersList.add(order);
             }
 
@@ -464,60 +465,85 @@ public class OrdersDAO extends DBContext {
             ex.printStackTrace();
         }
     }
+
     public void updateShipperNote(int orderId, String shipperNote) {
-    
-    
-    String query = "UPDATE Orders SET shipper_note = ? WHERE order_id = ?";
-    try {
-        
-        connection = getConnection();
-        PreparedStatement ps = connection.prepareStatement(query);
-        ps.setString(1, shipperNote);
-        ps.setInt(2, orderId);
-        ps.executeUpdate();
-    } catch (SQLException e) {
-        e.printStackTrace();
-        // Handle SQLException
-    } finally {
+
+        String query = "UPDATE Orders SET shipper_note = ? WHERE order_id = ?";
         try {
+
+            connection = getConnection();
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setString(1, shipperNote);
+            ps.setInt(2, orderId);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle SQLException
+        } finally {
+            try {
                 if (connection != null) {
                     connection.close(); // Close the database connection
                 }
             } catch (SQLException e) {
                 Logger.getLogger(OrdersDAO.class.getName()).log(Level.SEVERE, null, e);
             }
+        }
     }
-}
+    
+    public void updateStaffNote(int orderId, String staffNote) {
+
+        String query = "UPDATE Orders SET staff_note = ? WHERE order_id = ?";
+        try {
+
+            connection = getConnection();
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setString(1, staffNote);
+            ps.setInt(2, orderId);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle SQLException
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close(); // Close the database connection
+                }
+            } catch (SQLException e) {
+                Logger.getLogger(OrdersDAO.class.getName()).log(Level.SEVERE, null, e);
+            }
+        }
+    }
+
     //huydx
     public Vector<OrderChart> get7OrderChartByMonth() {
         connection = getConnection();
         Vector<OrderChart> vector = new Vector<>();
-        String query = "	SELECT\n" +
-"    [order_date],\n" +
-"    [done_order],\n" +
-"    [total_order],\n" +
-"    [success_rate],\n" +
-"    [revenue]\n" +
-"FROM (\n" +
-"    SELECT\n" +
-"        DATEADD(WEEK, DATEDIFF(WEEK, 0, [O].[order_date]), 0) AS [order_date],\n" +
-"        SUM(CASE WHEN [O].[status] = 1 THEN 1 ELSE 0 END) AS [done_order],\n" +
-"        COUNT([O].[order_id]) AS [total_order],\n" +
-"        CONVERT(decimal(5,2), \n" +
-"            (SUM(CASE WHEN [O].[status] = 1 THEN 1 ELSE 0 END) * 100.0) \n" +
-"            / NULLIF(COUNT([O].[order_id]), 0)\n" +
-"        ) AS [success_rate],\n" +
-"        SUM(CASE WHEN [O].[status] = 1 THEN [O].[total_amount] ELSE 0 END) AS [revenue]\n" +
-"    FROM\n" +
-"        Orders AS [O]\n" +
-"    WHERE\n" +
-"        [O].[status] IN (0, 1) -- Wait, Process, Done\n" +
-"        AND [O].[order_date] >= DATEADD(WEEK, -8, GETDATE()) -- 7 weeks ago from current date\n" +
-"    GROUP BY\n" +
-"        DATEADD(WEEK, DATEDIFF(WEEK, 0, [O].[order_date]), 0)\n" +
-") AS subquery\n" +
-"ORDER BY\n" +
-"    [order_date] DESC;";
+        String query = "	SELECT\n"
+                + "    [order_date],\n"
+                + "    [done_order],\n"
+                + "    [total_order],\n"
+                + "    [success_rate],\n"
+                + "    [revenue]\n"
+                + "FROM (\n"
+                + "    SELECT\n"
+                + "        DATEADD(WEEK, DATEDIFF(WEEK, 0, [O].[order_date]), 0) AS [order_date],\n"
+                + "        SUM(CASE WHEN [O].[status] = 1 THEN 1 ELSE 0 END) AS [done_order],\n"
+                + "        COUNT([O].[order_id]) AS [total_order],\n"
+                + "        CONVERT(decimal(5,2), \n"
+                + "            (SUM(CASE WHEN [O].[status] = 1 THEN 1 ELSE 0 END) * 100.0) \n"
+                + "            / NULLIF(COUNT([O].[order_id]), 0)\n"
+                + "        ) AS [success_rate],\n"
+                + "        SUM(CASE WHEN [O].[status] = 1 THEN [O].[total_amount] ELSE 0 END) AS [revenue]\n"
+                + "    FROM\n"
+                + "        Orders AS [O]\n"
+                + "    WHERE\n"
+                + "        [O].[status] IN (0, 1) -- Wait, Process, Done\n"
+                + "        AND [O].[order_date] >= DATEADD(WEEK, -8, GETDATE()) -- 7 weeks ago from current date\n"
+                + "    GROUP BY\n"
+                + "        DATEADD(WEEK, DATEDIFF(WEEK, 0, [O].[order_date]), 0)\n"
+                + ") AS subquery\n"
+                + "ORDER BY\n"
+                + "    [order_date] DESC;";
         try {
             PreparedStatement st = connection.prepareStatement(query);
             ResultSet rs = st.executeQuery();
@@ -529,35 +555,36 @@ public class OrdersDAO extends DBContext {
         }
         return vector;
     }
+
     public Vector<OrderChart> get7OrderChartByDay() {
         connection = getConnection();
         Vector<OrderChart> vector = new Vector<>();
-        String query = "SELECT\n" +
-"    [order_date],\n" +
-"    [done_order],\n" +
-"    [total_order],\n" +
-"    [success_rate],\n" +
-"    [revenue]\n" +
-"FROM (\n" +
-"    SELECT\n" +
-"        CAST([O].[order_date] AS DATE) AS [order_date],\n" +
-"        SUM(CASE WHEN [O].[status] = 1 THEN 1 ELSE 0 END) AS [done_order],\n" +
-"        COUNT([O].[order_id]) AS [total_order],\n" +
-"        CONVERT(decimal(5,2), \n" +
-"            (SUM(CASE WHEN [O].[status] = 1 THEN 1 ELSE 0 END) * 100.0) \n" +
-"            / NULLIF(COUNT([O].[order_id]), 0)\n" +
-"        ) AS [success_rate],\n" +
-"        SUM(CASE WHEN [O].[status] = 1 THEN [O].[total_amount] ELSE 0 END) AS [revenue]\n" +
-"    FROM\n" +
-"        Orders AS [O]\n" +
-"    WHERE\n" +
-"        [O].[status] IN (0, 1) -- Wait, Process, Done\n" +
-"        AND [O].[order_date] >= DATEADD(DAY, -7, GETDATE()) -- Last 7 days (excluding today)\n" +
-"    GROUP BY\n" +
-"        CAST([O].[order_date] AS DATE)\n" +
-") AS subquery\n" +
-"ORDER BY\n" +
-"    [order_date] DESC;";
+        String query = "SELECT\n"
+                + "    [order_date],\n"
+                + "    [done_order],\n"
+                + "    [total_order],\n"
+                + "    [success_rate],\n"
+                + "    [revenue]\n"
+                + "FROM (\n"
+                + "    SELECT\n"
+                + "        CAST([O].[order_date] AS DATE) AS [order_date],\n"
+                + "        SUM(CASE WHEN [O].[status] = 1 THEN 1 ELSE 0 END) AS [done_order],\n"
+                + "        COUNT([O].[order_id]) AS [total_order],\n"
+                + "        CONVERT(decimal(5,2), \n"
+                + "            (SUM(CASE WHEN [O].[status] = 1 THEN 1 ELSE 0 END) * 100.0) \n"
+                + "            / NULLIF(COUNT([O].[order_id]), 0)\n"
+                + "        ) AS [success_rate],\n"
+                + "        SUM(CASE WHEN [O].[status] = 1 THEN [O].[total_amount] ELSE 0 END) AS [revenue]\n"
+                + "    FROM\n"
+                + "        Orders AS [O]\n"
+                + "    WHERE\n"
+                + "        [O].[status] IN (0, 1) -- Wait, Process, Done\n"
+                + "        AND [O].[order_date] >= DATEADD(DAY, -7, GETDATE()) -- Last 7 days (excluding today)\n"
+                + "    GROUP BY\n"
+                + "        CAST([O].[order_date] AS DATE)\n"
+                + ") AS subquery\n"
+                + "ORDER BY\n"
+                + "    [order_date] DESC;";
         try {
             PreparedStatement st = connection.prepareStatement(query);
             ResultSet rs = st.executeQuery();
@@ -568,6 +595,36 @@ public class OrdersDAO extends DBContext {
             e.printStackTrace();
         }
         return vector;
+    }
+
+    public boolean checkDuplicatevnp_TxnRef(String vnp_TxnRef) {
+        boolean flag = false;
+
+        try {
+            connection = getConnection(); // Obtain database connection
+            String sql = "SELECT [vnp_TxnRef] FROM [dbo].[Orders] WHERE vnp_TxnRef IS NOT NULL";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                String existingVnpTxnRef = resultSet.getString("vnp_TxnRef");
+                if (vnp_TxnRef.equals(existingVnpTxnRef)) {
+                    flag = true;
+                    break;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return flag;
     }
 
 }

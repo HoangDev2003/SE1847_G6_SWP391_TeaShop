@@ -54,19 +54,6 @@
         <!-- Navbar start -->
         <div class="container-fluid fixed-top">
             <jsp:include page="../common/homePage/header-start.jsp"></jsp:include>
-            <div class="container topbar bg-primary d-none d-lg-block">
-                <div class="d-flex justify-content-between">
-                    <div class="top-info ps-2">
-                        <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#" class="text-white">123 Street, New York</a></small>
-                        <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i><a href="#" class="text-white">Email@Example.com</a></small>
-                    </div>
-                    <div class="top-link pe-2">
-                        <a href="#" class="text-white"><small class="text-white mx-2">Privacy Policy</small>/</a>
-                        <a href="#" class="text-white"><small class="text-white mx-2">Terms of Use</small>/</a>
-                        <a href="#" class="text-white"><small class="text-white ms-2">Sales and Refunds</small></a>
-                    </div>
-                </div>
-            </div>
             <div class="container px-0">
                 <nav class="navbar navbar-light bg-white navbar-expand-xl">
                     <a href="index.html" class="navbar-brand"><h1 class="text-primary display-6"></h1></a>
@@ -82,17 +69,6 @@
                             <a href="${pageContext.request.contextPath}/home" class="nav-item nav-link">Home</a>
                             <a href ="${pageContext.request.contextPath}/blog" class="nav-item nav-link">Blog</a>
                             <a href="${pageContext.request.contextPath}/shop" class="nav-item nav-link">Shop</a>
-
-                            <div class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
-                                <div class="dropdown-menu m-0 bg-secondary rounded-0">
-                                    <a href="cart.jsp" class="dropdown-item">Cart</a>
-                                    <a href="chackout.jsp" class="dropdown-item">Checkout</a>
-                                    <a href="testimonial.jsp" class="dropdown-item">Testimonial</a>
-                                    <a href="404.jsp" class="dropdown-item">404 Page</a>
-                                </div>
-                            </div>
-                            <a href="contact.jsp" class="nav-item nav-link">Contact</a>
                         </div>
                         <div class="d-flex m-3 me-0">
                             <%
@@ -213,7 +189,17 @@
                                                         <div class="col-md-8 col-lg-8 col-xl-8">
                                                             <p>ID sản phẩm: ${cartItem.product.product_id}</p>
                                                             <p>Tên sản phẩm: ${cartItem.product.product_name}</p>
-                                                            <p>Giá tiền: <fmt:formatNumber value="${cartItem.product.price}" type="number" groupingUsed="true"/> đồng</p>
+                                                            <c:choose>
+                                                                <c:when test="${empty cartItem.topping}">
+                                                                    <p id="price-${cartItem.product.product_id}">Giá tiền: <fmt:formatNumber value="${cartItem.product.price}" type="number" groupingUsed="true"/> đồng</p>
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                                    <p id="price-${cartItem.product.product_id}">
+                                                                        Giá tiền: <fmt:formatNumber value="${cartItem.product.price - (6000 * cartItem.topping.size())}" type="number" groupingUsed="true"/> đồng
+                                                                        (+ <fmt:formatNumber value="${6000 * cartItem.topping.size()}" type="number" groupingUsed="true"/> đồng)
+                                                                    </p>
+                                                                </c:otherwise>
+                                                            </c:choose>
                                                             <form>
                                                                 <p>Số lượng:
                                                                 <div class="quantity-input">
@@ -310,24 +296,103 @@
                                                                     }
                                                                 }
                                                             </script>
-                                                            <form action="CartDetails" method="post" id="topping-form-${status.index}">
-                                                                <p>Toppings:</p>
-                                                                <c:forEach var="topping" items="${toppingList}">
-                                                                    <div>
-                                                                        <input type="checkbox" name="topping_names" value="${topping}" id="topping-${status.index}-${topping}"
-                                                                               <c:forEach var="selectedTopping" items="${cartItem.topping}">
-                                                                                   <c:if test="${selectedTopping.topping_name == topping}">checked</c:if>
-                                                                               </c:forEach>
-                                                                               >
-                                                                        <label for="topping-${status.index}-${topping}">${topping}</label>
-                                                                    </div>
-                                                                </c:forEach>
+                                                            <form id="topping-form-${status.index}" onsubmit="updateToppings(event, ${cartItem.product.product_id}, ${status.index})">
+                                                                <p>Toppings: </p>
+                                                                <p>(+ 6,000 đồng/ 1 topping. Tối đa 3 topping)</p>
+                                                                <div class="topping-list" id="topping-list-${status.index}">
+                                                                    <c:forEach var="topping" items="${toppingList}">
+                                                                        <div>
+                                                                            <input type="checkbox" name="topping_names" value="${topping}" id="topping-${status.index}-${topping}"
+                                                                                   <c:forEach var="selectedTopping" items="${cartItem.topping}">
+                                                                                       <c:if test="${selectedTopping.topping_name == topping}">checked</c:if>
+                                                                                   </c:forEach>
+                                                                                   onchange="checkToppingLimit(${status.index}, this)">
+                                                                            <label for="topping-${status.index}-${topping}">${topping}</label>
+                                                                        </div>
+                                                                    </c:forEach>
+                                                                </div>
                                                                 <input type="hidden" name="product_id" value="${cartItem.product.product_id}">
                                                                 <input type="hidden" name="service" value="updateTopping">
-                                                                <button type="submit">Update Toppings</button>
+                                                                <button type="submit" id="update-button-${status.index}" style="display:none;">Update Toppings</button>
                                                             </form>
-                                                            <p id="total-price-${cartItem.product.product_id}">Tổng tiền: <fmt:formatNumber value="${cartItem.product.price * cartItem.quantity}" type="number" groupingUsed="true"/> đồng</p>
+                                                            <script>
+                                                                function updateToppings(event, productId, formIndex) {
+                                                                    event.preventDefault(); // Prevent the form from submitting the traditional way
 
+                                                                    let form = $('#topping-form-' + formIndex);
+                                                                    let toppingData = form.serializeArray();
+
+                                                                    $.ajax({
+                                                                        url: 'CartDetails',
+                                                                        type: 'POST',
+                                                                        data: toppingData,
+                                                                        success: function (response) {
+                                                                            console.log('Success:', response);
+
+                                                                            // Parse the JSON response manually
+                                                                            let totalPrice = response.totalPrice;
+                                                                            let totalCartAmount = response.totalCartAmount;
+                                                                            let pricePerProduct = response.pricePerProduct;
+                                                                            let toppingCount = response.toppingCount;
+
+                                                                            // Format total price with commas every 3 digits
+                                                                            let formattedPrice = numberWithCommas(totalPrice);
+                                                                            // Update the total price dynamically
+                                                                            $('#total-price-' + productId).text('Tổng tiền: ' + formattedPrice + ' đồng');
+
+                                                                            // Format total cart amount with commas every 3 digits
+                                                                            let formattedCartAmount = numberWithCommas(totalCartAmount);
+                                                                            // Update the total cart amount dynamically
+                                                                            $('#total-cart-amount').text('Tổng tiền hóa đơn: ' + formattedCartAmount + ' đồng');
+
+                                                                            // Update the individual product price with toppings info
+                                                                            let priceElement = $('#price-' + productId);
+                                                                            if (toppingCount > 0) {
+                                                                                let toppingPrice = 6000 * toppingCount;
+                                                                                priceElement.html('Giá tiền: ' + numberWithCommas(pricePerProduct - toppingPrice) + ' đồng (+ ' + numberWithCommas(toppingPrice) + ' đồng)');
+                                                                            } else {
+                                                                                priceElement.html('Giá tiền: ' + numberWithCommas(pricePerProduct) + ' đồng');
+                                                                            }
+                                                                        },
+                                                                        error: function (xhr, status, error) {
+                                                                            console.error('Error:', error);
+                                                                        }
+                                                                    });
+                                                                }
+
+                                                                function numberWithCommas(x) {
+                                                                    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                                                                }
+
+                                                                function checkToppingLimit(formIndex, checkbox) {
+                                                                    let form = document.getElementById('topping-form-' + formIndex);
+                                                                    let checkboxes = form.querySelectorAll('input[type="checkbox"]');
+                                                                    let checkedCount = 0;
+
+                                                                    checkboxes.forEach(function (cb) {
+                                                                        if (cb.checked) {
+                                                                            checkedCount++;
+                                                                        }
+                                                                    });
+
+                                                                    if (checkedCount > 3) {
+                                                                        alert('Bạn chỉ có thể chọn tối đa 3 topping.');
+                                                                        checkbox.checked = false; // Uncheck the 4th checkbox
+                                                                    } else {
+                                                                        document.getElementById('update-button-' + formIndex).click();
+                                                                    }
+                                                                }
+                                                            </script>
+                                                            <style>
+                                                                .topping-list {
+                                                                    max-height: 80px;
+                                                                    max-width: 250px;
+                                                                    overflow-y: auto;
+                                                                    border: 1px solid #ccc;
+                                                                    padding: 5px;
+                                                                }
+                                                            </style>
+                                                            <p id="total-price-${cartItem.product.product_id}">Tổng tiền: <fmt:formatNumber value="${cartItem.product.price * cartItem.quantity}" type="number" groupingUsed="true"/> đồng</p>
                                                             <p><a href="CartDetails?service=delete&product_id=${cartItem.product.product_id}" class="btn border border-secondary rounded-pill px-3 text-primary">Xóa sản phẩm</a></p>
                                                         </div>
                                                     </div>

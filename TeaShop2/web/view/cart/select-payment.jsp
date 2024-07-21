@@ -52,19 +52,6 @@
         <!-- Navbar start -->
         <div class="container-fluid fixed-top">
             <jsp:include page="../common/homePage/header-start.jsp"></jsp:include>
-            <div class="container topbar bg-primary d-none d-lg-block">
-                <div class="d-flex justify-content-between">
-                    <div class="top-info ps-2">
-                        <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#" class="text-white">123 Street, New York</a></small>
-                        <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i><a href="#" class="text-white">Email@Example.com</a></small>
-                    </div>
-                    <div class="top-link pe-2">
-                        <a href="#" class="text-white"><small class="text-white mx-2">Privacy Policy</small>/</a>
-                        <a href="#" class="text-white"><small class="text-white mx-2">Terms of Use</small>/</a>
-                        <a href="#" class="text-white"><small class="text-white ms-2">Sales and Refunds</small></a>
-                    </div>
-                </div>
-            </div>
             <div class="container px-0">
                 <nav class="navbar navbar-light bg-white navbar-expand-xl">
                     <a href="index.html" class="navbar-brand"><h1 class="text-primary display-6"></h1></a>
@@ -80,17 +67,7 @@
                             <a href="${pageContext.request.contextPath}/home" class="nav-item nav-link">Home</a>
                             <a href ="${pageContext.request.contextPath}/blog" class="nav-item nav-link">Blog</a>
                             <a href="${pageContext.request.contextPath}/shop" class="nav-item nav-link">Shop</a>
-
-                            <div class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
-                                <div class="dropdown-menu m-0 bg-secondary rounded-0">
-                                    <a href="cart.jsp" class="dropdown-item">Cart</a>
-                                    <a href="chackout.jsp" class="dropdown-item">Checkout</a>
-                                    <a href="testimonial.jsp" class="dropdown-item">Testimonial</a>
-                                    <a href="404.jsp" class="dropdown-item">404 Page</a>
-                                </div>
-                            </div>
-                            <a href="contact.jsp" class="nav-item nav-link">Contact</a>
+                            
                         </div>
                         <div class="d-flex m-3 me-0">
                             <%
@@ -161,82 +138,93 @@
                                                         </li>
                                                     </ul>
                                                 </c:forEach>
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <div class="container">
-                                        <div class="col-lg-12">
-                                            <h4 class="mb-3">Sản phẩm nổi bật</h4>
-                                            <c:forEach items="${listSpecialProduct}" var="special">
-                                                <div class="d-flex align-items-center mb-4 p-3 border rounded shadow-sm product-card">
-                                                    <div class="rounded me-4" style="width: 100px; height: 100px; overflow: hidden;">
-                                                        <img src="${special.image}" class="img-fluid rounded" alt="${special.product_name}">
-                                                    </div>
-                                                    <div>
-                                                        <h6 class="mb-2">${special.product_name}</h6>
-                                                        <div class="d-flex mb-2 text-warning">
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
+                                        <div class="container">
+                                            <div class="col-lg-12">
+                                                <h4 class="mb-3">Sản phẩm nổi bật</h4>
+                                                <c:forEach items="${listSpecialProduct}" var="special">
+                                                    <div class="d-flex align-items-center mb-4 p-3 border rounded shadow-sm product-card">
+                                                        <div class="rounded me-4" style="width: 100px; height: 100px; overflow: hidden;">
+                                                            <img src="${special.image}" class="img-fluid rounded" alt="${special.product_name}">
                                                         </div>
-                                                        <div class="d-flex mb-2">
-                                                            <h5 class="fw-bold me-2">${special.price}</h5>
+                                                        <div>
+                                                            <h6 class="mb-2">${special.product_name}</h6>
+                                                            <div class="d-flex mb-2 text-warning">
+                                                                <i class="fa fa-star"></i>
+                                                                <i class="fa fa-star"></i>
+                                                                <i class="fa fa-star"></i>
+                                                                <i class="fa fa-star"></i>
+                                                                <i class="fa fa-star"></i>
+                                                            </div>
+                                                            <div class="d-flex mb-2">
+                                                                <h5 class="fw-bold me-2">${special.price}</h5>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </c:forEach>
+                                                </c:forEach>
+                                            </div>
                                         </div>
-                                    </div>
 
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="row g-4 justify-content-center"> 
-                                    <c:forEach var="cartItem" items="${cartInfo}" varStatus="status">
-                                        <div class="col-md-12 col-lg-12 col-xl-12 mb-4">
-                                            <div class="p-4 border border-secondary rounded">
-                                                <div class="row">
-                                                    <div class="col-md-4 col-lg-4 col-xl-4">
-                                                        <p><img src="${cartItem.product.image}" class="img-fluid w-100" alt="" width="50" height="50"></p>
-                                                    </div>
-                                                    <div class="col-md-8 col-lg-8 col-xl-8">
-                                                        <p>ID sản phẩm: ${cartItem.product.product_id}</p>
-                                                        <p>Tên sản phẩm: ${cartItem.product.product_name}</p>
-                                                        <p>Giá tiền: <fmt:formatNumber value="${cartItem.product.price}" type="number" groupingUsed="true"/> đồng</p>
-                                                        <p>Số lượng: ${cartItem.quantity}</p>
-                                                        <p>Topping: <c:if test="${empty cartItem.topping}">Không có</p></c:if>                                                       
-                                                        <ul>                                                           
-                                                            <c:forEach var="topping" items="${cartItem.topping}">
-                                                                <li>${topping.topping_name}</li>
-                                                            </c:forEach>
-                                                        </ul>
-                                                        <p>Tổng tiền: <fmt:formatNumber value="${cartItem.product.price * cartItem.quantity}" type="number" groupingUsed="true"/> đồng</p>
+                                <div class="col-lg-6">
+                                    <div class="row g-4 justify-content-center"> 
+                                        <c:forEach var="cartItem" items="${cartInfo}" varStatus="status">
+                                            <div class="col-md-12 col-lg-12 col-xl-12 mb-4">
+                                                <div class="p-4 border border-secondary rounded">
+                                                    <div class="row">
+                                                        <div class="col-md-4 col-lg-4 col-xl-4">
+                                                            <p><img src="${cartItem.product.image}" class="img-fluid w-100" alt="" width="50" height="50"></p>
+                                                        </div>
+                                                        <div class="col-md-8 col-lg-8 col-xl-8">
+                                                            <p>ID sản phẩm: ${cartItem.product.product_id}</p>
+                                                            <p>Tên sản phẩm: ${cartItem.product.product_name}</p>
+                                                            <c:choose>
+                                                                <c:when test="${empty cartItem.topping}">
+                                                                    <p id="price-${cartItem.product.product_id}">Giá tiền: <fmt:formatNumber value="${cartItem.product.price}" type="number" groupingUsed="true"/> đồng</p>
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                                    <p id="price-${cartItem.product.product_id}">
+                                                                        Giá tiền: <fmt:formatNumber value="${cartItem.product.price - (6000 * cartItem.topping.size())}" type="number" groupingUsed="true"/> đồng
+                                                                        (+ <fmt:formatNumber value="${6000 * cartItem.topping.size()}" type="number" groupingUsed="true"/> đồng)
+                                                                    </p>
+                                                                </c:otherwise>
+                                                            </c:choose>
+                                                            <p>Số lượng: ${cartItem.quantity}</p>
+                                                            <p>Topping: <c:if test="${empty cartItem.topping}">Không có</p></c:if>                                                       
+                                                                <ul>                                                           
+                                                                <c:forEach var="topping" items="${cartItem.topping}">
+                                                                    <li>${topping.topping_name}</li>
+                                                                    </c:forEach>
+                                                            </ul>
+                                                            <p>Tổng tiền: <fmt:formatNumber value="${cartItem.product.price * cartItem.quantity}" type="number" groupingUsed="true"/> đồng</p>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </c:forEach>
+                                        </c:forEach>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-lg-3">
-                                <div class="row g-4 justify-content-center"> 
-                                    <div class="col-md-6 col-lg-6 col-xl-12">
-                                        <div class="p-4 border border-secondary rounded">
-                                            <p>Tổng tiền hóa đơn: <fmt:formatNumber value="${totalCartAmount}" type="number" groupingUsed="true"/> đồng</p>
-                                        
-                                            <p><form action="Payment" method="POST" class="d-inline">
-                                                <input type="hidden" name="service" value="pay-on-delivery">
-                                                <button type="submit" class="btn border border-secondary rounded-pill px-3 text-primary">Thanh toán bằng tiền mặt</button>
-                                            </form></p>
-                                            
-                                            <p><form action="Payment" method="POST" class="d-inline">
-                                                <input type="hidden" name="amount" value="${totalCartAmount}">
-                                                <input type="hidden" name="service" value="pay-online">
-                                                <button type="submit" class="btn border border-secondary rounded-pill px-3 text-primary">Thanh toán bằng VNPay</button>
-                                            </form></p>
-                                            <p><a href="CartDetails?service=showcart" class="btn border border-secondary rounded-pill px-3 text-primary">Quay lại giỏ hàng</a></p>
+                                <div class="col-lg-3">
+                                    <div class="row g-4 justify-content-center"> 
+                                        <div class="col-md-6 col-lg-6 col-xl-12">
+                                            <div class="p-4 border border-secondary rounded">
+                                                <p>Tổng tiền hóa đơn: <fmt:formatNumber value="${totalCartAmount}" type="number" groupingUsed="true"/> đồng</p>
+
+                                                <p><form action="Payment" method="POST" class="d-inline">
+                                                    <input type="hidden" name="service" value="pay-on-delivery">
+                                                    <button type="submit" class="btn border border-secondary rounded-pill px-3 text-primary">Thanh toán bằng tiền mặt</button>
+                                                </form></p>
+
+                                                <p><form action="Payment" method="POST" class="d-inline">
+                                                    <input type="hidden" name="amount" value="${totalCartAmount}">
+                                                    <input type="hidden" name="service" value="pay-online">
+                                                    <button type="submit" class="btn border border-secondary rounded-pill px-3 text-primary">Thanh toán bằng VNPay</button>
+                                                </form></p>
+                                                <p><a href="CartDetails?service=showcart" class="btn border border-secondary rounded-pill px-3 text-primary">Quay lại giỏ hàng</a></p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -245,23 +233,22 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <!-- select-payment End-->        
+            <!-- select-payment End-->        
 
-        <!-- Footer Start -->
-        <jsp:include page="../common/homePage/footer-start.jsp"></jsp:include>
-            <!-- Footer End -->  
+            <!-- Footer Start -->
+            <jsp:include page="../common/homePage/footer-start.jsp"></jsp:include>
+                <!-- Footer End -->  
 
-            <!-- JavaScript Libraries-->
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-            <script src="${pageContext.request.contextPath}/lib/easing/easing.min.js"></script>
-        <script src="${pageContext.request.contextPath}/lib/waypoints/waypoints.min.js"></script>
-        <script src="${pageContext.request.contextPath}/lib/lightbox/js/lightbox.min.js"></script>
-        <script src="${pageContext.request.contextPath}/lib/owlcarousel/owl.carousel.min.js"></script>
+                <!-- JavaScript Libraries-->
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+                <script src="${pageContext.request.contextPath}/lib/easing/easing.min.js"></script>
+            <script src="${pageContext.request.contextPath}/lib/waypoints/waypoints.min.js"></script>
+            <script src="${pageContext.request.contextPath}/lib/lightbox/js/lightbox.min.js"></script>
+            <script src="${pageContext.request.contextPath}/lib/owlcarousel/owl.carousel.min.js"></script>
 
-        <!-- Template Javascript -->
-        <script src="${pageContext.request.contextPath}/js/main.js"></script>
+            <!-- Template Javascript -->
+            <script src="${pageContext.request.contextPath}/js/main.js"></script>
     </body>
 
 </html>
