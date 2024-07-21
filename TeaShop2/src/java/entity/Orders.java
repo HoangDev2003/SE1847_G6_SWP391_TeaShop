@@ -32,7 +32,7 @@ public class Orders {
 
     public int order_id, total_amount;
     public Timestamp order_date;
-    public String note, shipper_note,staff_note, payment_method, phone_number, full_name, address;
+    public String note, shipper_note, staff_note, payment_method, phone_number, full_name, address, vnp_TxnRef;
     public Status status;
     public Product product;
     public Accounts account;
