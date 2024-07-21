@@ -58,8 +58,23 @@ public class PaymentResultController extends HttpServlet {
                 service = "pay-online";
             }
             if (service.equals("cash-on-delivery")) {
-                String sqlDateTime = "";
-                if (session.getAttribute("formattedDate") == null && session.getAttribute("formattedTime") == null) {
+
+                String amount = request.getParameter("amount");
+                String fullname = request.getParameter("fullname");
+                String address = request.getParameter("address");
+                String district = request.getParameter("district");
+                String ward = request.getParameter("ward");
+                String phonenumber = request.getParameter("phone_number");
+                String status = "Giao dịch thành công";
+                String OrderInfo = "Thanh toan hoa don Dream Coffee. So tien: " + amount + " dong";
+
+                String fullAddress = address + ", Phường " + ward + ", " + district;
+                String note = (String) session.getAttribute("note");
+                List<CartDetails> billInfo = new ArrayList<>();
+
+                if (session.getAttribute("payment-flag") != null) {
+                    String sqlDateTime = "";
+
                     Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
 
                     SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -80,35 +95,18 @@ public class PaymentResultController extends HttpServlet {
                     } catch (ParseException ex) {
                         Logger.getLogger(PaymentController.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                }
-
-                String amount = request.getParameter("amount");
-                String fullname = request.getParameter("fullname");
-                String address = request.getParameter("address");
-                String district = request.getParameter("district");
-                String ward = request.getParameter("ward");
-                String phonenumber = request.getParameter("phonenumber");
-                String status = "Giao dịch thành công";
-                String OrderInfo = "Thanh toan hoa don Dream Coffee. So tien: " + amount + " dong";
-
-                String fullAddress = address + ", Phường " + ward + ", " + district;
-                String note = (String) session.getAttribute("note");
-                List<CartDetails> billInfo = new ArrayList<>();
-                boolean hasBillItems = false;
-                Enumeration<String> checkEm = session.getAttributeNames();
-                while (checkEm.hasMoreElements()) {
-                    String key = checkEm.nextElement();
-                    if (key.startsWith("billItem")) {
-                        hasBillItems = true;
-                        break;
-                    }
-                }
-
-                if (!hasBillItems) {
                     if (accoundId == null) {
-                        order_id = orderDAO.insertOrder(null, sqlDateTime, null, Integer.parseInt(amount), 1, note, "COD", phonenumber, fullname, fullAddress);
+                        order_id = orderDAO.insertOrder(null, sqlDateTime, null, Integer.parseInt(amount), 1, note, "COD", phonenumber, fullname, fullAddress, null);
                     } else {
-                        order_id = orderDAO.insertOrder(accoundId, sqlDateTime, null, Integer.parseInt(amount), 1, note, "COD", phonenumber, fullname, fullAddress);
+                        order_id = orderDAO.insertOrder(accoundId, sqlDateTime, null, Integer.parseInt(amount), 1, note, "COD", phonenumber, fullname, fullAddress, null);
+                    }
+                    Enumeration<String> bill = session.getAttributeNames();
+                    while (bill.hasMoreElements()) {
+                        String key = bill.nextElement();
+
+                        if (key.startsWith("billItem")) {
+                            session.removeAttribute(key);
+                        }
                     }
                     Enumeration<String> em = session.getAttributeNames();
                     while (em.hasMoreElements()) {
@@ -129,7 +127,9 @@ public class PaymentResultController extends HttpServlet {
                             session.removeAttribute(key);
                         }
                     }
+                    session.removeAttribute("payment-flag");
                 }
+
                 Enumeration<String> em = session.getAttributeNames();
                 while (em.hasMoreElements()) {
                     String key = em.nextElement();
@@ -147,7 +147,7 @@ public class PaymentResultController extends HttpServlet {
                 session.setAttribute("address", address);
                 session.setAttribute("district", district);
                 session.setAttribute("ward", ward);
-                session.setAttribute("phonenumber", phonenumber);
+                session.setAttribute("phone_number", phonenumber);
 
                 request.getRequestDispatcher("view/cart/payment-result.jsp").forward(request, response);
             } else if (service.equals("pay-online")) {
@@ -157,7 +157,7 @@ public class PaymentResultController extends HttpServlet {
                 String ward = (String) session.getAttribute("ward");
                 String fullAddress = address + ", Phường " + ward + ", " + district;
                 String fullname = (String) session.getAttribute("fullname");
-                String phonenumber = (String) session.getAttribute("phonenumber");
+                String phonenumber = (String) session.getAttribute("phone_number");
                 String note = (String) session.getAttribute("note");
                 Map fields = new HashMap();
                 for (Enumeration params = request.getParameterNames(); params.hasMoreElements();) {
@@ -183,45 +183,44 @@ public class PaymentResultController extends HttpServlet {
                 String OrderInfo = request.getParameter("vnp_OrderInfo");
                 request.setAttribute("OrderInfo", OrderInfo);
 
-                String vnp_PayDate = request.getParameter("vnp_PayDate");
-                try {
-
-                    SimpleDateFormat inputFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                    SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
-                    SimpleDateFormat sqlformatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-                    Date date = inputFormat.parse(vnp_PayDate);
-                    sqlDateTime = sqlformatter.format(date);
-                    String formattedDate = dateFormat.format(date);
-                    String formattedTime = timeFormat.format(date);
-
-                    request.setAttribute("formattedDate", formattedDate);
-                    request.setAttribute("formattedTime", formattedTime);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-
                 String status;
                 if (signValue.equals(vnp_SecureHash)) {
                     if ("00".equals(request.getParameter("vnp_TransactionStatus"))) {
                         status = "Giao dịch thành công";
                         List<CartDetails> billInfo = new ArrayList<>();
-                        boolean hasBillItems = false;
-                        Enumeration<String> checkEm = session.getAttributeNames();
-                        while (checkEm.hasMoreElements()) {
-                            String key = checkEm.nextElement();
-                            if (key.startsWith("billItem")) {
-                                hasBillItems = true;
-                                break;
-                            }
-                        }
+                        String vnp_TxnRef = request.getParameter("vnp_TxnRef");
+                        boolean flag = orderDAO.checkDuplicatevnp_TxnRef(vnp_TxnRef);
+                        if (!flag) {
+                            String vnp_PayDate = request.getParameter("vnp_PayDate");
+                            try {
 
-                        if (!hasBillItems) {
+                                SimpleDateFormat inputFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+                                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                                SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+                                SimpleDateFormat sqlformatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+                                Date date = inputFormat.parse(vnp_PayDate);
+                                sqlDateTime = sqlformatter.format(date);
+                                String formattedDate = dateFormat.format(date);
+                                String formattedTime = timeFormat.format(date);
+
+                                session.setAttribute("formattedDate", formattedDate);
+                                session.setAttribute("formattedTime", formattedTime);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
                             if (accoundId == null) {
-                                order_id = orderDAO.insertOrder(null, sqlDateTime, null, amount, 1, note, "VNPay", phonenumber, fullname, fullAddress);
+                                order_id = orderDAO.insertOrder(null, sqlDateTime, null, amount, 1, note, "VNPay", phonenumber, fullname, fullAddress, vnp_TxnRef);
                             } else {
-                                order_id = orderDAO.insertOrder(accoundId, sqlDateTime, null, amount, 1, note, "VNPay", phonenumber, fullname, fullAddress);
+                                order_id = orderDAO.insertOrder(accoundId, sqlDateTime, null, amount, 1, note, "VNPay", phonenumber, fullname, fullAddress, vnp_TxnRef);
+                            }
+                            Enumeration<String> bill = session.getAttributeNames();
+                            while (bill.hasMoreElements()) {
+                                String key = bill.nextElement();
+
+                                if (key.startsWith("billItem")) {
+                                    session.removeAttribute(key);
+                                }
                             }
                             Enumeration<String> em = session.getAttributeNames();
                             while (em.hasMoreElements()) {
