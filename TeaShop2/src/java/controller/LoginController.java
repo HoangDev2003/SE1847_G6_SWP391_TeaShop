@@ -117,7 +117,7 @@ public class LoginController extends HttpServlet {
                         response.sendRedirect("home");
                         break;
                     case 4:
-                        request.getRequestDispatcher("view/dashboard/shipper/order-list.jsp").forward(request, response);
+                        request.getRequestDispatcher("ship").forward(request, response);
                         break;
                     default:
                         break;
