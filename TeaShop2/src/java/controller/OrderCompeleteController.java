@@ -36,7 +36,7 @@ public class OrderCompeleteController extends HttpServlet {
         HttpSession session = request.getSession();
 
         // Truy xuất attribute "account" từ session
-        Accounts account = (Accounts) session.getAttribute("account");
+        Accounts account = (Accounts) session.getAttribute("acc");
 
         // Kiểm tra nếu account không tồn tại hoặc null
         if (account == null) {
