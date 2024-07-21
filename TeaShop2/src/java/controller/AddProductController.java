@@ -22,6 +22,7 @@ import java.util.List;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -47,7 +48,6 @@ public class AddProductController extends HttpServlet {
             req.setAttribute("insertProduct", "insertProduct");
             req.getRequestDispatcher("view/dashboard/admin/InsertProduct.jsp").forward(req, resp);
         }
-        
 
         //Send Information Product
     }
@@ -55,22 +55,47 @@ public class AddProductController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String service = req.getParameter("service");
-        
+
         if (service == null) {
             service = "sendInsertDetail";
         }
-        
+
         if (service.equals("sendInsertDetail")) {
             List<Category> listCategorys = (new CategoryDAO().findAll());
-            
+
             String name = req.getParameter("name");
-            Category category = ((new CategoryDAO()).getCategoryById(Integer.parseInt(req.getParameter("category"))));
-            int price = Integer.parseInt(req.getParameter("price"));
-            Date create_at = java.sql.Date.valueOf(LocalDate.parse(req.getParameter("create_at"), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            String categoryIdStr = req.getParameter("category");
+            String priceStr = req.getParameter("price");
+            String createAtStr = req.getParameter("create_at");
             String description = req.getParameter("description");
             Part filePart = req.getPart("image_url");
-            
-            
+
+            // Validation
+            String errorMessage = null;
+
+            if (name == null || name.trim().isEmpty()) {
+                errorMessage = "Name cannot be empty or just spaces.";
+            } else if (priceStr == null || !Pattern.matches("\\d+", priceStr) || priceStr.startsWith("0") && priceStr.length() > 1) {
+                errorMessage = "Price must be a positive number and cannot start with zero.";
+            } else if (createAtStr == null || !createAtStr.equals(LocalDate.now().toString())) {
+                errorMessage = "Create date must be today's date.";
+            } else if (description == null || description.trim().isEmpty()) {
+                errorMessage = "Description cannot be empty.";
+            }
+
+            if (errorMessage != null) {
+                req.setAttribute("errorMessage", errorMessage);
+                req.setAttribute("allCategorys", listCategorys);
+                req.setAttribute("insertProduct", "insertProduct");
+                req.getRequestDispatcher("view/dashboard/admin/InsertProduct.jsp").forward(req, resp);
+                return;
+            }
+
+            // Continue with processing if validation passed
+            Category category = (new CategoryDAO()).getCategoryById(Integer.parseInt(categoryIdStr));
+            int price = Integer.parseInt(priceStr);
+            Date create_at = java.sql.Date.valueOf(LocalDate.parse(createAtStr, DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+
             // Handle file upload
             String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
             String uploadPath = getServletContext().getRealPath("") + File.separator + UPLOAD_DIR;
@@ -85,12 +110,11 @@ public class AddProductController extends HttpServlet {
             // Construct the URL for the uploaded image
             String image_url = UPLOAD_DIR + "/" + fileName;
 
-            
             Product product = new Product(name, category, image_url, price, create_at, description);
-            int gerenatedProductId = (new ProductDAO()).insertProduct(product);
+            int generatedProductId = (new ProductDAO()).insertProduct(product);
 
             req.setAttribute("allCategorys", listCategorys);
-            req.setAttribute("InsertDone", "Insert a new Product (ID = " + gerenatedProductId + ") successfully!\nClick Product Management to see all changes");
+            req.setAttribute("InsertDone", "Insert a new Product (ID = " + generatedProductId + ") successfully!\nClick Product Management to see all changes");
             req.getRequestDispatcher("view/dashboard/admin/InsertProduct.jsp").forward(req, resp);
         }
     }

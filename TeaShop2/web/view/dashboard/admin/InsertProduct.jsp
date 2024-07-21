@@ -61,13 +61,18 @@
                                 ${InsertDone}
                             </h3>
                         </c:if>
+                        <c:if test="${errorMessage ne null}">
+                            <h3 class="error-message">
+                                ${errorMessage}
+                            </h3>
+                        </c:if>
                         <c:if test="${insertProduct ne null}">
                             <form action="addProductManager" id="insertProduct" enctype="multipart/form-data" method="post">
                                 <input type="hidden" name="service" value="sendInsertDetail" />
                                 <div class="card mb-4">
                                     <div class="card-header">
                                         <i class="fas fa-table me-1"></i>
-                                        
+
                                     </div>
 
 
@@ -85,26 +90,33 @@
                                                     <th>Mô tả sản phẩm</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>                                       
+                                            <tbody>
                                                 <tr>
                                                     <td>
-                                                        <input type="text" name="name" size="38" style="height: 35px"/>
+                                                        <input type="text" name="name" size="38" style="height: 35px" value="${param.name}"/>
                                                     </td>
-                                                    <td><select name="category" style="width: 180px; height: 35px" >
+                                                    <td>
+                                                        <select name="category" style="width: 180px; height: 35px">
                                                             <c:forEach items="${allCategorys}" var="category">
-                                                                <option  value="${category.category_id}">${category.category_name}</option>
+                                                                <option value="${category.category_id}" ${category.category_id == param.category ? 'selected' : ''}>
+                                                                    ${category.category_name}
+                                                                </option>
                                                             </c:forEach>
                                                         </select>
                                                     </td>
-                                                    <td><input type="file" name="image_url" size="5" style="height: 35px"/>
+                                                    <td>
+                                                        <input type="file" name="image_url" size="5" style="height: 35px"/>
                                                     </td>
-                                                    <td><input type="number" name="price" style="height: 35px"/>
+                                                    <td>
+                                                        <input type="number" name="price" style="height: 35px" value="${param.price}"/>
                                                     </td>
-                                                    <td><input type="datetime" name="create_at" style="height: 35px"/>
+                                                    <td>
+                                                        <input type="date" name="create_at" style="height: 35px" value="${param.create_at}"/>
                                                     </td>
-                                                    <td><input type="text" name="description" size="40" style="height: 35px"/>
+                                                    <td>
+                                                        <input type="text" name="description" size="40" style="height: 35px" value="${param.description}"/>
                                                     </td>
-                                                </tr>                                         
+                                                </tr>
                                             </tbody>
                                         </table>
                                     </div>
@@ -170,18 +182,18 @@
                         border-collapse: collapse;
                     }
                     th, td {
-                        
+
                         text-align: center; /* Căn giữa chữ */
                     }
                     th {
                         background-color: #f2f2f2;
                     }
-                    
+
                     .card-body {
                         display: flex;
                         justify-content: center;
                     }
-                    
+
                 </style>
             </div>
 
