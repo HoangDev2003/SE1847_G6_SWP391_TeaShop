@@ -627,4 +627,15 @@ public class OrdersDAO extends DBContext {
         return flag;
     }
 
+    public void updateShipperDeliveryTime(int orderId, Timestamp shipperDeliveryTime) {
+        String sql = "UPDATE Orders SET shipper_delivery_time = ? WHERE order_id = ?";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setTimestamp(1, shipperDeliveryTime);
+            ps.setInt(2, orderId);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
