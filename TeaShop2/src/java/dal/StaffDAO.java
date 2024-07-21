@@ -5,9 +5,11 @@
 package dal;
 
 import entity.Orders;
+import java.sql.Timestamp;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -46,7 +48,7 @@ public class StaffDAO extends DBContext {
                 order.total_amount = rs.getInt("total_amount");
                 order.setOrder_date(rs.getTimestamp("order_date"));
                 order.note = rs.getString("note");
-
+                order.payment_method = rs.getString("payment_method");
                 order.address = rs.getString("address");
                 ordersList.add(order);
             }
@@ -100,6 +102,7 @@ public class StaffDAO extends DBContext {
                 order.phone_number = rs.getString("phone_number");
                 order.full_name = rs.getString("full_name");
                 order.address = rs.getString("address");
+                order.payment_method = rs.getString("payment_method");
                 ordersList.add(order);
             }
 
@@ -151,5 +154,73 @@ public class StaffDAO extends DBContext {
             }
         }
         return updateSuccessful; // Return whether the update was successful
+    }
+
+    public String getVnp_TxnRefFromOrderId(int orderId) {
+        String vnp_TxnRef = null; // Initialize the return value
+        String sql = "SELECT vnp_TxnRef FROM [dbo].[Orders] WHERE order_id = ?";
+
+        try {
+            connection = getConnection();
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setInt(1, orderId);
+
+            ResultSet rs = pre.executeQuery(); // Execute the query
+
+            if (rs.next()) {
+                vnp_TxnRef = rs.getString("vnp_TxnRef"); // Retrieve the vnp_TxnRef value
+            }
+
+            rs.close(); // Close ResultSet
+            pre.close(); // Close PreparedStatement
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception ex) { // Catch any parsing exceptions
+            Logger.getLogger(OrdersDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close(); // Close the database connection
+                }
+            } catch (SQLException e) {
+                Logger.getLogger(StaffDAO.class.getName()).log(Level.SEVERE, null, e);
+            }
+        }
+        return vnp_TxnRef; // Return the retrieved value
+    }
+
+    public String getTranscationDateFromOrderId(int orderId) {
+        String TranscationDate = null; // Initialize the return value
+        String sql = "SELECT order_date FROM [dbo].[Orders] WHERE order_id = ?";
+
+        try {
+            connection = getConnection();
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setInt(1, orderId);
+
+            ResultSet rs = pre.executeQuery(); // Execute the query
+
+            if (rs.next()) {
+                Timestamp orderDate = rs.getTimestamp("order_date"); // Retrieve the order_date
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+                TranscationDate = sdf.format(orderDate);
+            }
+
+            rs.close(); // Close ResultSet
+            pre.close(); // Close PreparedStatement
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception ex) { // Catch any parsing exceptions
+            Logger.getLogger(OrdersDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close(); // Close the database connection
+                }
+            } catch (SQLException e) {
+                Logger.getLogger(StaffDAO.class.getName()).log(Level.SEVERE, null, e);
+            }
+        }
+        return TranscationDate; // Return the retrieved value
     }
 }
