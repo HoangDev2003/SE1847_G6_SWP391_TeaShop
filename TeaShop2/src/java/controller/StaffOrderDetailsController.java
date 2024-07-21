@@ -82,6 +82,10 @@ public class StaffOrderDetailsController extends HttpServlet {
                 ordersDAO.updateDeliveryTime(orderID, deliveryTime);
             }
         }
+        // Cập nhật note của Shipper (nếu có)
+        if (staffNote != null && !staffNote.isEmpty()) {
+            ordersDAO.updateStaffNote(orderID, staffNote);
+        }
     }
 
 }
