@@ -16,6 +16,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.Part;
+import java.io.File;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -49,17 +51,13 @@ public class StaffOrderDetailsController extends HttpServlet {
     } 
 
 
-    /** 
-     * Handles the HTTP <code>POST</code> method.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        // Lấy các thông tin từ form
+            throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html;charset=UTF-8");
+
+         // Lấy các thông tin từ form
     int orderID = Integer.parseInt(request.getParameter("orderID"));
     String deliveryTimeStr = request.getParameter("deliveryTime");
     String staffNote = request.getParameter("staffNote");
@@ -82,10 +80,55 @@ public class StaffOrderDetailsController extends HttpServlet {
                 ordersDAO.updateDeliveryTime(orderID, deliveryTime);
             }
         }
+
         // Cập nhật note của Shipper (nếu có)
         if (staffNote != null && !staffNote.isEmpty()) {
             ordersDAO.updateStaffNote(orderID, staffNote);
         }
+
+        // Xử lý upload file (nếu có)
+        String appPath = request.getServletContext().getRealPath("");
+        String savePath = appPath + File.separator + "uploadImages";
+
+        for (Part part : request.getParts()) {
+            if (part.getName().startsWith("fileUpload")) {
+                int orderDetailsId = Integer.parseInt(part.getName().substring(10));
+                String fileName = extractFileName(part);
+                String filePath = savePath + File.separator + fileName;
+                try {
+                    part.write(filePath);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    request.setAttribute("errorMessage", "Error uploading file: " + e.getMessage());
+                    request.getRequestDispatcher("errorPage.jsp").forward(request, response);
+                    return;
+                }
+
+                String dbFilePath = "uploadImages/" + fileName;
+
+                OrderDetailsDAO orderDetailsDAO = new OrderDetailsDAO();
+                orderDetailsDAO.updateImageBeforePath(orderDetailsId, dbFilePath);
+            }
+        }
+
+        // Lưu thời gian giao hàng vào session (nếu có)
+        HttpSession session = request.getSession();
+        session.setAttribute("savedTime", deliveryTimeStr);
+
+        // Redirect về trang chi tiết đơn hàng
+        response.sendRedirect("stafforderdetails?order_id=" + orderID);
     }
+
+    private String extractFileName(Part part) {
+        String contentDisp = part.getHeader("content-disposition");
+        String[] items = contentDisp.split(";");
+        for (String s : items) {
+            if (s.trim().startsWith("filename")) {
+                return s.substring(s.indexOf("=") + 2, s.length() - 1);
+            }
+        }
+        return "";
+    }
+
 
 }
