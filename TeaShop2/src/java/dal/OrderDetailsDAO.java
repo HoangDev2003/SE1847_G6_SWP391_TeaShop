@@ -91,6 +91,7 @@ public class OrderDetailsDAO extends DBContext {
                 orderDetails.image_after_ship = rs.getString("image_after_ship");
                 orderDetails.quantity = rs.getInt("quantity");
                 orderDetails.setStatus_feedback_id(rs.getInt("status_feedback_id"));
+                orderDetails.topping = getToppingNamesByOrderDetailId(orderDetails.order_details_id);
                 orderDetailsList.add(orderDetails); // Add the order details to the list
             }
 
@@ -215,7 +216,7 @@ public class OrderDetailsDAO extends DBContext {
     public List<OrderDetails> getinfo(int orderId) {
         List<OrderDetails> infoList = new ArrayList<>();
         connection = getConnection(); // Obtain database connection
-        String sql = "SELECT order_details_id, p.product_id, image, product_name, category_id, price, quantity "
+        String sql = "SELECT order_details_id, p.product_id, p.image, product_name, category_id, price, quantity "
                 + "FROM OrderDetails od "
                 + "JOIN Product p ON od.product_id = p.product_id "
                 + "WHERE order_id = ?";
@@ -234,14 +235,14 @@ public class OrderDetailsDAO extends DBContext {
                 orderDetails.setProduct(new Product());
                 orderDetails.setTopping(new ArrayList<>());
 
-                orderDetails.setOrder_details_id(rs.getInt("order_details_id"));
+                orderDetails.order_details_id = rs.getInt("order_details_id");
                 orderDetails.getProduct().setProduct_id(rs.getInt("product_id"));
                 orderDetails.getProduct().setImage(rs.getString("image"));
                 orderDetails.getProduct().setProduct_name(rs.getString("product_name"));
                 orderDetails.getCategory().setCategory_name(getCategoryNameById(rs.getInt("category_id")));
                 orderDetails.getProduct().setPrice(rs.getInt("price"));
                 orderDetails.setQuantity(rs.getInt("quantity"));
-                orderDetails.topping = getToppingNamesByOrderDetailId(orderId);
+                orderDetails.topping = getToppingNamesByOrderDetailId(orderDetails.order_details_id);
 
                 infoList.add(orderDetails);
             }
