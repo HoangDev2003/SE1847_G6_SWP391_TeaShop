@@ -50,6 +50,9 @@
                                 <a class="nav-link ${current_status_id == '4' ? 'text-white' : ''}" href="Staff?current_status_id=4">
                                     Đơn hàng đã hoàn thành
                                 </a>
+                                <a class="nav-link ${current_status_id == '6' ? 'text-white' : ''}" href="Staff?current_status_id=6">
+                                    Đơn hàng đã bị hủy
+                                </a>
                             </nav>
                         </div>
                     </nav>
