@@ -7,6 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@page import="java.util.Enumeration"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -49,55 +50,22 @@
 
         <!-- Navbar start -->
         <div class="container-fluid fixed-top">
-            <jsp:include page="../common/homePage/header-start.jsp"></jsp:include>
-                <div class="container topbar bg-primary d-none d-lg-block">
-                <c:if test="${sessionScope.acc==null}">                                                                    
-                    <div class="top-info ps-2">
-                        <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#" class="text-white">Lê Thái Tổ, Hàng Trống, Quận Hoàn Kiếm, Hà Nội</a></small>
-                        <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i><a href="#" class="text-white">dreamycoffee@gmail.com</a></small>            
-                    </div>
-                    <div class="top-link pe-2">            
-                        <a href="${pageContext.request.contextPath}/Signup.jsp" class="text-white"><small class="text-white mx-2">Đăng ký</small>/</a>
-                        <a href="${pageContext.request.contextPath}/login" class="text-white"><small class="text-white mx-2">Đăng nhập</small></a>                 
-                    </div>           
-                </c:if>
-                <c:if test="${sessionScope.acc!=null}">
-                    <div class="top-info ps-2">
-                        <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#" class="text-white">Lê Thái Tổ, Hàng Trống, Quận Hoàn Kiếm, Hà Nội</a></small>
-                        <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i><a href="#" class="text-white">dreamycoffee@gmail.com</a></small>            
-                    </div>
-                    <div class="top-link pe-2">            
-                        <a href="#" class="text-white"><small class="text-white mx-2"> Welcome ${sessionScope.acc.user_name}</small>/</a>
-                        <a href="logout" class="text-white"><small class="text-white ms-2">Đăng xuất</small></a>               
-                    </div>           
-                </c:if>
-            </div>
-            <div class="container px-0">
-                <nav class="navbar navbar-light bg-white navbar-expand-xl">
-                    <a href="index.html" class="navbar-brand"><h1 class="text-primary display-6"></h1></a>
-                    <h1 class="text-primary display-6">Dreamy Coffee</h1>
+            <jsp:include page="../common/homePage/topbar.jsp"></jsp:include>
+                <div class="container px-0">
+                    <nav class="navbar navbar-light bg-white navbar-expand-xl">
+                        <a href="index.html" class="navbar-brand"><h1 class="text-primary display-6"></h1></a>
+                        <h1 class="text-primary display-6">Dreamy Coffee</h1>
 
-                    <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                        <span class="fa fa-bars text-primary"></span>
+                        <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                            <span class="fa fa-bars text-primary"></span>
 
 
-                    </button>
-                    <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
-                        <div class="navbar-nav mx-auto">
-                            <a href="${pageContext.request.contextPath}/home" class="nav-item nav-link">Home</a>
+                        </button>
+                        <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
+                            <div class="navbar-nav mx-auto">
+                                <a href="${pageContext.request.contextPath}/home" class="nav-item nav-link">Home</a>
                             <a href ="${pageContext.request.contextPath}/blog" class="nav-item nav-link">Blog</a>
                             <a href="${pageContext.request.contextPath}/shop" class="nav-item nav-link">Shop</a>
-
-                            <div class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
-                                <div class="dropdown-menu m-0 bg-secondary rounded-0">
-                                    <a href="cart.jsp" class="dropdown-item">Cart</a>
-                                    <a href="chackout.jsp" class="dropdown-item">Checkout</a>
-                                    <a href="testimonial.jsp" class="dropdown-item">Testimonial</a>
-                                    <a href="404.jsp" class="dropdown-item">404 Page</a>
-                                </div>
-                            </div>
-                            <a href="contact.jsp" class="nav-item nav-link">Contact</a>
                         </div>
                         <div class="d-flex m-3 me-0">
                             <%
@@ -112,7 +80,7 @@
                 } 
                             %>
                             <a href="CartDetails?service=showcart" class="position-relative me-4 my-auto">
-                                <i class="fa fa-shopping-bag fa-2x" style="color: orange;"></i>
+                                <i class="fa fa-shopping-bag fa-2x"></i>
                                 <%if(count>0){%>
                                 <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;"><%=count%></span>
                                 <%}%>
@@ -206,24 +174,28 @@
                                                 <div class="p-4 border border-secondary rounded">
                                                     <p>ID hóa đơn: ${p.order_id}</p>
                                                     <p>Ngày: ${p.formattedOrderDate}</p> 
-                                                    <p>Tổng tiền hóa đơn: ${p.total_amount} đồng</p>
+                                                    <p>Tổng tiền hóa đơn: <fmt:formatNumber value="${p.total_amount}" type="number" groupingUsed="true"/> đồng</p>
+                                                    <p>Phương thức thanh toán: ${p.payment_method}</p>
                                                     <p>Trạng thái: ${p.status.status_name}</p>
-                                                    <p><a href="OrderInformation?order_id=${p.order_id}" class="btn border border-secondary rounded-pill px-3 text-primary">Chi tiết</a></p>
+                                                    <form action="OrderInformation" method="post" style="display:inline;">
+                                                        <input type="hidden" name="order_id" value="${p.order_id}">
+                                                        <button type="submit" class="btn border border-secondary rounded-pill px-3 text-primary">Chi tiết</button>
+                                                    </form>
+                                                    <c:if test="${p.status.status_id == 1}">
+                                                        <form action="MyOrder" method="post" onsubmit="return confirm('Bạn có chắc chắn muốn huỷ đơn hàng?')">
+                                                            <input type="hidden" name="service" value="refund">
+                                                            <input type="hidden" name="order_id" value="${p.order_id}">
+                                                            <input type="hidden" name="current_status_id" value="${current_status_id}">
+                                                            <input type="hidden" name="payment_method" value="${p.payment_method}">
+                                                            <input type="hidden" name="amount" value="${p.total_amount}">
+                                                            <div style="display: flex; align-items: center; margin-top: 16px;">
+                                                            <button type="submit" class="btn border border-secondary rounded-pill px-3 text-primary">Hủy đơn hàng</button>
+                                                            </div>
+                                                        </form>
+                                                    </c:if>
                                                 </div>
                                             </div>
                                         </c:forEach>
-                                        <div class="col-12">
-                                            <div class="pagination d-flex justify-content-center mt-5">
-                                                <a href="#" class="rounded">&laquo;</a>
-                                                <a href="#" class="active rounded">1</a>
-                                                <a href="#" class="rounded">2</a>
-                                                <a href="#" class="rounded">3</a>
-                                                <a href="#" class="rounded">4</a>
-                                                <a href="#" class="rounded">5</a>
-                                                <a href="#" class="rounded">6</a>
-                                                <a href="#" class="rounded">&raquo;</a>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
