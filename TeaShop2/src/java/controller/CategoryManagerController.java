@@ -40,6 +40,20 @@ public class CategoryManagerController extends HttpServlet {
 
         if (service.equals("sendInsertDetail")) {
             String name = req.getParameter("name");
+
+            // Validation
+            String errorMessage = null;
+            if (name == null || name.trim().isEmpty()) {
+                errorMessage = "Tên danh mục không được để trống hoặc chỉ có khoảng trắng";
+            }
+
+            if (errorMessage != null) {
+                req.setAttribute("errorMessage", errorMessage);
+                req.setAttribute("insertCategory", "insertCategory");
+                req.getRequestDispatcher("view/dashboard/admin/categoryManagement.jsp").forward(req, resp);
+                return;
+            }
+
             Category category = new Category(name);
             int generatedCategoryId = (new CategoryDAO().insertCategory(category));
             req.setAttribute("InsertDone", "Insert Category (ID =" + generatedCategoryId + ") successfully!\n click Category Management to see all changes");
@@ -72,7 +86,7 @@ public class CategoryManagerController extends HttpServlet {
                 req.setAttribute("deleteDone", "Failed to delete Category (Id  = " + categoryId + ") because this Category is asociated with an order.");
             }
         }
-        
+
         List<Category> listCategory = (new CategoryDAO().findAll());
         req.setAttribute("listAllcategory", listCategory);
         req.getRequestDispatcher("view/dashboard/admin/categoryManagement.jsp").forward(req, resp);
