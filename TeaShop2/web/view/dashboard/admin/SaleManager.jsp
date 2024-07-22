@@ -32,7 +32,7 @@
                 <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0" action="saleManager" id="searchByName">
                     <input type="hidden" name="service" value="searchByKeywords"/>
                     <div class="input-group">
-                        <input class="form-control" type="text" placeholder="Search by Keywords" aria-label="Search by Keywords" aria-describedby="btnNavbarSearch" name="keywords"
+                        <input class="form-control" type="text" placeholder="Nhập tên sản phẩm..." aria-label="Search by Keywords" aria-describedby="btnNavbarSearch" name="keywords"
                                value="${keywords}"/>
                         <button class="search-header" id="btnNavbarSearch" type="submit"><i class="fas fa-search"></i></button>
                     </div>
@@ -69,7 +69,7 @@
                                 ${notFoundProduct}
                             </h4>
                         </c:if>
-                        <div class="card mb-4">
+                        
 
                             <c:if test="${not empty listAllProduct}">
                                 <div class="card mb-4">
@@ -156,7 +156,7 @@
                                     </div>
                                 </form>
                             </c:if>    
-                        </div>                    
+                                           
                 </main>
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid px-4">
