@@ -66,13 +66,13 @@ public class SaleManagerController extends HttpServlet {
 
                 // Validate priceFrom and priceTo
                 if (priceFrom <= 0 || priceTo <= 0 || priceFrom >= priceTo) {
-                    String errorMessage = "Invalid price range. Ensure that 'priceFrom' is a positive integer less than 'priceTo' and both are greater than 0.";
+                    String errorMessage = "Khoảng giá không hợp lệ. Đảm bảo rằng 'khoảng giá bắt đầu' nhỏ hơn 'khoảng giá kết thúc' muốn lọc và cả hai đều lớn hơn 0.";
                     req.setAttribute("errorMessage", errorMessage);
                 } else {
                     List<Product> products = (new ProductDAO()).getProductByPriceRange(priceFrom, priceTo);
 
                     if (products == null || products.isEmpty()) {
-                        req.setAttribute("notFoundProduct", "No products found in the given price range");
+                        req.setAttribute("notFoundProduct", "Không có sản phẩm nào trong khoảng giá");
                         products = (new ProductDAO()).findAll();
                     }
 
@@ -83,7 +83,7 @@ public class SaleManagerController extends HttpServlet {
                 req.setAttribute("priceTo", priceTo);
                 req.setAttribute("showSearchProduct", "Yes");
             } catch (NumberFormatException e) {
-                req.setAttribute("errorMessage", "Invalid input. Please enter valid numbers for the price range.");
+                req.setAttribute("errorMessage", "Giá trị không hợp lệ. Vui lòng nhập giá sản phẩm trong khoảng hợp lệ.");
             }
 
             req.getRequestDispatcher("view/dashboard/admin/SaleManager.jsp").forward(req, resp);
@@ -131,7 +131,7 @@ public class SaleManagerController extends HttpServlet {
             // Set new value for product
             (new ProductDAO()).updateProduct(product, id);
 
-            req.setAttribute("UpdateDone", "Update discount for Product (ID = " + id + ") done!\nClick Sale Management to see all changes");
+            req.setAttribute("UpdateDone", "Chỉnh sửa giảm giá cho sản phẩm (ID = " + id + ") thành công!\nClick quản lý Sale để xem những thay đổi mới nhất");
             req.getRequestDispatcher("view/dashboard/admin/SaleManager.jsp").forward(req, resp);
         }
     }

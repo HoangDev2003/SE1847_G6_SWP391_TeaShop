@@ -69,7 +69,7 @@ public class ProductManagerController extends HttpServlet {
                 int priceTo = Integer.parseInt(priceToStr);
 
                 if (priceFrom >= priceTo) {
-                    errorMessage = "Khoảng giá bắt đầu phải nhỏ hơn giá lớn nhất muốn lọc.";
+                    errorMessage = "Khoảng giá bắt đầu phải nhỏ hơn giá kết thúc nhất muốn lọc.";
                 } else {
                     List<Product> products = (new ProductDAO()).getProductByPriceRange(priceFrom, priceTo);
 
