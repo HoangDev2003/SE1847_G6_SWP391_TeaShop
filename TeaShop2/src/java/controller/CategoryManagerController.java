@@ -83,21 +83,22 @@ public class CategoryManagerController extends HttpServlet {
                 req.getRequestDispatcher("view/dashboard/admin/categoryManagement.jsp").forward(req, resp);
                 return;
             }
-
-            if (service.equals("sendRequestDelete")) {
-                int categoryId = Integer.parseInt(req.getParameter("categoryId"));
-                int n = (new CategoryDAO().deleteCategory(categoryId));
-                if (n == 1) {
-                    req.setAttribute("deleteDone", "Delete Category (Id = " + categoryId + ") done!");
-                } else {
-                    req.setAttribute("deleteDone", "Failed to delete Category (Id  = " + categoryId + ") because this Category is asociated with an order.");
-                }
-            }
-
-            List<Category> listCategory = (new CategoryDAO().findAll());
-            req.setAttribute("listAllcategory", listCategory);
-            req.getRequestDispatcher("view/dashboard/admin/categoryManagement.jsp").forward(req, resp);
-
         }
 
+        if (service.equals("sendRequestDelete")) {
+            int categoryId = Integer.parseInt(req.getParameter("categoryId"));
+            int n = (new CategoryDAO().deleteCategory(categoryId));
+            if (n == 1) {
+                req.setAttribute("deleteDone", "Delete Category (Id = " + categoryId + ") done!");
+            } else {
+                req.setAttribute("deleteDone", "Failed to delete Category (Id  = " + categoryId + ") because this Category is asociated with an order.");
+            }
+        }
+
+        List<Category> listCategory = (new CategoryDAO().findAll());
+        req.setAttribute("listAllcategory", listCategory);
+        req.getRequestDispatcher("view/dashboard/admin/categoryManagement.jsp").forward(req, resp);
+
     }
+
+}

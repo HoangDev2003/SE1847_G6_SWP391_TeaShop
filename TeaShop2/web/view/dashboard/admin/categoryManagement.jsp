@@ -186,7 +186,7 @@
                                                         <input type="text" name="id" size="50" style="height: 35px" value="${categoryUpdate.category_id}" readonly/>
                                                     </td> 
                                                     <td>
-                                                        <input type="text" name="name" size="50" style="height: 35px" value="${categoryUpdate.category_name}"/>
+                                                        <input type="text" name="name" size="50" style="height: 35px" value="${param.name != null ? param.name : categoryUpdate.category_name}"/>
                                                     </td> 
                                                 </tr>                                         
                                             </tbody>
@@ -195,7 +195,7 @@
 
                                     <button
                                         class="button-insert"
-                                        style="transform: translateX(70vw) ; width: 10%"
+                                        style="transform: translateX(70vw); width: 10%"
                                         onclick="document.getElementById('updatedCategory').submit();">
                                         Chỉnh sửa danh mục
                                     </button>                                
