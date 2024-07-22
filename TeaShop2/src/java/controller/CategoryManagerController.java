@@ -44,7 +44,7 @@ public class CategoryManagerController extends HttpServlet {
             // Validation
             String errorMessage = null;
             if (name == null || name.trim().isEmpty()) {
-                errorMessage = "Tên danh mục không được để trống hoặc chỉ có khoảng trắng";
+                errorMessage = "Tên Danh mục không được để trống hoặc chỉ có khoảng trắng";
             }
 
             if (errorMessage != null) {
@@ -56,7 +56,7 @@ public class CategoryManagerController extends HttpServlet {
 
             Category category = new Category(name);
             int generatedCategoryId = (new CategoryDAO().insertCategory(category));
-            req.setAttribute("InsertDone", "Insert Category (ID =" + generatedCategoryId + ") successfully!\n click Category Management to see all changes");
+            req.setAttribute("InsertDone", "Thêm Danh mục mới (ID =" + generatedCategoryId + ") thành công!\n click Quản lý Danh mục để xem những thay đổi mới nhất");
             req.getRequestDispatcher("view/dashboard/admin/categoryManagement.jsp").forward(req, resp);
         }
 
@@ -74,7 +74,7 @@ public class CategoryManagerController extends HttpServlet {
             // Validation
             String errorMessage = null;
             if (name == null || name.trim().isEmpty()) {
-                errorMessage = "Tên danh mục không được để trống hoặc chỉ có khoảng trắng";
+                errorMessage = "Tên Danh mục không được để trống hoặc chỉ có khoảng trắng";
             }
 
             if (errorMessage != null) {
@@ -87,7 +87,7 @@ public class CategoryManagerController extends HttpServlet {
             Category category = (new CategoryDAO().getCategoryById(id));
             category.setCategory_name(name);
             (new CategoryDAO()).updateCategory(category, id);
-            req.setAttribute("UpdateDone", "Update information for Category (ID = " + id + ") done!\nClick Category Management to see all changes");
+            req.setAttribute("UpdateDone", "Cập nhật thông tin Danh mục (ID = " + id + ") thành công!\nClick Quản lý Danh mục để xem những thay đổi mới nhất");
             req.getRequestDispatcher("view/dashboard/admin/categoryManagement.jsp").forward(req, resp);
         }
 
@@ -95,9 +95,9 @@ public class CategoryManagerController extends HttpServlet {
             int categoryId = Integer.parseInt(req.getParameter("categoryId"));
             int n = (new CategoryDAO().deleteCategory(categoryId));
             if (n == 1) {
-                req.setAttribute("deleteDone", "Delete Category (Id = " + categoryId + ") done!");
+                req.setAttribute("deleteDone", "Xóa Danh mục (Id = " + categoryId + ") thành công!");
             } else {
-                req.setAttribute("deleteDone", "Failed to delete Category (Id  = " + categoryId + ") because this Category is asociated with an order.");
+                req.setAttribute("deleteDone", "Xóa Danh mục thất bại (Id  = " + categoryId + ") vì Danh mục này được liên kết với một đơn hàng.");
             }
         }
 
