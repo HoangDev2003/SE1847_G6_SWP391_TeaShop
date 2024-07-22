@@ -72,16 +72,12 @@
                                 <div class="card-body">
                                     <table>
                                         <thead>
-                                            <tr>
-                                                <th>Topping ID</th>
+                                            <tr>                                              
                                                 <th>Tên Topping</th>                                                    
                                             </tr>
                                         </thead>
                                         <tbody>                                       
-                                            <tr>
-                                                <td>
-                                                    <input type="number" name="id" style="height: 35px; width: 60px" value="${id}" required=""/>
-                                                </td>
+                                            <tr>                                            
                                                 <td>
                                                     <input type="text" name="name" size="30" style="height: 35px" value="${name}" required=""/>
                                                 </td>

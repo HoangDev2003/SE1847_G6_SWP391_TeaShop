@@ -1238,14 +1238,13 @@ public class AdminDAO extends DBContext {
         }
     }
 
-        public void addTopping(int id, String name) {
+        public void addTopping(String name) {
         String query = "insert into Topping\n"
-                + "values(?,?);";
+                + "values(?);";
         try {
             connection = getConnection();
-            statement = connection.prepareStatement(query);
-            statement.setInt(1, id);
-            statement.setString(2, name);          
+            statement = connection.prepareStatement(query);          
+            statement.setString(1, name);          
             statement.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
