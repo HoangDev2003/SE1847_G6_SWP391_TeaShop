@@ -54,19 +54,19 @@
         <!-- Navbar start -->
         <div class="container-fluid fixed-top">
             <jsp:include page="../common/homePage/header-start.jsp"></jsp:include>
-            <div class="container px-0">
-                <nav class="navbar navbar-light bg-white navbar-expand-xl">
-                    <a href="index.html" class="navbar-brand"><h1 class="text-primary display-6"></h1></a>
-                    <h1 class="text-primary display-6">Dreamy Coffee</h1>
+                <div class="container px-0">
+                    <nav class="navbar navbar-light bg-white navbar-expand-xl">
+                        <a href="index.html" class="navbar-brand"><h1 class="text-primary display-6"></h1></a>
+                        <h1 class="text-primary display-6">Dreamy Coffee</h1>
 
-                    <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                        <span class="fa fa-bars text-primary"></span>
+                        <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                            <span class="fa fa-bars text-primary"></span>
 
 
-                    </button>
-                    <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
-                        <div class="navbar-nav mx-auto">
-                            <a href="${pageContext.request.contextPath}/home" class="nav-item nav-link">Home</a>
+                        </button>
+                        <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
+                            <div class="navbar-nav mx-auto">
+                                <a href="${pageContext.request.contextPath}/home" class="nav-item nav-link">Home</a>
                             <a href ="${pageContext.request.contextPath}/blog" class="nav-item nav-link">Blog</a>
                             <a href="${pageContext.request.contextPath}/shop" class="nav-item nav-link">Shop</a>
                         </div>
@@ -128,13 +128,15 @@
                                     <div class="row g-4">
                                         <div class="col-lg-12">
                                             <div class="mb-3">
-                                                <h4>Loại sản phẩm</h4>
+                                                <h4>Danh mục sản phẩm</h4>
                                                 <c:forEach items="${listCategory}" var="cate">
                                                     <ul class="list-unstyled fruite-categorie">
                                                         <li>
-                                                            <div class="d-flex justify-content-between fruite-name">
-                                                                <a href="shop?search=category&category_id=${cate.category_id}"><i class="fas fa-apple-alt me-2"></i>${cate.category_name}</a>
-
+                                                            <div class="d-flex justify-content-start align-items-center fruite-name">
+                                                                <a href="shop?search=category&category_id=${cate.category_id}" class="${param.category_id == cate.category_id ? 'selected' : ''} d-flex align-items-center">
+                                                                    <ion-icon name="caret-forward-outline"></ion-icon> 
+                                                                    <span class="ms-2">${cate.category_name}</span>
+                                                                </a>
                                                             </div>
                                                         </li>
                                                     </ul>
@@ -159,8 +161,15 @@
                                                                 <i class="fa fa-star"></i>
                                                                 <i class="fa fa-star"></i>
                                                             </div>
+                                                            <fmt:setLocale value="vi_VN" />
                                                             <div class="d-flex mb-2">
-                                                                <h5 class="fw-bold me-2">${special.price}</h5>
+                                                                <a class="text-dark fs-5 fw-bold mb-0" href="product-details?id=${special.product_id}">
+                                                                    <span style="text-decoration: line-through; opacity: 0.6; font-style: italic;">
+                                                                        <fmt:formatNumber value="${special.price}" type="currency" currencySymbol="₫" />
+                                                                    </span>
+                                                                    &nbsp;
+                                                                    <fmt:formatNumber value="${special.price - (special.price * (special.discount / 100))}" type="currency" currencySymbol="₫" />
+                                                                </a>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -454,6 +463,7 @@
             <script src="${pageContext.request.contextPath}/lib/waypoints/waypoints.min.js"></script>
             <script src="${pageContext.request.contextPath}/lib/lightbox/js/lightbox.min.js"></script>
             <script src="${pageContext.request.contextPath}/lib/owlcarousel/owl.carousel.min.js"></script>
+            <script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
 
             <!-- Template Javascript -->
             <script src="${pageContext.request.contextPath}/js/main.js"></script>

@@ -189,7 +189,7 @@
                                                             <input type="hidden" name="payment_method" value="${p.payment_method}">
                                                             <input type="hidden" name="amount" value="${p.total_amount}">
                                                             <div style="display: flex; align-items: center; margin-top: 16px;">
-                                                            <button type="submit" class="btn border border-secondary rounded-pill px-3 text-primary">Hủy đơn hàng</button>
+                                                                <button type="submit" class="btn border border-secondary rounded-pill px-3 text-primary">Hủy đơn hàng</button>
                                                             </div>
                                                         </form>
                                                     </c:if>
