@@ -91,6 +91,10 @@ public class UserProfileController extends HttpServlet {
                             Accounts a = dao.getUserInfor(email);
                             request.setAttribute("a", a);
                             request.setAttribute("errorMessage", "Cập nhật thành công");
+                            request.setAttribute("fullName", fullName);
+                            request.setAttribute("phoneNumber", phoneNumber);
+                            request.setAttribute("address", address);
+                            request.setAttribute("email", email);
                             request.getRequestDispatcher("UserProfile.jsp").forward(request, response);
 
                         } else {
@@ -98,6 +102,10 @@ public class UserProfileController extends HttpServlet {
                             Accounts a = dao.getUserInfor(email);
                             request.setAttribute("a", a);
                             request.setAttribute("errorMessage", "Cập nhật thất bại");
+                            request.setAttribute("fullName", fullName);
+                            request.setAttribute("phoneNumber", phoneNumber);
+                            request.setAttribute("address", address);
+                            request.setAttribute("email", email);
                             request.getRequestDispatcher("UserProfile.jsp").forward(request, response);
 
                         }
@@ -161,9 +169,12 @@ public class UserProfileController extends HttpServlet {
                     }
                     String oldPassword = request.getParameter("oldpass");
                     String newPassword = request.getParameter("newpass");
-                    String reNewPassword = request.getParameter("re_newpass");
+                    String reNewPassword = request.getParameter("re_newpass");                                     
                     if (!oldPassword.equals(a.getPass_word())) {
                         errorsList.put("wrongOldPass", "Bạn đã nhập sai mật khẩu");
+                    }
+                    if (newPassword == null || newPassword.trim().isEmpty() || newPassword.length() < 8 || newPassword.length() > 32) {
+                        errorsList.put("wrongFormatPass", "Mật khẩu cần 8-32 ký tự");
                     }
                     if (!newPassword.equals(reNewPassword)) {
                         errorsList.put("wrongNewPass", "Mật khẩu mới của bạn phải khớp với mật khẩu nhắc lại bên dưới");
