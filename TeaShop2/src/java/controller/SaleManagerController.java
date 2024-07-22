@@ -85,19 +85,44 @@ public class SaleManagerController extends HttpServlet {
             req.setAttribute("productUpdate", product);
             req.getRequestDispatcher("view/dashboard/admin/SaleManager.jsp").forward(req, resp);
         }
-        if (service.equals("sendUpdateDetail")) {
-            int id = Integer.parseInt(req.getParameter("id"));
-            float discount = Float.parseFloat(req.getParameter("discount"));
-            Product product = (new ProductDAO()).getProductsById(id);
+          if (service.equals("sendUpdateDetail")) {
+        int id = Integer.parseInt(req.getParameter("id"));
+        String discountStr = req.getParameter("discount");
+        
+        // Initialize error message
+        String errorMessage = null;
+        float discount = 0;
 
-            product.setDiscount(discount);
-
-            //set new value for product
-            (new ProductDAO()).updateProduct(product, id);
-            req.setAttribute("UpdateDone", "Update discount for Product (ID = " + id + ") done!\nClick Sale Management to see all changes");
-            req.getRequestDispatcher("view/dashboard/admin/SaleManager.jsp").forward(req, resp);
+        try {
+            discount = Float.parseFloat(discountStr);
+            if (discount < 0 || discount > 100) {
+                errorMessage = "Giảm giá của một sản phẩm phải > 0% và < 100%";
+            }
+        } catch (NumberFormatException e) {
+            errorMessage = "Định dạng giảm giá không hợp lệ. Vui lòng nhập một số hợp lệ.";
         }
+
+        if (errorMessage != null) {
+            // If there is an error, re-fetch the product and categories to repopulate the form
+            List<Category> listCategorys = (new CategoryDAO().findAll());
+            Product product = (new ProductDAO()).getProductsById(id);
+            req.setAttribute("allCategorys", listCategorys);
+            req.setAttribute("productUpdate", product);
+            req.setAttribute("errorMessage", errorMessage);
+            req.getRequestDispatcher("view/dashboard/admin/SaleManager.jsp").forward(req, resp);
+            return;
+        }
+
+        Product product = (new ProductDAO()).getProductsById(id);
+        product.setDiscount(discount);
+
+        // Set new value for product
+        (new ProductDAO()).updateProduct(product, id);
+
+        req.setAttribute("UpdateDone", "Update discount for Product (ID = " + id + ") done!\nClick Sale Management to see all changes");
+        req.getRequestDispatcher("view/dashboard/admin/SaleManager.jsp").forward(req, resp);
     }
+}
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
