@@ -138,36 +138,47 @@ public class CategoryDAO extends DBContext {
         return n;
     }
 
-    public static void main(String[] args) {
-//        int id = 1;
-//        CategoryDAO categoryDAO = new CategoryDAO();
-//        Category category = categoryDAO.getCategoryById(id);
-//        System.out.println(category);
-        CategoryDAO categoryDAO = new CategoryDAO();
+    public List<Category> getCategoryByKeyWords(String keyword) {
+        List<Category> categories = new ArrayList<>();
+        connection = getConnection();
+        String sql = "SELECT * FROM [dbo].[Category] WHERE category_name LIKE ?\n";
 
-        //test insert category
-//        Category category = new Category("New Category");
-//        int generatedId = categoryDAO.insertCategory(category);
-//        System.out.println("ID của Category mới được chèn là: " + generatedId);
-        //test update category
-        // ID của Category cần cập nhật
-//            int categoryId = 7; // ID danh mục cần cập nhật, thay đổi theo nhu cầu của bạn
-//
-//            // Tạo đối tượng Category mới với tên cập nhật
-//            Category updatedCategory = new Category("Updated Category Name");
-//
-//            // Cập nhật Category
-//            categoryDAO.updateCategory(updatedCategory, categoryId);
-//            System.out.println("Category đã được cập nhật.");
-        int categoryId = 7;
+        try {
+            //Tạo đối tượng PrepareStatement
+            PreparedStatement statement = connection.prepareStatement(sql);
+            // Set the parameters
+            statement.setString(1, "%" + keyword + "%");
+            ResultSet resultSet = statement.executeQuery();
 
-            // Xóa sản phẩm
-            int result = categoryDAO.deleteCategory(categoryId);
-            if (result > 0) {
-                System.out.println("Category đã được xóa thành công.");
-            } else {
-                System.out.println("");
+            while (resultSet.next()) {
+                int category_id = resultSet.getInt("category_id");
+                String category_name = resultSet.getString("category_name");
+
+                //add to collections
+                categories.add(new Category(category_id, category_name));
             }
+            return categories;
+        } catch (SQLException ex) {
+            System.out.println("Error " + ex.getMessage());
+
+        }
+        return null;
+    }
+
+    public static void main(String[] args) {
+//      
+        CategoryDAO categoryDAO = new CategoryDAO();
+        String keyword = "Syphon"; // Thay thế bằng từ khóa bạn muốn kiểm tra
+        List<Category> categories = categoryDAO.getCategoryByKeyWords(keyword);
+
+        // In kết quả ra console
+        if (categories != null) {
+            for (Category category : categories) {
+                System.out.println("Category ID: " + category.getCategory_id() + ", Category Name: " + category.getCategory_name());
+            }
+        } else {
+            System.out.println("No categories found or an error occurred.");
+        }
     }
 
 }
