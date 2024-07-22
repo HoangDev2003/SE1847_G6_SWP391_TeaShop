@@ -108,7 +108,7 @@
                                                         <input type="file" name="image_url" size="30" style="height: 35px"/>
                                                     </td>
                                                     <td>
-                                                        <input type="number" name="price" size="15" style="height: 35px" value="${param.price != null ? param.price : productUpdate.price}"/>
+                                                        <input type="number" name="price" size="15" style="height: 35px" step="1" min="1" value="${param.price != null ? param.price : productUpdate.price}"/>
                                                     </td>
                                                     <td>
                                                         <input type="date" name="create_at" style="height: 35px" value="${param.create_at != null ? param.create_at : productUpdate.create_at}"/>
