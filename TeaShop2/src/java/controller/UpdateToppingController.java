@@ -76,17 +76,35 @@ public class UpdateToppingController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        AdminDAO dao = new AdminDAO();
+
+        //validation
         String id = request.getParameter("id");
         String name = request.getParameter("name");
+        String errorMessage = null;
 
-        int tid = Integer.parseInt(id);
+        if (name == null || name.trim().isEmpty()) {
+            errorMessage = "Tên Topping không được để trống hoặc chỉ có khoảng trắng";
+        } else if (name.matches("\\d+")) {
+            errorMessage = "Tên Topping không được chỉ chứa các số";
+        }
+        
+        if (errorMessage != null) {
+            request.setAttribute("errorMessage", errorMessage);
+            Topping topping = new Topping();
+            topping.setTopping_id(Integer.parseInt(id));
+            topping.setTopping_name(name);
+            request.setAttribute("topping", topping);
+            request.getRequestDispatcher("view/dashboard/admin/UpdateTopping.jsp").forward(request, response);
+            return;
+        } else {
+            AdminDAO dao = new AdminDAO();
+            int tid = Integer.parseInt(id);
+            System.out.println(name);
+            System.out.println(id);
 
-        System.out.println(name);
-        System.out.println(id);
-
-        dao.updateTopping(name, tid);
-        response.sendRedirect("toppingmanager");
+            dao.updateTopping(name, tid);
+            response.sendRedirect("toppingmanager");
+        }
     }
 
     /**

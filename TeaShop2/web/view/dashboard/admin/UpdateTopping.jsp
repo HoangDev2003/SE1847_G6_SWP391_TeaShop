@@ -56,46 +56,48 @@
                                 <li class="breadcrumb-item active"><a href="toppingmanager">Quản lý Topping</a></li>
                                 <li class="breadcrumb-item">Chỉnh sửa Topping</li>
                             </ol>
-                      
+
                             <form action="updatetopping" method="post">
-                                
+
                                 <div class="card mb-4">
                                     <div class="card-header" >
                                         <i class="fas fa-table me-1"></i>
 
                                     </div>
+                                    <h3 class="error-message">
+                                    ${errorMessage}
+                                </h3>
+                                <div class="card-body">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Topping ID</th>
+                                                <th>Tên Topping</th>                                                    
+                                            </tr>
+                                        </thead>
+                                        <tbody>                                       
+                                            <tr>
+                                                <td>
+                                                    <input type="number" name="id" style="height: 35px; width: 60px" value="${topping.topping_id}" readonly />
+                                                </td>
+                                                <td>
+                                                    <input type="text" name="name" size="30" style="height: 35px" value="${topping.topping_name}"/>
+                                                </td>
+                                            </tr>                                         
+                                        </tbody>
 
-                                    <div class="card-body">
-                                        <table>
-                                            <thead>
-                                                <tr>
-                                                    <th>Topping ID</th>
-                                                    <th>Tên Topping</th>                                                    
-                                                </tr>
-                                            </thead>
-                                            <tbody>                                       
-                                                <tr>
-                                                    <td>
-                                                        <input type="number" name="id" style="height: 35px; width: 60px" value="${topping.topping_id}" readonly />
-                                                    </td>
-                                                    <td>
-                                                        <input type="text" name="name" size="30" style="height: 35px" value="${topping.topping_name}"/>
-                                                    </td>
-                                                </tr>                                         
-                                            </tbody>
+                                    </table>
 
-                                        </table>
-
-                                    </div>
-                                    <button
-                                        class="button-update"
-                                        style="transform: translateX(70vw) ; width: 10%"
-                                        onclick="document.getElementById('updatedProduct').submit();">
-                                        UPDATE
-                                    </button>
                                 </div>
-                            </form>
-                      
+                                <button
+                                    class="button-update"
+                                    style="transform: translateX(70vw) ; width: 10%"
+                                    onclick="document.getElementById('updatedProduct').submit();">
+                                    UPDATE
+                                </button>
+                            </div>
+                        </form>
+
                     </div>                    
                 </main>
                 <footer class="py-4 bg-light mt-auto">
