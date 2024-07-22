@@ -517,79 +517,77 @@ public class OrdersDAO extends DBContext {
     //huydx
     public Vector<OrderChart> get7OrderChartByMonth() {
         connection = getConnection();
-        Vector<OrderChart> vector = new Vector<>();
-        String query = "	SELECT\n"
-                + "    [order_date],\n"
-                + "    [done_order],\n"
-                + "    [total_order],\n"
-                + "    [success_rate],\n"
-                + "    [revenue]\n"
-                + "FROM (\n"
-                + "    SELECT\n"
-                + "        DATEADD(WEEK, DATEDIFF(WEEK, 0, [O].[order_date]), 0) AS [order_date],\n"
-                + "        SUM(CASE WHEN [O].[status] = 1 THEN 1 ELSE 0 END) AS [done_order],\n"
-                + "        COUNT([O].[order_id]) AS [total_order],\n"
-                + "        CONVERT(decimal(5,2), \n"
-                + "            (SUM(CASE WHEN [O].[status] = 1 THEN 1 ELSE 0 END) * 100.0) \n"
-                + "            / NULLIF(COUNT([O].[order_id]), 0)\n"
-                + "        ) AS [success_rate],\n"
-                + "        SUM(CASE WHEN [O].[status] = 1 THEN [O].[total_amount] ELSE 0 END) AS [revenue]\n"
-                + "    FROM\n"
-                + "        Orders AS [O]\n"
-                + "    WHERE\n"
-                + "        [O].[status] IN (0, 1) -- Wait, Process, Done\n"
-                + "        AND [O].[order_date] >= DATEADD(WEEK, -8, GETDATE()) -- 7 weeks ago from current date\n"
-                + "    GROUP BY\n"
-                + "        DATEADD(WEEK, DATEDIFF(WEEK, 0, [O].[order_date]), 0)\n"
-                + ") AS subquery\n"
-                + "ORDER BY\n"
-                + "    [order_date] DESC;";
-        try {
-            PreparedStatement st = connection.prepareStatement(query);
-            ResultSet rs = st.executeQuery();
-            while (rs.next()) {
-                vector.add(new OrderChart(rs.getDate("order_date"), rs.getInt("done_order"), rs.getInt("total_order"), rs.getDouble("success_rate"), rs.getDouble("revenue")));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+    Vector<OrderChart> vector = new Vector<>();
+    String query = "DECLARE @Today DATE = GETDATE();\n"
+            + "DECLARE @OneMonthAgo DATE = DATEADD(WEEK, -8, GETDATE() );\n"
+            + "\n"
+            + "SELECT \n"
+            + "    O.order_date AS date,\n"
+            + "    COUNT(CASE WHEN O.status_id != 0 THEN 1 END) AS done_order,\n"
+            + "    COUNT(*) AS total_order,\n"
+            + "       CASE WHEN COUNT(*) > 0 THEN COUNT(CASE WHEN O.status_id != 0 THEN 1 END) * 100.0 / COUNT(*) ELSE 0 END AS success_rate,\n"
+            + "    SUM(O.total_amount) AS revenue\n"
+            + "FROM \n"
+            + "    [dbo].[Orders] O\n"
+            + "JOIN \n"
+            + "    [dbo].[OrderDetails] OD ON O.order_id = OD.order_id\n"
+            + "WHERE \n"
+            + "    O.order_date >= @OneMonthAgo \n"
+            + "    AND O.order_date < @Today\n"
+            + "    AND O.status_id != 0  -- Excluding orders with status_id = 0\n"
+            + "GROUP BY \n"
+            + "    O.order_date\n"
+            + "ORDER BY \n"
+            + "    O.order_date;";
+
+    try (Connection connection = getConnection();
+         PreparedStatement st = connection.prepareStatement(query);
+         ResultSet rs = st.executeQuery()) {
+
+        while (rs.next()) {
+            vector.add(new OrderChart(rs.getDate("date"), 
+                                      rs.getInt("done_order"), 
+                                      rs.getInt("total_order"), 
+                                      rs.getDouble("success_rate"), 
+                                      rs.getDouble("revenue")));
         }
-        return vector;
+    } catch (Exception e) {
+        e.printStackTrace();
     }
+    return vector;
+}
+
+
 
     public Vector<OrderChart> get7OrderChartByDay() {
         connection = getConnection();
         Vector<OrderChart> vector = new Vector<>();
-        String query = "SELECT\n"
-                + "    [order_date],\n"
-                + "    [done_order],\n"
-                + "    [total_order],\n"
-                + "    [success_rate],\n"
-                + "    [revenue]\n"
-                + "FROM (\n"
-                + "    SELECT\n"
-                + "        CAST([O].[order_date] AS DATE) AS [order_date],\n"
-                + "        SUM(CASE WHEN [O].[status] = 1 THEN 1 ELSE 0 END) AS [done_order],\n"
-                + "        COUNT([O].[order_id]) AS [total_order],\n"
-                + "        CONVERT(decimal(5,2), \n"
-                + "            (SUM(CASE WHEN [O].[status] = 1 THEN 1 ELSE 0 END) * 100.0) \n"
-                + "            / NULLIF(COUNT([O].[order_id]), 0)\n"
-                + "        ) AS [success_rate],\n"
-                + "        SUM(CASE WHEN [O].[status] = 1 THEN [O].[total_amount] ELSE 0 END) AS [revenue]\n"
-                + "    FROM\n"
-                + "        Orders AS [O]\n"
-                + "    WHERE\n"
-                + "        [O].[status] IN (0, 1) -- Wait, Process, Done\n"
-                + "        AND [O].[order_date] >= DATEADD(DAY, -7, GETDATE()) -- Last 7 days (excluding today)\n"
-                + "    GROUP BY\n"
-                + "        CAST([O].[order_date] AS DATE)\n"
-                + ") AS subquery\n"
-                + "ORDER BY\n"
-                + "    [order_date] DESC;";
+        String query = "DECLARE @Today DATE = CONVERT(DATE, GETDATE());\n"
+                + "DECLARE @SevenDaysAgo DATE = DATEADD(DAY, -7, @Today);\n"
+                + "\n"
+                + "SELECT \n"
+                + "    CONVERT(DATE, O.order_date) AS date,\n"
+                + "    COUNT(CASE WHEN O.status_id != 0 THEN 1 END) AS done_order,\n"
+                + "    COUNT(*) AS total_order,\n"
+                + "    CASE WHEN COUNT(*) > 0 THEN COUNT(CASE WHEN O.status_id != 0 THEN 1 END) * 100.0 / COUNT(*) ELSE 0 END AS success_rate,\n"
+                + "    SUM(O.total_amount) AS revenue\n"
+                + "FROM \n"
+                + "    [dbo].[Orders] O\n"
+                + "JOIN \n"
+                + "    [dbo].[OrderDetails] OD ON O.order_id = OD.order_id\n"
+                + "WHERE \n"
+                + "    CONVERT(DATE, O.order_date) >= @SevenDaysAgo \n"
+                + "    AND CONVERT(DATE, O.order_date) <= @Today\n"
+                + "    AND O.status_id != 0  -- Excluding orders with status_id = 0\n"
+                + "GROUP BY \n"
+                + "    CONVERT(DATE, O.order_date)\n"
+                + "ORDER BY \n"
+                + "    CONVERT(DATE, O.order_date);";
         try {
             PreparedStatement st = connection.prepareStatement(query);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                vector.add(new OrderChart(rs.getDate("order_date"), rs.getInt("done_order"), rs.getInt("total_order"), rs.getDouble("success_rate"), rs.getDouble("revenue")));
+                vector.add(new OrderChart(rs.getDate("date"), rs.getInt("done_order"), rs.getInt("total_order"), rs.getDouble("success_rate"), rs.getDouble("revenue")));
             }
         } catch (Exception e) {
             e.printStackTrace();

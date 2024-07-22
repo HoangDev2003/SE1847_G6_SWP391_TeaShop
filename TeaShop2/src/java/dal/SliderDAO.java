@@ -39,7 +39,7 @@ public class SliderDAO extends DBContext {
                 String description = rs.getString(3);
                 String url = rs.getString(4);
                 String image = rs.getString(5);
-                Boolean status = rs.getBoolean(6);
+                int status = rs.getInt(6);
                 Slider sl = new Slider(id, name, description, url, image, status);
                 sliders.add(sl);
             }
@@ -48,6 +48,7 @@ public class SliderDAO extends DBContext {
         }
         return sliders;
     }
+
     //Retrieves all sliders from a database with a status of 1 (true) 
     public List<Slider> getSlideByStatus() {
         List<Slider> sliders = new ArrayList<>();
@@ -71,7 +72,7 @@ public class SliderDAO extends DBContext {
                 String description = rs.getString(3);
                 String url = rs.getString(4);
                 String image = rs.getString(5);
-                Boolean status = rs.getBoolean(6);
+                int status = rs.getInt(6);
                 Slider sl = new Slider(id, name, description, url, image, status);
                 sliders.add(sl);
             }
@@ -80,26 +81,27 @@ public class SliderDAO extends DBContext {
         }
         return sliders;
     }
-       
-public List<Slider> filterByStatus(boolean status) {
-    connection = getConnection();
+
+    public List<Slider> filterByStatus(int status) {
+        connection = getConnection();
         String sql = "SELECT [id], [name], [description], [url], [image], "
                 + "[status] FROM [dbo].[Slider] WHERE [status] = ?";
         List<Slider> sliders = new ArrayList<>();
         try {
             PreparedStatement st = connection.prepareStatement(sql);
-            st.setBoolean(1, status);
+            st.setInt(1, status);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 sliders.add(new Slider(rs.getInt("id"), rs.getString("name"),
                         rs.getString("description"), rs.getString("url"),
-                        rs.getString("image"), rs.getBoolean("status")));
+                        rs.getString("image"), rs.getInt("status")));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return sliders;
     }
+
     public Slider getSliderByID(int id) {
         connection = getConnection();
         String sql = "SELECT * "
@@ -112,7 +114,7 @@ public List<Slider> filterByStatus(boolean status) {
             if (rs.next()) {
                 slider = new Slider(rs.getInt("id"), rs.getString("name"),
                         rs.getString("description"), rs.getString("url"),
-                        rs.getString("image"), rs.getBoolean("status"));
+                        rs.getString("image"), rs.getInt("status"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -122,11 +124,11 @@ public List<Slider> filterByStatus(boolean status) {
 
     public void SetActive(String id) {
         connection = getConnection();
-        String query = "UPDATE [dbo].[Slider] "
+        String sql = "UPDATE [dbo].[Slider] "
                 + "SET [status] = 1 "
                 + "WHERE [id] = ?";
         try {
-            PreparedStatement st = connection.prepareStatement(query);
+            PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, id);
             st.executeUpdate();
         } catch (SQLException e) {
@@ -174,7 +176,9 @@ public List<Slider> filterByStatus(boolean status) {
 
     public void deleteByID(int id) {
         connection = getConnection();
-        String sql = "DELETE FROM [dbo].[Slider] WHERE [id] = ?";
+        String sql = "UPDATE [dbo].[Slider] "
+                + "SET [status] = 2 "
+                + "WHERE [id] = ?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, id);

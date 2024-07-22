@@ -43,7 +43,7 @@ public class BlogDAO extends DBContext {
                 String blog_name = resultSet.getString(5);
                 String created_at = resultSet.getString(6);
                 int categoryID = resultSet.getInt(7);
-                Boolean status = resultSet.getBoolean(8);
+                int status = resultSet.getInt(8);
                 Blog pr = new Blog(id, role_id, content, img, blog_name, created_at, categoryID, status);
 
                 listblog.add(pr);
@@ -76,7 +76,7 @@ public class BlogDAO extends DBContext {
                 String blog_name = resultSet.getString(5);
                 String created_at = resultSet.getString(6);
                 int categoryID = resultSet.getInt(7);
-                Boolean status = resultSet.getBoolean(8);
+                int status = resultSet.getInt(8);
                 Blog pr = new Blog(id, role_id, content, img, blog_name, created_at, categoryID, status);
 
                 listblog.add(pr);
@@ -112,7 +112,7 @@ public class BlogDAO extends DBContext {
                 String blog_name = resultSet.getString(5);
                 String created_at = resultSet.getString(6);
                 int categoryID = resultSet.getInt(7);
- Boolean status = resultSet.getBoolean(8);
+ int status = resultSet.getInt(8);
                 
                 blog = new Blog(id, role_id, content, img, blog_name, created_at, categoryID ,status);
             }
@@ -169,7 +169,9 @@ public void hideByID(int id) {
 //Method used to delete blog by its ID
     public void deleteByID(int id) {
         connection = getConnection();
-        String sql = "DELETE FROM Blog WHERE id = ?";
+        String sql = "UPDATE Blog "
+                + "SET  is_deleted = 2 "
+                + "WHERE id = ?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, id);
@@ -182,7 +184,8 @@ public void hideByID(int id) {
     //find blog folow with name of blog or content of blog
     public List<Blog> getBlogBySearch(String search) {
         List<Blog> blog = new ArrayList<>();
-        String sql = "select * from Blog where blog_name LIKE ? OR content LIKE ? ";
+       String sql = "SELECT * FROM Blog WHERE (blog_name LIKE ? OR content LIKE ?) AND is_deleted = 0";
+
         PreparedStatement pre;
         connection = getConnection();
         if (sql.isEmpty()) {
@@ -203,7 +206,7 @@ public void hideByID(int id) {
                     String blog_name = resultSet.getString("blog_name");
                     String created_at = resultSet.getString("created_at");
                     int categoryID = resultSet.getInt(7);
-                     Boolean status = resultSet.getBoolean(8);
+                     int status = resultSet.getInt(8);
                     Blog pr = new Blog(id, role_id, content, img, blog_name, created_at, categoryID ,status);
                     blog.add(pr);
 
@@ -217,7 +220,10 @@ public void hideByID(int id) {
     }
     //Method used to get top 3 blog by posted date
     public List<Blog> getTop3Newest() {
-        String sql = "SELECT TOP 3 * FROM Blog  ORDER BY created_at DESC, id DESC";
+        String sql = "SELECT TOP 3 *\n"
+                + "FROM Blog\n"
+                + "WHERE is_deleted = 0\n"
+                + "ORDER BY created_at DESC, id DESC;";
         PreparedStatement pre;
         connection = getConnection();
         List<Blog> blog = new ArrayList<>();
@@ -234,7 +240,7 @@ public void hideByID(int id) {
                 String blog_name = resultSet.getString("blog_name");
                 String created_at = resultSet.getString("created_at");
                 int categoryID = resultSet.getInt("categoryID");
-                 Boolean status = resultSet.getBoolean(8);
+                 int status = resultSet.getInt(8);
                 Blog pr = new Blog(id, role_id, content, img, blog_name, created_at, categoryID  ,status);
                 blog.add(pr);
             }

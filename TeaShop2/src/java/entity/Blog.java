@@ -13,13 +13,13 @@ public class Blog {
     public int id, account_id;
     public String content, img, blog_name, created_at;
     public int categoryID;
-private boolean is_deleted;
+private int is_deleted;
    
 
     public Blog() {
     }
 
-    public Blog(int id, int account_id, String content, String img, String blog_name, String created_at, int categoryID, boolean is_deleted) {
+    public Blog(int id, int account_id, String content, String img, String blog_name, String created_at, int categoryID, int is_deleted) {
         this.id = id;
         this.account_id = account_id;
         this.content = content;
@@ -86,11 +86,11 @@ private boolean is_deleted;
         this.categoryID = categoryID;
     }
 
-    public boolean isIs_deleted() {
+    public int isIs_deleted() {
         return is_deleted;
     }
 
-    public void setIs_deleted(boolean is_deleted) {
+    public void setIs_deleted(int is_deleted) {
         this.is_deleted = is_deleted;
     }
 

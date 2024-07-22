@@ -53,18 +53,16 @@
                 <main>
                     <div class="container-fluid px-4">
                         <h1 class="mt-4">Dashboard</h1>
-                        <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">Dashboard</li>
-                        </ol>
+                        
                         <div >
                             <a href="chartorderday">
                                 <button class="btn btn-primary">
-                                    By Day
+                                    Theo ngày
                                 </button>
                             </a>
                             <a href="chartorderweek">
                                 <button class="btn btn-primary">
-                                    By Week
+                                    Theo tuần
                                 </button>
                             </a>
                         </div>
@@ -74,7 +72,7 @@
                                 <div class="card mb-4">
                                     <div class="card-header">
                                         <i class="fas fa-chart-area me-1"></i>
-                                        Revenue By Week
+                                        Doanh thu theo tuần
                                     </div>
                                     <div class="card-body"><canvas id="myRevenuesChart" width="100%" height="40"></canvas></div>
                                 </div>
@@ -83,51 +81,13 @@
                                 <div class="card mb-4">
                                     <div class="card-header">
                                         <i class="fas fa-chart-bar me-1"></i>
-                                        Success Rate Order By Week
+                                        Tỉ lệ lượng đơn thành công 
                                     </div>
                                     <div class="card-body"><canvas id="myOrderChart" width="100%" height="40"></canvas></div>
                                 </div>
                             </div>
                         </div>
-                        <div class="card mb-4">
-                            <div class="card-header">
-                                <i class="fas fa-table me-1"></i>
-                                DataTable Example
-                            </div>
-                            <div class="card-body">
-                                <table id="datatablesSimple">
-                                    <thead>
-                                        <tr>
-                                            <th>Date</th>
-                                            <th>Done Orders</th>
-                                            <th>Total Order </th>
-                                            <th>Success Rate</th>
-                                            <th>Revenue</th>
-                                        </tr>
-                                    </thead>
-                                    <tfoot>
-                                        <tr>
-                                            <th>Date</th>
-                                            <th>Done Orders</th>
-                                            <th>Total Order </th>
-                                            <th>Success Rate</th>
-                                            <th>Revenue</th>
-                                        </tr>
-                                    </tfoot>
-                                    <tbody>
-                                        <c:forEach items="${list}" var="order">
-                                            <tr>
-                                                <td>${order.date}</td>
-                                                <td>${order.done_order}</td>
-                                                <td>${order.total_order}</td>
-                                                <td>${order.success_rate}</td>
-                                                <td>${order.revenue}</p>                                                                                   
-                                            </tr>
-                                        </c:forEach>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                        
                     </div>
                 </main>
                 <footer class="py-4 bg-light mt-auto">

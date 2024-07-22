@@ -32,7 +32,7 @@ public class filterSlide extends HttpServlet {
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
       String statusParam = request.getParameter("status"); 
-       boolean status = Boolean.parseBoolean(statusParam);
+       int status =  Integer.parseInt(statusParam);
   
     SliderDAO sd = new SliderDAO();
     List<Slider> list = sd.filterByStatus(status);

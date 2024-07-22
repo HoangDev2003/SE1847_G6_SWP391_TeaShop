@@ -248,21 +248,21 @@
 
                 <div class="row g-4 justify-content-center">
 
-                    <c:forEach items="${topBog}" var="b">
-                        <div class="col-md-6 col-lg-4">
-                            <a href="blogdetail?bid=${b.getId()}">
-                                <div class="service-item bg-secondary rounded border border-secondary">
-                                    <img  src="/TeaShop/img/"${b.getImg()} class="img-fluid" alt="hhh">
-                                    <div class=" rounded-bottom">
-                                        <div class=" bg-primary text-center p-4 rounded">
-                                            <h5 class="text-white">${b.getBlog_name()}</h5>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    </c:forEach>    
+                   <c:forEach items="${topBog}" var="b">
+  <div class="col-md-6 col-lg-4 " >
+    <a href="blogdetail?bid=${b.getId()}">
+      <div class="service-item bg-secondary rounded border border-secondary" >
+        <img src="/TeaShop/img/${b.getImg()}"  alt="${b.getBlog_name()}"style="width: 100%; height: 200px; object-fit: cover;">
+        <div class=" fix-bottom">
+          <div class=" bg-primary text-center p-4 rounded">
+            <h5 class="text-white">${b.getBlog_name()}</h5>
+          </div>
+        </div>
+      </div>
+    </a>
+  </div>
+</c:forEach>
+  
                 </div>
             </div>
         </div>
@@ -282,7 +282,7 @@
                             </div>
                         </div>
                         <div class="col-md-6 col-lg-6 col-xl-3">
-                            <div class="counter bg-white rounded p-5">
+                            <div class="counter bg-white rounded p-5" >
                                 <i class="fa fa-users text-secondary"></i>
                                 <h4>CHẤT LƯỢNG DỊCH VỤ</h4>
                                 <h1>99%</h1>

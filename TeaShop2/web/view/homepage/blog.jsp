@@ -43,7 +43,7 @@
         <!-- Spinner End -->
 
         <!-- Navbar start -->
-        <jsp:include page="../common/homePage/header-start.jsp"></jsp:include>
+        
             <div class="container-fluid fixed-top">
 
                 <div class="container topbar bg-primary d-none d-lg-block">    
@@ -122,29 +122,21 @@
             </div>
         </div>
         <!-- Navbar End -->
+        <div class="container-fluid page-header bg-primary py-5">
+            <h1 class="text-center text-white display-6">Blog </h1>
 
-
-        <!--        <div class="container-fluid page-header bg-primary py-5">
-                    <h1 class="text-center text-white display-6">Blog </h1>
-                                <ol class="breadcrumb justify-content-center mb-0">
-                                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                    <li class="breadcrumb-item"><a href="#"> </a></li>
-                                    <li class="breadcrumb-item active text-white">Shop Detail</li>
-                                </ol>
-                </div>
-        -->
-
-
+        </div>
         <!-- Blog Start-->
         <div class="container-fluid fruite py-5">
             <div class="container py-5">
-                <form  action="blog" method="get">             
-                    <div class="position-relative mx-auto">
-                        <input class="form-control border-2 border-secondary w-75 py-3 px-4" type="text" name="search" placeholder="Search" required >
-                        <button type="submit" class="btn btn-primary border-2 border-secondary py-3 px-4 position-absolute  text-center h-100" style="top: 0; right: 25%;">Search</button>
-                    </div>
-                </form>
+                
                 <h1 class="mb-4">Tin Tức & Sự Kiện</h1>
+<form action="blog" method="get" class="search-form">
+  <div class="position-relative mx-auto d-flex align-items-center">
+    <input class="form-control border-2 border-secondary w-75 py-3 px-4" type="text" name="search" id="search-box" placeholder="Search" required aria-label="Search for blog posts">
+    <button type="submit" class="btn btn-primary border-2 border-secondary py-3 px-4 ms-2" aria-label="Submit search">Search</button>
+  </div>
+</form>
 
                 <div class="row g-4">
                     <div class="col-lg-12">
@@ -172,7 +164,7 @@
                                         <div class="col-lg-12">
                                             <div class="mb-3">
                                                 <h4>Bài viết mới</h4>
-                                                <c:forEach items="${listBlog}" var="b">
+                                                <c:forEach items="${topblog}" var="b">
                                                     <ul class="list-styled fruite-categorie">
                                                         <li>
                                                             <div class="d-flex justify-content-between fruite-name">
@@ -199,7 +191,7 @@
                                                         <div class="fruite-img">
                                                             <img src="/TeaShop/img/${b.getImg()}" class="img-fluid w-100 rounded-top" alt="">
                                                         </div>
-                                                        <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">Like</div>
+                                                        
                                                         <div class="p-4  border-top-0  rounded-bottom">
                                                             <h4>${b.getBlog_name()}</h4>
 
@@ -243,6 +235,30 @@
 
         <!-- Template Javascript -->
         <script src="${pageContext.request.contextPath}/js/main.js"></script>
+        <script> const searchForm = document.querySelector('.search-form');
+const searchBox = document.getElementById('search-box');
+
+searchForm.addEventListener('submit', (event) => {
+  const searchTerm = searchBox.value.trim();
+
+  // Basic validation
+  if (!searchTerm) {
+    event.preventDefault();
+    searchBox.classList.add('is-invalid'); // Add Bootstrap class for visual feedback
+    searchBox.nextElementSibling.textContent = 'Please enter a search term.'; // Set error message next to input
+    return false; // Prevent form submission
+  } else {
+    searchBox.classList.remove('is-invalid'); // Remove error class if search term is entered
+  }
+
+  // Additional validation (optional)
+  // You could perform further validation here, such as checking for minimum search term length, allowed characters, etc.
+  // If validation fails, prevent submission and display an appropriate error message.
+
+  // Submit form if validation passes
+  // event.preventDefault() is not needed here as validation already handles it
+});
+</script>
     </body>
 
 </html>

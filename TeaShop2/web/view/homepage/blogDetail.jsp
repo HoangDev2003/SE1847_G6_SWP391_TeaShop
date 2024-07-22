@@ -43,118 +43,140 @@
 
 
         <!-- Navbar start -->
-         <jsp:include page="../common/homePage/header-start.jsp"></jsp:include>
-        <div class="container-fluid fixed-top">
+        <jsp:include page="../common/homePage/header-start.jsp"></jsp:include>
 
-            <div class="container topbar bg-primary d-none d-lg-block">
-                <div class="d-flex justify-content-between">
-                    <div class="top-info ps-2">
-                        <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#" class="text-white">Tân Xã, Thạch Hòa, Thạch Thất, Hòa Lạc</a></small>
-                        <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i><a href="#" class="text-white">huydxhe172399@fpt.edu.vn</a></small>
-                    </div>
+            <!-- Navbar end -->
 
-                </div>
-            </div>
+            <!-- Single Blog Start -->
+            <div class="container-fluid fruite py-5">
+                <div class="container py-5">
 
-            <div class="container px-0">
-                <nav class="navbar navbar-light bg-white navbar-expand-xl">
-                    <a href="home" class="navbar-brand"><h1 class="text-primary display-6">Dreamy Coffee</h1></a>
-                    <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                        <span class="fa fa-bars text-primary"></span>
-                    </button>
-                    <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
-                        <div class="navbar-nav mx-auto">
-                            <a href="home" class="nav-item nav-link ">Home</a>
-                            <a href ="blog" class="nav-item nav-link active">Blog</a>
-                            <a href="shop" class="nav-item nav-link">Shop</a>
-                            <a href="product-detail" class="nav-item nav-link">Shop Detail</a>
-                            <!--                            <div class="nav-item dropdown">
-                                                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
-                                                            <div class="dropdown-menu m-0 bg-secondary rounded-0">
-                                                                <a href="cart.jsp" class="dropdown-item">Cart</a>
-                                                                <a href="chackout.jsp" class="dropdown-item">Chackout</a>
-                                                                <a href="testimonial.jsp" class="dropdown-item">Testimonial</a>
-                                                                <a href="404.jsp" class="dropdown-item">404 Page</a>
+                    <h1 class="mb-4">Tin Tức & Sự Kiện</h1>
+                    <form  action="blog" method="get">             
+                        <div class="position-relative mx-auto">
+                            <input class="form-control border-2 border-secondary w-75 py-3 px-4" type="text" name="search" placeholder="Search" required >
+                            <button type="submit" class="btn btn-primary border-2 border-secondary py-3 px-4 position-absolute  text-center h-100" style="top: 0; right: 25%;">Search</button>
+                        </div>
+                    </form>
+                    <div class="row g-4">
+                        <div class="col-lg-12">
+
+                            <form action="blogdetail" method ="get">
+                                <div class="row g-4">
+
+                                    <div class="col-lg-3">
+                                        <div class="row g-4">
+                                            <div class="col-lg-12">
+                                                <div class="mb-3">
+                                                    <h4>Loại Bài Đăng</h4>
+                                                <c:forEach items="${listCategory}" var="cate">
+                                                    <ul class="list-styled fruite-categorie">
+                                                        <li>
+                                                            <div class="d-flex justify-content-between fruite-name">
+                                                                <a href="blogdetail?bid=${cate.getCategoryID()}"><i class="fas fa-alt me-2"></i>${cate.getCategoryName()}</a>
+
                                                             </div>
-                                                        </div>-->
-                            <a href="contact.jsp" class="nav-item nav-link">Contact</a>
-                        </div>
-                        <div class="d-flex m-3 me-0">
-                            <a href="cart" class="position-relative me-4 my-auto">
-                                <i class="fa fa-shopping-bag fa-2x"></i>
-                                <!--                                <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">3</span>-->
-                            </a>
-                            <a href="#" class="my-auto">
-                                <i class="fas fa-user fa-2x"></i>
-                            </a>
-                        </div>
+                                                        </li>
+                                                    </ul>
+                                                </c:forEach>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="mb-3">
+                                                <h4>Bài viết mới</h4>
+                                                <c:forEach items="${topBog}" var="b">
+                                                    <ul class="list-styled fruite-categorie">
+                                                        <li>
+                                                            <div class="d-flex justify-content-between fruite-name">
+                                                                <a href="blogdetail?bid=${b.getId()}"><i class="fas fa-alt me-2"></i>${b.getBlog_name()}</a>
+
+
+                                                            </div>
+                                                            <i class="fas fa-alt me-2">${b.getCreated_at()}</i> 
+                                                        </li>
+                                                    </ul>
+                                                </c:forEach>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-lg-9">
+                                    <div class="row g-4 justify-content-center">
+                                        <c:set var="b" value="${requestScope.error}"/>
+                                        <h4 style="color: red"> ${error}</h4>
+                                        <div class="">
+                                            <c:set var="b" value="${requestScope.blog}"/>
+
+                                            <div class=" border rounded">
+                                                <a href="">
+                                                    <img src="/TeaShop/img/${b.getImg()}" class="img-fluid" rounded alt=""/>
+                                                </a>
+                                            </div>
+                                            <h4 class="fw-bold mb-3">${b.getBlog_name()}</h4>
+
+                                            <pre class="mb-4 pre">${b.getContent()}</pre>
+
+
+
+
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
                     </div>
-                </nav>
-            </div>
-        </div>
-        <!-- Navbar end -->
-
-
-
-
-        <!-- Single Page Header start -->
-        <div class="container-fluid page-header bg-primary py-5">
-            <h1 class="text-center text-white display-6">Blog </h1>
-                        <ol class="breadcrumb justify-content-center mb-0">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item"><a href="#"> </a></li>
-                            <li class="breadcrumb-item active text-white">Shop Detail</li>
-                        </ol>
-        </div>
-        <!-- Single Page Header End -->
-
-
-        <!-- Single Blog Start -->
-        <div class="container-fluid py-5 mt-5">
-            <div class="container py-5">
-                <c:set var="b" value="${requestScope.error}"/>
-                        <h4 style="color: red"> ${error}</h4>
-                <div class="">
-                    <c:set var="b" value="${requestScope.blog}"/>
-
-                    <div class=" border rounded">
-                        <a href="">
-                            <img src="/TeaShop/img/${b.getImg()}" class="img-fluid" rounded alt=""/>
-                        </a>
-                    </div>
-                    <h4 class="fw-bold mb-3">${b.getBlog_name()}</h4>
-
-                    <pre class="mb-4 pre">${b.getContent()}</pre>
-
-
-
-
-
                 </div>
+
             </div>
         </div>
-                    
+        <!--        <div class="container-fluid py-5 mt-5">
+                    <div class="container py-5">
+        <c:set var="b" value="${requestScope.error}"/>
+                <h4 style="color: red"> ${error}</h4>
+        <div class="">
+        <c:set var="b" value="${requestScope.blog}"/>
+
+        <div class=" border rounded">
+            <a href="">
+                <img src="/TeaShop/img/${b.getImg()}" class="img-fluid" rounded alt=""/>
+            </a>
+        </div>
+        <h4 class="fw-bold mb-3">${b.getBlog_name()}</h4>
+
+        <pre class="mb-4 pre">${b.getContent()}</pre>
+
+
+
+
+
+    </div>
+</div>
+</div>-->
+
         <!-- Single Blog End -->
-        
-<!-- Tastimonial Start -->
+
+        <!-- Tastimonial Start -->
         <div class="container-fluid testimonial py-5">
             <div class="container py-5">
                 <div class="testimonial-header text-center">
-<!--                    <div class="container topbar bg-primary d-none d-lg-block">
-                        <div class="d-flex justify-content-between">
-                            <div class="top-info ps-2">
-                                <h4 class="text-primary">FEEDBACK </h4>
-                            </div>
-
-                        </div>
-                    </div>-->
+                    <!--                    <div class="container topbar bg-primary d-none d-lg-block">
+                                            <div class="d-flex justify-content-between">
+                                                <div class="top-info ps-2">
+                                                    <h4 class="text-primary">FEEDBACK </h4>
+                                                </div>
+                    
+                                            </div>
+                                        </div>-->
 
                     <h1 class="display-5 mb-5 text-dark">Khách hàng của chúng tôi nói!!</h1>
                 </div>
                 <c:if test="${sessionScope.account != null}">
-                <div style="margin-bottom: 10px">
-                                    <a href="AddBlog.jsp" class="add-blog-button">Do you want to write a blog? Click Here!</a>
-                                </div>
+                    <div style="margin-bottom: 10px">
+                        <a href="AddBlog.jsp" class="add-blog-button">Do you want to write a blog? Click Here!</a>
+                    </div>
                 </c:if>
                 <div class="owl-carousel testimonial-carousel">
                     <div class="testimonial-item img-border-radius bg-light rounded p-4 ">
