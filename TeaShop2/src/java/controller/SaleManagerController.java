@@ -58,22 +58,34 @@ public class SaleManagerController extends HttpServlet {
             req.setAttribute("showSearchProduct", "Yes");
             req.getRequestDispatcher("view/dashboard/admin/SaleManager.jsp").forward(req, resp);
         }
-        
+
         if (service.equals("searchByPriceRange")) {
-            int priceFrom = Integer.parseInt(req.getParameter("priceFrom"));
-            int priceTo = Integer.parseInt(req.getParameter("priceTo"));
+            try {
+                int priceFrom = Integer.parseInt(req.getParameter("priceFrom"));
+                int priceTo = Integer.parseInt(req.getParameter("priceTo"));
 
-            List<Product> products = (new ProductDAO()).getProductByPriceRange(priceFrom, priceTo);
+                // Validate priceFrom and priceTo
+                if (priceFrom <= 0 || priceTo <= 0 || priceFrom >= priceTo) {
+                    String errorMessage = "Invalid price range. Ensure that 'priceFrom' is a positive integer less than 'priceTo' and both are greater than 0.";
+                    req.setAttribute("errorMessage", errorMessage);
+                } else {
+                    List<Product> products = (new ProductDAO()).getProductByPriceRange(priceFrom, priceTo);
 
-            if (products == null || products.isEmpty()) {
-                req.setAttribute("notFoundProduct", "No products found in the given price range");
-                products = (new ProductDAO()).findAll();
+                    if (products == null || products.isEmpty()) {
+                        req.setAttribute("notFoundProduct", "No products found in the given price range");
+                        products = (new ProductDAO()).findAll();
+                    }
+
+                    req.setAttribute("listAllProduct", products);
+                }
+
+                req.setAttribute("priceFrom", priceFrom);
+                req.setAttribute("priceTo", priceTo);
+                req.setAttribute("showSearchProduct", "Yes");
+            } catch (NumberFormatException e) {
+                req.setAttribute("errorMessage", "Invalid input. Please enter valid numbers for the price range.");
             }
 
-            req.setAttribute("listAllProduct", products);
-            req.setAttribute("priceFrom", priceFrom);
-            req.setAttribute("priceTo", priceTo);
-            req.setAttribute("showSearchProduct", "Yes");
             req.getRequestDispatcher("view/dashboard/admin/SaleManager.jsp").forward(req, resp);
         }
 
@@ -85,44 +97,44 @@ public class SaleManagerController extends HttpServlet {
             req.setAttribute("productUpdate", product);
             req.getRequestDispatcher("view/dashboard/admin/SaleManager.jsp").forward(req, resp);
         }
-          if (service.equals("sendUpdateDetail")) {
-        int id = Integer.parseInt(req.getParameter("id"));
-        String discountStr = req.getParameter("discount");
-        
-        // Initialize error message
-        String errorMessage = null;
-        float discount = 0;
+        if (service.equals("sendUpdateDetail")) {
+            int id = Integer.parseInt(req.getParameter("id"));
+            String discountStr = req.getParameter("discount");
 
-        try {
-            discount = Float.parseFloat(discountStr);
-            if (discount < 0 || discount > 100) {
-                errorMessage = "Giảm giá của một sản phẩm phải > 0% và < 100%";
+            // Initialize error message
+            String errorMessage = null;
+            float discount = 0;
+
+            try {
+                discount = Float.parseFloat(discountStr);
+                if (discount < 0 || discount > 100) {
+                    errorMessage = "Giảm giá của một sản phẩm phải > 0% và < 100%";
+                }
+            } catch (NumberFormatException e) {
+                errorMessage = "Định dạng giảm giá không hợp lệ. Vui lòng nhập một số hợp lệ.";
             }
-        } catch (NumberFormatException e) {
-            errorMessage = "Định dạng giảm giá không hợp lệ. Vui lòng nhập một số hợp lệ.";
-        }
 
-        if (errorMessage != null) {
-            // If there is an error, re-fetch the product and categories to repopulate the form
-            List<Category> listCategorys = (new CategoryDAO().findAll());
+            if (errorMessage != null) {
+                // If there is an error, re-fetch the product and categories to repopulate the form
+                List<Category> listCategorys = (new CategoryDAO().findAll());
+                Product product = (new ProductDAO()).getProductsById(id);
+                req.setAttribute("allCategorys", listCategorys);
+                req.setAttribute("productUpdate", product);
+                req.setAttribute("errorMessage", errorMessage);
+                req.getRequestDispatcher("view/dashboard/admin/SaleManager.jsp").forward(req, resp);
+                return;
+            }
+
             Product product = (new ProductDAO()).getProductsById(id);
-            req.setAttribute("allCategorys", listCategorys);
-            req.setAttribute("productUpdate", product);
-            req.setAttribute("errorMessage", errorMessage);
+            product.setDiscount(discount);
+
+            // Set new value for product
+            (new ProductDAO()).updateProduct(product, id);
+
+            req.setAttribute("UpdateDone", "Update discount for Product (ID = " + id + ") done!\nClick Sale Management to see all changes");
             req.getRequestDispatcher("view/dashboard/admin/SaleManager.jsp").forward(req, resp);
-            return;
         }
-
-        Product product = (new ProductDAO()).getProductsById(id);
-        product.setDiscount(discount);
-
-        // Set new value for product
-        (new ProductDAO()).updateProduct(product, id);
-
-        req.setAttribute("UpdateDone", "Update discount for Product (ID = " + id + ") done!\nClick Sale Management to see all changes");
-        req.getRequestDispatcher("view/dashboard/admin/SaleManager.jsp").forward(req, resp);
     }
-}
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

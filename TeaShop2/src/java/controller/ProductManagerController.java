@@ -28,7 +28,7 @@ public class ProductManagerController extends HttpServlet {
         if (service == null) {
             service = "listAll";
         }
-        
+
         if (service.equals("listAll")) {
             ProductDAO productDAO = new ProductDAO();
             List<Product> listAllProduct = productDAO.findAll();
@@ -36,7 +36,7 @@ public class ProductManagerController extends HttpServlet {
             req.setAttribute("showSearchProduct", "Yes");
             req.getRequestDispatcher("view/dashboard/admin/productManagement.jsp").forward(req, resp);
         }
-        
+
         if (service.equals("searchByKeywords")) {
             String keywords = req.getParameter("keywords");
 
@@ -46,14 +46,14 @@ public class ProductManagerController extends HttpServlet {
                 req.setAttribute("notFoundProduct", "Your keywords do not match with any Product Name");
                 products = (new ProductDAO()).findAll();
             }
-            
+
             req.setAttribute("listAllProduct", products);
             req.setAttribute("keywords", keywords);
             req.setAttribute("showSearchProduct", "Yes");
             req.getRequestDispatcher("view/dashboard/admin/productManagement.jsp").forward(req, resp);
         }
-        
-               if (service.equals("searchByPriceRange")) {
+
+        if (service.equals("searchByPriceRange")) {
             String priceFromStr = req.getParameter("priceFrom");
             String priceToStr = req.getParameter("priceTo");
 
@@ -93,7 +93,7 @@ public class ProductManagerController extends HttpServlet {
             req.setAttribute("showSearchProduct", "Yes");
             req.getRequestDispatcher("view/dashboard/admin/productManagement.jsp").forward(req, resp);
         }
-        
+
         if (service.equals("requestUpdate")) {
             List<Category> listCategorys = (new CategoryDAO().findAll());
             int productId = Integer.parseInt(req.getParameter("productId"));
