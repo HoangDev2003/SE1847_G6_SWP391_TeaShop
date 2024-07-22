@@ -123,6 +123,11 @@
                                     ${UpdateDone}
                                 </h3>
                             </c:if>
+                            <c:if test="${errorMessage ne null}">
+                                <h5 class="font-weight-semi-bold text-uppercase mb-3 text-center text-danger">
+                                    ${errorMessage}
+                                </h5>
+                            </c:if>
                             <c:if test="${productUpdate ne null}">
                                 <form action="saleManager" id="updatedDiscount">
                                     <input type="hidden" name="service" value="sendUpdateDetail"/>
@@ -139,7 +144,7 @@
                                                     <tr>
                                                         <td><input type="number" name="id" style="height: 35px; width: 60px" value="${productUpdate.product_id}" readonly />
                                                         </td>
-                                                        <td><input type="number" name="discount" size="50" style="height: 35px" value="${productUpdate.discount}"/>
+                                                        <td><input type="number" name="discount" size="50" style="height: 35px" value="${param.discount != null ? param.discount : productUpdate.discount}"/>
                                                     </tr>  
                                                 </tbody>         
                                             </table>
