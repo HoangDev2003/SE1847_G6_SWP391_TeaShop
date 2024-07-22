@@ -62,9 +62,9 @@
                             </h3>
                         </c:if>
                         <c:if test="${errorMessage ne null}">
-                            <h3 class="error-message">
+                            <h4 class="error-message">
                                 ${errorMessage}
-                            </h3>
+                            </h4>
                         </c:if>
                         <c:if test="${insertProduct ne null}">
                             <form action="addProductManager" id="insertProduct" enctype="multipart/form-data" method="post">
@@ -105,7 +105,7 @@
                                                         </select>
                                                     </td>
                                                     <td>
-                                                        <input type="file" name="image_url" size="5" style="height: 35px"/>
+                                                        <input type="file" name="image_url" size="5" style="height: 35px" value="${param.image}"/>
                                                     </td>
                                                     <td>
                                                         <input type="number" name="price" style="height: 35px" value="${param.price}"/>
@@ -140,7 +140,13 @@
                     </div>
                 </footer>
                 <style>
-
+                    .error-message{
+                        display: flex; /* Sử dụng flexbox */
+                        justify-content: center; /* Căn giữa ngang */
+                        align-items: center; /* Căn giữa dọc */
+                        color: #ff0000;
+                        text-align: center; /* Căn giữa nội dung bên trong (nếu cần) */
+                    }
                     .insert-done {
 
 

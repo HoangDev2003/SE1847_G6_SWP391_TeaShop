@@ -74,13 +74,15 @@ public class AddProductController extends HttpServlet {
             String errorMessage = null;
 
             if (name == null || name.trim().isEmpty()) {
-                errorMessage = "Name cannot be empty or just spaces.";
+                errorMessage = "Tên sản phẩm không được để trống hoặc chỉ có khoảng trắng";
             } else if (priceStr == null || !Pattern.matches("\\d+", priceStr) || priceStr.startsWith("0") && priceStr.length() > 1) {
-                errorMessage = "Price must be a positive number and cannot start with zero.";
+                errorMessage = "Giá sản phẩm phải là số nguyên dương và không được bắt đầu bằng số 0";
             } else if (createAtStr == null || !createAtStr.equals(LocalDate.now().toString())) {
-                errorMessage = "Create date must be today's date.";
+                errorMessage = "Ngày thêm sản phẩm phải là ngày hiện tại";
             } else if (description == null || description.trim().isEmpty()) {
-                errorMessage = "Description cannot be empty.";
+                errorMessage = "Mô tả sản phẩm không được để trống";
+            } else if (filePart == null || filePart.getSize() == 0) {
+                errorMessage = "Hình ảnh sản phẩm không được để trống";
             }
 
             if (errorMessage != null) {
@@ -114,7 +116,7 @@ public class AddProductController extends HttpServlet {
             int generatedProductId = (new ProductDAO()).insertProduct(product);
 
             req.setAttribute("allCategorys", listCategorys);
-            req.setAttribute("InsertDone", "Insert a new Product (ID = " + generatedProductId + ") successfully!\nClick Product Management to see all changes");
+            req.setAttribute("InsertDone", "Thêm một sản phẩm mới (ID = " + generatedProductId + ") thành công!\nClick Product Management để xem những thay đổi mới nhất!");
             req.getRequestDispatcher("view/dashboard/admin/InsertProduct.jsp").forward(req, resp);
         }
     }
