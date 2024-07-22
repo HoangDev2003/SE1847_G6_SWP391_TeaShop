@@ -65,22 +65,46 @@ public class UserProfileController extends HttpServlet {
                     String phoneNumber = request.getParameter("phoneNumber");
                     String email = request.getParameter("email");
                     String address = request.getParameter("address");
-                    int check = accountDAO.updateProfile(fullName, phoneNumber, email, address);
-                    if (check > 0) {
+                    String errorMessage = null;
+                    if (fullName == null || fullName.trim().isEmpty()) {
+                        errorMessage = "Tên người dùng không được để trống hoặc chỉ có khoảng trắng";
+                    } else if (fullName.matches("\\d+")) {
+                        errorMessage = "Tên người dùng không được chỉ chứa các số";
+                    } else if (phoneNumber == null || phoneNumber.trim().isEmpty() || !phoneNumber.matches("0\\d{9}")) {
+                        errorMessage = "Số điện thoại phải bắt đầu bằng 0 và bao gồm 10 số";
+                    }
+                    if (errorMessage != null) {
                         AdminDAO dao = new AdminDAO();
                         Accounts a = dao.getUserInfor(email);
                         request.setAttribute("a", a);
-                        request.setAttribute("message", "Update Successfully");
+                        request.setAttribute("errorMessage", errorMessage);
+                        request.setAttribute("fullName", fullName);
+                        request.setAttribute("phoneNumber", phoneNumber);
+                        request.setAttribute("address", address);
+                        request.setAttribute("email", email);
                         request.getRequestDispatcher("UserProfile.jsp").forward(request, response);
+                        return;
                     } else {
-                        AdminDAO dao = new AdminDAO();
-                        Accounts a = dao.getUserInfor(email);
-                        request.setAttribute("a", a);
-                        request.setAttribute("message", "Update Failed");
-                        request.getRequestDispatcher("UserProfile.jsp").forward(request, response);
+                        int check = accountDAO.updateProfile(fullName, phoneNumber, email, address);
+                        if (check > 0) {
+                            AdminDAO dao = new AdminDAO();
+                            Accounts a = dao.getUserInfor(email);
+                            request.setAttribute("a", a);
+                            request.setAttribute("errorMessage", "Cập nhật thành công");
+                            request.getRequestDispatcher("UserProfile.jsp").forward(request, response);
+
+                        } else {
+                            AdminDAO dao = new AdminDAO();
+                            Accounts a = dao.getUserInfor(email);
+                            request.setAttribute("a", a);
+                            request.setAttribute("errorMessage", "Cập nhật thất bại");
+                            request.getRequestDispatcher("UserProfile.jsp").forward(request, response);
+
+                        }
                     }
                 }
                 break;
+
                 case "UpdateAvatar": {
                     AdminDAO dao = new AdminDAO();
                     String email = request.getParameter("email");
@@ -105,10 +129,10 @@ public class UserProfileController extends HttpServlet {
                                     int rowsUpdated = accountDAO.updateAvatar(uploadedFilePath, email);
                                     if (rowsUpdated > 0) {
                                         request.setAttribute("a", a);
-                                        request.setAttribute("updateAvtSuccess", "Update Avatar Successfully!");
+                                        request.setAttribute("updateAvtSuccess", "Cập nhật avatar thành công");
                                     } else {
                                         request.setAttribute("a", a);
-                                        request.setAttribute("updateAvtFailed", "Update Avatar Failed!");
+                                        request.setAttribute("updateAvtFailed", "Cập nhật avatar thất bại");
                                     }
 
                                     request.getRequestDispatcher("UserProfile.jsp").forward(request, response);
@@ -130,7 +154,7 @@ public class UserProfileController extends HttpServlet {
                     String email = request.getParameter("email");
                     Accounts a = dao.getUserInfor(email);
                     if (a == null) {
-                        errorsList.put("userNotFound", "User not found with email: " + email);
+                        errorsList.put("userNotFound", "Không tìm thấy tài khoản với email: " + email);
                         request.setAttribute("errorsList", errorsList);
                         request.getRequestDispatcher("UserProfile.jsp").forward(request, response);
                         return;
@@ -139,10 +163,10 @@ public class UserProfileController extends HttpServlet {
                     String newPassword = request.getParameter("newpass");
                     String reNewPassword = request.getParameter("re_newpass");
                     if (!oldPassword.equals(a.getPass_word())) {
-                        errorsList.put("wrongOldPass", "You Input Wrong Password !");
+                        errorsList.put("wrongOldPass", "Bạn đã nhập sai mật khẩu");
                     }
                     if (!newPassword.equals(reNewPassword)) {
-                        errorsList.put("wrongNewPass", "Re-password is different with new password");
+                        errorsList.put("wrongNewPass", "Mật khẩu mới của bạn phải khớp với mật khẩu nhắc lại bên dưới");
                     }
                     if (!errorsList.isEmpty()) {
                         request.setAttribute("errorsList", errorsList);
@@ -152,13 +176,14 @@ public class UserProfileController extends HttpServlet {
                         int check = accountDAO.updatePassword(newPassword, email);
                         System.out.println(check);
                         if (check > 0) {
-                            request.setAttribute("updateSuccess", "Update Password Successfully!");
+                            request.setAttribute("updateSuccess", "Cập nhật mật khẩu mới thành công");
                             request.setAttribute("a", a);
                             request.getRequestDispatcher("UserProfile.jsp").forward(request, response);
                         } else {
-                            request.setAttribute("updateFailed", "Update Password Failed!");
+                            request.setAttribute("updateFailed", "Cập nhật mật khẩu mới thất bại");
                             request.setAttribute("a", a);
                             request.getRequestDispatcher("UserProfile.jsp").forward(request, response);
+
                         }
                     }
                 }

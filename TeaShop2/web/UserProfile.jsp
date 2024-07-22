@@ -177,11 +177,12 @@
                             <c:choose>
                                 <c:when test="${acc.role_id eq 2}" >
                                     <a href="home">Home</a>
-                                    <a href="login">Log out</a>
+                                    <a href="logout">Log out</a>
                                 </c:when>
                                 <c:when test="${acc.role_id eq 1}">
-                                    <a href="login">Log out</a>
-                                    <a href="usermanager">User Manager</a>
+                                    <a href="home">Home</a>
+                                    <a href="logout">Log out</a>
+                                    
                                 </c:when>
                             </c:choose>
                         </div>
@@ -226,7 +227,7 @@
                                             </c:if>
                                             <c:if test="${a.role_id == 2}">
                                                 <input name="role" class="form-control" value="Customer" readonly />
-                                            </c:if><h9 class="mb-0">Customer(You can not change your role)</h9>
+                                            </c:if><h9 class="mb-0"> (You can not change your role)</h9>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
@@ -243,7 +244,7 @@
                                             <input type="submit" class="btn btn-primary px-4" value="Save Changes">
                                         </div>
                                     </div>
-                                    <h4 style="color: red">${message}</h4>
+                                    <h4 style="color: red">${errorMessage}</h4>
                                 </form>
                             </div>
                         </div></form>
