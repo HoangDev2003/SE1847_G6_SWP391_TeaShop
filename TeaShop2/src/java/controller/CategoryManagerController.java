@@ -83,6 +83,12 @@ public class CategoryManagerController extends HttpServlet {
                 req.getRequestDispatcher("view/dashboard/admin/categoryManagement.jsp").forward(req, resp);
                 return;
             }
+
+            Category category = (new CategoryDAO().getCategoryById(id));
+            category.setCategory_name(name);
+            (new CategoryDAO()).updateCategory(category, id);
+            req.setAttribute("UpdateDone", "Update information for Category (ID = " + id + ") done!\nClick Category Management to see all changes");
+            req.getRequestDispatcher("view/dashboard/admin/categoryManagement.jsp").forward(req, resp);
         }
 
         if (service.equals("sendRequestDelete")) {
