@@ -88,50 +88,21 @@ public class AddUserController extends HttpServlet {
         String address = request.getParameter("address");
         String role = request.getParameter("role");
         String status = request.getParameter("status");
-
-        // Kiểm tra khoảng trắng trong email, tên người dùng, mật khẩu và nhập lại mật khẩu
-        if (containsSpace(email) || containsSpace(name) || containsSpace(pass)) {
-            request.setAttribute("mess", "Kiểm tra khoảng trắng!");
-            request.setAttribute("email", email);
-            request.setAttribute("pass", pass);
-            request.setAttribute("name", name);
-            request.setAttribute("phone", phone);
-            request.setAttribute("address", address);
-            request.setAttribute("gender", gender);
-            request.getRequestDispatcher("AddUser.jsp").forward(request, response);
-            return;
-        }
+        String errorMessage = null;
         
-         if (!isValidEmail(email)) {
-            request.setAttribute("mess", "Email không hợp lệ!");
-            request.setAttribute("email", email);
-            request.setAttribute("pass", pass);
-            request.setAttribute("name", name);
-            request.setAttribute("phone", phone);
-            request.setAttribute("address", address);
-            request.setAttribute("gender", gender);
-            request.getRequestDispatcher("AddUser.jsp").forward(request, response);
-            return;
+        if (name == null || name.trim().isEmpty()) {
+            errorMessage = "Tên người dùng không được để trống hoặc chỉ có khoảng trắng";
+        } else if (name.matches("\\d+")) {
+            errorMessage = "Tên người dùng không được chỉ chứa các số";
+        } else if (!isValidEmail(email)) {
+            errorMessage = "Email không hợp lệ";
+        } else if (phone == null || phone.trim().isEmpty() || !phone.matches("0\\d{9}")) {
+            errorMessage = "Số điện thoại phải bắt đầu bằng 0 và bao gồm 10 số";
+        } else if (pass == null || pass.trim().isEmpty() || pass.length() < 8 || pass.length() > 32) {
+            errorMessage = "Mật khẩu phải chứa từ 8-32 ký tự";
         }
-         
-        // Kiểm tra số điện thoại không hợp lệ
-        if (phone == null || !phone.matches("0\\d{9}")) {
-            // Số điện thoại không hợp lệ
-            request.setAttribute("mess", "Số điện thoại phải bắt đầu bằng 0 và bao gồm 10 số!");
-            request.setAttribute("name", name);
-            request.setAttribute("email", email);
-            request.setAttribute("pass", pass);
-            request.setAttribute("phone", phone);
-            request.setAttribute("address", address);
-            request.setAttribute("gender", gender);
-            request.getRequestDispatcher("AddUser.jsp").forward(request, response);
-            return;
-        }
-
-        // check password
-        if (pass.length() < 8 || pass.length() > 32) {
-            // pass_word không hợp lệ
-            request.setAttribute("mess", "Mật khẩu phải chứa từ 8-32 ký tự");
+        if (errorMessage != null) {
+            request.setAttribute("errorMessage", errorMessage);
             request.setAttribute("email", email);
             request.setAttribute("pass", pass);
             request.setAttribute("name", name);
@@ -162,13 +133,17 @@ public class AddUserController extends HttpServlet {
                 } else if (role_id == 4) {
                     dao.addUser(email, pass, name, role_id, status_id, phone, gender, address);
                     response.sendRedirect("shippermanager");
-                } else {
-                    dao.addUser(email, pass, name, role_id, status_id, phone, gender, address);
-                    response.sendRedirect("customerManagement");
                 }
             } else {
-                request.setAttribute("error", "This username already exists");
-                request.getRequestDispatcher("view/dashboard/staff1/customerManagement.jsp").forward(request, response);
+                request.setAttribute("errorMessage", "Tài khoản này đã tồn tại");
+                request.setAttribute("email", email);
+                request.setAttribute("pass", pass);
+                request.setAttribute("name", name);
+                request.setAttribute("phone", phone);
+                request.setAttribute("address", address);
+                request.setAttribute("gender", gender);
+                request.getRequestDispatcher("AddUser.jsp").forward(request, response);
+                return;
             }
         }
     }
@@ -184,11 +159,8 @@ public class AddUserController extends HttpServlet {
     }// </editor-fold>
     // Hàm kiểm tra khoảng trắng
 
-    private boolean containsSpace(String input) {
-        return input != null && input.contains(" ");
-    }
-    private static final String EMAIL_PATTERN = 
-        "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+    private static final String EMAIL_PATTERN
+            = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
 
     private static final Pattern pattern = Pattern.compile(EMAIL_PATTERN);
 

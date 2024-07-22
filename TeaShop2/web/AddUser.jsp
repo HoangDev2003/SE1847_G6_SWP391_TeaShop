@@ -245,8 +245,7 @@
                                                             <p class="mb-0">Role</p>
                                                         </div>
                                                         <div class="col-sm-9">
-                                                            <select class="input-like-p" name="role">
-                                                                <option value="1" required="">Admin</option>                                                                  
+                                                            <select class="input-like-p" name="role">                                                                                                                             
                                                                 <option value="3" required="">Staff</option>   
                                                                 <option value="4" required="">Shipper</option>      
                                                             </select>
@@ -271,7 +270,7 @@
                                                                 <button id="singlebutton" name="singlebutton" class="btn btn-primary">Thêm</button>
                                                             </div>
                                                         </div>
-                                                        <p>${mess}</p>
+                                                        <p>${errorMessage}</p>
                                                     </div>
                                                 </div>
                                             </div>

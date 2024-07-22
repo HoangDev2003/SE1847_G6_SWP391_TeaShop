@@ -86,8 +86,7 @@ public class UpdateToppingController extends HttpServlet {
             errorMessage = "Tên Topping không được để trống hoặc chỉ có khoảng trắng";
         } else if (name.matches("\\d+")) {
             errorMessage = "Tên Topping không được chỉ chứa các số";
-        }
-        
+        }       
         if (errorMessage != null) {
             request.setAttribute("errorMessage", errorMessage);
             Topping topping = new Topping();
@@ -96,6 +95,7 @@ public class UpdateToppingController extends HttpServlet {
             request.setAttribute("topping", topping);
             request.getRequestDispatcher("view/dashboard/admin/UpdateTopping.jsp").forward(request, response);
             return;
+            
         } else {
             AdminDAO dao = new AdminDAO();
             int tid = Integer.parseInt(id);
