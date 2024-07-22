@@ -79,7 +79,6 @@ public class AddRoleController extends HttpServlet {
                 String id = request.getParameter("id");
                 String name = request.getParameter("name");
                 int roleId = Integer.parseInt(id);
-
                 if (name == null || name.trim().isEmpty()) {
                     errorMessage = "Tên Role không được để trống hoặc chỉ khoảng trắng";
                 }

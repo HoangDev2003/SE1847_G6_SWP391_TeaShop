@@ -1223,6 +1223,20 @@ public class AdminDAO extends DBContext {
             e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
         }
     }
+      
+       public void addRole(int id, String name) {
+        String query = "insert into Role\n"
+                + "values(?,?);";
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(query);
+            statement.setInt(1, id);
+            statement.setString(2, name);          
+            statement.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
+        }
+    }
 
 
     public static void main(String[] args) {
