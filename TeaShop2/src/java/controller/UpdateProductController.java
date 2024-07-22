@@ -119,7 +119,7 @@ public class UpdateProductController extends HttpServlet {
             // Update the product
             (new ProductDAO()).updateProduct(product, id);
             req.setAttribute("allCategorys", listCategorys);
-            req.setAttribute("UpdateDone", "Cập nhật thông tin sản phẩm (ID = " + id + ") thành công!\nClick Product Management để xem những thay đổi mới nhất");
+            req.setAttribute("UpdateDone", "Cập nhật thông tin sản phẩm (ID = " + id + ") thành công!\nClick 'Quản lý Sản phẩm' để xem những thay đổi mới nhất");
             req.getRequestDispatcher("view/dashboard/admin/UpdateProduct.jsp").forward(req, resp);
         }
     }

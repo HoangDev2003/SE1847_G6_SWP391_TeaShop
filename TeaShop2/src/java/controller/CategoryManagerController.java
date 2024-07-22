@@ -56,7 +56,7 @@ public class CategoryManagerController extends HttpServlet {
 
             Category category = new Category(name);
             int generatedCategoryId = (new CategoryDAO().insertCategory(category));
-            req.setAttribute("InsertDone", "Thêm Danh mục mới (ID =" + generatedCategoryId + ") thành công!\n click Quản lý Danh mục để xem những thay đổi mới nhất");
+            req.setAttribute("InsertDone", "Thêm Danh mục mới (ID =" + generatedCategoryId + ") thành công!\n click 'Quản lý Danh mục' để xem những thay đổi mới nhất");
             req.getRequestDispatcher("view/dashboard/admin/categoryManagement.jsp").forward(req, resp);
         }
 
@@ -87,7 +87,7 @@ public class CategoryManagerController extends HttpServlet {
             Category category = (new CategoryDAO().getCategoryById(id));
             category.setCategory_name(name);
             (new CategoryDAO()).updateCategory(category, id);
-            req.setAttribute("UpdateDone", "Cập nhật thông tin Danh mục (ID = " + id + ") thành công!\nClick Quản lý Danh mục để xem những thay đổi mới nhất");
+            req.setAttribute("UpdateDone", "Cập nhật thông tin Danh mục (ID = " + id + ") thành công!\nClick 'Quản lý Danh mục' để xem những thay đổi mới nhất");
             req.getRequestDispatcher("view/dashboard/admin/categoryManagement.jsp").forward(req, resp);
         }
 

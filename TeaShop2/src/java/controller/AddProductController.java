@@ -116,7 +116,7 @@ public class AddProductController extends HttpServlet {
             int generatedProductId = (new ProductDAO()).insertProduct(product);
 
             req.setAttribute("allCategorys", listCategorys);
-            req.setAttribute("InsertDone", "Thêm một sản phẩm mới (ID = " + generatedProductId + ") thành công!\nClick Product Management để xem những thay đổi mới nhất!");
+            req.setAttribute("InsertDone", "Thêm một sản phẩm mới (ID = " + generatedProductId + ") thành công!\nClick 'Quản lý sản phẩm' để xem những thay đổi mới nhất!");
             req.getRequestDispatcher("view/dashboard/admin/InsertProduct.jsp").forward(req, resp);
         }
     }
