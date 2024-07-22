@@ -79,30 +79,37 @@
                         </c:if>
 
 
+                        <c:if test="${not empty errorMessage}">
+                            <div class="alert alert-danger">
+                                ${errorMessage}
+                            </div>
+                        </c:if>
+
                         <c:if test="${not empty listAllProduct}">
                             <div class="card mb-4">
                                 <div class="h1">                                
-                                    <a  
-                                        href="addProductManager"><ion-icon name="add-circle-outline" ></ion-icon>  Thêm sản phẩm mới</a>                                   
+                                    <a href="addProductManager">
+                                        <ion-icon name="add-circle-outline"></ion-icon> Thêm sản phẩm mới
+                                    </a>                                   
                                 </div>  
                             </div>
+
                             <div class="card mb-4">
                                 <div class="card-header">
                                     <h6><ion-icon name="filter-outline"></ion-icon> Lọc theo giá sản phẩm</h6>
                                     <form action="productmanager" method="get">
                                         <input type="hidden" name="service" value="searchByPriceRange" />
-                                        <label for="priceFrom">Mức giá</label>
-                                        <input type="number" id="priceFrom" name="priceFrom" step="0.01" required />
-                                        <label for="priceTo">~</label>
-                                        <input type="number" id="priceTo" name="priceTo" step="0.01" required />
-                                        <button class="filerByPrice" type="submit">Tìm kiếm</button>
+                                        <label for="priceFrom">Mức giá từ:</label>
+                                        <input type="number" id="priceFrom" name="priceFrom" step="1" min="1" value="${param.priceFrom}" required />
+                                        <label for="priceTo">Đến:</label>
+                                        <input type="number" id="priceTo" name="priceTo" step="1" min="1" value="${param.priceTo}" required />
+                                        <button class="filterByPrice" type="submit">Tìm kiếm</button>
                                     </form>
                                 </div>
 
                                 <!--List all Product-->
                                 <div class="card-body">
-                                    <table id="datatablesSimple" >  
-
+                                    <table id="datatablesSimple">  
                                         <thead>
                                             <tr>
                                                 <th>ID</th>
@@ -125,9 +132,12 @@
                                                         <fmt:setLocale value="vi_VN" />
                                                     <td><fmt:formatNumber value="${product.price}" type="currency" currencySymbol="₫" /></td>
                                                     <td>${product.create_at}</td>
-                                                    <td><a href="updateProductManager?service=requestUpdate&productId=${product.product_id}"><ion-icon name="create-outline"></ion-icon></a></td>
+                                                    <td><a href="updateProductManager?service=requestUpdate&productId=${product.product_id}">
+                                                            <ion-icon name="create-outline"></ion-icon>
+                                                        </a></td>
                                                     <td><a href="deleteProductManager?service=requestDelete&productId=${product.product_id}">
-                                                            <ion-icon name="trash-outline"></ion-icon></a></td>
+                                                            <ion-icon name="trash-outline"></ion-icon>
+                                                        </a></td>
                                                 </tr>  
                                             </c:forEach>
                                         </tbody>                                   
@@ -258,13 +268,13 @@
                         width: 25%;
                         color: #00a5bb;
                     }
-                    
+
                     h6 ion-icon {
                         font-size: 26px;
                         text-align: center; /* Căn giữa ngang */
                         vertical-align: middle; /* Căn giữa dọc */
                         margin-right: 5px; /* Khoảng cách giữa icon và chữ */
-                        
+
                     }
 
                 </style>

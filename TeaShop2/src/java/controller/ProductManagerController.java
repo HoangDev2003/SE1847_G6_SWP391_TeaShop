@@ -53,20 +53,43 @@ public class ProductManagerController extends HttpServlet {
             req.getRequestDispatcher("view/dashboard/admin/productManagement.jsp").forward(req, resp);
         }
         
-       if (service.equals("searchByPriceRange")) {
-            int priceFrom = Integer.parseInt(req.getParameter("priceFrom"));
-            int priceTo = Integer.parseInt(req.getParameter("priceTo"));
+               if (service.equals("searchByPriceRange")) {
+            String priceFromStr = req.getParameter("priceFrom");
+            String priceToStr = req.getParameter("priceTo");
 
-            List<Product> products = (new ProductDAO()).getProductByPriceRange(priceFrom, priceTo);
+            String errorMessage = null;
 
-            if (products == null || products.isEmpty()) {
-                req.setAttribute("notFoundProduct", "No products found in the given price range");
-                products = (new ProductDAO()).findAll();
+            // Validate priceFrom and priceTo
+            if (priceFromStr == null || !priceFromStr.matches("\\d+") || priceFromStr.startsWith("0")) {
+                errorMessage = "Giá sản phẩm phải là số nguyên dương và không được bắt đầu từ số 0.";
+            } else if (priceToStr == null || !priceToStr.matches("\\d+") || priceToStr.startsWith("0")) {
+                errorMessage = "Giá sản phẩm phải là số nguyên dương và không được bắt đầu từ số 0.";
+            } else {
+                int priceFrom = Integer.parseInt(priceFromStr);
+                int priceTo = Integer.parseInt(priceToStr);
+
+                if (priceFrom >= priceTo) {
+                    errorMessage = "Khoảng giá bắt đầu phải nhỏ hơn giá lớn nhất muốn lọc.";
+                } else {
+                    List<Product> products = (new ProductDAO()).getProductByPriceRange(priceFrom, priceTo);
+
+                    if (products == null || products.isEmpty()) {
+                        req.setAttribute("notFoundProduct", "Không có sản phẩm nào trong khoảng giá");
+                        products = (new ProductDAO()).findAll();
+                    }
+
+                    req.setAttribute("listAllProduct", products);
+                    req.setAttribute("priceFrom", priceFrom);
+                    req.setAttribute("priceTo", priceTo);
+                    req.setAttribute("showSearchProduct", "Yes");
+                    req.getRequestDispatcher("view/dashboard/admin/productManagement.jsp").forward(req, resp);
+                    return;
+                }
             }
 
-            req.setAttribute("listAllProduct", products);
-            req.setAttribute("priceFrom", priceFrom);
-            req.setAttribute("priceTo", priceTo);
+            // If validation failed, set error message and forward to JSP
+            req.setAttribute("errorMessage", errorMessage);
+            req.setAttribute("listAllProduct", (new ProductDAO()).findAll()); // or use existing list if applicable
             req.setAttribute("showSearchProduct", "Yes");
             req.getRequestDispatcher("view/dashboard/admin/productManagement.jsp").forward(req, resp);
         }
@@ -79,10 +102,5 @@ public class ProductManagerController extends HttpServlet {
             req.setAttribute("productUpdate", product);
             req.getRequestDispatcher("view/dashboard/admin/UpdateProduct.jsp").forward(req, resp);
         }
-
-        
-
-        
-
     }
 }
