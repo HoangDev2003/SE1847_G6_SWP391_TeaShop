@@ -80,31 +80,43 @@ public class AddRoleController extends HttpServlet {
                 AuthorizationController.redirectToHome(session, response);
             } else {
                 //validation
+                String id = request.getParameter("id");
                 String name = request.getParameter("name");
                 String errorMessage = null;
-                
+
                 if (name == null || name.trim().isEmpty()) {
-                    errorMessage = "Tên Role không được để trống hoặc chỉ có khoảng trắng";              
+                    errorMessage = "Tên Role không được để trống hoặc chỉ có khoảng trắng";
+                } else if (name.matches("\\d+")) {
+                    errorMessage = "Tên Role không được chỉ chứa các số";
+                } else {
+                    try {
+                        int roleId = Integer.parseInt(id);
+                        AdminDAO dao = new AdminDAO();
+                        if (dao.isRoleIdExists(roleId)) {
+                            errorMessage = "ID Role đã tồn tại";
+                        }
+                    } catch (NumberFormatException e) {
+                        errorMessage = "ID Role phải là số hợp lệ";
+                    }
                 }
                 if (errorMessage != null) {
                     request.setAttribute("errorMessage", errorMessage);
+                    request.setAttribute("id", id);
                     request.setAttribute("name", name);
                     request.getRequestDispatcher("view/dashboard/admin/AddRole.jsp").forward(request, response);
                     return;
-                }
-                else {
-                AdminDAO dao = new AdminDAO();
-                String id = request.getParameter("id");               
-                int roleId = Integer.parseInt(id);
-                System.out.println(name);
-                System.out.println(id);
-                dao.addRole(roleId, name);
-                response.sendRedirect("rolemanager");
+                } else {
+                    AdminDAO dao = new AdminDAO();
+                    int roleId = Integer.parseInt(id);
+                    System.out.println(name);
+                    System.out.println(id);
+                    dao.addRole(roleId, name);
+                    response.sendRedirect("rolemanager");
 
+                }
             }
         }
     }
-   }
 
     /**
      * Returns a short description of the servlet.

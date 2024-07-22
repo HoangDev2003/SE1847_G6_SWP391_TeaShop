@@ -42,9 +42,9 @@
                                 <a class="nav-link" href="rolemanager">
                                     Quản lý Role
                                 </a>
-                                <a class="nav-link" href="statusmanager">
+<!--                                <a class="nav-link" href="statusmanager">
                                     Quản lý Status
-                                </a>
+                                </a>-->
                                 <a class="nav-link" href="toppingmanager">
                                     Quản lý Topping
                                 </a>                      

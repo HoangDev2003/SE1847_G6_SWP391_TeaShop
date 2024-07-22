@@ -1249,8 +1249,35 @@ public class AdminDAO extends DBContext {
         } catch (Exception e) {
             e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
         }
+       
     }
+        public boolean isRoleIdExists(int id) {
+        boolean exists = false;
+        String query = "SELECT COUNT(*) FROM Role WHERE role_id = ?";
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(query);
+            statement.setInt(1, id);
+            resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                exists = resultSet.getInt(1) > 0;
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
+        } finally {
+            try {
+                if (resultSet != null) resultSet.close();
+                if (statement != null) statement.close();
+                if (connection != null) connection.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
+         return exists;
+        }
+    
+     
     public static void main(String[] args) {
         AdminDAO dao = new AdminDAO();
         dao.updateTopping("Trân Châu Hoa Mộc Lan", 4);
