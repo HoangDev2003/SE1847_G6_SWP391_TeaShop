@@ -31,7 +31,7 @@
             <!-- Navbar Search-->
             <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
                 <div class="input-group">
-                    
+
                 </div>
             </form>
             <!-- Navbar-->
@@ -122,12 +122,19 @@
                                 ${InsertDone}
                             </h3>
                         </c:if>
+
+                        <c:if test="${errorMessage ne null}">
+                            <h4 class="font-weight-semi-bold text-uppercase mb-3 text-center text-danger">
+                                ${errorMessage}
+                            </h4>
+                        </c:if>
+
                         <c:if test="${insertCategory ne null}">
                             <form action="categorymanager" id="insertCategory">
                                 <input type="hidden" name="service" value="sendInsertDetail" />
                                 <div class="card mb-4">
                                     <div class="card-body">
-                                        <table >
+                                        <table>
                                             <thead>
                                                 <tr>
                                                     <th>Tên danh mục</th>
@@ -136,7 +143,7 @@
                                             <tbody>                                       
                                                 <tr>
                                                     <td>
-                                                        <input type="text" name="name" size="70" style="height: 35px" />
+                                                        <input type="text" name="name" size="70" style="height: 35px" value="${param.name}"/>
                                                     </td> 
                                                 </tr>                                         
                                             </tbody>
@@ -145,7 +152,7 @@
 
                                     <button
                                         class="button-insert"
-                                        style="transform: translateX(70vw) ; width: 10%"
+                                        style="transform: translateX(70vw); width: 10%"
                                         onclick="document.getElementById('insertCategory').submit();">
                                         Thêm danh mục
                                     </button>                                
@@ -336,7 +343,7 @@
                         justify-content: center;
                     }
 
-                    
+
 
                 </style>
             </div>
