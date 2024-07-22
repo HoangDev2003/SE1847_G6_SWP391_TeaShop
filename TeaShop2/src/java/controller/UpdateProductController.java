@@ -54,14 +54,11 @@ public class UpdateProductController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String service = req.getParameter("service");
-
-        // Send list Category and RequestUpdate
         if (service == null) {
             service = "sendUpdateDetail";
         }
-
         if (service.equals("sendUpdateDetail")) {
-            List<Category> listCategorys = (new CategoryDAO().findAll());
+            List<Category> listCategorys = (new CategoryDAO()).findAll();
             int id = Integer.parseInt(req.getParameter("id"));
             String name = req.getParameter("name");
             String categoryIdStr = req.getParameter("category");
@@ -72,23 +69,22 @@ public class UpdateProductController extends HttpServlet {
 
             // Validation
             String errorMessage = null;
-
             if (name == null || name.trim().isEmpty()) {
                 errorMessage = "Tên sản phẩm không được để trống hoặc chỉ có khoảng trắng";
             } else if (priceStr == null || !Pattern.matches("\\d+", priceStr) || priceStr.startsWith("0") && priceStr.length() > 1) {
                 errorMessage = "Giá sản phẩm phải là số nguyên dương và không được bắt đầu bằng số 0";
             } else if (createAtStr == null || !createAtStr.equals(LocalDate.now().toString())) {
-                errorMessage = "Ngày thêm sản phẩm phải là ngày hiện tại";
+                errorMessage = "Ngày chỉnh sửa sản phẩm phải là ngày hiện tại";
             } else if (description == null || description.trim().isEmpty()) {
                 errorMessage = "Mô tả sản phẩm không được để trống";
-            } else if (filePart == null || filePart.getSize() == 0) {
-                errorMessage = "Hình ảnh sản phẩm không được để trống";
+            } else if (filePart == null || filePart.getSubmittedFileName().isEmpty()) {
+                errorMessage = "Hình ảnh không được để trống";
             }
 
             if (errorMessage != null) {
                 req.setAttribute("errorMessage", errorMessage);
                 req.setAttribute("allCategorys", listCategorys);
-                req.setAttribute("updateProduct", "updateProduct");
+                req.setAttribute("productUpdate", new ProductDAO().getProductsById(id));
                 req.getRequestDispatcher("view/dashboard/admin/UpdateProduct.jsp").forward(req, resp);
                 return;
             }
@@ -113,7 +109,6 @@ public class UpdateProductController extends HttpServlet {
             String image_url = UPLOAD_DIR + "/" + fileName;
 
             Product product = (new ProductDAO()).getProductsById(id);
-
             product.setProduct_name(name);
             product.setCategory(category);
             product.setImage(image_url);
@@ -121,10 +116,10 @@ public class UpdateProductController extends HttpServlet {
             product.setCreate_at(create_at);
             product.setDescription(description);
 
-            // Set new value for product
+            // Update the product
             (new ProductDAO()).updateProduct(product, id);
             req.setAttribute("allCategorys", listCategorys);
-            req.setAttribute("UpdateDone", "Cập nhật sản phẩm (ID = " + id + ") thành công!\nClick Product Management để xem những thay đổi mới nhất");
+            req.setAttribute("UpdateDone", "Update information for Product (ID = " + id + ") done!\nClick Product Management to see all changes");
             req.getRequestDispatcher("view/dashboard/admin/UpdateProduct.jsp").forward(req, resp);
         }
     }
