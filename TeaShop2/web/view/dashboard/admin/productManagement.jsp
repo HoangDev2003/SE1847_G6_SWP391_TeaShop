@@ -269,7 +269,7 @@
 
                     }
                     .card-header input[type="number"] {
-                        border: 2px solid #4CAF50; /* Màu border */
+                        border: 2px solid #37697a; /* Màu border */
                         border-radius: 15px; /* Bo tròn border */
                         padding: 6px; /* Padding bên trong */
                         font-size: 16px; /* Kích thước font chữ */
@@ -279,8 +279,8 @@
                     }
 
                     .card-header input[type="number"]:focus {
-                        border-color: #2E7D32; /* Màu border khi focus */
-                        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Hiệu ứng đổ bóng khi focus */
+                        border-color: #37697a; /* Màu border khi focus */
+                        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Hiệu ứng đổ bóng khi focus */
                     }
 
                 </style>
