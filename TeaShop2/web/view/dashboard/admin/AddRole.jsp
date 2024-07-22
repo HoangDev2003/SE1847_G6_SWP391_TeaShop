@@ -56,46 +56,50 @@
                                 <li class="breadcrumb-item active"><a href="rolemanager">Quản lý Role</a></li>
                                 <li class="breadcrumb-item">Thêm Role</li>
                             </ol>
-                      
+
                             <form action="addrole" method="post">
-                                
+
                                 <div class="card mb-4">
+                                     
                                     <div class="card-header" >
                                         <i class="fas fa-table me-1"></i>
-
-                                    </div>
-
-                                    <div class="card-body">
-                                        <table>
-                                            <thead>
-                                                <tr>
-                                                    <th>Role ID</th>
-                                                    <th>Tên Role</th>                                                    
-                                                </tr>
-                                            </thead>
-                                            <tbody>                                       
-                                                <tr>
-                                                    <td>
-                                                        <input type="number" name="id" style="height: 35px; width: 60px" value="${id}" required=""/>
-                                                    </td>
-                                                    <td>
-                                                        <input type="text" name="name" size="30" style="height: 35px" value="${name}" required=""/>
-                                                    </td>
-                                                </tr>                                         
-                                            </tbody>
-
-                                        </table>
-
-                                    </div>
-                                    <button
-                                        class="button-update"
-                                        style="transform: translateX(70vw) ; width: 10%"
-                                        onclick="document.getElementById('updatedProduct').submit();">
-                                        THÊM
-                                    </button>
+                                       
                                 </div>
-                            </form>
-                      
+                                    <h3 class="error-message">
+                                        ${errorMessage}
+                                    </h3>
+
+                                <div class="card-body">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Role ID</th>
+                                                <th>Tên Role</th>                                                    
+                                            </tr>
+                                        </thead>
+                                        <tbody>                                       
+                                            <tr>
+                                                <td>
+                                                    <input type="number" name="id" style="height: 35px; width: 60px" value="${id}" required=""/>
+                                                </td>
+                                                <td>
+                                                    <input type="text" name="name" size="30" style="height: 35px" value="${name}" required=""/>
+                                                </td>
+                                            </tr>                                         
+                                        </tbody>
+
+                                    </table>
+
+                                </div>
+                                <button
+                                    class="button-update"
+                                    style="transform: translateX(70vw) ; width: 10%"
+                                    onclick="document.getElementById('updatedProduct').submit();">
+                                    THÊM
+                                </button>
+                            </div>
+                        </form>
+
                     </div>                    
                 </main>
                 <footer class="py-4 bg-light mt-auto">
