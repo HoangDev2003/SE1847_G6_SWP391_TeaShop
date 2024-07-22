@@ -12,27 +12,22 @@
     <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
         <div class="sb-sidenav-menu">
             <div class="nav">
-                <div class="sb-sidenav-menu-heading">Core</div>
-                <a class="nav-link" href="dashboardAdmin.jsp">
-                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                    Dashboard
-                </a>
                 <div class="sb-sidenav-menu-heading">Interface</div>
                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                     <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                    Management
+                    Quản lý
                     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                 </a>
                 <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">
-                        <a class="nav-link" href="customerManagement">Quản lý khách hàng</a>
+                        <a class="nav-link" href="customerManagement">Khách hàng</a>
                     </nav>
                     <nav class="sb-sidenav-menu-nested nav">
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseOrderManagement" aria-expanded="false" aria-controls="collapseOrderManagement">
-                            Quản lý đơn hàng
+                            Đơn hàng
                             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>
-                        <a class="nav-link" href="saleManager">Quản lý Sale</a>
+
                         <div class="collapse" id="collapseOrderManagement" aria-labelledby="headingOne" data-bs-parent="#collapseLayouts">
                             <nav class="sb-sidenav-menu-nested nav">
                                 <a class="nav-link ${current_status_id == '0' ? 'text-white' : ''}" href="Staff">
@@ -55,6 +50,7 @@
                                 </a>
                             </nav>
                         </div>
+                        <a class="nav-link" href="saleManager">Sale</a>
                     </nav>
                 </div>
                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
@@ -86,15 +82,6 @@
                         </div>
                     </nav>
                 </div>
-                <div class="sb-sidenav-menu-heading">Add on</div>
-                <a class="nav-link" href="chartsAdmin.jsp">
-                    <div class="sb-nav-link-icon"><i class="fas fa-chart-area" ></i></div>
-                    Charts
-                </a>
-                <a class="nav-link" href="tables.html">
-                    <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                    Tables
-                </a>
             </div>
         </div>
 
