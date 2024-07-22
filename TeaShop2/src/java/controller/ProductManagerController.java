@@ -43,7 +43,7 @@ public class ProductManagerController extends HttpServlet {
             List<Product> products = (new ProductDAO()).getProductByKeyWords(keywords);
 
             if (products == null || products.isEmpty()) {
-                req.setAttribute("notFoundProduct", "Your keywords do not match with any Product Name");
+                req.setAttribute("notFoundProduct", "Từ khóa bạn tìm kiếm không khớp với tên sản phẩm nào");
                 products = (new ProductDAO()).findAll();
             }
 

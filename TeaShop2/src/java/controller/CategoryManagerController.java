@@ -22,7 +22,7 @@ public class CategoryManagerController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String service = req.getParameter("service");
-
+        req.setAttribute("categorymanager", "Yes");
         if (service == null) {
             service = "listAll";
         }
@@ -30,6 +30,22 @@ public class CategoryManagerController extends HttpServlet {
         if (service.equals("listAll")) {
             List<Category> listCategory = (new CategoryDAO().findAll());
             req.setAttribute("listAllCategory", listCategory);
+            req.getRequestDispatcher("view/dashboard/admin/categoryManagement.jsp").forward(req, resp);
+        }
+
+        if (service.equals("searchByKeywords")) {
+            String keywords = req.getParameter("keywords");
+
+            List<Category> categorys = (new CategoryDAO()).getCategoryByKeyWords(keywords);
+
+            if (categorys == null || categorys.isEmpty()) {
+                req.setAttribute("notFoundProduct", "Từ khóa bạn tìm kiếm không khớp với tên danh mục nào");
+                categorys = (new CategoryDAO()).findAll();
+            }
+
+            req.setAttribute("listAllCategory", categorys);
+            req.setAttribute("keywords", keywords);
+            req.setAttribute("showSearchCategory", "Yes");
             req.getRequestDispatcher("view/dashboard/admin/categoryManagement.jsp").forward(req, resp);
         }
 
