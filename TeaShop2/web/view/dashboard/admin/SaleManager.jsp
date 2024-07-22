@@ -24,7 +24,7 @@
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
 
-            <a class="navbar-brand ps-3" href="productmanager">Product Management</a>
+            <a class="navbar-brand ps-3" href="productmanager">Quản lý Sale</a>
 
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
 
@@ -73,18 +73,15 @@
 
                             <c:if test="${not empty listAllProduct}">
                                 <div class="card mb-4">
-                                    <div class="card-header">
-                                        <i class="fas fa-table me-1"></i>
-                                        Quản lý Sale
-                                    </div>
+                                    
                                     <div class="card-header">
                                         <h6><ion-icon name="filter-outline"></ion-icon> Lọc theo giá sản phẩm</h6>
                                         <form action="productmanager" method="get">
                                             <input type="hidden" name="service" value="searchByPriceRange" />
                                             <label for="priceFrom">Mức giá</label>
-                                            <input type="number" id="priceFrom" name="priceFrom" step="0.01" required />
+                                            <input type="number" id="priceFrom" name="priceFrom" step="1" min="1" placeholder="Từ" required />
                                             <label for="priceTo">~</label>
-                                            <input type="number" id="priceTo" name="priceTo" step="0.01" required />
+                                            <input type="number" id="priceTo" name="priceTo" step="1" min="1" placeholder="Đến" required />
                                             <button class="filerByPrice" type="submit">Tìm kiếm</button>
                                         </form>
                                     </div>
@@ -169,6 +166,20 @@
                     </div>
                 </footer>
                 <style>
+                    .card-header input[type="number"] {
+                        border: 2px solid #37697a; /* Màu border */
+                        border-radius: 15px; /* Bo tròn border */
+                        padding: 6px; /* Padding bên trong */
+                        font-size: 16px; /* Kích thước font chữ */
+                        outline: none; /* Loại bỏ viền outline khi focus */
+                        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Hiệu ứng đổ bóng nhẹ */
+                        transition: border-color 0.3s, box-shadow 0.3s; /* Hiệu ứng chuyển đổi mượt */
+                    }
+
+                    .card-header input[type="number"]:focus {
+                        border-color: #37697a; /* Màu border khi focus */
+                        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Hiệu ứng đổ bóng khi focus */
+                    }
                     .search-header {
                         background-color: #37697a; /* Màu nền */
                         border: none; /* Bỏ viền */
