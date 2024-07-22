@@ -76,7 +76,7 @@
                             </form>                             
                         </div>
                         <div style="margin-left: 15px; margin-bottom: 20px; margin-top: 20px">
-                            <a href="adduser"><button type="button" class="btn btn-danger">Add Shipper</button> </a>
+                            <a href="adduser"><button type="button" class="btn btn-danger">Thêm Shipper</button> </a>
                         </div>
                         <form action="searchShipper">
                             <input type="search" name="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" style="max-width: 95%" />

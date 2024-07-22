@@ -107,12 +107,13 @@
                     }
                 </script>
 
-                <script>
-                    var navbarStyle = localStorage.getItem("navbarStyle");
-                    if (navbarStyle && navbarStyle !== 'transparent') {
-                        document.querySelector('.navbar-vertical').classList.add(`navbar-${navbarStyle}`);
-                    }
-                </script>
+                <nav class="navbar navbar-light navbar-vertical navbar-expand-xl">
+                    <script>
+                        var navbarStyle = localStorage.getItem("navbarStyle");
+                        if (navbarStyle && navbarStyle !== 'transparent') {
+                            document.querySelector('.navbar-vertical').classList.add(`navbar-${navbarStyle}`);
+                        }
+                    </script>
 
 
                 </nav>
@@ -125,18 +126,14 @@
                                         <h5 class="fs-0 mb-0 text-nowrap py-2 py-xl-0">Đơn hàng</h5>
                                     </div>
                                     <div class="col-8 col-sm-auto ms-auto text-end ps-0">
-                                        <div class="d-none" id="orders-bulk-actions">
-
-                                        </div>
+                                        <div class="d-none" id="orders-bulk-actions"></div>
                                         <div id="orders-actions">
-                                            <button class="btn ${statusOrder == 2 ? 'btn-primary' : 'btn'}" onclick="filterOrders(2)">Chờ giao hàng</button>
-
-                                        <button class="btn ${statusOrder == 3 ? 'btn-primary' : 'btn'}" onclick="filterOrders(3)">Hoàn thành</button>
-                                        <button class="btn ${statusOrder == 4 ? 'btn-primary' : 'btn'}" onclick="filterOrders(4)">Đơn hàng bị hủy</button>
+                                            <button class="btn ${statusOrder == 3 ? 'btn-primary' : 'btn'}" onclick="filterOrders(3)">Chờ giao hàng</button>
+                                        <button class="btn ${statusOrder == 4 ? 'btn-primary' : 'btn'}" onclick="filterOrders(4)">Hoàn thành</button>
+                                        <button class="btn ${statusOrder == 5 ? 'btn-primary' : 'btn'}" onclick="filterOrders(5)">Đơn hàng bị hủy</button>
                                     </div>
                                 </div>
                                 <script>
-
                                     function filterOrders(statusOrder) {
                                         window.location.href = 'ship?statusOrder=' + statusOrder;
                                     }
@@ -144,163 +141,119 @@
                             </div>
                         </div>
                         <div class="card-body p-0">
+                            <c:if test="${not empty errorMessage}">
+                                <div class="alert alert-danger" role="alert">
+                                    ${errorMessage}
+                                </div>
+                            </c:if>
                             <div class="table-responsive scrollbar">
                                 <table class="table table-sm table-striped fs--1 mb-0 overflow-hidden">
                                     <thead class="bg-200 text-900">
                                         <tr>
-                                            <th>
-
-                                            </th>
+                                            <th></th>
                                             <th class="sort pe-1 align-middle white-space-nowrap" data-sort="order">Đơn hàng</th>
-
-
-
-
                                             <th class="sort pe-1 align-middle white-space-nowrap text-center" data-sort="status">Trạng thái</th>
-
                                             <th class="no-sort"></th>
                                         </tr>
                                     </thead>
                                     <tbody class="list" id="table-orders-body">
-                                        <c:forEach items="${listOrders}" var="lo">
-                                            <tr class="btn-reveal-trigger">
-                                                <td class="align-middle" style="width: 1px;">
-
-                                                </td>
-                                                <td class="order py-2 align-middle white-space-nowrap" ">
-                                                    <a href="shipdetail?order_id=${lo.order_id}">
-                                                        <strong>#${lo.order_id}</strong>
-                                                    </a> bởi <strong>${lo.full_name}</strong><br/>
-                                                    <div>${lo.formattedOrderDate}</div>
-                                                    <div>${lo.product.product_name}</div>
-                                                    <div>${lo.phone_number}</div>
-                                                    <div class="address">${lo.address}</div>
-                                                    <div>${lo.total_amount} đ</div>
-
-                                                </td>
-
-
-                                                <td class=" py-2 align-middle text-center fs-0 white-space-nowrap">
-                                                    <c:choose>
-                                                        <c:when test="${lo.status.status_name == 'Chờ xác nhận'}">
-                                                            <span class="badge badge rounded-pill d-block badge-soft-warning">
-                                                                Chờ xác nhận<span class="ms-1 fas fa-stream" data-fa-transform="shrink-2"></span>
-                                                            </span>
-                                                        </c:when>
-                                                        <c:when test="${lo.status.status_name == 'Chờ giao hàng'}">
-                                                            <span class="badge badge rounded-pill d-block badge-soft-primary">
-                                                                Chờ giao hàng<span class="ms-1 fas fa-redo" data-fa-transform="shrink-2"></span>
-                                                            </span>
-                                                        </c:when>
-                                                        <c:when test="${lo.status.status_name == 'Hoàn thành'}">
-                                                            <span class="badge badge rounded-pill d-block badge-soft-success">
-                                                                Hoàn thành<span class="ms-1 fas fa-check" data-fa-transform="shrink-2"></span>
-                                                            </span>
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            <span class="badge badge rounded-pill d-block badge-soft-secondary">
-                                                                ${lo.status.status_name}<span class="ms-1 fas fa-question-circle" data-fa-transform="shrink-2"></span>
-                                                            </span>
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                </td>
-                                        <script>
-                                            // JavaScript function to handle confirmation dialog and validation
-                                            function confirmUpdateStatus(statusName, orderId, statusId) {
-                                                var confirmMessage = "Bạn có chắc muốn cập nhật trạng thái thành '" + statusName + "'?";
-                                                if (confirm(confirmMessage)) {
-                                                    if (statusId === 3) {
-                                                        // Kiểm tra các thông tin cần thiết khi chuyển sang trạng thái Hoàn thành (3)
-                                                        var estimatedDeliveryDate = document.getElementById("estimatedDeliveryDate_${lo.order_id}").value.trim();
-                                                        
-                                                        if ( estimatedDeliveryDate === "") {
-                                                            alert("Vui lòng điền đầy đủ thông tin vận chuyển và ngày dự kiến giao hàng.");
-                                                            return false;
-                                                        }
-                                                    } else if (statusId === 4) {
-                                                        // Kiểm tra ghi chú cho shipper khi chuyển sang trạng thái Đơn hàng bị hủy (4)
-                                                        var shipperNote = document.getElementById("shipperNote_${lo.order_id}").value.trim();
-                                                        if (shipperNote === "") {
-                                                            alert("Vui lòng điền ghi chú cho shipper.");
-                                                            return false;
-                                                        }
-                                                    }
-
-                                                    // Nếu các điều kiện kiểm tra đều đã được đáp ứng, submit form để cập nhật trạng thái
-                                                    document.querySelector('#updateStatusForm_' + orderId + '_' + statusId).submit();
-                                                } else {
-                                                    // Nếu người dùng chọn Cancel, không làm gì cả
-                                                    return false;
-                                                }
-                                            }
-                                            
-                                        </script>
-                                        <td class="py-2 align-middle white-space-nowrap text-end">
-                                            <c:if test="${lo.status.status_id == 2}">
-                                                <div class="dropdown font-sans-serif position-static">
-                                                    <button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal" type="button" id="order-dropdown-${lo.order_id}" data-bs-toggle="dropdown" data-boundary="viewport" aria-haspopup="true" aria-expanded="false">
-                                                        <span class="fas fa-ellipsis-h fs--1"></span>
-                                                    </button>
-                                                    <div class="dropdown-menu dropdown-menu-end border py-0" aria-labelledby="order-dropdown-${lo.order_id}">
-                                                        <div class="bg-white py-2">
-                                                            <c:forEach items="${listStatus}" var="ls">
-                                                                <form id="updateStatusForm_${lo.order_id}_${ls.status_id}" action="ship" method="post">
-                                                                    <input type="hidden" name="action" value="updateStatus">
-                                                                    <input type="hidden" name="orderId" value="${lo.order_id}">
-                                                                    <input type="hidden" name="statusId" value="${ls.status_id}">
-                                                                    <button class="dropdown-item" type="button" onclick="confirmUpdateStatus('${ls.status_name}', '${lo.order_id}', '${ls.status_id}')">
-                                                                        ${ls.status_name}
+                                        <c:choose>
+                                            <c:when test="${empty listOrders}">
+                                                <tr>
+                                                    <td colspan="4" class="text-center py-4">
+                                                        Không có đơn hàng nào.
+                                                    </td>
+                                                </tr>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <c:forEach items="${listOrders}" var="lo">
+                                                    <tr class="btn-reveal-trigger">
+                                                        <td class="align-middle" style="width: 1px;"></td>
+                                                        <td class="order py-2 align-middle white-space-nowrap">
+                                                            <a href="shipdetail?order_id=${lo.order_id}">
+                                                                <strong>#${lo.order_id}</strong>
+                                                            </a> bởi <strong>${lo.full_name}</strong><br/>
+                                                            <div>${lo.formattedOrderDate}</div>
+                                                            <div>${lo.phone_number}</div>
+                                                            <div class="address">${lo.address}</div>
+                                                            <div>${lo.total_amount} đ</div>
+                                                        </td>
+                                                        <td class="py-2 align-middle text-center fs-0 white-space-nowrap">
+                                                            <c:choose>
+                                                                <c:when test="${lo.status.status_name == 'Chờ xác nhận'}">
+                                                                    <span class="badge badge rounded-pill d-block badge-soft-warning">
+                                                                        Chờ xác nhận<span class="ms-1 fas fa-stream" data-fa-transform="shrink-2"></span>
+                                                                    </span>
+                                                                </c:when>
+                                                                <c:when test="${lo.status.status_name == 'Chờ giao hàng'}">
+                                                                    <span class="badge badge rounded-pill d-block badge-soft-primary">
+                                                                        Chờ giao hàng<span class="ms-1 fas fa-redo" data-fa-transform="shrink-2"></span>
+                                                                    </span>
+                                                                </c:when>
+                                                                <c:when test="${lo.status.status_name == 'Hoàn thành'}">
+                                                                    <span class="badge badge rounded-pill d-block badge-soft-success">
+                                                                        Hoàn thành<span class="ms-1 fas fa-check" data-fa-transform="shrink-2"></span>
+                                                                    </span>
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                                    <span class="badge badge rounded-pill d-block badge-soft-secondary">
+                                                                        ${lo.status.status_name}<span class="ms-1 fas fa-question-circle" data-fa-transform="shrink-2"></span>
+                                                                    </span>
+                                                                </c:otherwise>
+                                                            </c:choose>
+                                                        </td>
+                                                        <td class="py-2 align-middle white-space-nowrap text-end">
+                                                            <c:if test="${lo.status.status_id == 3}">
+                                                                <div class="dropdown font-sans-serif position-static">
+                                                                    <button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal" type="button" id="order-dropdown-${lo.order_id}" data-bs-toggle="dropdown" data-boundary="viewport" aria-haspopup="true" aria-expanded="false">
+                                                                        <span class="fas fa-ellipsis-h fs--1"></span>
                                                                     </button>
-                                                                </form>
-                                                            </c:forEach>
-                                                            <!-- <div class="dropdown-divider"></div>
-                                                            <a class="dropdown-item text-danger" href="#!">Xóa</a> -->
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </c:if>
-                                        </td>
-
-                                        </tr>
-                                    </c:forEach>
+                                                                    <div class="dropdown-menu dropdown-menu-end border py-0" aria-labelledby="order-dropdown-${lo.order_id}">
+                                                                        <div class="bg-white py-2">
+                                                                            <c:forEach items="${listStatus}" var="ls">
+                                                                                <form id="updateStatusForm_${lo.order_id}_${ls.status_id}" action="ship" method="post">
+                                                                                    <input type="hidden" name="action" value="updateStatus">
+                                                                                    <input type="hidden" name="orderId" value="${lo.order_id}">
+                                                                                    <input type="hidden" name="statusId" value="${ls.status_id}">
+                                                                                    <button class="dropdown-item" type="button" onclick="confirmUpdateStatus('${lo.order_id}', '${ls.status_id}')">
+                                                                                        ${ls.status_name}
+                                                                                    </button>
+                                                                                </form>
+                                                                            </c:forEach>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </c:if>
+                                                        </td>
+                                                    </tr>
+                                                </c:forEach>
+                                            </c:otherwise>
+                                        </c:choose>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-                        <div class="card-footer">
-                            <div class="d-flex align-items-center justify-content-center">
-                                <button class="btn btn-sm btn-falcon-default me-1" type="button" title="Previous" data-list-pagination="prev"><span class="fas fa-chevron-left"></span></button>
-                                <ul class="pagination mb-0"></ul>
-                                <button class="btn btn-sm btn-falcon-default ms-1" type="button" title="Next" data-list-pagination="next"><span class="fas fa-chevron-right"></span></button>
-                            </div>
-
-                        </div>
-                    </div>
-                    <footer class="footer">
-                        <div class="row g-0 justify-content-between fs--1 mt-4 mb-3">
-                            <div class="col-12 col-sm-auto text-center">
-                                <p class="mb-0 text-600">Thank you for creating with Falcon <span class="d-none d-sm-inline-block">| </span><br class="d-sm-none" /> 2021 &copy; <a href="https://themewagon.com">Themewagon</a></p>
-                            </div>
-                            <div class="col-12 col-sm-auto text-center">
-                                <p class="mb-0 text-600">v3.4.0</p>
-                            </div>
-                        </div>
-                    </footer>
-                </div>
-                <div class="modal fade" id="authentication-modal" tabindex="-1" role="dialog" aria-labelledby="authentication-modal-label" aria-hidden="true">
-                    <div class="modal-dialog mt-6" role="document">
-                        <div class="modal-content border-0">
-                            <div class="modal-header px-5 position-relative modal-shape-header bg-shape">
-                                <div class="position-relative z-index-1 light">
-                                    <h4 class="mb-0 text-white" id="authentication-modal-label">Register</h4>
-                                    <p class="fs--1 mb-0 text-white">Please create your free Falcon account</p>
-                                </div>
-                                <button class="btn-close btn-close-white position-absolute top-0 end-0 mt-2 me-2" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-
-                        </div>
                     </div>
                 </div>
+                <script>
+                    function confirmUpdateStatus(orderId, statusId) {
+                        var form = document.getElementById("updateStatusForm_" + orderId + "_" + statusId);
+                        if (statusId == 4) { // Giả sử 4 là id của trạng thái "Hoàn thành"
+                            if (confirm("Bạn có chắc chắn muốn cập nhật trạng thái đơn hàng này thành Hoàn thành?")) {
+                                form.submit();
+                            }
+                        } else if (statusId == 5) { // Giả sử 5 là id của trạng thái "Đơn hàng bị hủy"
+                            if (confirm("Bạn có chắc chắn muốn hủy đơn hàng này?")) {
+                                form.submit();
+                            }
+                        } else {
+                            form.submit();
+                        }
+                    }
+                </script>
+
+
+
             </div>
         </main>
         <!-- ===============================================-->

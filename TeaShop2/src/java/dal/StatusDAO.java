@@ -48,7 +48,38 @@ public class StatusDAO extends DBContext {
         }
         return list;
     }
+    public List<Status> statusShipper() {
+        List<Status> list = new ArrayList<>();
 
+        //ket noi duoc voi database
+        connection = getConnection();
+        //co cau lenh de goi xuong database
+        String sql = "SELECT *\n"
+                + "  FROM [dbo].[Status]\n"
+                + "  Where status_id IN ( 4, 5)";
+        try {
+            //Tạo đối tượng PrepareStatement
+            PreparedStatement statement = connection.prepareStatement(sql);
+            //thuc thi cau lenh o tren => tra ve ket qua
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                Status status = new Status();
+
+                int status_id = resultSet.getInt("status_id");
+                String status_name = resultSet.getString("status_name");
+
+                status.setStatus_id(status_id);
+                status.setStatus_name(status_name);
+                //add to collections
+                list.add(status);
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("Error " + ex.getMessage());
+
+        }
+        return list;
+    }
     public Status getStatusByStatusID(int id) {
         Status status = new Status();
         //ket noi duoc voi database

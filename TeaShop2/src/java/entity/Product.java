@@ -34,6 +34,8 @@ public class Product {
     public float discount;
     public Date create_at;
     public String description;
+    
+    
 
     public Product(String product_name, Category category, String image, int price, Date create_at, String description) {
         this.product_name = product_name;

@@ -1,6 +1,6 @@
 <%-- 
-    Document   : UpdateTopping.jsp
-    Created on : Jul 18, 2024, 7:15:55 PM
+    Document   : AddRole.jsp
+    Created on : Jul 22, 2024, 2:29:08 PM
     Author     : Huyen Tranq
 --%>
 
@@ -53,35 +53,37 @@
                     <main>                   
                         <div class="container-fluid px-4">
                             <ol class="breadcrumb mb-4" style="padding-top: 24px">                              
-                                <li class="breadcrumb-item active"><a href="toppingmanager">Quản lý Topping</a></li>
-                                <li class="breadcrumb-item">Chỉnh sửa Topping</li>
+                                <li class="breadcrumb-item active"><a href="rolemanager">Quản lý Role</a></li>
+                                <li class="breadcrumb-item">Thêm Role</li>
                             </ol>
 
-                            <form action="updatetopping" method="post">
+                            <form action="addrole" method="post">
 
                                 <div class="card mb-4">
+                                     
                                     <div class="card-header" >
                                         <i class="fas fa-table me-1"></i>
-
-                                    </div>
+                                       
+                                </div>
                                     <h3 class="error-message">
-                                    ${errorMessage}
-                                </h3>
+                                        ${errorMessage}
+                                    </h3>
+
                                 <div class="card-body">
                                     <table>
                                         <thead>
                                             <tr>
-                                                <th>Topping ID</th>
-                                                <th>Tên Topping</th>                                                    
+                                                <th>Role ID</th>
+                                                <th>Tên Role</th>                                                    
                                             </tr>
                                         </thead>
                                         <tbody>                                       
                                             <tr>
                                                 <td>
-                                                    <input type="number" name="id" style="height: 35px; width: 60px" value="${topping.topping_id}" readonly />
+                                                    <input type="number" name="id" style="height: 35px; width: 60px" value="${id}" required=""/>
                                                 </td>
                                                 <td>
-                                                    <input type="text" name="name" size="30" style="height: 35px" value="${topping.topping_name}"/>
+                                                    <input type="text" name="name" size="30" style="height: 35px" value="${name}" required=""/>
                                                 </td>
                                             </tr>                                         
                                         </tbody>
@@ -93,7 +95,7 @@
                                     class="button-update"
                                     style="transform: translateX(70vw) ; width: 10%"
                                     onclick="document.getElementById('updatedProduct').submit();">
-                                    UPDATE
+                                    THÊM
                                 </button>
                             </div>
                         </form>

@@ -4,7 +4,7 @@
  */
 package controller;
 
-import dal.AccountDAO;
+import dal.AdminDAO;
 import entity.Accounts;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,15 +13,14 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.time.LocalDate;
+import java.util.regex.Pattern;
 
 /**
  *
  * @author Huyen Tranq
  */
-public class LoginController extends HttpServlet {
-
-    private static final String LOGIN_JSP = "login.jsp";
-    private static final String FAILED_ATTEMPTS = "failedAttempts";
+public class AddRoleController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,13 +35,14 @@ public class LoginController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet LoginController</title>");
+            out.println("<title>Servlet AddRoleController</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet LoginController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet AddRoleController at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -60,7 +60,7 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher(LOGIN_JSP).forward(request, response);
+        request.getRequestDispatcher("view/dashboard/admin/AddRole.jsp").forward(request, response);
     }
 
     /**
@@ -74,53 +74,45 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-
-        HttpSession session = request.getSession();
-        Integer failedAttempts = (Integer) session.getAttribute(FAILED_ATTEMPTS);
-        if (failedAttempts == null) {
-            failedAttempts = 0;
-        }
-        // xu ly yeu cau
-        AccountDAO dao = new AccountDAO();
-        Accounts a = dao.login(email, password);
-        if (a == null) {
-            failedAttempts++;
-            session.setAttribute(FAILED_ATTEMPTS, failedAttempts);
-            if (failedAttempts >= 1) {
-                request.setAttribute("showForgotPassword", true);
-            }
-            request.setAttribute("email", email);
-            request.setAttribute("pass", password);
-            request.setAttribute("mess", "Your Email or Password is incorrect!");
-            request.getRequestDispatcher(LOGIN_JSP).forward(request, response);
-
-        } else {
-            if (a.getStatus_id() == 2) {
-                request.setAttribute("mess", "Your account is inactive!");
-                request.getRequestDispatcher(LOGIN_JSP).forward(request, response);
+        try (PrintWriter out = response.getWriter()) {
+            HttpSession session = request.getSession();
+            if (!AuthorizationController.isAdmin((Accounts) session.getAttribute("acc"))) {
+                AuthorizationController.redirectToHome(session, response);
             } else {
-                session.setAttribute(FAILED_ATTEMPTS, 0);
-                session.setAttribute("acc", a);
-                int accountId = dao.getAccountIdByEmail(email);
-                session.setAttribute("accountId", accountId);
-                int roleId = a.getRole_id();
-                switch (roleId) {
-                    case 1:
-                        request.getRequestDispatcher("view/dashboard/admin/dashboardAdmin.jsp").forward(request, response);
-                        break;
-                    case 3:
-                        request.getRequestDispatcher("view/dashboard/staff1/dashboardStaff.jsp").forward(request, response);
-                        break;
-                    case 2:
-                        response.sendRedirect("home");
-                        break;
-                    case 4:
-                        request.getRequestDispatcher("ship").forward(request, response);
-                        break;
-                    default:
-                        break;
+                //validation
+                String id = request.getParameter("id");
+                String name = request.getParameter("name");
+                String errorMessage = null;
+
+                if (name == null || name.trim().isEmpty()) {
+                    errorMessage = "Tên Role không được để trống hoặc chỉ có khoảng trắng";
+                } else if (name.matches("\\d+")) {
+                    errorMessage = "Tên Role không được chỉ chứa các số";
+                } else {
+                    try {
+                        int roleId = Integer.parseInt(id);
+                        AdminDAO dao = new AdminDAO();
+                        if (dao.isRoleIdExists(roleId)) {
+                            errorMessage = "ID Role đã tồn tại";
+                        }
+                    } catch (NumberFormatException e) {
+                        errorMessage = "ID Role phải là số hợp lệ";
+                    }
+                }
+                if (errorMessage != null) {
+                    request.setAttribute("errorMessage", errorMessage);
+                    request.setAttribute("id", id);
+                    request.setAttribute("name", name);
+                    request.getRequestDispatcher("view/dashboard/admin/AddRole.jsp").forward(request, response);
+                    return;
+                } else {
+                    AdminDAO dao = new AdminDAO();
+                    int roleId = Integer.parseInt(id);
+                    System.out.println(name);
+                    System.out.println(id);
+                    dao.addRole(roleId, name);
+                    response.sendRedirect("rolemanager");
+
                 }
             }
         }

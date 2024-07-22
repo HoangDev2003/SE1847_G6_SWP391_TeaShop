@@ -145,7 +145,7 @@
                                                          class="rounded-circle img-fluid" style="width: 250px; height: 250px">
 
                                                     <h5 class="my-3 increase-font" >${acc.user_name}</h5>
-                                                    <input id="filebutton1" name="img" class="input-file" type="file" onchange="displayImage(this, 'previewImg1')">
+                                                    <input id="filebutton1" name="img" class="input-file" type="file" onchange="displayImage(this, 'previewImg1')" readonly="">
                                                     <div class="d-flex justify-content-center mb-2">
 
                                                     </div>
@@ -158,10 +158,10 @@
                                                 <div class="card-body increase-font">
                                                     <div class="row">
                                                         <div class="col-sm-3">
-                                                            <p class="mb-0">Full Name</p>
+                                                            <p class="mb-0">Tên người dùng</p>
                                                         </div>
                                                         <div class="col-sm-9">
-                                                            <input type="text" value="${acc.user_name}" name="name" class="input-like-p" >
+                                                            <input type="text" value="${acc.user_name}" name="name" class="input-like-p" readonly="">
                                                         </div>
                                                     </div>
                                                     <hr>
@@ -170,35 +170,35 @@
                                                             <p class="mb-0">Email</p>
                                                         </div>
                                                         <div class="col-sm-9">
-                                                            <input type="text" value="${acc.email}" name="email" class="input-like-p" >
+                                                            <input type="text" value="${acc.email}" name="email" class="input-like-p" readonly="">
                                                         </div>
                                                     </div>
                                                     <hr>
                                                     <div class="row">
                                                         <div class="col-sm-3">
-                                                            <p class="mb-0">Phone</p>
+                                                            <p class="mb-0">Số điện thoại</p>
                                                         </div>
                                                         <div class="col-sm-9">
-                                                            <input type="text" value="${acc.phone_number}" name="phone" class="input-like-p" >
+                                                            <input type="text" value="${acc.phone_number}" name="phone" class="input-like-p" readonly="">
                                                         </div>
                                                     </div>
                                                     <hr>
                                                     <div class="row">
                                                         <div class="col-sm-3">
-                                                            <p class="mb-0">Gender</p>
+                                                            <p class="mb-0">Giới tính</p>
                                                         </div>
                                                         <div class="col-sm-9">
                                                             
-                                                          <input type="text" value="${acc.gender}" name="gender" class="input-like-p" >
+                                                          <input type="text" value="${acc.gender}" name="gender" class="input-like-p" readonly="">
                                                         </div>
                                                     </div>
                                                     <hr>
                                                     <div class="row">
                                                         <div class="col-sm-3">
-                                                            <p class="mb-0">Address</p>
+                                                            <p class="mb-0">Địa chỉ</p>
                                                         </div>
                                                         <div class="col-sm-9">
-                                                            <input class="input-like-p" type="text" value="${acc.address}" name="address" >
+                                                            <input class="input-like-p" type="text" value="${acc.address}" name="address" readonly="">
                                                         </div>
                                                     </div>
                                                     <hr>
@@ -229,7 +229,7 @@
                                                         </div>
                                                         <div class="form-group">
                                                             <div class="col-md-8 col-md-offset-4">
-                                                                <button id="singlebutton" name="singlebutton" class="btn btn-primary">UPDATE</button>
+                                                                <button id="singlebutton" name="singlebutton" class="btn btn-primary">CHỈNH SỬA</button>
                                                             </div>
                                                         </div>
                                                     </div>

@@ -54,20 +54,13 @@
                 userLinkRTL.setAttribute('disabled', true);
             }
         </script>
+        
     </head>
 
 
     <body>
-        <%@ page import="java.util.List" %>
-        <%@ page import="entity.OrderDetails" %>
-        <%@ page import="entity.Orders" %>
-        <%
-            // Lưu giá trị thời gian giao hàng dự kiến vào session
-            if (request.getParameter("deliveryTime") != null) {
-                String savedTime = request.getParameter("deliveryTime");
-                session.setAttribute("savedTime", savedTime);
-            }
-        %>
+
+
         <!-- ===============================================-->
         <!--    Main Content-->
         <!-- ===============================================-->
@@ -98,20 +91,13 @@
                             <div class="bg-holder d-none d-lg-block bg-card" style="background-image:url(../../../assets/img/icons/spot-illustrations/corner-4.png);opacity: 0.7;"></div>
                             <div class="card-body position-relative">
                                 <h5>Chi tiết đơn hàng: #${orders.order_id}</h5>
-                            <p class="me-2">Thời gian giao hàng: </p>
-                            <p class="me-2"> ${orders.formattedOrderDate} đến ${orders.formattedEstimated_delivery_date}</p>
-                            <c:if test="${orders.status.status_id != 3 && orders.status.status_id != 4}">
-                                <form action="shipdetail" method="post" enctype="multipart/form-data">
-                                    <%
-                                        String savedTime = request.getParameter("savedTime");
-                                    %>
-                                    <p class="me-2">
-                                        <input type="datetime-local" id="deliveryTime" value="<%= savedTime != null ? savedTime : ""%>" name="deliveryTime" required> 
-                                        <input type="hidden" name="order_id" value="${orders.order_id}">
-                                        <button type="submit">Lưu thời gian giao hàng dự kiến</button>
-                                    </p>
-                                </form>
-                            </c:if>
+                            <p class="alert alert-warning highlighted-text me-2">
+                                Thời gian giao hàng chỉ định: ${orders.formattedOrderDate} đến ${orders.formattedEstimated_delivery_date}
+                            </p>
+                            <p class="me-2">Thời gian bạn giao hàng cho khách: ${orders.formattedShipper_delivery_time}</p>
+                            <p class="me-2">${orders.deliveryTimeMessage}</p>
+
+
                             <div><strong class="me-2">Trạng thái: </strong>
                                 <c:choose>
                                     <c:when test="${orders.status.status_name == 'Chờ xác nhận'}">
@@ -198,7 +184,7 @@
                                                             <input type="hidden" name="order_id" value="${orders.order_id}" />
                                                             <input type="hidden" name="orderDetailsId" value="${lod.order_details_id}" />
                                                             <input type="hidden" name="deliveryTime" value="<%= session.getAttribute("savedTime") != null ? session.getAttribute("savedTime") : ""%>">
-                                                            <c:if test="${orders.status.status_id != 3 && orders.status.status_id != 4}">
+                                                            <c:if test="${orders.status.status_id != 4 && orders.status.status_id != 5}">
                                                                 <div class="custom-file mb-3">
                                                                     <input type="file" class="custom-file-input" id="fileUpload${lod.order_details_id}" name="fileUpload${lod.order_details_id}" accept="image/*" onchange="previewImage(event, ${lod.order_details_id})">
                                                                 </div>
@@ -266,8 +252,8 @@
                                     <textarea id="shipperNote" name="shipperNote" class="form-control" rows="3" placeholder="Nhập note của Shipper">${orders.shipper_note}</textarea>
                                     <input type="hidden" name="deliveryTime" value="<%= session.getAttribute("savedTime") != null ? session.getAttribute("savedTime") : ""%>">
                                     <!-- Button submit -->
-                                    <c:if test="${orders.status.status_id != 3 && orders.status.status_id != 4}">
-                                    <button type="submit" class="btn btn-primary mt-2">Lưu</button>
+                                    <c:if test="${orders.status.status_id != 4 && orders.status.status_id != 5}">
+                                        <button type="submit" class="btn btn-primary mt-2">Lưu</button>
                                     </c:if>
                                     <!-- Hidden field để truyền order_id -->
                                     <input type="hidden" name="order_id" value="${orders.order_id}">

@@ -5,7 +5,6 @@
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="java.util.Enumeration"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -77,43 +76,14 @@
                             <a href="contact.html" class="nav-item nav-link">Contact</a>
                         </div>
                         <div class="d-flex m-3 me-0">
-                            <%
-                int count = 0;
-                Enumeration<String> em = session.getAttributeNames();
-                while (em.hasMoreElements()) {
-                    String key = em.nextElement();
-
-                    if (key.startsWith("cartItem")) {
-                        count++;
-                    }
-                } 
-                            %>
-                            <a href="CartDetails?service=showcart" class="position-relative me-4 my-auto">
-                                <i class="fa fa-shopping-bag fa-2x" style="color: orange;"></i>
-                                <%if(count>0){%>
-                                <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;"><%=count%></span>
-                                <%}%>
+                            <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
+                            <a href="#" class="position-relative me-4 my-auto">
+                                <i class="fa fa-shopping-bag fa-2x"></i>
+                                <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">3</span>
                             </a>
-                            <% 
-    Integer accountId = (Integer) session.getAttribute("accountId");
-    if (accountId != null) {
-                            %>
-                            <div class="nav-item dropdown">
-                                <a href="#" class="nav-link" data-bs-toggle="dropdown" style="color: black;">
-                                    <i class="fas fa-user fa-2x" style="color: black;"></i>
-                                </a>
-                                <div class="dropdown-menu m-0 bg-secondary rounded-0">
-                                    <a href="userprofile" class="dropdown-item">Thông tin</a>
-                                    <a href="MyOrder" class="dropdown-item">Đơn hàng</a>
-                                </div>
-                            </div>
-                            <% 
-                                } else { 
-                            %>
-                            <a href="login"><i class="fas fa-user fa-2x" style="color: black;"></i></a>
-                                <% 
-                                    } 
-                                %>
+                            <a href="#" class="my-auto">
+                                <i class="fas fa-user fa-2x"></i>
+                            </a>
                         </div>
                     </div>
                 </nav>
@@ -196,11 +166,11 @@
                                         </c:if>
                                         <c:if test="${lo.status_feedback_id == 1}">
                                             <a href="product-details?id=${lo.product.product_id}">
-                                                <button class="btn btn-md bg-light border mt-4"
-                                                        onclick="viewFeedback(${lo.product.product_id}, ${lo.orders.account.account_id})">
-                                                    Xem đánh giá của bạn
-                                                </button>
-                                            </a>
+                                            <button class="btn btn-md bg-light border mt-4"
+                                                    onclick="viewFeedback(${lo.product.product_id}, ${lo.orders.account.account_id})">
+                                                Xem đánh giá của bạn
+                                            </button>
+                                                </a>
                                         </c:if>
                                     </td>
                                 </tr>
@@ -212,7 +182,7 @@
         </div>
 
         <script>
-
+           
             function filterOrders(statusFeedback) {
                 window.location.href = 'orderCompelete?statusFeedback=' + statusFeedback;
             }
@@ -232,7 +202,7 @@
                         <form id="feedbackForm" method="get" action="feedback">
                             <input type="hidden" name="product_id" id="product_id" value="">
                             <input type="hidden" name="order_details_id" id="order_details_id" value="">
-                            <input type="hidden" name="account_id" value="${sessionScope.account.account_id}">
+                            <input type="hidden" name="account_id" value="${sessionScope.acc.account_id}">
                             <div class="mb-3">
                                 <label for="feedback" class="form-label">Đánh giá của bạn</label>
                                 <textarea class="form-control" id="feedback" name="feedback" rows="3" required></textarea>

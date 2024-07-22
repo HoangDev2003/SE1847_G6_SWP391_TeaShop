@@ -24,7 +24,7 @@
                     <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i><a href="#" class="text-white">dreamycoffee@gmail.com</a></small>            
                 </div>
                 <div class="top-link pe-2">            
-                    <a href="#" class="text-white"><small class="text-white mx-2"> Welcome ${sessionScope.acc.user_name}</small>/</a>
+                    <a href="#" class="text-white"><small class="text-white mx-2">${sessionScope.acc.full_name}</small>/</a>
                     <a href="logout" class="text-white"><small class="text-white ms-2">Đăng xuất</small></a>               
                 </div>           
             </c:if>
@@ -76,6 +76,9 @@
                             <div class="dropdown-menu m-0 bg-secondary rounded-0">
                                 <a href="MyOrder" class="dropdown-item">Đơn hàng</a>
                             </div>
+                            <div class="dropdown-menu m-0 bg-secondary rounded-0">
+                                <a href="orderCompelete" class="dropdown-item">Đánh giá của bạn</a>
+                            </div>
                         </div>
                         <% 
                             }                     else { 
@@ -118,17 +121,19 @@
                             <div class="dropdown-menu m-0 bg-secondary rounded-0">
                                 <a href="userprofile?email=${sessionScope.acc.email}" class="dropdown-item">Thông tin</a>
                                 <a href="MyOrder" class="dropdown-item">Đơn hàng</a>
+                                <a href="orderCompelete" class="dropdown-item">Đánh giá của bạn</a>
                             </div>
                         </div>
                         <% 
                             }                     else { 
                         %>
-
+                            
                         <% 
                             } 
                         %>
 
                     </div>
+                        
                 </c:if> 
             </div>
         </nav>

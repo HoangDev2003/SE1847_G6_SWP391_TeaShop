@@ -5,9 +5,7 @@
 package controller;
 
 import dal.AdminDAO;
-import entity.AccountStatus;
 import entity.Accounts;
-import entity.Topping;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -20,7 +18,7 @@ import jakarta.servlet.http.HttpSession;
  *
  * @author Huyen Tranq
  */
-public class UpdateToppingController extends HttpServlet {
+public class AddToppingController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,18 +33,16 @@ public class UpdateToppingController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            HttpSession session = request.getSession();
-            if (!AuthorizationController.isAdmin((Accounts) session.getAttribute("acc"))) {
-                AuthorizationController.redirectToHome(session, response);
-            } else {
-                AdminDAO dao = new AdminDAO();
-                String id = request.getParameter("id");
-                int tid = Integer.parseInt(id);
-                Topping topping = dao.getToppingById(tid);
-                request.setAttribute("topping", topping);
-                request.getRequestDispatcher("view/dashboard/admin/UpdateTopping.jsp").forward(request, response);
-            }
-
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet AddToppingController</title>");
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet AddToppingController at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
         }
     }
 
@@ -62,7 +58,7 @@ public class UpdateToppingController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        request.getRequestDispatcher("view/dashboard/admin/AddTopping.jsp").forward(request, response);
     }
 
     /**
@@ -76,34 +72,33 @@ public class UpdateToppingController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        try (PrintWriter out = response.getWriter()) {
+            HttpSession session = request.getSession();
+            if (!AuthorizationController.isAdmin((Accounts) session.getAttribute("acc"))) {
+                AuthorizationController.redirectToHome(session, response);
+            } else {
+                //validation
+                String name = request.getParameter("name");
+                String errorMessage = null;
 
-        //validation
-        String id = request.getParameter("id");
-        String name = request.getParameter("name");
-        String errorMessage = null;
+                if (name == null || name.trim().isEmpty()) {
+                    errorMessage = "Tên Topping không được để trống hoặc chỉ có khoảng trắng";
+                } else if (name.matches("\\d+")) {
+                    errorMessage = "Tên Topping không được chỉ chứa các số";
+                }
+                if (errorMessage != null) {
+                    request.setAttribute("errorMessage", errorMessage);
+                    request.setAttribute("name", name);
+                    request.getRequestDispatcher("view/dashboard/admin/AddTopping.jsp").forward(request, response);
+                    return;
+                } else {
+                    AdminDAO dao = new AdminDAO();
+                    System.out.println(name);
+                    dao.addTopping(name);
+                    response.sendRedirect("toppingmanager");
 
-        if (name == null || name.trim().isEmpty()) {
-            errorMessage = "Tên Topping không được để trống hoặc chỉ có khoảng trắng";
-        } else if (name.matches("\\d+")) {
-            errorMessage = "Tên Topping không được chỉ chứa các số";
-        }       
-        if (errorMessage != null) {
-            request.setAttribute("errorMessage", errorMessage);
-            Topping topping = new Topping();
-            topping.setTopping_id(Integer.parseInt(id));
-            topping.setTopping_name(name);
-            request.setAttribute("topping", topping);
-            request.getRequestDispatcher("view/dashboard/admin/UpdateTopping.jsp").forward(request, response);
-            return;
-            
-        } else {
-            AdminDAO dao = new AdminDAO();
-            int tid = Integer.parseInt(id);
-            System.out.println(name);
-            System.out.println(id);
-
-            dao.updateTopping(name, tid);
-            response.sendRedirect("toppingmanager");
+                }
+            }
         }
     }
 
