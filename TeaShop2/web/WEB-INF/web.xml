@@ -282,6 +282,10 @@
         <servlet-name>AddRoleController</servlet-name>
         <servlet-class>controller.AddRoleController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddToppingController</servlet-name>
+        <servlet-class>controller.AddToppingController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ShopController</servlet-name>
         <url-pattern>/shop</url-pattern>
@@ -541,5 +545,9 @@
     <servlet-mapping>
         <servlet-name>AddRoleController</servlet-name>
         <url-pattern>/addrole</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddToppingController</servlet-name>
+        <url-pattern>/addtopping</url-pattern>
     </servlet-mapping>
 </web-app>
