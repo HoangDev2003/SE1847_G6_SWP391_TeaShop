@@ -30,6 +30,7 @@ public class CategoryManagerController extends HttpServlet {
         if (service.equals("listAll")) {
             List<Category> listCategory = (new CategoryDAO().findAll());
             req.setAttribute("listAllCategory", listCategory);
+            req.setAttribute("showSearchCategory", "Yes");
             req.getRequestDispatcher("view/dashboard/admin/categoryManagement.jsp").forward(req, resp);
         }
 
