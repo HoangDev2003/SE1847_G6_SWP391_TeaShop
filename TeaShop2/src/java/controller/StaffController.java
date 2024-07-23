@@ -8,6 +8,7 @@ import com.google.gson.JsonObject;
 import dal.OrderDetailsDAO;
 import dal.OrdersDAO;
 import dal.StaffDAO;
+import entity.Accounts;
 import entity.OrderDetails;
 import entity.Orders;
 import java.io.IOException;
@@ -23,10 +24,13 @@ import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 
 /**
  *
@@ -48,11 +52,135 @@ public class StaffController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession(true);
+        Accounts acc = (Accounts) session.getAttribute("acc");
+        if (acc == null) {
+            response.sendRedirect("login");
+            return;
+        }
+        int status = acc.getRole_id();
+        if (status == 2 || status == 4) {
+            response.sendRedirect("home");
+            return;
+        }
+
         StaffDAO staffDAO = new StaffDAO();
         try (PrintWriter out = response.getWriter()) {
             String service = request.getParameter("service");
             if (service == null || service.isEmpty()) {
                 service = "show";
+            }
+
+            if (service.equals("search")) {
+                String search = request.getParameter("search");
+                if (search == null || search.isEmpty()) {
+                    request.getRequestDispatcher("view/dashboard/staff1/search-order.jsp").forward(request, response);
+                } else if (search.equals("byOrderId")) {
+                    String orderIdStr = request.getParameter("order_id");
+                    List<Orders> listOrders;
+
+                    if (orderIdStr != null && !orderIdStr.isEmpty()) {
+                        // Search by order_id
+                        int order_id = Integer.parseInt(orderIdStr);
+                        listOrders = staffDAO.getOrderByOrderId(order_id);
+                        request.setAttribute("listOrders", listOrders);
+                        request.setAttribute("order_id", order_id);
+                    }
+                    request.getRequestDispatcher("view/dashboard/staff1/search-order.jsp").forward(request, response);
+                } else if (search.equals("byInfo")) {
+                    List<Orders> listOrders;
+                    int count = 7;
+                    int account_id, lowerAmount, upperAmount, status_id;
+                    String payment_method;
+                    LocalDate lowerDate = null;
+                    LocalDate upperDate = null;
+
+                    if (request.getParameter("account_id") == null || request.getParameter("account_id").isEmpty()) {
+                        account_id = 0;
+                        count--;
+                    } else {
+                        account_id = Integer.parseInt(request.getParameter("account_id"));
+                        if (account_id > 0) {
+                            request.setAttribute("account_id", account_id);
+                        } else {
+                            count--;
+                        }
+                    }
+
+                    if (request.getParameter("lower_amount") == null || request.getParameter("lower_amount").isEmpty()) {
+                        lowerAmount = 0;
+                        count--;
+                    } else {
+                        lowerAmount = Integer.parseInt(request.getParameter("lower_amount"));
+                        if (lowerAmount > 0) {
+                            request.setAttribute("lower_amount", lowerAmount);
+                        } else {
+                            count--;
+                        }
+                    }
+
+                    if (request.getParameter("upper_amount") == null || request.getParameter("upper_amount").isEmpty()) {
+                        upperAmount = 0;
+                        count--;
+                    } else {
+                        upperAmount = Integer.parseInt(request.getParameter("upper_amount"));
+                        if (upperAmount > lowerAmount) {
+                            request.setAttribute("upper_amount", upperAmount);
+                        } else {
+                            count--;
+                        }
+                    }
+
+                    String lowerDateStr = request.getParameter("lower_date");
+                    String upperDateStr = request.getParameter("upper_date");
+                    if (lowerDateStr == null || lowerDateStr.isEmpty()) {
+                        count--;
+                    } else {
+                        lowerDate = LocalDate.parse(lowerDateStr);
+                        request.setAttribute("lower_date", lowerDateStr);
+                    }
+
+                    if (upperDateStr == null || upperDateStr.isEmpty()) {
+                        count--;
+                    } else {
+                        upperDate = LocalDate.parse(upperDateStr);
+                        if (upperDate.isAfter(lowerDate)) {
+                            request.setAttribute("upper_date", upperDateStr);
+                        } else {
+                            count--;
+                        }
+                    }
+
+                    if (request.getParameter("status_id") == null || request.getParameter("status_id").isEmpty()) {
+                        status_id = 0;
+                        count--;
+                    } else {
+                        status_id = Integer.parseInt(request.getParameter("status_id"));
+                        request.setAttribute("status_id", status_id);
+                    }
+
+                    if (request.getParameter("payment_method") == null || request.getParameter("payment_method").isEmpty()) {
+                        payment_method = null;
+                        count--;
+                    } else {
+                        payment_method = request.getParameter("payment_method");
+                        request.setAttribute("payment_method", payment_method);
+                    }
+
+                    // Convert date strings to Timestamp
+                    Timestamp lowerDay = null;
+                    Timestamp upperDay = null;
+                    if (lowerDateStr != null && !lowerDateStr.isEmpty()) {
+                        lowerDay = Timestamp.valueOf(lowerDateStr + " 00:00:00");
+                    }
+                    if (upperDateStr != null && !upperDateStr.isEmpty()) {
+                        upperDay = Timestamp.valueOf(upperDateStr + " 23:59:59");
+                    }
+                    if (count > 0) {
+                        listOrders = staffDAO.getOrderByInfo(account_id, lowerAmount, upperAmount, lowerDay, upperDay, status_id, payment_method);
+                        request.setAttribute("listOrders", listOrders);
+                    }
+                    request.getRequestDispatcher("view/dashboard/staff1/search-order.jsp").forward(request, response);
+                }
             }
 
             if (service.equals("update")) {
@@ -73,7 +201,7 @@ public class StaffController extends HttpServlet {
                         }
                     }
                     if (order.getFormattedEstimated_delivery_date() == null) {
-                        
+
                         request.setAttribute("errorMessage", "Vui lòng điền thời gian giao hàng dự kiến.");
                         String link = "Staff?service=show&current_status_id=" + 2;
                         request.getRequestDispatcher(link).forward(request, response); // Hiển thị lại danh sách đơn hàng với thông báo lỗi
@@ -93,21 +221,33 @@ public class StaffController extends HttpServlet {
                 request.getRequestDispatcher(link).forward(request, response);
             }
 
-
             if (service.equals("show")) {
                 String current_status_id = request.getParameter("current_status_id");
+                String current_page = request.getParameter("current_page");
+                int number_of_page;
+                int number_of_orders;
                 List<Orders> listOrders;
                 if (current_status_id == null || current_status_id.isEmpty()) {
                     current_status_id = "0";
                 }
                 int statusId = Integer.parseInt(current_status_id);
+                if (current_page == null || current_page.isEmpty()) {
+                    current_page = "1";
+                }
+                int page = Integer.parseInt(current_page);
                 if (statusId == 0) {
-                    listOrders = staffDAO.getAllOrder();
+                    listOrders = staffDAO.getAllOrder(page);
+                    number_of_orders = new OrdersDAO().numberOfOrder();
+                    number_of_page = (int) Math.ceil((double) new OrdersDAO().numberOfOrder() / 10);
                 } else {
-                    listOrders = staffDAO.getOrderByStatusId(statusId);
+                    listOrders = staffDAO.getOrderByStatusId(statusId, page);
+                    number_of_orders = new OrdersDAO().numberOfOrderWithStatusId(statusId);
+                    number_of_page = (int) Math.ceil((double) new OrdersDAO().numberOfOrderWithStatusId(statusId) / 10);
                 }
                 request.setAttribute("listOrders", listOrders);
                 request.setAttribute("current_status_id", current_status_id);
+                request.setAttribute("number_of_page", number_of_page);
+                request.setAttribute("number_of_orders", number_of_orders);
                 request.getRequestDispatcher("view/dashboard/staff1/order-manage.jsp").forward(request, response);
             }
             if (service.equals("refund")) {
