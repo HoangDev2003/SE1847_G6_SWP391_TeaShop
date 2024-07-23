@@ -26,10 +26,9 @@
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
             <!-- Navbar Search-->
-            <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0" action="searchStaff">
+            <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0" action="searchtopping">
                 <div class="input-group">
                     <input type="search" name="search" class="form-control rounded" placeholder="Nhập tên tìm kiếm ..." aria-label="Search" aria-describedby="search-addon" />
-
                 </div>
             </form>
             <!-- Navbar-->
@@ -37,10 +36,9 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#!">Settings</a></li>
-                        <li><a class="dropdown-item" href="#!">Activity Log</a></li>
+                        <li><a class="dropdown-item" href="home">Home</a></li>                    
                         <li><hr class="dropdown-divider" /></li>
-                        <li><a class="dropdown-item" href="home">Logout</a></li>
+                        <li><a class="dropdown-item" href="logout">Logout</a></li>
                     </ul>
                 </li>
             </ul>
@@ -52,8 +50,8 @@
                         <div style="margin-top: 20px" class="container-fluid px-4">
 
                             <ol class="breadcrumb mb-4">
-                                <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                                <li class="breadcrumb-item active">Quản lý Setting cửa hàng</li>
+                                <li class="breadcrumb-item"><a href="chartorderday">Dashboard</a></li>
+                                <li class="breadcrumb-item active"><a href="toppingmanager" style="color: #37697a" >Quản lý topping</a></li>
                             </ol>
                             <div class="card mb-4">
                                 <div class="h1">                                
@@ -105,7 +103,7 @@
                         </div>
                     </div>
                 </footer>
-            <style>
+                <style>
                     .search-header {
                         background-color: #37697a; /* Màu nền */
                         border: none; /* Bỏ viền */

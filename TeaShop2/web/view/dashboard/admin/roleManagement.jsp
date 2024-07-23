@@ -70,7 +70,7 @@
                                                 <tr>                                             
                                                     <th>Role ID</th>
                                                     <th>Tên Role</th>
-                                                    <th>Feature</th>
+                                                    <th>Chỉnh sửa</th>
                                                 </tr>
                                             </thead>                                           
                                             <tbody>

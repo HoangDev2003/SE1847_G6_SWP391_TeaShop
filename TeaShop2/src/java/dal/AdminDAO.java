@@ -1276,6 +1276,26 @@ public class AdminDAO extends DBContext {
 
          return exists;
         }
+        
+         public List<Topping> searchTopping(String search) {
+        List<Topping> list = new ArrayList<>();
+        String query = "SELECT t.topping_id,\n"
+                + "t.topping_name\n"
+                + "FROM Topping t where t.topping_id LIKE ? or t.topping_name LIKE ?";
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(query);
+            statement.setString(1, "%" + search + "%");
+            statement.setString(2, "%" + search + "%");        
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                list.add(new Topping(resultSet.getInt(1), resultSet.getString(2)));
+          }
+        } catch (Exception e) {
+            e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
+        }
+        return list;
+    }
     
      
     public static void main(String[] args) {
