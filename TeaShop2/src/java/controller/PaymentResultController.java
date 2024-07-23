@@ -51,6 +51,17 @@ public class PaymentResultController extends HttpServlet {
             OrdersDAO orderDAO = new OrdersDAO();
             OrderDetailsDAO orderDetailsDAO = new OrderDetailsDAO();
 
+            boolean itemexist = false;
+            Enumeration<String> check = session.getAttributeNames();
+            while (check.hasMoreElements()) {
+                String key = check.nextElement();
+
+                if (key.startsWith("cartItem")) {
+                    itemexist = true;
+                    break;
+                }
+            }
+
             int order_id = 0;
             String service = request.getParameter("service");
             Integer accoundId = (Integer) session.getAttribute("accountId");
@@ -72,7 +83,7 @@ public class PaymentResultController extends HttpServlet {
                 String note = (String) session.getAttribute("note");
                 List<CartDetails> billInfo = new ArrayList<>();
 
-                if (session.getAttribute("payment-flag") != null) {
+                if (session.getAttribute("payment-flag") != null && itemexist == true) {
                     String sqlDateTime = "";
 
                     Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
