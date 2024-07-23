@@ -66,7 +66,7 @@ public class AddUserController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("AddUser.jsp").forward(request, response);
+        request.getRequestDispatcher("view/dashboard/admin/AddUser.jsp").forward(request, response);
     }
 
     /**
@@ -110,7 +110,7 @@ public class AddUserController extends HttpServlet {
             request.setAttribute("phone", phone);
             request.setAttribute("address", address);
             request.setAttribute("gender", gender);
-            request.getRequestDispatcher("AddUser.jsp").forward(request, response);
+            request.getRequestDispatcher("view/dashboard/admin/AddUser.jsp").forward(request, response);
             return;
         } else {
             AdminDAO dao = new AdminDAO();
@@ -167,7 +167,7 @@ public class AddUserController extends HttpServlet {
                 request.setAttribute("phone", phone);
                 request.setAttribute("address", address);
                 request.setAttribute("gender", gender);
-                request.getRequestDispatcher("AddUser.jsp").forward(request, response);
+                request.getRequestDispatcher("view/dashboard/admin/AddUser.jsp").forward(request, response);
                 return;
             }
         }

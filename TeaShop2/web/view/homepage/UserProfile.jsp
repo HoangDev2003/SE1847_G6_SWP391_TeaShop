@@ -274,12 +274,12 @@ if (accountId != null) {
                         <div class="col-sm-12">
                             <div class="card">
                                 <div class="card-body">
-                                    <h5 class="d-flex align-items-center mb-3">Change Password</h5>
+                                    <h5 class="d-flex align-items-center mb-3">Đổi mật khẩu</h5>
                                     <div class="col-sm-9 text-secondary">
                                         <form action="userprofile?service=UpdatePassword" method="post">
                                             <div class="row mb-3">
                                                 <div class="col-sm-3">
-                                                    <h6 class="mb-0">Old Password</h6>
+                                                    <h6 class="mb-0">Mật khẩu cũ</h6>
                                                 </div>
                                                 <div class="col-sm-9 text-secondary">
                                                     <input type="password" class="form-control" name="oldpass" placeholder="Enter old Password" required>
@@ -288,7 +288,7 @@ if (accountId != null) {
                                             <input type="hidden" name="email" value="${a.email}">
                                             <div class="row mb-3">
                                                 <div class="col-sm-3">
-                                                    <h6 class="mb-0">New Password</h6>
+                                                    <h6 class="mb-0">Mật khẩu mới</h6>
                                                 </div>
                                                 <div class="col-sm-9 text-secondary">
                                                     <input class="form-control" type="password" name="newpass" placeholder="Enter new Password" required />
@@ -296,7 +296,7 @@ if (accountId != null) {
                                             </div> 
                                             <div class="row mb-3">
                                                 <div class="col-sm-3">
-                                                    <h6 class="mb-0">Repeat new Password</h6>
+                                                    <h6 class="mb-0">Nhắc lại mật khẩu mới</h6>
                                                 </div>
                                                 <div class="col-sm-9 text-secondary">
                                                     <input type="password" class="form-control" name="re_newpass" placeholder="Repeat new password" required  />
