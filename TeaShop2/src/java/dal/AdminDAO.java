@@ -200,7 +200,7 @@ public class AdminDAO extends DBContext {
                 + "a.created_at\n"
                 + "FROM Accounts a\n"
                 + "JOIN AccountStatuses acs ON a.status_id = acs.status_id\n"
-                + "JOIN Role r ON a.role_id = r.role_id where a.user_name LIKE ? or a.email LIKE ? or a.phone_number LIKE ?";
+                + "JOIN Role r ON a.role_id = r.role_id where (a.user_name LIKE ? or a.email LIKE ? or a.phone_number LIKE ?) AND a.role_id = 2";
         try {
             connection = getConnection();
             statement = connection.prepareStatement(query);
