@@ -1297,6 +1297,26 @@ public class AdminDAO extends DBContext {
         return list;
     }
     
+         public List<Role> searchRole(String search) {
+        List<Role> list = new ArrayList<>();
+        String query = "SELECT r.role_id,\n"
+                + "r.role_name\n"
+                + "FROM Role r where r.role_id LIKE ? or r.role_name LIKE ?";
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(query);
+            statement.setString(1, "%" + search + "%");
+            statement.setString(2, "%" + search + "%");        
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                list.add(new Role(resultSet.getInt(1), resultSet.getString(2)));
+          }
+        } catch (Exception e) {
+            e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
+        }
+        return list;
+    }
+    
      
     public static void main(String[] args) {
         AdminDAO dao = new AdminDAO();

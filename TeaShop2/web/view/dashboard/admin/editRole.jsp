@@ -91,7 +91,7 @@
                                         class="button-update"
                                         style="transform: translateX(70vw) ; width: 10%"
                                         onclick="document.getElementById('updatedProduct').submit();">
-                                        EDIT
+                                        CHỈNH SỬA
                                     </button>
                                 </div>
                             </form>
