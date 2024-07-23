@@ -196,6 +196,26 @@
                                                 </div>
                                             </div>
                                         </c:forEach>
+                                        <div class="pagination-container" style="text-align: center; padding-top: 50px; padding-bottom: 50px; overflow-x: auto; white-space: nowrap;">
+                                            <div class="pagination" style="display: inline-block;">
+                                                <c:forEach var="pageNumber" begin="1" end="${number_of_page}">
+                                                    <a href="MyOrder?current_status_id=${current_status_id}&current_page=${pageNumber}" 
+                                                       class="page-link ${current_page == pageNumber ? 'active' : ''}" 
+                                                       style="
+                                                       margin: 0 5px;
+                                                       display: inline-block;
+                                                       padding: 10px 15px;
+                                                       border: 2px solid green;
+                                                       background-color: lightyellow;
+                                                       color: black;
+                                                       text-decoration: none;
+                                                       border-radius: 5px;
+                                                       ">
+                                                        ${pageNumber}
+                                                    </a>
+                                                </c:forEach>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
