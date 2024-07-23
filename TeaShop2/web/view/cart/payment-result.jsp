@@ -207,7 +207,7 @@
                                                         <td>${billItem.product.product_name}</td>
                                                         <td>${billItem.quantity}</td>
                                                         <td>${billItem.product.price}</td>
-                                                        <td>${billItem.quantity * cartItem.product.price}</td>
+                                                        <td>${billItem.quantity * billItem.product.price}</td>
                                                     </tr>
                                                 </c:forEach>
                                             </tbody>
