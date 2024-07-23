@@ -52,19 +52,19 @@
         <!-- Navbar start -->
         <div class="container-fluid fixed-top">
             <jsp:include page="../common/homePage/header-start.jsp"></jsp:include>
-            <div class="container px-0">
-                <nav class="navbar navbar-light bg-white navbar-expand-xl">
-                    <a href="index.html" class="navbar-brand"><h1 class="text-primary display-6"></h1></a>
-                    <h1 class="text-primary display-6">Dreamy Coffee</h1>
+                <div class="container px-0">
+                    <nav class="navbar navbar-light bg-white navbar-expand-xl">
+                        <a href="index.html" class="navbar-brand"><h1 class="text-primary display-6"></h1></a>
+                        <h1 class="text-primary display-6">Dreamy Coffee</h1>
 
-                    <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                        <span class="fa fa-bars text-primary"></span>
+                        <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                            <span class="fa fa-bars text-primary"></span>
 
 
-                    </button>
-                    <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
-                        <div class="navbar-nav mx-auto">
-                            <a href="${pageContext.request.contextPath}/home" class="nav-item nav-link">Home</a>
+                        </button>
+                        <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
+                            <div class="navbar-nav mx-auto">
+                                <a href="${pageContext.request.contextPath}/home" class="nav-item nav-link">Home</a>
                             <a href ="${pageContext.request.contextPath}/blog" class="nav-item nav-link">Blog</a>
                             <a href="${pageContext.request.contextPath}/shop" class="nav-item nav-link">Shop</a>
                         </div>
@@ -174,17 +174,8 @@
                                             <h2>Thanh toán bằng tiền mặt</h2>
                                             <div class="col-md-12 col-lg-12 col-xl-12 mb-4">
                                                 <div class="p-4 border border-secondary rounded">
-                                                    <c:choose>
-                                                        <c:when test="${not empty sessionScope.acc}">
-                                                            <p>Họ và tên:</p>
-                                                            <p>${sessionScope.acc.full_name}</p>
-                                                            <input type="hidden" name="fullname" value="${sessionScope.acc.full_name}">
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            <p>Họ và tên:</p>
-                                                            <input type="text" id="fullname" name="fullname" value="${fullname}">
-                                                        </c:otherwise>
-                                                    </c:choose>
+                                                    <p>Họ và tên:</p>
+                                                    <input type="text" id="fullname" name="fullname" value="${fullname}" class="form-control">
                                                 </div>
                                             </div>
                                             <div class="col-md-12 col-lg-12 col-xl-12 mb-4">
@@ -206,16 +197,17 @@
                                                             <option value="Quận Nam Từ Liêm" ${district == 'Quận Nam Từ Liêm' ? 'selected' : ''}>Nam Từ Liêm</option>
                                                             <option value="Quận Hà Đông" ${district == 'Quận Hà Đông' ? 'selected' : ''}>Hà Đông</option>
                                                         </select>
-                                                    </p>                                               
+                                                    </p>
                                                     <p>Phường: 
                                                         <select id="ward" name="ward">
                                                             <option value="">Chọn phường</option>
                                                         </select>
                                                     </p>
                                                     <p>Số nhà và Tên đường:</p>
-                                                    <input type="text" id="address" name="address" value="${address}">   
+                                                    <textarea id="address" name="address" class="form-control" rows="2">${address}</textarea>
                                                 </div>
                                             </div>
+
                                             <script>
                                                 const wards = {
                                                     "Quận Ba Đình": ["Cống Vị", "Điện Biên", "Đội Cấn", "Giảng Võ", "Kim Mã", "Liễu Giai", "Ngọc Hà", "Ngọc Khánh", "Nguyễn Trung Trực", "Phúc Xá", "Quán Thánh", "Thành Công", "Trúc Bạch", "Vĩnh Phúc"],
@@ -274,17 +266,8 @@
                                             </script>
                                             <div class="col-md-12 col-lg-12 col-xl-12 mb-4">
                                                 <div class="p-4 border border-secondary rounded">
-                                                    <c:choose>
-                                                        <c:when test="${not empty sessionScope.acc}">
-                                                            <p>Số điện thoại:</p>
-                                                            <p>${sessionScope.acc.phone_number}</p>
-                                                            <input type="hidden" id="phonenumber" name="phone_number" value="${sessionScope.acc.phone_number}">
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            <p>Số điện thoại:</p>
-                                                            <input type="text" id="phonenumber" name="phone_number" value="${phone_number}">
-                                                        </c:otherwise>
-                                                    </c:choose>
+                                                    <p>Số điện thoại:</p>
+                                                    <input type="text" id="phonenumber" name="phone_number" value="${phone_number}" class="form-control">
                                                 </div>
                                             </div>
                                             <div class="col-md-12 col-lg-12 col-xl-12 mb-4">
@@ -302,7 +285,7 @@
                                                 // Regex patterns
                                                 const namePattern = /^[a-zA-ZÀ-ỹ]+\s+[a-zA-ZÀ-ỹ]+(?:\s+[a-zA-ZÀ-ỹ]+)*$/;
                                                 const addressPattern = /^.{1,200}$/;
-                                                const phonePattern = /^\d{10}$/;
+                                                const phonePattern = /^0\d{9}$/;
 
                                                 // Form values
                                                 const fullname = document.getElementById('fullname').value.trim();
@@ -328,7 +311,7 @@
                                                     alert("Bạn phải chọn phường giao hàng.");
                                                     return false;
                                                 }
-                                                
+
                                                 // Validate address
                                                 if (!addressPattern.test(address)) {
                                                     alert("Địa chỉ nhận hàng phải dài từ 1 đến 200 ký tự.");
@@ -337,11 +320,11 @@
 
                                                 // Validate phone number
                                                 if (!phonePattern.test(phonenumber)) {
-                                                    alert("Số điện thoại phải là số chứa đúng 10 chữ số.");
+                                                    alert("Số điện thoại phải là số chứa đúng 10 chữ số và có số 0 ở đầu.");
                                                     return false;
                                                 }
 
-                                                
+
 
                                                 return confirm("Bạn có chắc chắn muốn đặt mua đơn hàng?");
                                             }
