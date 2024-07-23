@@ -36,8 +36,8 @@ public class SearchStaffController extends HttpServlet {
            AdminDAO dao = new AdminDAO();
            String search = request.getParameter("search");
             System.out.println(search);
-           List<Accounts> searchUser = dao.searchUser(search);
-           request.setAttribute("listStaff", searchUser);
+           List<Accounts> searchStaff = dao.searchStaff(search);
+           request.setAttribute("listStaff", searchStaff);
            request.getRequestDispatcher("./view/dashboard/admin/staffManagement.jsp").forward(request, response);
         }
     } 
