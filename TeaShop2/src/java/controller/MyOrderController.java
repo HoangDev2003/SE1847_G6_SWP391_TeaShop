@@ -60,21 +60,31 @@ public class MyOrderController extends HttpServlet {
             if (service.equals("show")) {
                 List<Orders> listOrders;
                 String current_status_id = request.getParameter("current_status_id");
+                String current_page = request.getParameter("current_page");
+                int number_of_page;
+                int number_of_orders;
                 if (current_status_id == null || current_status_id.isEmpty()) {
                     current_status_id = "0";
                 }
+                if (current_page == null || current_page.isEmpty()) {
+                    current_page = "1";
+                }
+                int page = Integer.parseInt(current_page);
                 // Retrieve the account ID stored in the session
                 Integer accountId = (Integer) session.getAttribute("accountId");
                 if (!(accountId == null)) {
                     int statusId = Integer.parseInt(current_status_id);
                     if (statusId == 0) {
-                        listOrders = ordersDAO.findByAccountId(accountId);
+                        listOrders = ordersDAO.findByAccountId(accountId, page);
+                        number_of_orders = new OrdersDAO().numberOfOrderWithAccountId(accountId);
+                        number_of_page = (int) Math.ceil((double) new OrdersDAO().numberOfOrderWithAccountId(accountId) / 12);
                     } else {
-                        listOrders = ordersDAO.findByAccountIdAndStatusId(accountId, statusId);
+                        listOrders = ordersDAO.findByAccountIdAndStatusId(accountId, statusId, page);
+                        number_of_orders = new OrdersDAO().numberOfOrderWithAccountIdAndStatusId(accountId, statusId);
+                        number_of_page = (int) Math.ceil((double) new OrdersDAO().numberOfOrderWithAccountIdAndStatusId(accountId, statusId) / 12);               
                     }
-                    // Retrieve the list of orders associated with the account ID
-
-                    // Set the list of orders as a request attribute for access in the JSP page
+                    request.setAttribute("number_of_page", number_of_page);
+                    request.setAttribute("number_of_orders", number_of_orders);
                     request.setAttribute("listOrders", listOrders);
                 } else {
                     request.setAttribute("message", "Quý khách cần đăng nhập để truy cập vào trang này");
@@ -83,7 +93,7 @@ public class MyOrderController extends HttpServlet {
                 // Forward the request to the "my-order.jsp" page for rendering
                 request.getRequestDispatcher("view/orders/my-order.jsp").forward(request, response);
             }
-            
+
             if (service.equals("refund")) {
                 String payment_method = request.getParameter("payment_method");
                 String current_status_id = request.getParameter("current_status_id");
