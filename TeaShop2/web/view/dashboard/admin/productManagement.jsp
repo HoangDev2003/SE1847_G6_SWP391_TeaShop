@@ -83,7 +83,7 @@
                             <div class="card mb-4">
                                 <div class="h1">                                
                                     <a  
-                                        href="addProductManager"><ion-icon name="add-circle-outline" ></ion-icon>  Thêm sản phẩm mới</a>                                   
+                                        href="addProductManager"><ion-icon name="add-circle-outline" ></ion-icon> Thêm sản phẩm mới</a>                                   
                                 </div>  
                             </div>
                             <div class="card mb-4">

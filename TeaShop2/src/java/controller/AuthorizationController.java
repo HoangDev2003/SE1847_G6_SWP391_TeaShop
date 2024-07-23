@@ -39,7 +39,7 @@ public class AuthorizationController extends HttpServlet {
     public static void redirectToHome(HttpSession session, HttpServletResponse response)
             throws ServletException, IOException {
         //day ve trang home va thong bao
-        session.setAttribute("message", "Bạn không có quyền truy cập!");
+        session.setAttribute("errorMessage", "Bạn không có quyền truy cập!");
         response.sendRedirect("home");
     }
 
