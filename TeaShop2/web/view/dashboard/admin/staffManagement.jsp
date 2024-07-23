@@ -22,7 +22,7 @@
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
-            <a class="navbar-brand ps-3" href="index.html">Quản lý Nhân viên</a>
+            <a class="navbar-brand ps-3" href="staffmanager">Quản lý Nhân viên</a>
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
             <!-- Navbar Search-->
@@ -37,10 +37,9 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#!">Settings</a></li>
-                        <li><a class="dropdown-item" href="#!">Activity Log</a></li>
+                        <li><a class="dropdown-item" href="home">Home</a></li>                    
                         <li><hr class="dropdown-divider" /></li>
-                        <li><a class="dropdown-item" href="home">Logout</a></li>
+                        <li><a class="dropdown-item" href="logout">Logout</a></li>
                     </ul>
                 </li>
             </ul>
@@ -68,19 +67,18 @@
                                     <div class="filter1">
                                         <form action="filterstaff">
                                             <div class="filter" style="display: flex; align-items: center;">
-
-                                                <select name="gender" style="margin-right: 10px;">
-                                                    <option>Giới tính</option>
-                                                    <option value="Female" ${'Female' == gender ? "selected" : ""}>Female</option>        
-                                                <option value="Male" ${'Male' == gender ? "selected" : ""}>Male</option>   
-                                            </select>                                                                   
-                                            <select name="status" style="margin-right: 10px;">
-                                                <option>Status</option>
+                                                <select name="gender" class="filter-select">
+                                                    <option value="">Giới tính</option>
+                                                    <option value="Female" ${'Female' == gender ? "selected" : ""}>Female</option>
+                                                <option value="Male" ${'Male' == gender ? "selected" : ""}>Male</option>
+                                            </select>
+                                            <select name="status" class="filter-select">
+                                                <option value="">Status</option>
                                                 <c:forEach items="${listas}" var="s">
-                                                    <option value="${s.getStatus_id()}" ${s.getStatus_id() == status ? "selected" : ""}>${s.getStatus_name()}</option>                  
+                                                    <option value="${s.getStatus_id()}" ${s.getStatus_id() == status ? "selected" : ""}>${s.getStatus_name()}</option>
                                                 </c:forEach>
                                             </select>
-                                            <input type="submit" value="Filter"/>                                              
+                                            <input type="submit" value="Tìm kiếm" class="filter-submit"/>
                                         </div>
                                     </form>                             
                                 </div>
@@ -269,6 +267,34 @@
                     .card-header input[type="number"]:focus {
                         border-color: #37697a; /* Màu border khi focus */
                         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Hiệu ứng đổ bóng khi focus */
+                    }
+                    .filter {
+                        display: flex;
+                        align-items: center;
+                        gap: 10px; /* Space between elements */
+                    }
+
+                    .filter-select {
+                        padding: 8px 12px; /* Adjust padding for better size */
+                        font-size: 16px; /* Make font size consistent */
+                        border: 1px solid #ccc; /* Border for visibility */
+                        border-radius: 4px; /* Rounded corners */
+                        outline: none; /* Remove default outline */
+                    }
+
+                    .filter-submit {
+                        padding: 8px 16px; /* Adjust padding for button */
+                        font-size: 16px; /* Consistent font size */
+                        color: #fff; /* Text color */
+                        background-color: #37697a; /* Light teal color */
+                        border: none; /* Remove default border */
+                        border-radius: 4px; /* Rounded corners */
+                        cursor: pointer; /* Pointer cursor on hover */
+                        transition: background-color 0.3s ease; /* Smooth background color transition */
+                    }
+
+                    .filter-submit:hover {
+                        background-color: #009d8a; /* Darker teal color on hover */
                     }
                 </style>
             </div>
