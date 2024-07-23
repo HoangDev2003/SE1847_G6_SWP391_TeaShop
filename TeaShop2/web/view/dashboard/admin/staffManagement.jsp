@@ -52,7 +52,7 @@
 
                             <ol class="breadcrumb mb-4">
                                 <li class="breadcrumb-item"><a href="chartorderday">Dashboard</a></li>
-                                <li class="breadcrumb-item active">Quản lý Nhân viên</li>
+                                <li class="breadcrumb-item active"><a href="staffmanager" style="color: #37697a" >Quản lý Nhân viên</a></li>
                             </ol>
 
                             <div class="card mb-4">

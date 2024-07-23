@@ -52,7 +52,7 @@
 
                             <ol class="breadcrumb mb-4">
                                 <li class="breadcrumb-item"><a href="chartorderday">Dashboard</a></li>
-                                <li class="breadcrumb-item active">Quản lý Shipper</li>
+                                <li class="breadcrumb-item active"><a href="shippermanager" style="color: #37697a" >Quản lý Shipper</a></li>
                             </ol>
 
                             <div class="card mb-4">

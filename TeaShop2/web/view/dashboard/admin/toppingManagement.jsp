@@ -51,7 +51,7 @@
 
                             <ol class="breadcrumb mb-4">
                                 <li class="breadcrumb-item"><a href="chartorderday">Dashboard</a></li>
-                                <li class="breadcrumb-item active"><a href="toppingmanager" style="color: #37697a" >Quản lý topping</a></li>
+                                <li class="breadcrumb-item active"><a href="toppingmanager" style="color: #37697a" >Quản lý Topping</a></li>
                             </ol>
                             <div class="card mb-4">
                                 <div class="h1">                                

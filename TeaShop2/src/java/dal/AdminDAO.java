@@ -1348,6 +1348,39 @@ public class AdminDAO extends DBContext {
         }
         return list;
     }
+          
+             public List<Accounts> searchShipper(String search) {
+        List<Accounts> list = new ArrayList<>();
+        String query = "SELECT a.account_id,\n"
+                + "a.user_name,\n"
+                + "r.role_name,\n"
+                + "a.email,\n"
+                + "acs.status_name, \n"
+                + "a.gender,\n"
+                + "a.address,\n"
+                + "a.phone_number,\n"
+                + "a.created_at\n"
+                + "FROM Accounts a\n"
+                + "JOIN AccountStatuses acs ON a.status_id = acs.status_id\n"
+                + "JOIN Role r ON a.role_id = r.role_id where (a.user_name LIKE ? or a.email LIKE ? or a.phone_number LIKE ?) AND a.role_id = 4";
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(query);
+            statement.setString(1, "%" + search + "%");
+            statement.setString(2, "%" + search + "%");
+            statement.setString(3, "%" + search + "%");
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                list.add(new Accounts(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3),
+                        resultSet.getString(4), resultSet.getString(5),
+                        resultSet.getString(6), resultSet.getString(7), resultSet.getString(8), resultSet.getDate(9)));
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
+        }
+        return list;
+    }
+    
     
      
     public static void main(String[] args) {

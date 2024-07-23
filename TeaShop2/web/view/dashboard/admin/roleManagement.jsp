@@ -51,7 +51,7 @@
                         <div style="margin-top: 20px" class="container-fluid px-4">                           
                             <ol class="breadcrumb mb-4">
                                 <li class="breadcrumb-item"><a href="chartorderday">Dashboard</a></li>
-                                <li class="breadcrumb-item active">Quản lý Role</li>
+                                <li class="breadcrumb-item active"><a href="rolemanager" style="color: #37697a" >Quản lý Role</a></li>
                             </ol>                        
                            <div class="card mb-4">
                                 <div class="h1">                                
