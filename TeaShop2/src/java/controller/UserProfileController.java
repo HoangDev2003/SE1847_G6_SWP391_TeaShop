@@ -56,7 +56,7 @@ public class UserProfileController extends HttpServlet {
                     String email = request.getParameter("email");
                     Accounts a = dao.getUserInfor(email);
                     request.setAttribute("a", a);
-                    request.getRequestDispatcher("UserProfile.jsp").forward(request, response);
+                    request.getRequestDispatcher("view/homepage/UserProfile.jsp").forward(request, response);
                 }
                 break;
                 case "UpdateProfile": {
@@ -82,7 +82,7 @@ public class UserProfileController extends HttpServlet {
                         request.setAttribute("phoneNumber", phoneNumber);
                         request.setAttribute("address", address);
                         request.setAttribute("email", email);
-                        request.getRequestDispatcher("UserProfile.jsp").forward(request, response);
+                        request.getRequestDispatcher("view/homepage/UserProfile.jsp").forward(request, response);
                         return;
                     } else {
                         int check = accountDAO.updateProfile(fullName, phoneNumber, email, address);
@@ -95,7 +95,7 @@ public class UserProfileController extends HttpServlet {
                             request.setAttribute("phoneNumber", phoneNumber);
                             request.setAttribute("address", address);
                             request.setAttribute("email", email);
-                            request.getRequestDispatcher("UserProfile.jsp").forward(request, response);
+                            request.getRequestDispatcher("view/homepage/UserProfile.jsp").forward(request, response);
 
                         } else {
                             AdminDAO dao = new AdminDAO();
@@ -106,7 +106,7 @@ public class UserProfileController extends HttpServlet {
                             request.setAttribute("phoneNumber", phoneNumber);
                             request.setAttribute("address", address);
                             request.setAttribute("email", email);
-                            request.getRequestDispatcher("UserProfile.jsp").forward(request, response);
+                            request.getRequestDispatcher("view/homepage/UserProfile.jsp").forward(request, response);
 
                         }
                     }
@@ -143,7 +143,7 @@ public class UserProfileController extends HttpServlet {
                                         request.setAttribute("updateAvtFailed", "Cập nhật avatar thất bại");
                                     }
 
-                                    request.getRequestDispatcher("UserProfile.jsp").forward(request, response);
+                                    request.getRequestDispatcher("view/homepage/UserProfile.jsp").forward(request, response);
                                 } catch (IOException ex) {
                                     ex.printStackTrace();
                                 }
@@ -164,7 +164,7 @@ public class UserProfileController extends HttpServlet {
                     if (a == null) {
                         errorsList.put("userNotFound", "Không tìm thấy tài khoản với email: " + email);
                         request.setAttribute("errorsList", errorsList);
-                        request.getRequestDispatcher("UserProfile.jsp").forward(request, response);
+                        request.getRequestDispatcher("view/homepage/UserProfile.jsp").forward(request, response);
                         return;
                     }
                     String oldPassword = request.getParameter("oldpass");
@@ -182,18 +182,18 @@ public class UserProfileController extends HttpServlet {
                     if (!errorsList.isEmpty()) {
                         request.setAttribute("errorsList", errorsList);
                         request.setAttribute("a", a);
-                        request.getRequestDispatcher("UserProfile.jsp").forward(request, response);
+                        request.getRequestDispatcher("view/homepage/UserProfile.jsp").forward(request, response);
                     } else {
                         int check = accountDAO.updatePassword(newPassword, email);
                         System.out.println(check);
                         if (check > 0) {
                             request.setAttribute("updateSuccess", "Cập nhật mật khẩu mới thành công");
                             request.setAttribute("a", a);
-                            request.getRequestDispatcher("UserProfile.jsp").forward(request, response);
+                            request.getRequestDispatcher("view/homepage/UserProfile.jsp").forward(request, response);
                         } else {
                             request.setAttribute("updateFailed", "Cập nhật mật khẩu mới thất bại");
                             request.setAttribute("a", a);
-                            request.getRequestDispatcher("UserProfile.jsp").forward(request, response);
+                            request.getRequestDispatcher("view/homepage/UserProfile.jsp").forward(request, response);
 
                         }
                     }
