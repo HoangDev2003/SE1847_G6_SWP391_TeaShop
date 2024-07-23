@@ -48,6 +48,9 @@
                                 <a class="nav-link ${current_status_id == '6' ? 'text-white' : ''}" href="Staff?current_status_id=6">
                                     Đơn hàng đã bị hủy
                                 </a>
+                                <a class="nav-link" href="Staff?service=search">
+                                    Tìm kiếm đơn hàng
+                                </a>
                             </nav>
                         </div>
                         <a class="nav-link" href="saleManager">Sale</a>
