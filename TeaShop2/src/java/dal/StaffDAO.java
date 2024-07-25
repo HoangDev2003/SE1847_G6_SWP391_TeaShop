@@ -150,7 +150,10 @@ public class StaffDAO extends DBContext {
             // Add optional parameters to the query
             if (account_id > 0) {
                 sql.append(" AND account_id = ?");
+            } else if (account_id == 0) {
+                sql.append(" AND account_id is null");
             }
+            
             if (lowerAmount > 0) {
                 sql.append(" AND total_amount >= ?");
             }
