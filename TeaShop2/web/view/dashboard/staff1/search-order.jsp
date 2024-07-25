@@ -83,7 +83,7 @@
 
                                 <h6>Chỉ điền vào nhứng ô mà bạn cần lọc</h6>
                                 <div class="form-group row" style="padding-top : 10px">
-                                    <label for="account_id" class="col-sm-3 col-form-label">ID tài khoản:</label>
+                                    <label for="account_id" class="col-sm-5 col-form-label">ID tài khoản (Điền 0 để tìm hóa đơn không có ID tài khoản):</label>
                                     <div class="col-sm-3">
                                         <input type="number" class="form-control" id="account_id" name="account_id" value="${account_id}">
                                     </div>
@@ -117,7 +117,7 @@
                                     <label for="status_id" class="col-sm-3 col-form-label">Trạng thái hóa đơn:</label>
                                     <div class="col-sm-3">
                                         <select class="form-control" id="status_id" name="status_id">
-                                            <option value="">Không có</option>
+                                            <option value="">Tất cả</option>
                                             <option value="1" ${status_id == 1 ? 'selected' : ''}>Chờ xác nhận</option>
                                             <option value="2" ${status_id == 2 ? 'selected' : ''}>Chờ làm đơn hàng</option>
                                             <option value="3" ${status_id == 3 ? 'selected' : ''}>Chờ giao hàng</option>
@@ -132,7 +132,7 @@
                                     <label for="payment_method" class="col-sm-3 col-form-label">Phương thức thanh toán:</label>
                                     <div class="col-sm-3">
                                         <select class="form-control" id="payment_method" name="payment_method">
-                                            <option value="">Không có</option>
+                                            <option value="">Tất cả</option>
                                             <option value="COD" ${payment_method == 'COD' ? 'selected' : ''}>COD</option>
                                             <option value="VNPay" ${payment_method == 'VNPay' ? 'selected' : ''}>VNPay</option>
                                         </select>
