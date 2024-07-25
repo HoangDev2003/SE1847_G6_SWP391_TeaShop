@@ -4,13 +4,18 @@
     Author     : HoangPC
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@page import="entity.CartDetails, java.util.Enumeration"%>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 
     <head>
         <meta charset="utf-8">
-        <title>Fruitables - Vegetable Website Template</title>
+        <title>Dreamy Coffee</title>
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
         <meta content="" name="keywords">
         <meta content="" name="description">
@@ -47,50 +52,61 @@
 
         <!-- Navbar start -->
         <div class="container-fluid fixed-top">
-            <div class="container topbar bg-primary d-none d-lg-block">
-                <div class="d-flex justify-content-between">
-                    <div class="top-info ps-2">
-                        <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#" class="text-white">123 Street, New York</a></small>
-                        <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i><a href="#" class="text-white">Email@Example.com</a></small>
-                    </div>
-                    <div class="top-link pe-2">
-                        <a href="#" class="text-white"><small class="text-white mx-2">Privacy Policy</small>/</a>
-                        <a href="#" class="text-white"><small class="text-white mx-2">Terms of Use</small>/</a>
-                        <a href="#" class="text-white"><small class="text-white ms-2">Sales and Refunds</small></a>
-                    </div>
-                </div>
-            </div>
-            <div class="container px-0">
-                <nav class="navbar navbar-light bg-white navbar-expand-xl">
-                    <a href="index.html" class="navbar-brand"><h1 class="text-primary display-6">Fruitables</h1></a>
-                    <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                        <span class="fa fa-bars text-primary"></span>
-                    </button>
-                    <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
-                        <div class="navbar-nav mx-auto">
-                            <a href="home.jsp" class="nav-item nav-link">Home</a>
-                            <a href="shop.jsp" class="nav-item nav-link">Shop</a>
-                            <a href="product-detail.jsp" class="nav-item nav-link">Shop Detail</a>
-                            <div class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">Pages</a>
-                                <div class="dropdown-menu m-0 bg-secondary rounded-0">
-                                    <a href="cart.jsp" class="dropdown-item">Cart</a>
-                                    <a href="chackout.jsp" class="dropdown-item">Chackout</a>
-                                    <a href="testimonial.jsp" class="dropdown-item">Testimonial</a>
-                                    <a href="404.jsp" class="dropdown-item active">404 Page</a>
-                                </div>
-                            </div>
-                            <a href="contact.jsp" class="nav-item nav-link">Contact</a>
+            <jsp:include page="../common/homePage/header-start.jsp"></jsp:include>
+                <div class="container px-0">
+                    <nav class="navbar navbar-light bg-white navbar-expand-xl">
+                        <a href="index.html" class="navbar-brand"><h1 class="text-primary display-6"></h1></a>
+                        <h1 class="text-primary display-6">Dreamy Coffee</h1>
+
+                        <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                            <span class="fa fa-bars text-primary"></span>
+
+
+                        </button>
+                        <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
+                            <div class="navbar-nav mx-auto">
+                                <a href="${pageContext.request.contextPath}/home" class="nav-item nav-link">Home</a>
+                            <a href ="${pageContext.request.contextPath}/blog" class="nav-item nav-link">Blog</a>
+                            <a href="${pageContext.request.contextPath}/shop" class="nav-item nav-link">Shop</a>
                         </div>
                         <div class="d-flex m-3 me-0">
-                            <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
-                            <a href="#" class="position-relative me-4 my-auto">
-                                <i class="fa fa-shopping-bag fa-2x"></i>
-                                <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">3</span>
+                            <%
+                int count = 0;
+                Enumeration<String> em = session.getAttributeNames();
+                while (em.hasMoreElements()) {
+                    String key = em.nextElement();
+
+                    if (key.startsWith("cartItem")) {
+                        count++;
+                    }
+                } 
+                            %>
+                            <a href="CartDetails?service=showcart" class="position-relative me-4 my-auto">
+                                <i class="fa fa-shopping-bag fa-2x" style="color: orange;"></i>
+                                <%if(count>0){%>
+                                <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;"><%=count%></span>
+                                <%}%>
                             </a>
-                            <a href="#" class="my-auto">
-                                <i class="fas fa-user fa-2x"></i>
-                            </a>
+                            <% 
+    Integer accountId = (Integer) session.getAttribute("accountId");
+    if (accountId != null) {
+                            %>
+                            <div class="nav-item dropdown">
+                                <a href="#" class="nav-link" data-bs-toggle="dropdown" style="color: black;">
+                                    <i class="fas fa-user fa-2x" style="color: black;"></i>
+                                </a>
+                                <div class="dropdown-menu m-0 bg-secondary rounded-0">
+                                    <a href="userprofile" class="dropdown-item">Thông tin</a>
+                                    <a href="MyOrder" class="dropdown-item">Đơn hàng</a>
+                                </div>
+                            </div>
+                            <% 
+                                } else { 
+                            %>
+                            <a href="login"><i class="fas fa-user fa-2x" style="color: black;"></i></a>
+                                <% 
+                                    } 
+                                %>
                         </div>
                     </div>
                 </nav>
@@ -119,16 +135,9 @@
         <!-- Modal Search End -->
 
 
-        <!-- Single Page Header start -->
-        <div class="container-fluid page-header py-5">
-            <h1 class="text-center text-white display-6">404 Error</h1>
-            <ol class="breadcrumb justify-content-center mb-0">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item"><a href="#">Pages</a></li>
-                <li class="breadcrumb-item active text-white">404</li>
-            </ol>
+        <div class="container-fluid py-5">
         </div>
-        <!-- Single Page Header End -->
+
 
 
         <!-- 404 Start -->
@@ -138,9 +147,9 @@
                     <div class="col-lg-6">
                         <i class="bi bi-exclamation-triangle display-1 text-secondary"></i>
                         <h1 class="display-1">404</h1>
-                        <h1 class="mb-4">Page Not Found</h1>
-                        <p class="mb-4">We’re sorry, the page you have looked for does not exist in our website! Maybe go to our home page or try to use a search?</p>
-                        <a class="btn border-secondary rounded-pill py-3 px-5" href="index.html">Go Back To Home</a>
+                        <h1 class="mb-4">Trang không tìm thấy</h1>
+                        <p class="mb-4">Chúng tôi không thể tìm thấy trang mà bạn đang cần tìm.</p>
+                        <a class="btn border-secondary rounded-pill py-3 px-5" href="home">Quay về trang chủ</a>
                     </div>
                 </div>
             </div>
