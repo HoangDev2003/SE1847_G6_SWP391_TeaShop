@@ -95,11 +95,11 @@ public class StaffController extends HttpServlet {
                     LocalDate upperDate = null;
 
                     if (request.getParameter("account_id") == null || request.getParameter("account_id").isEmpty()) {
-                        account_id = 0;
+                        account_id = -1;
                         count--;
                     } else {
                         account_id = Integer.parseInt(request.getParameter("account_id"));
-                        if (account_id > 0) {
+                        if (account_id > -1) {
                             request.setAttribute("account_id", account_id);
                         } else {
                             count--;
