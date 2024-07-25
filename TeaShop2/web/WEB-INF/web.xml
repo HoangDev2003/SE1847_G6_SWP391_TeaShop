@@ -566,4 +566,8 @@
         <servlet-name>SearchRoleController</servlet-name>
         <url-pattern>/searchrole</url-pattern>
     </servlet-mapping>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/view/homepage/404.jsp</location>
+    </error-page>
 </web-app>
