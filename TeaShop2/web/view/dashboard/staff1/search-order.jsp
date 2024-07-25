@@ -175,7 +175,7 @@
                                 </div>
                             </c:if>
                             <c:if test="${not empty listOrders}">
-                                <h5>Số đơn hàng tìm thấy: ${listOrders.size()}</h5>
+                                <h5 style="padding-top : 10px">Số đơn hàng tìm thấy: ${listOrders.size()}</h5>
                             </c:if>
                             <c:forEach items="${listOrders}" var="p">
 
