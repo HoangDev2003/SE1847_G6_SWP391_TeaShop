@@ -47,207 +47,202 @@
 
         <!--Update Product-->
 
-  <div id="layoutSidenav">
-    <jsp:include page="../../common/admin/sidebarAdmin.jsp"></jsp:include>
-    <div id="layoutSidenav_content">
-        <main>
-            <div class="container-fluid px-4">
-             
+        <div id="layoutSidenav">
+            <jsp:include page="../../common/admin/sidebarAdmin.jsp"></jsp:include>
+                <div id="layoutSidenav_content">
+                    <main>
+                        <div class="container-fluid px-4">
 
-                <form id="switchForm" action="adduser" class="form-horizontal" method="post">
-                    <fieldset>
-                        <legend style="margin-top : 15px">Thêm người dùng</legend>
 
-                        <section style="background-color: #eee;">
-                            <div class="container py-5">
-                                <div class="row">
-                                    <div class="col">
-                                        <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
-                                            <ol class="breadcrumb mb-0">
-                                                <li class="breadcrumb-item active" aria-current="page">User Profile</li>
-                                            </ol>
-                                        </nav>
-                                    </div>
-                                </div>
-                                
-                           
+                            <form id="switchForm" action="adduser" method="post" enctype="multipart/form-data">
+                                <fieldset>
+                                    <legend style="margin-top: 15px;">Thêm người dùng</legend>
 
-                                <div class="row">
-                                    <div class="col-lg-4">
-                                        <div class="card mb-4">
-                                            <div class="card-body text-center">
-                                                <img id="previewImg1" src="" alt="avatar"
-                                                     class="rounded-circle img-fluid" style="width: 150px; height: 150px">
-                                                <input id="filebutton1" name="img" class="form-control mt-3" type="file" onchange="displayImage(this, 'previewImg1')">
+                                    <section style="background-color: #eee;">
+                                        <div class="container py-5">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
+                                                        <ol class="breadcrumb mb-0">
+                                                            <li class="breadcrumb-item active" aria-current="page">Thông tin người dùng được thêm</li>
+                                                        </ol>
+                                                    </nav>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+
+                                                <div class="col-lg-12">
+                                                    <div class="card mb-4" style="padding-left: 10px; padding-right: 10px">
+
+                                                        <!-- Define a consistent row structure for form fields -->
+                                                        <div class="row mb-3 align-items-center" style="padding-top: 10px">
+                                                            <div class="col-sm-3">
+                                                                <h6 class="mb-0">Tên người dùng</h6>
+                                                            </div>
+                                                            <div class="col-sm-9">
+                                                                <input type="text" name="name" class="form-control" value="${name}" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-3 align-items-center">
+                                                        <div class="col-sm-3">
+                                                            <h6 class="mb-0">Email</h6>
+                                                        </div>
+                                                        <div class="col-sm-9">
+                                                            <input type="email" name="email" class="form-control" value="${email}" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-3 align-items-center">
+                                                        <div class="col-sm-3">
+                                                            <h6 class="mb-0">Mật khẩu</h6>
+                                                        </div>
+                                                        <div class="col-sm-9">
+                                                            <input type="password" name="pass" class="form-control" value="${pass}" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-3 align-items-center">
+                                                        <div class="col-sm-3">
+                                                            <h6 class="mb-0">Số điện thoại</h6>
+                                                        </div>
+                                                        <div class="col-sm-9">
+                                                            <input type="text" name="phone" class="form-control" value="${phone}" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-3 align-items-center">
+                                                        <div class="col-sm-3">
+                                                            <h6 class="mb-0">Giới tính</h6>
+                                                        </div>
+                                                        <div class="col-sm-9">
+                                                            <select name="gender" class="form-control" required>
+                                                                <option value="Male" ${a.gender == 'Male' ? 'selected' : ''}>Male</option>
+                                                                <option value="Female" ${a.gender == 'Female' ? 'selected' : ''}>Female</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-3 align-items-center">
+                                                        <div class="col-sm-3">
+                                                            <h6 class="mb-0">Địa chỉ</h6>
+                                                        </div>
+                                                        <div class="col-sm-9">
+                                                            <input type="text" name="address" class="form-control" value="${address}" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-3 align-items-center">
+                                                        <div class="col-sm-3">
+                                                            <h6 class="mb-0">Role</h6>
+                                                        </div>
+                                                        <div class="col-sm-9">
+                                                            <select name="role" class="form-control" required>
+                                                                <option value="3" ${a.role == '3' ? 'selected' : ''}>Staff</option>
+                                                                <option value="4" ${a.role == '4' ? 'selected' : ''}>Shipper</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-3 align-items-center">
+                                                        <div class="col-sm-3">
+                                                            <h6 class="mb-0">Status</h6>
+                                                        </div>
+                                                        <div class="col-sm-9">
+                                                            <select name="status" class="form-control" required>
+                                                                <option value="1" ${a.status == '1' ? 'selected' : ''}>Active</option>
+                                                                <option value="2" ${a.status == '2' ? 'selected' : ''}>Inactive</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-3">
+                                                        <div class="col-sm-9 offset-sm-3">
+                                                            <button id="singlebutton" name="singlebutton" class="btn btn-primary">Thêm</button>
+                                                        </div>
+                                                    </div>
+                                                    <p class="text-danger">${errorMessage}</p>
+                                                </div>
+
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-8">
-                                        <div class="card mb-4">
-                                            <div class="card-body">
-                                                <div class="row mb-3">
-                                                    <div class="col-sm-3">
-                                                        <h6 class="mb-0">Tên người dùng</h6>
-                                                    </div>
-                                                    <div class="col-sm-9 text-secondary">
-                                                        <input type="text" name="name" class="form-control" value="${name}" required>
-                                                    </div>
-                                                </div>
-                                                <div class="row mb-3">
-                                                    <div class="col-sm-3">
-                                                        <h6 class="mb-0">Email</h6>
-                                                    </div>
-                                                    <div class="col-sm-9 text-secondary">
-                                                        <input type="email" name="email" class="form-control" value="${email}" required>
-                                                    </div>
-                                                </div>
-                                                <div class="row mb-3">
-                                                    <div class="col-sm-3">
-                                                        <h6 class="mb-0">Mật khẩu</h6>
-                                                    </div>
-                                                    <div class="col-sm-9 text-secondary">
-                                                        <input type="password" name="pass" class="form-control" value="${pass}" required>
-                                                    </div>
-                                                </div>
-                                                <div class="row mb-3">
-                                                    <div class="col-sm-3">
-                                                        <h6 class="mb-0">Số điện thoại</h6>
-                                                    </div>
-                                                    <div class="col-sm-9 text-secondary">
-                                                        <input type="text" name="phone" class="form-control" value="${phone}" required>
-                                                    </div>
-                                                </div>
-                                                <div class="row mb-3">
-                                                    <div class="col-sm-3">
-                                                        <h6 class="mb-0">Giới tính</h6>
-                                                    </div>
-                                                    <div class="col-sm-9 text-secondary">
-                                                        <select name="gender" class="form-control" required>
-                                                            <option value="Male" ${a.gender == 'Male' ? 'selected' : ''}>Male</option>
-                                                            <option value="Female" ${a.gender == 'Female' ? 'selected' : ''}>Female</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="row mb-3">
-                                                    <div class="col-sm-3">
-                                                        <h6 class="mb-0">Địa chỉ</h6>
-                                                    </div>
-                                                    <div class="col-sm-9 text-secondary">
-                                                        <input type="text" name="address" class="form-control" value="${address}" required>
-                                                    </div>
-                                                </div>
-                                                <div class="row mb-3">
-                                                    <div class="col-sm-3">
-                                                        <h6 class="mb-0">Role</h6>
-                                                    </div>
-                                                    <div class="col-sm-9 text-secondary">
-                                                        <select name="role" class="form-control" required>
-                                                            <option value="3" ${a.role == '3' ? 'selected' : ''}>Staff</option>
-                                                            <option value="4" ${a.role == '4' ? 'selected' : ''}>Shipper</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="row mb-3">
-                                                    <div class="col-sm-3">
-                                                        <h6 class="mb-0">Status</h6>
-                                                    </div>
-                                                    <div class="col-sm-9 text-secondary">
-                                                        <select name="status" class="form-control" required>
-                                                            <option value="1" ${a.status == '1' ? 'selected' : ''}>Active</option>
-                                                            <option value="2" ${a.status == '2' ? 'selected' : ''}>Inactive</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="row mb-3">
-                                                    <div class="col-sm-9 offset-sm-3">
-                                                        <button id="singlebutton" name="singlebutton" class="btn btn-primary">Thêm</button>
-                                                    </div>
-                                                </div>
-                                                <p class="text-danger">${errorMessage}</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
-                    </fieldset>
-                </form>
-            </div>
-        </main>
-    </div>
-</div>
+                                </section>
+                            </fieldset>
+                        </form>
 
-
-
-
-
-    <footer class="py-4 bg-light mt-auto">
-        <div class="container-fluid px-4">
-            <div class="d-flex align-items-center justify-content-between small">
-                <div class="text-muted">Tea Shop - Admin Management</div>
-
+                    </div>
+                </main>
             </div>
         </div>
-    </footer>
-    <style>
-        datatables-UpdateProduct {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-
-            text-align: center; /* Căn giữa chữ */
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-
-        .card-body {
-            display: flex;
-            justify-content: center;
-        }
-
-        td ion-icon {
-            font-size: 30px;
-            color: #000;
-        }
-
-        .update-productDone{
-            font-weight: 500;
-            font-size: 20px;
-            text-align: center; /* Căn giữa ngang */
-            vertical-align: middle;
-            text-transform: uppercase;
-        }
-
-        .button-update {
-            font-family: 'Arial';
-
-            background-color: #fff; /* Màu nền ban đầu */
-            color: inherit; /* Màu chữ */
-            border: 2px solid #0B3649; /* Bỏ viền */
-            padding: 10px 20px; /* Kích thước bên trong */
-            text-align: center; /* Căn giữa văn bản */
-            text-decoration: none; /* Bỏ gạch chân */
-            display: inline-block; /* Hiển thị dạng khối nội tuyến */
-            font-size: 16px; /* Kích thước chữ */
-            margin: 4px 2px; /* Khoảng cách bên ngoài */
-            cursor: pointer; /* Con trỏ chuột */
-            border-radius: 12px; /* Bo góc */
-            transition: background-color 0.3s, box-shadow 0.3s; /* Hiệu ứng chuyển đổi */
-        }
-
-        .button-update:hover {
-            background-color: #0B3649; /* Màu nền khi lướt chuột qua */
-            color: white; /* Màu chữ khi lướt chuột qua */
-            border-color: #0B3649;/* Màu nền khi lướt chuột qua */
-            box-shadow: 0 0 10px #0056b3; /* Hiệu ứng đổ bóng khi lướt chuột qua */
-        }
 
 
 
-    </style>
-</div>
+
+
+        <footer class="py-4 bg-light mt-auto">
+            <div class="container-fluid px-4">
+                <div class="d-flex align-items-center justify-content-between small">
+                    <div class="text-muted">Tea Shop - Admin Management</div>
+
+                </div>
+            </div>
+        </footer>
+        <style>
+            datatables-UpdateProduct {
+                width: 100%;
+                border-collapse: collapse;
+            }
+            th, td {
+
+                text-align: center; /* Căn giữa chữ */
+            }
+            th {
+                background-color: #f2f2f2;
+            }
+
+            .card-body {
+                display: flex;
+                justify-content: center;
+            }
+
+            td ion-icon {
+                font-size: 30px;
+                color: #000;
+            }
+
+            .update-productDone{
+                font-weight: 500;
+                font-size: 20px;
+                text-align: center; /* Căn giữa ngang */
+                vertical-align: middle;
+                text-transform: uppercase;
+            }
+
+            .button-update {
+                font-family: 'Arial';
+
+                background-color: #fff; /* Màu nền ban đầu */
+                color: inherit; /* Màu chữ */
+                border: 2px solid #0B3649; /* Bỏ viền */
+                padding: 10px 20px; /* Kích thước bên trong */
+                text-align: center; /* Căn giữa văn bản */
+                text-decoration: none; /* Bỏ gạch chân */
+                display: inline-block; /* Hiển thị dạng khối nội tuyến */
+                font-size: 16px; /* Kích thước chữ */
+                margin: 4px 2px; /* Khoảng cách bên ngoài */
+                cursor: pointer; /* Con trỏ chuột */
+                border-radius: 12px; /* Bo góc */
+                transition: background-color 0.3s, box-shadow 0.3s; /* Hiệu ứng chuyển đổi */
+            }
+
+            .button-update:hover {
+                background-color: #0B3649; /* Màu nền khi lướt chuột qua */
+                color: white; /* Màu chữ khi lướt chuột qua */
+                border-color: #0B3649;/* Màu nền khi lướt chuột qua */
+                box-shadow: 0 0 10px #0056b3; /* Hiệu ứng đổ bóng khi lướt chuột qua */
+            }
+            .singlebutton {
+                background-color: #37697a; /* Màu nền mới */
+                color: white; /* Màu chữ mới */
+            }
+
+
+        </style>
+    </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
