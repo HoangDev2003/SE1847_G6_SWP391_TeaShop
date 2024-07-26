@@ -1,6 +1,6 @@
 <%-- 
-    Document   : AddUser.jsp
-    Created on : Jul 23, 2024, 1:17:06 PM
+    Document   : EditCustomer.jsp
+    Created on : Jul 26, 2024, 9:55:19 PM
     Author     : Huyen Tranq
 --%>
 
@@ -54,9 +54,9 @@
                         <div class="container-fluid px-4">
 
 
-                            <form id="switchForm" action="editShipper" method="post" enctype="multipart/form-data">
+                            <form id="switchForm" action="editcustomer" method="post" enctype="multipart/form-data">
                                 <fieldset>
-                                    <legend style="margin-top: 15px;">Cập nhật Shipper</legend>
+                                    <legend style="margin-top: 15px;">Cập nhật thông tin staff</legend>
 
                                     <section style="background-color: #eee;">
                                         <div class="container py-5">
@@ -64,7 +64,7 @@
                                                 <div class="col">
                                                     <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
                                                         <ol class="breadcrumb mb-0">
-                                                            <li class="breadcrumb-item active" aria-current="page">Thông tin của Shipper</li>
+                                                            <li class="breadcrumb-item active" aria-current="page">Thông tin của Staff</li>
                                                         </ol>
                                                     </nav>
                                                 </div>
@@ -99,7 +99,7 @@
                                                             <input type="email" name="email" class="form-control" value="${acc.email}" readonly="">
                                                         </div>
                                                     </div>
-
+                                                   
                                                     <div class="row mb-3 align-items-center">
                                                         <div class="col-sm-3">
                                                             <h6 class="mb-0">Số điện thoại</h6>
@@ -130,10 +130,10 @@
                                                         </div>
                                                         <div class="col-sm-9">
                                                             <select name="role" class="form-control" required>
-                                                                <option value="4" ${'Shipper' eq acc.role_name ? "selected" : ""}>Shipper</option> 
+                                                                <option value="2" ${'Customer' eq acc.role_name ? "selected" : ""}>Khách hàng</option>
                                                                 <option value="1" ${'Admin' eq acc.role_name ? "selected" : ""}>Admin</option> 
-                                                                <option value="2" ${'Customer' eq acc.role_name ? "selected" : ""}>Khách hàng</option> 
-                                                                <option value="3" ${'Staff' eq acc.role_name ? "selected" : ""}>Staff</option>    
+                                                                <option value="3" ${'Staff' eq acc.role_name ? "selected" : ""}>Staff</option> 
+                                                                <option value="4" ${'Shipper' eq acc.role_name ? "selected" : ""}>Shipper</option>  
                                                             </select>
                                                         </div>
                                                     </div>
