@@ -93,12 +93,12 @@ public class LoginController extends HttpServlet {
             }
             request.setAttribute("email", email);
             request.setAttribute("pass", password);
-            request.setAttribute("mess", "Your Email or Password is incorrect!");
+            request.setAttribute("mess", "Email hoặc mật khẩu của bạn không đúng");
             request.getRequestDispatcher(LOGIN_JSP).forward(request, response);
 
         } else {
             if (a.getStatus_id() == 2) {
-                request.setAttribute("mess", "Your account is inactive!");
+                request.setAttribute("mess", "Tài khoản của bạn đã bị khóa");
                 request.getRequestDispatcher(LOGIN_JSP).forward(request, response);
             } else {
                 session.setAttribute(FAILED_ATTEMPTS, 0);
@@ -111,7 +111,7 @@ public class LoginController extends HttpServlet {
                         response.sendRedirect("chartorderday");
                         break;
                     case 3:
-                        request.getRequestDispatcher("view/dashboard/staff1/dashboardStaff.jsp").forward(request, response);
+                        response.sendRedirect("customerManagement");
                         break;
                     case 2:
                         response.sendRedirect("home");
