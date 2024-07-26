@@ -85,9 +85,6 @@
                                             <c:when test="${current_status_id == 4}">
                                                 <h4>Hiện tại không có đơn hàng đã hoàn thành</h4>
                                             </c:when>
-                                            <c:when test="${current_status_id == 5}">
-                                                <h4>Hiện tại không có đơn hàng đã hoàn thành</h4>
-                                            </c:when>
                                             <c:when test="${current_status_id == 6}">
                                                 <h4>Hiện tại không có đơn hàng đã bị hủy</h4>
                                             </c:when>
@@ -95,6 +92,30 @@
                                     </div>
                                 </div>
                             </c:if>
+                            
+                                <div style="text-align: center;">
+                                    <c:choose>
+                                        <c:when test="${current_status_id == 0}">
+                                            <h4>Tất cả đơn hàng</h4>
+                                        </c:when>
+                                        <c:when test="${current_status_id == 1}">
+                                            <h4>Đơn hàng cần xác nhận</h4>
+                                        </c:when>
+                                        <c:when test="${current_status_id == 2}">
+                                            <h4>Đơn hàng cần làm</h4>
+                                        </c:when>
+                                        <c:when test="${current_status_id == 3}">
+                                            <h4>Đơn hàng cần được giao</h4>
+                                        </c:when>
+                                        <c:when test="${current_status_id == 4}">
+                                            <h4>Đơn hàng đã hoàn thành</h4>
+                                        </c:when>
+                                        <c:when test="${current_status_id == 6}">
+                                            <h4>Đơn hàng đã bị hủy</h4>
+                                        </c:when>
+                                    </c:choose>
+                                </div>
+                            
                             <h5>Số đơn hàng: ${number_of_orders}</h5>
 
                             <c:forEach items="${listOrders}" var="p">
