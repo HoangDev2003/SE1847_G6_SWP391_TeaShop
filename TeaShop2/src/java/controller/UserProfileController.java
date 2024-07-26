@@ -61,14 +61,14 @@ public class UserProfileController extends HttpServlet {
                 break;
                 case "UpdateProfile": {
                     AccountDAO accountDAO = new AccountDAO();
-                    String fullName = request.getParameter("fullName");
+                    String user_name = request.getParameter("user_name");
                     String phoneNumber = request.getParameter("phoneNumber");
                     String email = request.getParameter("email");
                     String address = request.getParameter("address");
                     String errorMessage = null;
-                    if (fullName == null || fullName.trim().isEmpty()) {
+                    if (user_name == null || user_name.trim().isEmpty()) {
                         errorMessage = "Tên người dùng không được để trống hoặc chỉ có khoảng trắng";
-                    } else if (fullName.matches("\\d+")) {
+                    } else if (user_name.matches("\\d+")) {
                         errorMessage = "Tên người dùng không được chỉ chứa các số";
                     } else if (phoneNumber == null || phoneNumber.trim().isEmpty() || !phoneNumber.matches("0\\d{9}")) {
                         errorMessage = "Số điện thoại phải bắt đầu bằng 0 và bao gồm 10 số";
@@ -78,20 +78,20 @@ public class UserProfileController extends HttpServlet {
                         Accounts a = dao.getUserInfor(email);
                         request.setAttribute("a", a);
                         request.setAttribute("errorMessage", errorMessage);
-                        request.setAttribute("fullName", fullName);
+                        request.setAttribute("user_name", user_name);
                         request.setAttribute("phoneNumber", phoneNumber);
                         request.setAttribute("address", address);
                         request.setAttribute("email", email);
                         request.getRequestDispatcher("view/homepage/UserProfile.jsp").forward(request, response);
                         return;
                     } else {
-                        int check = accountDAO.updateProfile(fullName, phoneNumber, email, address);
+                        int check = accountDAO.updateProfile(user_name, phoneNumber, email, address);
                         if (check > 0) {
                             AdminDAO dao = new AdminDAO();
                             Accounts a = dao.getUserInfor(email);
                             request.setAttribute("a", a);
                             request.setAttribute("errorMessage", "Cập nhật thành công");
-                            request.setAttribute("fullName", fullName);
+                            request.setAttribute("user_name", user_name);
                             request.setAttribute("phoneNumber", phoneNumber);
                             request.setAttribute("address", address);
                             request.setAttribute("email", email);
@@ -102,7 +102,7 @@ public class UserProfileController extends HttpServlet {
                             Accounts a = dao.getUserInfor(email);
                             request.setAttribute("a", a);
                             request.setAttribute("errorMessage", "Cập nhật thất bại");
-                            request.setAttribute("fullName", fullName);
+                            request.setAttribute("user_name", user_name);
                             request.setAttribute("phoneNumber", phoneNumber);
                             request.setAttribute("address", address);
                             request.setAttribute("email", email);
@@ -169,9 +169,9 @@ public class UserProfileController extends HttpServlet {
                     }
                     String oldPassword = request.getParameter("oldpass");
                     String newPassword = request.getParameter("newpass");
-                    String reNewPassword = request.getParameter("re_newpass");                                     
+                    String reNewPassword = request.getParameter("re_newpass");
                     if (!oldPassword.equals(a.getPass_word())) {
-                        errorsList.put("wrongOldPass", "Bạn đã nhập sai mật khẩu");
+                        errorsList.put("wrongOldPass", "Bạn đã nhập sai mật khẩu cũ");
                     }
                     if (newPassword == null || newPassword.trim().isEmpty() || newPassword.length() < 8 || newPassword.length() > 32) {
                         errorsList.put("wrongFormatPass", "Mật khẩu cần 8-32 ký tự");
@@ -182,17 +182,27 @@ public class UserProfileController extends HttpServlet {
                     if (!errorsList.isEmpty()) {
                         request.setAttribute("errorsList", errorsList);
                         request.setAttribute("a", a);
+                        request.setAttribute("oldpass", oldPassword);
+                        request.setAttribute("newpass", newPassword);
+                        request.setAttribute("re_newpass", reNewPassword);
                         request.getRequestDispatcher("view/homepage/UserProfile.jsp").forward(request, response);
+                        return;
                     } else {
                         int check = accountDAO.updatePassword(newPassword, email);
                         System.out.println(check);
                         if (check > 0) {
                             request.setAttribute("updateSuccess", "Cập nhật mật khẩu mới thành công");
                             request.setAttribute("a", a);
+                            request.setAttribute("oldpass", oldPassword);
+                            request.setAttribute("newpass", newPassword);
+                            request.setAttribute("re_newpass", reNewPassword);
                             request.getRequestDispatcher("view/homepage/UserProfile.jsp").forward(request, response);
                         } else {
                             request.setAttribute("updateFailed", "Cập nhật mật khẩu mới thất bại");
                             request.setAttribute("a", a);
+                            request.setAttribute("oldpass", oldPassword);
+                            request.setAttribute("newpass", newPassword);
+                            request.setAttribute("re_newpass", reNewPassword);
                             request.getRequestDispatcher("view/homepage/UserProfile.jsp").forward(request, response);
 
                         }

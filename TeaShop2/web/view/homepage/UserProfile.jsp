@@ -64,7 +64,7 @@
                 color: orange; /* Màu cam */
             }
             .error-message {
-                color: red;
+                color: green;
                 font-weight: bold;
             }
         </style>
@@ -195,15 +195,15 @@ if (accountId != null) {
                                     <input id="filebutton2" name="img" class="input-file" type="file" onchange="displayImage(this, 'previewImg2')">
                                     <input type="hidden" name="email" value="${a.email}">
                                     <div class="mt-3">
-                                        <h4>${a.full_name}</h4>
+                                        <h4>${a.user_name}</h4>
                                     </div>
                                 </div>
                                 <hr class="my-4">
                                 <ul class="list-group list-group-flush">
-                                    <input type="submit" value="Change">
+                                    <input type="submit" value="Thay đổi">
                                 </ul>
-                                <h4 style="color: red">${updateAvtSuccess}</h4>
-                                <h4 style="color: red">${updateAvtFailed}</h4>
+                                <h4 style="color: green ; margin-top: 20px">${updateAvtSuccess}</h4>
+                                <h4 style="color: green ; margin-top: 20px">${updateAvtFailed}</h4>
                             </div>
                         </form>                   
 
@@ -218,13 +218,13 @@ if (accountId != null) {
                                     <div class="col-sm-3">
                                         <h6 class="mb-0">Tên người dùng</h6>
                                     </div><div class="col-sm-9 text-secondary">
-                                        <input type="text" name="name" class="form-control" value="${a.full_name}">
+                                        <input type="text" name="user_name" class="form-control" value="${a.user_name}">
                                     </div>
                                 </div>
                                 <input type="hidden" name="email" value="${a.email}">
                                 <div class="row mb-3">
                                     <div class="col-sm-3">
-                                        <h6 class="mb-0">Phone</h6>
+                                        <h6 class="mb-0">Số điện thoại</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
                                         <input type="text" name="phoneNumber" class="form-control" value="${a.phone_number}">
@@ -245,16 +245,26 @@ if (accountId != null) {
                                     </div>
                                     <div class="col-sm-9 text-secondary">
                                         <c:if test="${a.role_id == 1}">
-                                            <input name="role" class="form-control" value="Admin" >
+                                            <input name="role" class="form-control" value="Admin" readonly="">
+                                            <h9 class="mb-0"> (Bạn không thể thay đổi vai trò của mình)</h9>
                                         </c:if>
                                         <c:if test="${a.role_id == 2}">
-                                            <input name="role" class="form-control" value="Customer" readonly />
-                                        </c:if><h9 class="mb-0"> (Bạn không thể thay đổi vai trò của mình)</h9>
+                                            <input name="role" class="form-control" value="Khách hàng" readonly />
+                                            <h9 class="mb-0"> (Bạn không thể thay đổi vai trò của mình)</h9>
+                                        </c:if>
+                                          <c:if test="${a.role_id == 3}">
+                                            <input name="role" class="form-control" value="Staff" readonly />
+                                            <h9 class="mb-0"> (Bạn không thể thay đổi vai trò của mình)</h9>
+                                        </c:if>
+                                          <c:if test="${a.role_id == 4}">
+                                            <input name="role" class="form-control" value="Shipper" readonly />
+                                            <h9 class="mb-0"> (Bạn không thể thay đổi vai trò của mình)</h9>
+                                        </c:if>
                                     </div>
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col-sm-3">
-                                        <h6 class="mb-0">Address</h6>
+                                        <h6 class="mb-0">Địa chỉ</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
                                         <input type="text" name="address" class="form-control" value="${a.address}">
@@ -263,10 +273,10 @@ if (accountId != null) {
                                 <div class="row">
                                     <div class="col-sm-3"></div>
                                     <div class="col-sm-9 text-secondary">
-                                        <input type="submit" class="btn btn-primary px-4" value="Save Changes">
+                                        <input type="submit" class="btn btn-primary px-4" value="Thay đổi">
                                     </div>
                                 </div>
-                                <h4 style="color: red">${errorMessage}</h4>
+                                <h4 style="color: green ; margin-top: 20px">${errorMessage}</h4>
                             </form>
                         </div>
                     </div></form>
@@ -282,7 +292,7 @@ if (accountId != null) {
                                                     <h6 class="mb-0">Mật khẩu cũ</h6>
                                                 </div>
                                                 <div class="col-sm-9 text-secondary">
-                                                    <input type="password" class="form-control" name="oldpass" placeholder="Enter old Password" required>
+                                                    <input type="password" class="form-control" name="oldpass" placeholder="Nhập mật khẩu cũ" value="${oldpass}" required>
                                                 </div>
                                             </div>
                                             <input type="hidden" name="email" value="${a.email}">
@@ -291,7 +301,7 @@ if (accountId != null) {
                                                     <h6 class="mb-0">Mật khẩu mới</h6>
                                                 </div>
                                                 <div class="col-sm-9 text-secondary">
-                                                    <input class="form-control" type="password" name="newpass" placeholder="Enter new Password" required />
+                                                    <input class="form-control" type="password" name="newpass" placeholder="Nhập mật khẩu mới" value="${newpass}" required />
                                                 </div>
                                             </div> 
                                             <div class="row mb-3">
@@ -299,24 +309,24 @@ if (accountId != null) {
                                                     <h6 class="mb-0">Nhắc lại mật khẩu mới</h6>
                                                 </div>
                                                 <div class="col-sm-9 text-secondary">
-                                                    <input type="password" class="form-control" name="re_newpass" placeholder="Repeat new password" required  />
+                                                    <input type="password" class="form-control" name="re_newpass" placeholder="Nhập lại mật khẩu mới" value="${re_newpass}" required  />
                                                 </div>
                                             </div> 
                                             <div class="row">
                                                 <div class="col-sm-3"></div>
                                                 <div class="col-sm-9 text-secondary">
-                                                    <input type="submit" class="btn btn-primary px-4" value="Save Changes">
+                                                    <input type="submit" class="btn btn-primary px-4" value="Thay đổi">
                                                 </div>
                                             </div>  
                                             <c:if test="${not empty errorsList}">
-                                                <h4 style="color: red">
+                                                <h4 style="color: green ; margin-top: 20px">
                                                     <c:forEach items="${errorsList}" var="errorEntry">
                                                         ${errorEntry.value}<br>
                                                     </c:forEach>
                                                 </h4>
                                             </c:if>
-                                            <h4 style="color: red">${updateSuccess}</h4>
-                                            <h4 style="color: red">${updateFailed}</h4>
+                                            <h4 style="color: green ; margin-top: 20px">${updateSuccess}</h4>
+                                            <h4 style="color: green ; margin-top: 20px">${updateFailed}</h4>
                                         </form>
 
                                     </div>
@@ -329,8 +339,8 @@ if (accountId != null) {
 
         </div>
     </div>
-</div>
-</div>
+
+
 <!-- Fruits Shop End-->
 
 
