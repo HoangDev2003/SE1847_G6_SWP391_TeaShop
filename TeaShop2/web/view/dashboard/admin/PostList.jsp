@@ -10,7 +10,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Admin Management</title>
+        <title>MKT Page</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="css/styles.css" rel="stylesheet"/>
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -56,7 +56,35 @@
         </nav>
         <div id="layoutSidenav">
              <jsp:include page="../../common/admin/sidebarAdmin.jsp"></jsp:include>
+<!--            <div id="layoutSidenav_nav">
+                <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                    <div class="sb-sidenav-menu">
+                        <div class="nav">
+                            <div class="sb-sidenav-menu-heading">Menu</div>
+                            <a class="nav-link" href="#">
+                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                Dashboard
+                            </a>
+                            
+                            
 
+                            
+                            <a class="nav-link" href="postlist">
+                                <div class="sb-nav-link-icon"><i class="fa-regular fa-address-card"></i></div>
+                                Post Management
+
+                            </a>
+                            
+                          
+                            
+                        </div>
+                    </div>
+                    <div class="sb-sidenav-footer">
+                        <div class="small">Logged in as:</div>
+                       Marketing
+                    </div>
+                </nav>
+            </div>-->
             <div id="layoutSidenav_content">
                 <form action="postlist" method="post" >
                 <main>
@@ -69,7 +97,7 @@
                         
                         <br/>
                        <div style="margin-left: 15px; margin-bottom: 20px">
-                                <a href="addBlog.jsp"><button type="button" class="btn btn-danger">Thêm bài viết</button> </a>
+                                <a href="addblog"><button type="button" class="btn btn-danger">Thêm bài viết</button> </a>
                             </div>
                         <br/>
                         <div class="card mb-4">
@@ -180,9 +208,7 @@
                     event.preventDefault();
                 }
             }
-            function displayAllPosts() {
-                window.location.href = "postList";
-            }
+            
         </script>
     </body>
 </html>

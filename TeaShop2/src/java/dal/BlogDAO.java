@@ -62,7 +62,8 @@ public class BlogDAO extends DBContext {
         List<Blog> listblog = new ArrayList<>();
         connection = getConnection();
         String sql = "SELECT *\n"
-                + "  FROM [dbo].[Blog]\n";
+                + "  FROM [dbo].[Blog]\n"
+         + "WHERE is_deleted = 0\n";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             ResultSet resultSet = pre.executeQuery();

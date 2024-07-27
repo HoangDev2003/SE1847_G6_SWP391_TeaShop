@@ -215,8 +215,10 @@
                     checkboxDiv.appendChild(label);
                     checkboxContainer.appendChild(checkboxDiv);
                 }
-            }
+            };
+</script>
 
+        <script>
             function toggleColumn(columnIndex) {
                 var table = document.getElementById("datatablesSimple");
                 var headerRow = table.getElementsByTagName("thead")[0].getElementsByTagName("tr")[0];

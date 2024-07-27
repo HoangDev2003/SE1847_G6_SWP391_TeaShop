@@ -63,6 +63,7 @@ public class addBlog extends HttpServlet {
         
         // Redirects to the management page
         request.getRequestDispatcher("addBlog.jsp").forward(request, response);
+       
      }
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
