@@ -6,6 +6,7 @@ package controller;
 
 import dal.AccountDAO;
 import entity.Accounts;
+import entity.EncodePassword;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -60,15 +61,15 @@ public class VerifyAccountController extends HttpServlet {
             throws ServletException, IOException {
 
         request.setAttribute("Notification", "Bạn đã xác nhận email thành công!");
-
+        String pass_word = request.getParameter("pass");
+        pass_word = EncodePassword.toSHA1(pass_word);
         HttpSession session = request.getSession();
-
+        session.setAttribute("pass", pass_word);
         String user_name = (String) session.getAttribute("user");
-        String pass_word = (String) session.getAttribute("pass");
         String phone_number = (String) session.getAttribute("phone_number");
         String email = (String) session.getAttribute("email");
         String address = (String) session.getAttribute("address");
-        String gender = (String) session.getAttribute("gender");
+        String gender = (String) session.getAttribute("gender");       
         System.out.println("Gender: " + gender);
         AccountDAO dao = new AccountDAO();
 

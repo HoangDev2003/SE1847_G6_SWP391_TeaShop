@@ -7,6 +7,7 @@ package controller;
 import dal.AccountDAO;
 import entity.Accounts;
 import entity.Email;
+import entity.EncodePassword;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -112,14 +113,13 @@ public class SignupController extends HttpServlet {
             request.getRequestDispatcher(SIGNUP_JSP).forward(request, response);
             return;
         } else {
-            
+            pass_word = EncodePassword.toSHA1(pass_word);
             AccountDAO dao = new AccountDAO();
             Accounts a = dao.checkAccountExist(email);
             if (a == null) {
-
                 Accounts a1 = dao.checkAccountName(user_name);
                 if (a1 == null) {
-                    HttpSession session = request.getSession();
+                    HttpSession session = request.getSession();                 
                     session.setAttribute("user", user_name);
                     session.setAttribute("pass", pass_word);
                     session.setAttribute("phone_number", phone_number);
@@ -135,7 +135,7 @@ public class SignupController extends HttpServlet {
                             + "<head>\n"
                             + "</head>\n"
                             + "<body>\n"
-                            + "<p>Please verify your email by clicking the following link:</p>\n"
+                            + "<p>Hãy click vào link dưới đây để xác nhận email và trở thành một thành viên của Dreamy Coffee nhé!</p>\n"
                             + "<a href=\"" + verifyLink + "\">Verify Email</a>\n"
                             + "\n"
                             + "</body>\n"
@@ -151,7 +151,7 @@ public class SignupController extends HttpServlet {
 
             } else {
 
-                request.setAttribute("errorMessage", "Email này đã được đăng ký, hãy nhập một email khác");
+                request.setAttribute("errorMessage", "Email này đã được đăng ký, hãy nhập một email khác"); 
                 request.getRequestDispatcher(SIGNUP_JSP).forward(request, response);
             }
         }

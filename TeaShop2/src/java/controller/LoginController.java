@@ -6,6 +6,7 @@ package controller;
 
 import dal.AccountDAO;
 import entity.Accounts;
+import entity.EncodePassword;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -76,6 +77,7 @@ public class LoginController extends HttpServlet {
             throws ServletException, IOException {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
+        password = EncodePassword.toSHA1(password);
 
         HttpSession session = request.getSession();
         Integer failedAttempts = (Integer) session.getAttribute(FAILED_ATTEMPTS);
