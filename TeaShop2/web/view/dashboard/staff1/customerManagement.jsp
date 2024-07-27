@@ -51,11 +51,11 @@
                             <ol class="breadcrumb mb-4">                              
                                 <li style="margin-top: 20px" class="breadcrumb-item active"><a href="customerManagement"><b style="color: #37697a">Quản lý khách hàng</b></a></li>
                             </ol>                                                                     
-                        <div class="card mb-4">
-                            <div class="card-header">
-                               <div class="filter1">
-                                    <form action="filtercustomer">
-                                        <div class="filter" style="display: flex; align-items: center;">
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <div class="filter1">
+                                        <form action="filtercustomer">
+                                            <div class="filter" style="display: flex; align-items: center;">
                                                 <select name="gender" class="filter-select">
                                                     <option value="">Giới tính</option>
                                                     <option value="Female" ${'Female' == gender ? "selected" : ""}>Female</option>
@@ -64,20 +64,27 @@
                                             <select name="status" class="filter-select">
                                                 <option value="">Status</option>
                                                 <c:forEach items="${listas}" var="s">
-                                                    <option value="${s.getStatus_id()}" ${s.getStatus_id() == status ? "selected" : ""}>${s.getStatus_name()}</option>
+                                                    <option value="${s.status_id}" ${s.status_id == status ? "selected" : ""}>${s.status_name}</option>
+                                                    <!-- Debugging -->
+                                                    <c:out value="${s.status_id}" />
+                                                    <c:out value="${s.status_name}" />
                                                 </c:forEach>
                                             </select>
                                             <input type="submit" value="Tìm kiếm" class="filter-submit"/>
+                                            <c:if test="${not empty error}">
+                                                <b class="filter-select">${error}</b>
+                                            </c:if>
                                         </div>
-                                </form>                             
-                            </div>
+
+                                    </form>                             
+                                </div>
                             </div>
                             <form action="customermanager">
                                 <div class="card-body">
                                     <table id="datatablesSimple">
                                         <thead>
                                             <tr>
-                                                  <th>Họ Tên</th>
+                                                <th>Họ Tên</th>
                                                 <th>Giới tính</th>
                                                 <th>Email</th>
                                                 <th>Số điện thoại</th>
@@ -119,7 +126,7 @@
                         </div>
                     </div>
                 </footer>
-                                         <style>
+                <style>
                     .search-header {
                         background-color: #37697a; /* Màu nền */
                         border: none; /* Bỏ viền */
