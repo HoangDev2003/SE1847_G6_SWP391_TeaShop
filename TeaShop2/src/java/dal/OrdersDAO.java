@@ -963,4 +963,91 @@ public class OrdersDAO extends DBContext {
 
         return total;
     }
+    public List<Orders> findOrdersUserName(String key_word, int page) {
+        List<Orders> ordersList = new ArrayList<>();
+        Orders order = null;
+        String sql = "SELECT * FROM Orders \n"
+                + "Where full_name like ?\n"
+                + "ORDER BY order_id\n"
+                + "OFFSET ? ROWS \n"
+                + "FETCH NEXT ? ROWS ONLY";
+
+        try {
+            connection = getConnection();
+            PreparedStatement pre = connection.prepareStatement(
+                    sql,
+                    ResultSet.TYPE_SCROLL_SENSITIVE,
+                    ResultSet.CONCUR_READ_ONLY);
+            pre.setString(1, "%" + key_word + "%");
+            pre.setInt(2, (page - 1) * 6);
+            pre.setInt(3, 6);
+            ResultSet rs = pre.executeQuery();
+
+            while (rs.next()) {
+                order = new Orders();
+                order.setOrder_id(rs.getInt("order_id"));
+
+                order.setAccount(new AccountDAO().getAccountByAccountID(rs.getInt("account_id")));
+                order.setStatus(new StatusDAO().getStatusByStatusID(rs.getInt("status_id")));
+                order.setTotal_amount(rs.getInt("total_amount"));
+                order.setOrder_date(rs.getTimestamp("order_date")); // Set order_date directly
+                order.setEstimated_delivery_date(rs.getTimestamp("estimated_delivery_date"));
+                order.setNote(rs.getString("note"));
+                order.setShipper_note(rs.getString("shipper_note"));
+                order.setStaff_note(rs.getString("staff_note"));
+                order.setAddress(rs.getString("address"));
+                order.setFull_name(rs.getString("full_name"));
+                order.setPayment_method(rs.getString("payment_method"));
+                order.setPhone_number(rs.getString("phone_number"));
+
+                ordersList.add(order);
+            }
+
+            rs.close(); // Close ResultSet
+            pre.close(); // Close PreparedStatement
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception ex) { // Catch any parsing exceptions
+            Logger.getLogger(OrdersDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close(); // Close the database connection
+                }
+            } catch (SQLException e) {
+                Logger.getLogger(OrdersDAO.class.getName()).log(Level.SEVERE, null, e);
+            }
+        }
+        return ordersList; // Return the list of orders    }
+    }
+    
+
+    public int findTotalRecordByUserName(String key_word) {
+        int total = 0;
+        //ket noi duoc voi database
+        connection = getConnection();
+        //co cau lenh de goi xuong database
+        String sql = "SELECT count(*)\n"
+                + "  FROM [dbo].[Orders]\n"
+                + "  Where full_name like ?";
+        try {
+            //Tạo đối tượng PrepareStatement
+            PreparedStatement statement = connection.prepareStatement(sql);
+            // Set the parameters
+
+            statement.setString(1, "%" + key_word + "%");
+            //thuc thi cau lenh o tren => tra ve ket qua
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                total = resultSet.getInt(1);
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("Error " + ex.getMessage());
+
+        }
+
+        return total;
+    }
 }
