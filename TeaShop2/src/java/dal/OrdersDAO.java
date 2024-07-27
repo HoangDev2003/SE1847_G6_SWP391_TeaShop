@@ -856,5 +856,31 @@ public class OrdersDAO extends DBContext {
 
         return total;
     }
+    public int findTotalRecord() {
+        int total = 0;
+        //ket noi duoc voi database
+        connection = getConnection();
+        //co cau lenh de goi xuong database
+        String sql = "SELECT count(*)\n"
+                + "  FROM [dbo].[Orders]";
+        try {
+            //Tạo đối tượng PrepareStatement
+            PreparedStatement statement = connection.prepareStatement(sql);
+
+            //thuc thi cau lenh o tren => tra ve ket qua
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                total = resultSet.getInt(1);
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("Error " + ex.getMessage());
+
+        }
+
+        return total;
+
+    }
     
 }
