@@ -69,11 +69,11 @@
                                             <div class="col-lg-12">
                                                 <div class="mb-3">
                                                     <h4>Loại Bài Đăng</h4>
-                                                <c:forEach items="${listCategory}" var="cate">
+                                                <c:forEach items="${listBlogCategory}" var="lbc">
                                                     <ul class="list-styled fruite-categorie">
                                                         <li>
                                                             <div class="d-flex justify-content-between fruite-name">
-                                                                <a href="blogdetail?bid=${cate.getCategoryID()}"><i class="fas fa-alt me-2"></i>${cate.getCategoryName()}</a>
+                                                                <a href="blogdetail?bid=${lbc.getCategoryID()}"><i class="fas fa-alt me-2"></i>${lbc.getCategoryName()}</a>
 
                                                             </div>
                                                         </li>
