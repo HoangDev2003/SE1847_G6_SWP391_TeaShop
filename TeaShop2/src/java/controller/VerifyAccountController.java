@@ -61,11 +61,11 @@ public class VerifyAccountController extends HttpServlet {
             throws ServletException, IOException {
 
         request.setAttribute("Notification", "Bạn đã xác nhận email thành công!");
-        String pass_word = request.getParameter("pass");
-        pass_word = EncodePassword.toSHA1(pass_word);
-        HttpSession session = request.getSession();
-        session.setAttribute("pass", pass_word);
+       
+        HttpSession session = request.getSession();       
         String user_name = (String) session.getAttribute("user");
+        String pass_word = (String) session.getAttribute("pass");
+        session.setAttribute("pass", pass_word);
         String phone_number = (String) session.getAttribute("phone_number");
         String email = (String) session.getAttribute("email");
         String address = (String) session.getAttribute("address");
@@ -80,6 +80,7 @@ public class VerifyAccountController extends HttpServlet {
             dao.Signup(user_name, pass_word, email, gender, address, phone_number);
             request.setAttribute("email", email);
             request.setAttribute("pass", pass_word);
+            System.out.println(pass_word);
             request.getRequestDispatcher("login.jsp").forward(request, response);
         }
     }
