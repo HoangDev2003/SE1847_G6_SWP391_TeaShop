@@ -54,11 +54,11 @@ public class StaffController extends HttpServlet {
         HttpSession session = request.getSession(true);
         Accounts acc = (Accounts) session.getAttribute("acc");
         if (acc == null) {
-            response.sendRedirect("login");
+            response.sendRedirect("home");
             return;
         }
         int status = acc.getRole_id();
-        if (status == 2 || status == 4) {
+        if (status == 1 || status == 2 || status == 4) {
             response.sendRedirect("home");
             return;
         }
