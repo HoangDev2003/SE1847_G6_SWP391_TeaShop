@@ -54,42 +54,27 @@ public class ProductManagerController extends HttpServlet {
         }
 
         if (service.equals("searchByPriceRange")) {
-            String priceFromStr = req.getParameter("priceFrom");
-            String priceToStr = req.getParameter("priceTo");
-
-            String errorMessage = null;
-
-            // Validate priceFrom and priceTo
-            if (priceFromStr == null || !priceFromStr.matches("\\d+") || priceFromStr.startsWith("0")) {
-                errorMessage = "Giá sản phẩm phải là số nguyên dương và không được bắt đầu từ số 0.";
-            } else if (priceToStr == null || !priceToStr.matches("\\d+") || priceToStr.startsWith("0")) {
-                errorMessage = "Giá sản phẩm phải là số nguyên dương và không được bắt đầu từ số 0.";
-            } else {
-                int priceFrom = Integer.parseInt(priceFromStr);
-                int priceTo = Integer.parseInt(priceToStr);
-
-                if (priceFrom >= priceTo) {
-                    errorMessage = "Khoảng giá bắt đầu phải nhỏ hơn giá kết thúc nhất muốn lọc.";
-                } else {
-                    List<Product> products = (new ProductDAO()).getProductByPriceRange(priceFrom, priceTo);
-
-                    if (products == null || products.isEmpty()) {
-                        req.setAttribute("notFoundProduct", "Không có sản phẩm nào trong khoảng giá");
-                        products = (new ProductDAO()).findAll();
-                    }
-
+            try {
+                int priceFrom = Integer.parseInt(req.getParameter("priceFrom"));
+                int priceTo = Integer.parseInt(req.getParameter("priceTo"));
+                List<Product> products = (new ProductDAO()).getProductByPriceRange(priceFrom, priceTo);
+                if (priceFrom <= 0 || priceTo <= 0 || priceFrom >= priceTo) {
+                    String errorMessage = "Khoảng giá không hợp lệ. Đảm bảo rằng 'khoảng giá bắt đầu' nhỏ hơn 'khoảng giá kết thúc' muốn lọc và cả hai đều lớn hơn 0.";
+                    req.setAttribute("errorMessageFilter", errorMessage);
+                    products = (new ProductDAO()).findAll();
                     req.setAttribute("listAllProduct", products);
-                    req.setAttribute("priceFrom", priceFrom);
-                    req.setAttribute("priceTo", priceTo);
-                    req.setAttribute("showSearchProduct", "Yes");
-                    req.getRequestDispatcher("view/dashboard/admin/productManagement.jsp").forward(req, resp);
-                    return;
+                } else {
+                    if (products == null || products.isEmpty()) {
+                        req.setAttribute("errorMessageFilter", "Không có sản phẩm nào trong khoảng giá");                     
+                    }                
                 }
-            }
-
-            // If validation failed, set error message and forward to JSP
-            req.setAttribute("errorMessage", errorMessage);
-            req.setAttribute("listAllProduct", (new ProductDAO()).findAll()); // or use existing list if applicable
+                
+                req.setAttribute("priceFrom", priceFrom);
+                req.setAttribute("priceTo", priceTo);
+                req.setAttribute("showSearchProduct", "Yes");
+            } catch (NumberFormatException e) {
+                req.setAttribute("errorMessageFilter", "Giá trị không hợp lệ. Vui lòng nhập giá sản phẩm trong khoảng hợp lệ.");
+            } 
             req.setAttribute("showSearchProduct", "Yes");
             req.getRequestDispatcher("view/dashboard/admin/productManagement.jsp").forward(req, resp);
         }

@@ -304,22 +304,17 @@ public class ProductDAO extends DBContext {
 
     public List<Product> findByPage(int page, String sort) {
         List<Product> list = new ArrayList<>();
-        //ket noi duoc voi database
         connection = getConnection();
-        //co cau lenh de goi xuong database
         Category category = null;
         String sql = "SELECT *\n"
                 + "  FROM [dbo].[Product]\n"
                 + getSortQuery(sort)
-                + "  OFFSET ? ROWS \n" //(Page - 1) * numberRecord/page
-                + "  FETCH NEXT ? ROWS ONLY\n"; //numberRecord/page;
+                + "  OFFSET ? ROWS \n" 
+                + "  FETCH NEXT ? ROWS ONLY\n"; 
         try {
-            //Tạo đối tượng PrepareStatement
             PreparedStatement statement = connection.prepareStatement(sql);
-            // Set the parameters
             statement.setInt(1, (page - 1) * 6);
             statement.setInt(2, 6);
-            //thuc thi cau lenh o tren => tra ve ket qua
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
@@ -353,21 +348,15 @@ public class ProductDAO extends DBContext {
 
     public int findTotalRecordByCategoryId(String categoryId) {
         int total = 0;
-        //ket noi duoc voi database
         connection = getConnection();
-        //co cau lenh de goi xuong database
         String sql = "SELECT count(*)\n"
                 + "  FROM [dbo].[Product]\n"
                 + "  where category_id = ?";
         try {
-            //Tạo đối tượng PrepareStatement
+
             PreparedStatement statement = connection.prepareStatement(sql);
-            // Set the parameters
-
             statement.setString(1, categoryId);
-            //thuc thi cau lenh o tren => tra ve ket qua
             ResultSet resultSet = statement.executeQuery();
-
             if (resultSet.next()) {
                 total = resultSet.getInt(1);
             }
@@ -382,56 +371,37 @@ public class ProductDAO extends DBContext {
 
     public int findTotalRecordByName(String keyword) {
         int total = 0;
-        //ket noi duoc voi database
         connection = getConnection();
-        //co cau lenh de goi xuong database
         String sql = "SELECT count(*)\n"
                 + "  FROM [dbo].[Product]\n"
                 + "  where product_name like ?";
         try {
-            //Tạo đối tượng PrepareStatement
             PreparedStatement statement = connection.prepareStatement(sql);
-            // Set the parameters
-
             statement.setString(1, "%" + keyword + "%");
-            //thuc thi cau lenh o tren => tra ve ket qua
             ResultSet resultSet = statement.executeQuery();
-
             if (resultSet.next()) {
                 total = resultSet.getInt(1);
             }
-
         } catch (SQLException ex) {
             System.out.println("Error " + ex.getMessage());
-
         }
-
         return total;
-
     }
 
     public int findTotalRecordByPriceRange(int priceFrom, int priceTo) {
         int total = 0;
-        //ket noi duoc voi database
         connection = getConnection();
-        //co cau lenh de goi xuong database
         String sql = "SELECT  count(*)\n"
                 + "  FROM [TeaShop].[dbo].[Product]\n"
                 + "  Where price >= ? AND price <= ?";
         try {
-            //Tạo đối tượng PrepareStatement
             PreparedStatement statement = connection.prepareStatement(sql);
-            // Set the parameters
-
             statement.setInt(1, priceFrom);
             statement.setInt(2, priceTo);
-            //thuc thi cau lenh o tren => tra ve ket qua
             ResultSet resultSet = statement.executeQuery();
-
             if (resultSet.next()) {
                 total = resultSet.getInt(1);
             }
-
         } catch (SQLException ex) {
             System.out.println("Error " + ex.getMessage());
 
@@ -441,29 +411,20 @@ public class ProductDAO extends DBContext {
 
     public int findTotalRecord() {
         int total = 0;
-        //ket noi duoc voi database
         connection = getConnection();
-        //co cau lenh de goi xuong database
         String sql = "SELECT count(*)\n"
                 + "  FROM [dbo].[Product]";
         try {
-            //Tạo đối tượng PrepareStatement
             PreparedStatement statement = connection.prepareStatement(sql);
-
-            //thuc thi cau lenh o tren => tra ve ket qua
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
                 total = resultSet.getInt(1);
             }
-
         } catch (SQLException ex) {
             System.out.println("Error " + ex.getMessage());
-
         }
-
         return total;
-
     }
 
     public List<Product> specialProduct() {
