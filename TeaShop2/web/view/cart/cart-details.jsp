@@ -183,11 +183,19 @@
                                                             <fmt:setLocale value="vi_VN" />
                                                             <div class="d-flex mb-2">
                                                                 <a class="text-dark fs-5 fw-bold mb-0" href="product-details?id=${special.product_id}">
-                                                                    <span style="text-decoration: line-through; opacity: 0.6; font-style: italic;">
-                                                                        <fmt:formatNumber value="${special.price}" type="currency" currencySymbol="₫" />
-                                                                    </span>
-                                                                    &nbsp;
-                                                                    <fmt:formatNumber value="${special.price - (special.price * (special.discount / 100))}" type="currency" currencySymbol="₫" />
+                                                                    <c:choose>
+                                                                        <c:when test="${p.discount > 0}">
+                                                                            <span style="text-decoration: line-through; opacity: 0.6; font-style: italic;">
+                                                                                <fmt:formatNumber value="${special.price}" type="currency" currencySymbol="₫" />
+                                                                            </span>
+                                                                            &nbsp;
+                                                                            <fmt:formatNumber value="${special.price - (special.price * (special.discount / 100))}" type="currency" currencySymbol="₫" />
+                                                                        </c:when>
+                                                                        <c:otherwise>
+                                                                            <fmt:formatNumber value="${special.price}" type="currency" currencySymbol="₫" />
+                                                                        </c:otherwise>
+
+                                                                    </c:choose>
                                                                 </a>
                                                             </div>
                                                         </div>
