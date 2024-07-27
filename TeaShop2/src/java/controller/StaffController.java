@@ -52,16 +52,16 @@ public class StaffController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession(true);
-        Accounts acc = (Accounts) session.getAttribute("acc");
-        if (acc == null) {
-            response.sendRedirect("home");
-            return;
-        }
-        int status = acc.getRole_id();
-        if (status == 1 || status == 2 || status == 4) {
-            response.sendRedirect("home");
-            return;
-        }
+//        Accounts acc = (Accounts) session.getAttribute("acc");
+//        if (acc == null) {
+//            response.sendRedirect("home");
+//            return;
+//        }
+//        int status = acc.getRole_id();
+//        if (status == 1 || status == 2 || status == 4) {
+//            response.sendRedirect("home");
+//            return;
+//        }
 
         StaffDAO staffDAO = new StaffDAO();
         try (PrintWriter out = response.getWriter()) {
@@ -72,10 +72,11 @@ public class StaffController extends HttpServlet {
 
             if (service.equals("search")) {
                 String search = request.getParameter("search");
+                request.setAttribute("search", search);
                 if (search == null || search.isEmpty()) {
                     request.getRequestDispatcher("view/dashboard/staff1/search-order.jsp").forward(request, response);
                 } else if (search.equals("byOrderId")) {
-                    String orderIdStr = request.getParameter("order_id");
+                    String orderIdStr = request.getParameter("order_id_search");
                     List<Orders> listOrders;
 
                     if (orderIdStr != null && !orderIdStr.isEmpty()) {
@@ -83,7 +84,7 @@ public class StaffController extends HttpServlet {
                         int order_id = Integer.parseInt(orderIdStr);
                         listOrders = staffDAO.getOrderByOrderId(order_id);
                         request.setAttribute("listOrders", listOrders);
-                        request.setAttribute("order_id", order_id);
+                        request.setAttribute("order_id_search", order_id);
                     }
                     request.getRequestDispatcher("view/dashboard/staff1/search-order.jsp").forward(request, response);
                 } else if (search.equals("byInfo")) {
@@ -101,7 +102,7 @@ public class StaffController extends HttpServlet {
                         count--;
                     } else if (!full_nameParam.matches("[a-zA-Z ]+")) {
                         count--;
-                        full_name = null;                     
+                        full_name = null;
                     } else {
                         full_name = full_nameParam;
                         request.setAttribute("full_name", full_name);
@@ -151,20 +152,20 @@ public class StaffController extends HttpServlet {
                         }
                     }
 
-                    if (request.getParameter("status_id") == null || request.getParameter("status_id").isEmpty()) {
+                    if (request.getParameter("status_id_search") == null || request.getParameter("status_id_search").isEmpty()) {
                         status_id = 0;
                         count--;
                     } else {
-                        status_id = Integer.parseInt(request.getParameter("status_id"));
-                        request.setAttribute("status_id", status_id);
+                        status_id = Integer.parseInt(request.getParameter("status_id_search"));
+                        request.setAttribute("status_id_search", status_id);
                     }
 
-                    if (request.getParameter("payment_method") == null || request.getParameter("payment_method").isEmpty()) {
+                    if (request.getParameter("payment_method_search") == null || request.getParameter("payment_method_search").isEmpty()) {
                         payment_method = null;
                         count--;
                     } else {
-                        payment_method = request.getParameter("payment_method");
-                        request.setAttribute("payment_method", payment_method);
+                        payment_method = request.getParameter("payment_method_search");
+                        request.setAttribute("payment_method_search", payment_method);
                     }
 
                     // Convert date strings to Timestamp
@@ -219,6 +220,66 @@ public class StaffController extends HttpServlet {
                 staffDAO.updateOrderStatus(order_id, status_id);
 
                 String link = "Staff?service=show&current_status_id=" + current_status_id;
+                request.getRequestDispatcher(link).forward(request, response);
+            }
+
+            if (service.equals("updateInSearchOrder")) {
+                String search = request.getParameter("search");
+                request.setAttribute("search", search);
+                if (search.equals("byOrderId")) {
+                    String orderIdStr = request.getParameter("order_id_search");
+                    request.setAttribute("order_id_search", orderIdStr);
+                }
+                if (search.equals("byInfo")) {
+                    String full_name = request.getParameter("full_name");
+                    String lowerAmount = request.getParameter("lower_amount");
+                    String upperAmount = request.getParameter("upper_amount");
+                    String statusid = request.getParameter("status_id_search");
+                    String paymentmethod = request.getParameter("payment_method_search");
+                    String lowerDate = request.getParameter("lower_date");
+                    String upperDate = request.getParameter("upper_date");
+                    request.setAttribute("full_name", full_name);
+                    request.setAttribute("lower_amount", lowerAmount);
+                    request.setAttribute("upper_amount", upperAmount);
+                    request.setAttribute("status_id_search", statusid);
+                    request.setAttribute("payment_method_search", paymentmethod);
+                    request.setAttribute("lower_date", lowerDate);
+                    request.setAttribute("upper_date", upperDate);
+                }
+
+                OrdersDAO orderDAO = new OrdersDAO();
+                OrderDetailsDAO orderDetailsDAO = new OrderDetailsDAO();
+                int order_id = Integer.parseInt(request.getParameter("order_id"));
+                int status_id = Integer.parseInt(request.getParameter("status_id"));
+
+                Orders order = orderDAO.findByOrderId(order_id);
+                if (status_id == 3) {  // Kiểm tra khi chuyển sang trạng thái hoàn thành
+                    List<OrderDetails> listOrderDetails = orderDetailsDAO.findByOrderId(order_id);
+                    boolean imageMissing = false;
+                    for (OrderDetails od : listOrderDetails) {
+                        if (od.getImage() == null || od.getImage().isEmpty()) {
+                            imageMissing = true;
+                            break;
+                        }
+                    }
+                    if (order.getFormattedEstimated_delivery_date() == null) {
+
+                        request.setAttribute("errorMessage", "Vui lòng điền thời gian giao hàng dự kiến.");
+                        String link = "Staff?service=search";
+                        request.getRequestDispatcher(link).forward(request, response); // Hiển thị lại danh sách đơn hàng với thông báo lỗi
+                        return;
+                    }
+                    if (imageMissing) {
+                        request.setAttribute("errorMessage", "Vui lòng tải lên 'Ảnh trước khi giao hàng' để giao cho shipper.");
+                        String link = "Staff?service=search";
+                        request.getRequestDispatcher(link).forward(request, response);// Hiển thị lại danh sách đơn hàng với thông báo lỗi
+                        return;
+                    }
+                }
+
+                staffDAO.updateOrderStatus(order_id, status_id);
+
+                String link = "Staff?service=search";
                 request.getRequestDispatcher(link).forward(request, response);
             }
 
@@ -346,17 +407,45 @@ public class StaffController extends HttpServlet {
                     }
 
                 } else if (payment_method.equals("COD")) {
+                    String link_id = request.getParameter("link_id");
+                    String link = null;
                     String staff_note = request.getParameter("staff_note");
                     new OrdersDAO().updateStaffNote(Integer.parseInt(order_id), staff_note);
                     staffDAO.updateOrderStatus(Integer.parseInt(order_id), status_id);
-                    String link = "Staff?service=show&current_status_id=" + current_status_id;
+                    if (link_id.equals("1")) {
+                        link = "Staff?service=show&current_status_id=" + current_status_id;
+                    } else if (link_id.equals("2")) {
+                        String search = request.getParameter("search");
+                        request.setAttribute("search", search);
+                        if (search.equals("byOrderId")) {
+                            String orderIdStr = request.getParameter("order_id_search");
+                            request.setAttribute("order_id_search", orderIdStr);
+                        }
+                        if (search.equals("byInfo")) {
+                            String full_name = request.getParameter("full_name");
+                            String lowerAmount = request.getParameter("lower_amount");
+                            String upperAmount = request.getParameter("upper_amount");
+                            String statusid = request.getParameter("status_id_search");
+                            String paymentmethod = request.getParameter("payment_method_search");
+                            String lowerDate = request.getParameter("lower_date");
+                            String upperDate = request.getParameter("upper_date");
+                            request.setAttribute("full_name", full_name);
+                            request.setAttribute("lower_amount", lowerAmount);
+                            request.setAttribute("upper_amount", upperAmount);
+                            request.setAttribute("status_id_search", statusid);
+                            request.setAttribute("payment_method_search", paymentmethod);
+                            request.setAttribute("lower_date", lowerDate);
+                            request.setAttribute("upper_date", upperDate);
+                        }
+                        link = "Staff?service=search";
+                    }
                     request.getRequestDispatcher(link).forward(request, response);
                 }
             }
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
