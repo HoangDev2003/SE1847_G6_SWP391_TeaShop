@@ -113,7 +113,7 @@ public class StaffFilter implements Filter {
             return;
         }
         else{
-            if(account.getRole_id() != 4){
+            if(account.getRole_id() != 3){
              req.getRequestDispatcher( "/view/homepage/404.jsp").forward(request, response);
                 
             }

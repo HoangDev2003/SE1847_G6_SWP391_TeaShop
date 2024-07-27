@@ -113,7 +113,7 @@ public class AdminFilter implements Filter {
             req.getRequestDispatcher("/view/homepage/404.jsp").forward(request, response);
             return;
         } else {
-            if (account.getRole_id() != 4) {
+            if (account.getRole_id() != 1) {
                 req.getRequestDispatcher("/view/homepage/404.jsp").forward(request, response);
 
             }
