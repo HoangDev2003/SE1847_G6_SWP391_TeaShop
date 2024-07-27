@@ -26,11 +26,7 @@ import java.util.HashMap;
  *
  * @author Huyen Tranq
  */
-@MultipartConfig(
-        fileSizeThreshold = 1024 * 1024 * 1,
-        maxFileSize = 1024 * 1024 * 10,
-        maxRequestSize = 1024 * 1024 * 50
-)
+@MultipartConfig
 public class UserProfileController extends HttpServlet {
 
     /**
@@ -142,16 +138,26 @@ public class UserProfileController extends HttpServlet {
                                         request.setAttribute("a", a);
                                         request.setAttribute("updateAvtFailed", "Cập nhật avatar thất bại");
                                     }
-
-                                    request.getRequestDispatcher("view/homepage/UserProfile.jsp").forward(request, response);
                                 } catch (IOException ex) {
                                     ex.printStackTrace();
+                                    request.setAttribute("a", a);
+                                    request.setAttribute("updateAvtFailed", "Cập nhật avatar thất bại do lỗi");
                                 }
+                            } else {
+                                request.setAttribute("a", a);
+                                request.setAttribute("updateAvtFailed", "Tên tệp không hợp lệ");
                             }
+                        } else {
+                            request.setAttribute("a", a);
+                            request.setAttribute("updateAvtFailed", "Không có tệp nào được tải lên");
                         }
                     } catch (IOException | ServletException ex) {
                         ex.printStackTrace();
+                        request.setAttribute("a", a);
+                        request.setAttribute("updateAvtFailed", "Cập nhật avatar thất bại do lỗi");
                     }
+
+                    request.getRequestDispatcher("view/homepage/UserProfile.jsp").forward(request, response);
                 }
                 break;
 
