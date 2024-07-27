@@ -40,120 +40,53 @@ public class FilterShipperController extends HttpServlet {
                 AuthorizationController.redirectToHome(session, response);
             } else {
                 AdminDAO dao = new AdminDAO();
-                //Lấy thông tin gender, status
-                List<AccountStatus> listas = dao.getAllStatus();
-                request.setAttribute("listas", listas);
+            //Lấy thông tin gender, status
+            List<AccountStatus> listas = dao.getAllStatus();
+            request.setAttribute("listas", listas);
 
-                String status = request.getParameter("status");
-                String gender = request.getParameter("gender");
+            String status = request.getParameter("status");
+            String gender = request.getParameter("gender");
 
-                if (gender.equals("Gender") && status.equals("Status")) {
-                    response.sendRedirect("shippermanager");
-                } else if (!gender.equals("Gender") && status.equals("Status")) {
-                    int countf = dao.countFemaleShipper();
-                    int countm = dao.countMaleShipper();
+            request.setAttribute("status", status);
+            request.setAttribute("gender", gender);
 
-                    String index1 = request.getParameter("indexf");
-                    String index2 = request.getParameter("indexm");
-                    if (index1 == null) {
-                        index1 = "1";
-                    }
-                    if (index2 == null) {
-                        index2 = "1";
-                    }
-                    int indexf = Integer.parseInt(index1);
-                    int indexm = Integer.parseInt(index2);
+            if (gender == null || gender.equals("Gender")) {
+                gender = "";
+            }
+            if (status == null || status.equals("Status")) {
+                status = "";
+            }
 
-                    if (gender.equals("Male")) {
-                        List<Accounts> listm = dao.getAllAccountMaleShipper(indexm);
-                        if (listm.isEmpty()) {
-                            request.setAttribute("error", "No result found !");
-                            request.setAttribute("gender", gender);
-                            request.getRequestDispatcher("./view/dashboard/admin/shipperManagement.jsp").forward(request, response);
-                        } else {
-                            request.setAttribute("indexm", indexm);
-                            request.setAttribute("listShipper", listm);
-                            request.setAttribute("gender", gender);
-                            request.getRequestDispatcher("./view/dashboard/admin/shipperManagement.jsp").forward(request, response);
-                        }
-                    } else if (gender.equals("Female")) {
-                        List<Accounts> listf = dao.getAllAccountFemaleShipper(indexf);
-                        if (listf.isEmpty()) {
-                            request.setAttribute("error", "No result found !");
-                            request.setAttribute("gender", gender);
-                            request.getRequestDispatcher("./view/dashboard/admin/shipperManagement.jsp").forward(request, response);
-                        } else {
-                            request.setAttribute("gender", gender);
-                            request.setAttribute("indexf", indexf);
-                            request.setAttribute("listShipper", listf);
-                            request.getRequestDispatcher("./view/dashboard/admin/shipperManagement.jsp").forward(request, response);
-                        }
-                    }
-                } 
-                else if ((gender.equals("Gender") || gender == null) && !(status.equals("Status"))) {
-
-                //List accout active
-                int countActive = dao.countActiveAccountShipper();
-                String index4 = request.getParameter("indexa");
-                if (index4 == null) {
-                    index4 = "1";
+            // Xử lý lọc dựa trên gender và status
+            if (gender.isEmpty() && status.isEmpty()) {
+                response.sendRedirect("customerManagement");
+            } else if (!gender.isEmpty() && status.isEmpty()) {
+                List<Accounts> listByGender = gender.equals("Male") ? dao.getAllAccountMaleStaff() : dao.getAllAccountFemaleStaff();
+                if (listByGender.isEmpty()) {
+                    request.setAttribute("error", "Không tìm thấy kết quả");
+                } else {
+                    request.setAttribute("listStaff", listByGender);
                 }
-                int indexa = Integer.parseInt(index4);
-
-                //List account inactive
-                int countInActive = dao.countInActiveAccountShipper();                
-                String index5 = request.getParameter("indexi");
-                if (index5 == null) {
-                    index5 = "1";
+                request.getRequestDispatcher("./view/dashboard/staff1/customerManagement.jsp").forward(request, response);
+            } else if (gender.isEmpty() && !status.isEmpty()) {
+                List<Accounts> listByStatus = status.equals("1") ? dao.getAccountsActiveStaff() : dao.getAccountsInActiveStaff();
+                if (listByStatus.isEmpty()) {
+                    request.setAttribute("error", "Không tìm thấy kết quả");
+                } else {
+                    request.setAttribute("listUser", listByStatus);
                 }
-                int indexI = Integer.parseInt(index5);
-                if (status.equals("1")) {
-                    List<Accounts> lista = dao.getAccountsActiveShipper(indexa);
-                    if (lista.isEmpty()) {
-                        request.setAttribute("error", "No result found !");
-                        request.setAttribute("status", "1");
-                        request.getRequestDispatcher("./view/dashboard/admin/shipperManagement.jsp").forward(request, response);
-                    } else {
-                        request.setAttribute("status", "1");
-                        request.setAttribute("indexa", indexa);
-                        request.setAttribute("listShipper", lista);
-                        request.getRequestDispatcher("./view/dashboard/admin/shipperManagement.jsp").forward(request, response);
-                    }
-
-                } else if (status.equals("2")) {
-                    List<Accounts> listi = dao.getAccountsInActiveShipper(indexI);
-                    if (listi.isEmpty()) {
-                        request.setAttribute("error", "No result found !");
-                        request.setAttribute("status", "2");
-                        request.getRequestDispatcher("./view/dashboard/admin/shipperManagement.jsp").forward(request, response);
-                    } else {
-                        request.setAttribute("status", "2");
-                        request.setAttribute("indexi", indexI);
-                        request.setAttribute("listShipper", listi);
-                        request.getRequestDispatcher("./view/dashboard/admin/shipperManagement.jsp").forward(request, response);
-                    }
-                }
+                request.setAttribute("status", status);
+                request.getRequestDispatcher("./view/dashboard/staff1/customerManagement.jsp").forward(request, response);
             } else {
                 int status_id = Integer.parseInt(status);
-                int count = dao.countAccountByGenderAndStatusShipper(gender, status_id);
-                String index9 = request.getParameter("index");
-                if (index9 == null) {
-                    index9 = "1";
-                }
-                int index = Integer.parseInt(index9);
-                List<Accounts> list = dao.getAccountByGenderAndStatusShipper(gender, status_id, index);
-                if (list.isEmpty()) {
-                    request.setAttribute("error", "No result found !");
-                    request.setAttribute("gender", gender);
-                    request.setAttribute("status", status_id);
-                    request.getRequestDispatcher("./view/dashboard/admin/shipperManagement.jsp").forward(request, response);
+                List<Accounts> listByGenderAndStatus = dao.getAccountByGenderAndStatusStaff(gender, status_id);
+                if (listByGenderAndStatus.isEmpty()) {
+                    request.setAttribute("error", "Không tìm thấy kết quả");
                 } else {
-                    request.setAttribute("listShipper", list);
-                    request.setAttribute("gender", gender);
-                    request.setAttribute("status", status_id);                  
-                    request.setAttribute("index", index);
-                    request.getRequestDispatcher("./view/dashboard/admin/shipperManagement.jsp").forward(request, response);
+                    request.setAttribute("listUser", listByGenderAndStatus);
                 }
+                request.setAttribute("status", status_id);
+                request.getRequestDispatcher("./view/dashboard/staff1/customerManagement.jsp").forward(request, response);
             }
     }
     } 

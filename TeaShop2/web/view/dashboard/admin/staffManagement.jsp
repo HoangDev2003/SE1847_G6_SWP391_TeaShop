@@ -78,6 +78,9 @@
                                                 </c:forEach>
                                             </select>
                                             <input type="submit" value="Tìm kiếm" class="filter-submit"/>
+                                              <c:if test="${not empty error}">
+                                                <b class="filter-select">${error}</b>
+                                            </c:if>
                                         </div>
                                     </form>                             
                                 </div>
