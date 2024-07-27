@@ -385,7 +385,7 @@ public class AdminDAO extends DBContext {
         return 0;
     }
 
-    public List<Accounts> getAllAccountMale(int index) {
+    public List<Accounts> getAllAccountMale() {
         List<Accounts> list = new ArrayList<>();
         String query = "SELECT a.account_id,\n"
                 + "a.user_name,\n"
@@ -400,12 +400,10 @@ public class AdminDAO extends DBContext {
                 + "JOIN AccountStatuses acs ON a.status_id = acs.status_id\n"
                 + "JOIN Role r ON a.role_id = r.role_id\n"
                 + "where gender = 'Male' and a.role_id = 2\n"
-                + "ORDER BY created_at DESC\n"
-                + "OFFSET ? rows FETCH next 12 rows only;";
+                + "ORDER BY created_at DESC";
         try {
             connection = getConnection();
             statement = connection.prepareStatement(query);
-            statement.setInt(1, (index - 1) * 12);
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 list.add(new Accounts(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3),
@@ -484,7 +482,7 @@ public class AdminDAO extends DBContext {
         return list;
     }
 
-    public List<Accounts> getAllAccountFemale(int index) {
+    public List<Accounts> getAllAccountFemale() {
         List<Accounts> list = new ArrayList<>();
         String query = "SELECT a.account_id,\n"
                 + "a.user_name,\n"
@@ -499,12 +497,10 @@ public class AdminDAO extends DBContext {
                 + "JOIN AccountStatuses acs ON a.status_id = acs.status_id\n"
                 + "JOIN Role r ON a.role_id = r.role_id\n"
                 + "where gender = 'Female' and a.role_id = 2\n"
-                + "ORDER BY created_at DESC\n"
-                + "OFFSET ? rows FETCH next 12 rows only;";
+                + "ORDER BY created_at DESC";
         try {
             connection = getConnection();
             statement = connection.prepareStatement(query);
-            statement.setInt(1, (index - 1) * 12);
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 list.add(new Accounts(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3),
@@ -673,7 +669,7 @@ public class AdminDAO extends DBContext {
         return 0;
     }
 
-    public List<Accounts> getAccountsActive(int index) {
+    public List<Accounts> getAccountsActive() {
         List<Accounts> list = new ArrayList<>();
         String query = "SELECT a.account_id,\n"
                 + "a.user_name,\n"
@@ -688,12 +684,11 @@ public class AdminDAO extends DBContext {
                 + "JOIN AccountStatuses acs ON a.status_id = acs.status_id\n"
                 + "JOIN Role r ON a.role_id = r.role_id\n"
                 + "where a.status_id = 1 and a.role_id = 2\n"
-                + "ORDER BY created_at DESC\n"
-                + "OFFSET ? rows FETCH next 12 rows only;";
+                + "ORDER BY created_at DESC";
+
         try {
             connection = getConnection();
             statement = connection.prepareStatement(query);
-            statement.setInt(1, (index - 1) * 12);
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 list.add(new Accounts(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3),
@@ -772,7 +767,7 @@ public class AdminDAO extends DBContext {
         return list;
     }
 
-    public List<Accounts> getAccountsInActive(int index) {
+    public List<Accounts> getAccountsInActive() {
         List<Accounts> list = new ArrayList<>();
         String query = "SELECT a.account_id,\n"
                 + "a.user_name,\n"
@@ -787,12 +782,10 @@ public class AdminDAO extends DBContext {
                 + "JOIN AccountStatuses acs ON a.status_id = acs.status_id\n"
                 + "JOIN Role r ON a.role_id = r.role_id\n"
                 + "where a.status_id = 2 and a.role_id = 2\n"
-                + "ORDER BY created_at DESC\n"
-                + "OFFSET ? rows FETCH next 12 rows only;";
+                + "ORDER BY created_at DESC";
         try {
             connection = getConnection();
             statement = connection.prepareStatement(query);
-            statement.setInt(1, (index - 1) * 12);
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 list.add(new Accounts(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3),
@@ -922,7 +915,7 @@ public class AdminDAO extends DBContext {
         return 0;
     }
 
-    public List<Accounts> getAccountByGenderAndStatus(String gender, int status, int index) {
+    public List<Accounts> getAccountByGenderAndStatus(String gender, int status) {
         List<Accounts> list = new ArrayList<>();
         String query = "SELECT a.account_id,\n"
                 + "a.user_name,\n"
@@ -937,14 +930,12 @@ public class AdminDAO extends DBContext {
                 + "JOIN AccountStatuses acs ON a.status_id = acs.status_id\n"
                 + "JOIN Role r ON a.role_id = r.role_id\n"
                 + "where a.gender = ? and a.status_id = ? and a.role_id = 2\n"
-                + "ORDER BY created_at DESC\n"
-                + "OFFSET ? rows FETCH next 12 rows only;";
+                + "ORDER BY created_at DESC\n";
         try {
             connection = getConnection();
             statement = connection.prepareStatement(query);
             statement.setString(1, gender);
             statement.setInt(2, status);
-            statement.setInt(3, (index - 1) * 12);
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 list.add(new Accounts(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3),
@@ -1062,7 +1053,7 @@ public class AdminDAO extends DBContext {
         }
         return null;
     }
-    
+
     public Role getRoleInfor(String role_name) {
         String query = "SELECT r.role_id,\n"
                 + "r.role_name\n"
@@ -1081,7 +1072,7 @@ public class AdminDAO extends DBContext {
         }
         return null;
     }
-    
+
     public void updateRole(String name, int id) {
         String query = "Update Role\n"
                 + "set\n"
@@ -1090,15 +1081,15 @@ public class AdminDAO extends DBContext {
         try {
             connection = getConnection();
             statement = connection.prepareStatement(query);
-            statement.setString(1, name);        
+            statement.setString(1, name);
             statement.setInt(2, id);
             statement.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
         }
     }
-    
-     public void deleteRole(int id) {
+
+    public void deleteRole(int id) {
         String query = "Delete from Role where role_id = ?";
         try {
             connection = getConnection();
@@ -1110,8 +1101,8 @@ public class AdminDAO extends DBContext {
         }
 
     }
-     
-     public void deleteStatus(int id) {
+
+    public void deleteStatus(int id) {
         String query = "Delete from AccountStatuses where status_id = ?";
         try {
             connection = getConnection();
@@ -1123,8 +1114,8 @@ public class AdminDAO extends DBContext {
         }
 
     }
-     
-     public List<Topping> getAllTopping() {
+
+    public List<Topping> getAllTopping() {
         //khởi tạo 1 list để load sản phẩm lên và lưu trong đấy
         List<Topping> list = new ArrayList<>();
         String query = "select * from Topping";
@@ -1140,8 +1131,8 @@ public class AdminDAO extends DBContext {
         }
         return list;
     }
-     
-     public void deleteTopping(int id) {
+
+    public void deleteTopping(int id) {
         String query = "Delete from Topping where topping_id = ?";
         try {
             connection = getConnection();
@@ -1153,8 +1144,8 @@ public class AdminDAO extends DBContext {
         }
 
     }
-     
-     public AccountStatus getStatusById(int id) {
+
+    public AccountStatus getStatusById(int id) {
         String query = "SELECT acs.status_id,\n"
                 + "acs.status_name\n"
                 + "FROM AccountStatuses acs\n"
@@ -1172,8 +1163,8 @@ public class AdminDAO extends DBContext {
         }
         return null;
     }
-     
-     public void updateStatus(String name, int id) {
+
+    public void updateStatus(String name, int id) {
         String query = "Update AccountStatuses\n"
                 + "set\n"
                 + "[status_name]=?\n"
@@ -1181,15 +1172,15 @@ public class AdminDAO extends DBContext {
         try {
             connection = getConnection();
             statement = connection.prepareStatement(query);
-            statement.setString(1, name);        
+            statement.setString(1, name);
             statement.setInt(2, id);
             statement.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
         }
     }
-     
-     public Topping getToppingById(int id) {
+
+    public Topping getToppingById(int id) {
         String query = "SELECT t.topping_id,\n"
                 + "t.topping_name\n"
                 + "FROM Topping t\n"
@@ -1207,8 +1198,8 @@ public class AdminDAO extends DBContext {
         }
         return null;
     }
-     
-      public void updateTopping(String name, int id) {
+
+    public void updateTopping(String name, int id) {
         String query = "Update Topping\n"
                 + "set\n"
                 + " topping_name =?\n"
@@ -1216,42 +1207,43 @@ public class AdminDAO extends DBContext {
         try {
             connection = getConnection();
             statement = connection.prepareStatement(query);
-            statement.setString(1, name);        
+            statement.setString(1, name);
             statement.setInt(2, id);
             statement.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
         }
     }
-      
-       public void addRole(int id, String name) {
+
+    public void addRole(int id, String name) {
         String query = "insert into Role\n"
                 + "values(?,?);";
         try {
             connection = getConnection();
             statement = connection.prepareStatement(query);
             statement.setInt(1, id);
-            statement.setString(2, name);          
+            statement.setString(2, name);
             statement.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
         }
     }
 
-        public void addTopping(String name) {
+    public void addTopping(String name) {
         String query = "insert into Topping\n"
                 + "values(?);";
         try {
             connection = getConnection();
-            statement = connection.prepareStatement(query);          
-            statement.setString(1, name);          
+            statement = connection.prepareStatement(query);
+            statement.setString(1, name);
             statement.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
         }
-       
+
     }
-        public boolean isRoleIdExists(int id) {
+
+    public boolean isRoleIdExists(int id) {
         boolean exists = false;
         String query = "SELECT COUNT(*) FROM Role WHERE role_id = ?";
         try {
@@ -1266,18 +1258,24 @@ public class AdminDAO extends DBContext {
             e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
         } finally {
             try {
-                if (resultSet != null) resultSet.close();
-                if (statement != null) statement.close();
-                if (connection != null) connection.close();
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
-         return exists;
-        }
-        
-         public List<Topping> searchTopping(String search) {
+        return exists;
+    }
+
+    public List<Topping> searchTopping(String search) {
         List<Topping> list = new ArrayList<>();
         String query = "SELECT t.topping_id,\n"
                 + "t.topping_name\n"
@@ -1286,18 +1284,18 @@ public class AdminDAO extends DBContext {
             connection = getConnection();
             statement = connection.prepareStatement(query);
             statement.setString(1, "%" + search + "%");
-            statement.setString(2, "%" + search + "%");        
+            statement.setString(2, "%" + search + "%");
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 list.add(new Topping(resultSet.getInt(1), resultSet.getString(2)));
-          }
+            }
         } catch (Exception e) {
             e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
         }
         return list;
     }
-    
-         public List<Role> searchRole(String search) {
+
+    public List<Role> searchRole(String search) {
         List<Role> list = new ArrayList<>();
         String query = "SELECT r.role_id,\n"
                 + "r.role_name\n"
@@ -1306,18 +1304,18 @@ public class AdminDAO extends DBContext {
             connection = getConnection();
             statement = connection.prepareStatement(query);
             statement.setString(1, "%" + search + "%");
-            statement.setString(2, "%" + search + "%");        
+            statement.setString(2, "%" + search + "%");
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 list.add(new Role(resultSet.getInt(1), resultSet.getString(2)));
-          }
+            }
         } catch (Exception e) {
             e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
         }
         return list;
     }
-         
-          public List<Accounts> searchStaff(String search) {
+
+    public List<Accounts> searchStaff(String search) {
         List<Accounts> list = new ArrayList<>();
         String query = "SELECT a.account_id,\n"
                 + "a.user_name,\n"
@@ -1348,8 +1346,8 @@ public class AdminDAO extends DBContext {
         }
         return list;
     }
-          
-             public List<Accounts> searchShipper(String search) {
+
+    public List<Accounts> searchShipper(String search) {
         List<Accounts> list = new ArrayList<>();
         String query = "SELECT a.account_id,\n"
                 + "a.user_name,\n"
@@ -1380,14 +1378,19 @@ public class AdminDAO extends DBContext {
         }
         return list;
     }
-    
-    
-     
+
     public static void main(String[] args) {
         AdminDAO dao = new AdminDAO();
-        dao.updateTopping("Trân Châu Hoa Mộc Lan", 4);
-        
+        List<Accounts> list = dao.getAllAccountMale();
+        for (Accounts listhi : list) {
+            System.out.println(listhi);
 
+        }
+
+    }
+
+    public List<Accounts> getAllAccountMaleShipper() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
 }
