@@ -5,8 +5,6 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
-
         <div id="layoutSidenav_nav">
             
                 <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
@@ -15,7 +13,7 @@
                             <div class="sb-sidenav-menu-heading">Core</div>
                             <a class="nav-link" href="chartorderday">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                Dashboard
+                                Bảng điều khiển
                             </a>
                             <div class="sb-sidenav-menu-heading">Admin Manager</div>
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
@@ -25,28 +23,28 @@
                             </a>
                             <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="productmanager">Quản lý Sản phẩm</a>
-                                    <a class="nav-link" href="categorymanager">Quản lý Danh mục</a>                                   
-                                    <a class="nav-link" href="staffmanager">Quản lý Nhân viên</a>
-                                    <a class="nav-link" href="shippermanager">Quản lý Shipper</a>                                    
-                                    <a class="nav-link" href="postlist">Quản lý Bài viết</a>
-                                    <a class="nav-link" href="manageslide">Quản lý Slide </a>
+                                    <a class="nav-link" href="productmanager">Sản phẩm</a>
+                                    <a class="nav-link" href="categorymanager">Danh mục</a>                                   
+                                    <a class="nav-link" href="staffmanager">Nhân viên</a>
+                                    <a class="nav-link" href="shippermanager">Shipper</a>                                    
+                                    <a class="nav-link" href="postlist">Bài viết</a>
+                                    <a class="nav-link" href="manageslide">Slide </a>
                                 </nav>
                                 <nav class="sb-sidenav-menu-nested nav">
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseOrderManagement" aria-expanded="false" aria-controls="collapseOrderManagement">
-                            Quản lý Setting cửa hàng
+                           Setting cửa hàng
                             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>
                         <div class="collapse" id="collapseOrderManagement" aria-labelledby="headingOne" data-bs-parent="#collapseLayouts">
                             <nav class="sb-sidenav-menu-nested nav">
                                 <a class="nav-link" href="rolemanager">
-                                    Quản lý Role
+                                   Role
                                 </a>
 <!--                                <a class="nav-link" href="statusmanager">
                                     Quản lý Status
                                 </a>-->
                                 <a class="nav-link" href="toppingmanager">
-                                    Quản lý Topping
+                                    Topping
                                 </a>                      
                             </nav>
                         </div>
@@ -81,15 +79,7 @@
                                     </div>
                                 </nav>
                             </div>
-                            <div class="sb-sidenav-menu-heading">Add on</div>
-                            <a class="nav-link" href="chartsAdmin.jsp">
-                                <div class="sb-nav-link-icon"><i class="fas fa-chart-area" ></i></div>
-                                Charts
-                            </a>
-                            <a class="nav-link" href="dashboardAdmin.jsp">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Tables
-                            </a>
+                           
                         </div>
                     </div>
                    

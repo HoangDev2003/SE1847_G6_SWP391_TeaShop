@@ -40,7 +40,7 @@
 <!--                        <li><a class="dropdown-item" href="ManageOrder">Order List</a></li>
                         <li><hr class="dropdown-divider" /></li>
                         <li><a class="dropdown-item" href="#!">Logout</a></li>-->
-                        <li><a class="dropdown-item" href="userProfile">Profile</a></li>
+                        <li><a class="dropdown-item" href="home">Home</a></li>
                         <li><hr class="dropdown-divider" /></li>
                         <li><a class="dropdown-item" href="logout">Logout</a></li>
                     </ul>

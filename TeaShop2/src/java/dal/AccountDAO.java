@@ -173,13 +173,13 @@ public class AccountDAO extends DBContext {
         return 0;
     }
 
-    public int updateProfile(String fullName, String phone, String email, String address) {
-        String sql = "update Accounts set full_name = ?, phone_number = ?, email = ?,\n"
+    public int updateProfile(String user_name, String phone, String email, String address) {
+        String query = "update Accounts set user_name = ?, phone_number = ?, email = ?,\n"
                 + "address = ? where email = ?;";
         try {
             connection = getConnection();
-            statement = connection.prepareStatement(sql);
-            statement.setString(1, fullName);
+            statement = connection.prepareStatement(query);
+            statement.setString(1, user_name);
             statement.setString(2, phone);
             statement.setString(3, email);
             statement.setString(4, address);
@@ -193,10 +193,10 @@ public class AccountDAO extends DBContext {
     }
 
     public int updatePassword(String newPassword, String email) {
-        String sql = "update Accounts set pass_word = ? where email = ?";
+        String query = "update Accounts set pass_word = ? where email = ?";
         try {
             connection = getConnection();
-            statement = connection.prepareStatement(sql);
+            statement = connection.prepareStatement(query);
             statement.setString(1, newPassword);
             statement.setString(2, email);
             int rowUpdated = statement.executeUpdate();
@@ -208,10 +208,10 @@ public class AccountDAO extends DBContext {
     }
 
     public int updateAvatar(String newAvatar, String email) {
-        String sql = "update Accounts set avartar = ? where email = ?";
+        String query = "update Accounts set avartar = ? where email = ?";
         try {
             connection = getConnection();
-            statement = connection.prepareStatement(sql);
+            statement = connection.prepareStatement(query);
             statement.setString(1, newAvatar);
             statement.setString(2, email);
             int rowUpdated = statement.executeUpdate();

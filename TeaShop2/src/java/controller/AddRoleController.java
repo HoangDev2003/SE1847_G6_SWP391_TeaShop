@@ -91,9 +91,14 @@ public class AddRoleController extends HttpServlet {
                 } else {
                     try {
                         int roleId = Integer.parseInt(id);
-                        AdminDAO dao = new AdminDAO();
-                        if (dao.isRoleIdExists(roleId)) {
-                            errorMessage = "ID Role đã tồn tại";
+                        // kiểm tra roleId phải là số nguyên dương
+                        if (roleId <= 0) {
+                            errorMessage = "ID Role phải là số nguyên dương";
+                        } else {
+                            AdminDAO dao = new AdminDAO();
+                            if (dao.isRoleIdExists(roleId)) {
+                                errorMessage = "ID Role đã tồn tại";
+                            }
                         }
                     } catch (NumberFormatException e) {
                         errorMessage = "ID Role phải là số hợp lệ";

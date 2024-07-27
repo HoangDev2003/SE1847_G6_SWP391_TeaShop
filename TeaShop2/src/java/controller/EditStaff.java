@@ -41,7 +41,7 @@ public class EditStaff extends HttpServlet {
             int account_id = Integer.parseInt(id);
             Accounts a = dao.getAccountById(account_id);
             request.setAttribute("acc", a);
-            request.getRequestDispatcher("EditStaff.jsp").forward(request, response);
+            request.getRequestDispatcher("view/dashboard/admin/EditStaff.jsp").forward(request, response);
         }
     }
 

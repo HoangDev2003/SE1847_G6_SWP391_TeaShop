@@ -126,21 +126,29 @@ public class OrdersDAO extends DBContext {
      * @param accountId The ID of the account for which to retrieve orders.
      * @return A list of orders associated with the given account ID.
      */
-    public List<Orders> findByAccountId(int accountId) {
+    public List<Orders> findByAccountId(int accountId, int page) {
         List<Orders> ordersList = new ArrayList<>();
-        Orders order = null;
-        connection = getConnection(); // Obtain database connection
+        Orders order;
+
+        int pageSize = 12; // Number of orders per page
+        int offset = (page - 1) * pageSize; // Calculate the offset
+
         String sql = "SELECT * \n"
                 + "FROM Orders \n"
                 + "WHERE account_id = ? \n"
-                + "ORDER BY order_date DESC;";
+                + "ORDER BY order_date DESC \n"
+                + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;";
 
         try {
+            connection = getConnection(); // Obtain database connection
             PreparedStatement pre = connection.prepareStatement(
                     sql,
                     ResultSet.TYPE_SCROLL_SENSITIVE,
                     ResultSet.CONCUR_READ_ONLY);
             pre.setInt(1, accountId); // Set the account ID parameter
+            pre.setInt(2, offset);
+            pre.setInt(3, pageSize);
+
             ResultSet rs = pre.executeQuery();
 
             while (rs.next()) {
@@ -150,7 +158,7 @@ public class OrdersDAO extends DBContext {
                 order.setAccount(new AccountDAO().getAccountByAccountID(rs.getInt("account_id")));
                 order.setStatus(new StatusDAO().getStatusByStatusID(rs.getInt("status_id")));
                 order.setTotal_amount(rs.getInt("total_amount"));
-                order.setOrder_date(rs.getTimestamp("order_date")); // Set order_date directly
+                order.setOrder_date(rs.getTimestamp("order_date"));
                 order.setEstimated_delivery_date(rs.getTimestamp("estimated_delivery_date"));
                 order.setNote(rs.getString("note"));
                 order.setShipper_note(rs.getString("shipper_note"));
@@ -180,23 +188,31 @@ public class OrdersDAO extends DBContext {
         return ordersList; // Return the list of orders
     }
 
-    public List<Orders> findByAccountIdAndStatusId(int accountId, int statusId) {
+    public List<Orders> findByAccountIdAndStatusId(int accountId, int statusId, int page) {
         List<Orders> ordersList = new ArrayList<>();
-        Orders order = null;
+        Orders order;
+
+        int pageSize = 12; // Number of orders per page
+        int offset = (page - 1) * pageSize; // Calculate the offset
+
         String sql = "SELECT * \n"
                 + "FROM Orders \n"
                 + "WHERE account_id = ? \n"
                 + "  AND status_id = ? \n"
-                + "ORDER BY order_date DESC;";
+                + "ORDER BY order_date DESC \n"
+                + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;";
 
         try {
-            connection = getConnection();
+            connection = getConnection(); // Obtain database connection
             PreparedStatement pre = connection.prepareStatement(
                     sql,
                     ResultSet.TYPE_SCROLL_SENSITIVE,
                     ResultSet.CONCUR_READ_ONLY);
-            pre.setInt(1, accountId);
-            pre.setInt(2, statusId);
+            pre.setInt(1, accountId); // Set the account ID parameter
+            pre.setInt(2, statusId); // Set the status ID parameter
+            pre.setInt(3, offset);
+            pre.setInt(4, pageSize);
+
             ResultSet rs = pre.executeQuery();
 
             while (rs.next()) {
@@ -206,7 +222,7 @@ public class OrdersDAO extends DBContext {
                 order.setAccount(new AccountDAO().getAccountByAccountID(rs.getInt("account_id")));
                 order.setStatus(new StatusDAO().getStatusByStatusID(rs.getInt("status_id")));
                 order.setTotal_amount(rs.getInt("total_amount"));
-                order.setOrder_date(rs.getTimestamp("order_date")); // Set order_date directly
+                order.setOrder_date(rs.getTimestamp("order_date"));
                 order.setEstimated_delivery_date(rs.getTimestamp("estimated_delivery_date"));
                 order.setNote(rs.getString("note"));
                 order.setShipper_note(rs.getString("shipper_note"));
@@ -489,7 +505,7 @@ public class OrdersDAO extends DBContext {
             }
         }
     }
-    
+
     public void updateStaffNote(int orderId, String staffNote) {
 
         String query = "UPDATE Orders SET staff_note = ? WHERE order_id = ?";
@@ -517,47 +533,43 @@ public class OrdersDAO extends DBContext {
     //huydx
     public Vector<OrderChart> get7OrderChartByMonth() {
         connection = getConnection();
-    Vector<OrderChart> vector = new Vector<>();
-    String query = "DECLARE @Today DATE = GETDATE();\n"
-            + "DECLARE @OneMonthAgo DATE = DATEADD(WEEK, -8, GETDATE() );\n"
-            + "\n"
-            + "SELECT \n"
-            + "    O.order_date AS date,\n"
-            + "    COUNT(CASE WHEN O.status_id != 0 THEN 1 END) AS done_order,\n"
-            + "    COUNT(*) AS total_order,\n"
-            + "       CASE WHEN COUNT(*) > 0 THEN COUNT(CASE WHEN O.status_id != 0 THEN 1 END) * 100.0 / COUNT(*) ELSE 0 END AS success_rate,\n"
-            + "    SUM(O.total_amount) AS revenue\n"
-            + "FROM \n"
-            + "    [dbo].[Orders] O\n"
-            + "JOIN \n"
-            + "    [dbo].[OrderDetails] OD ON O.order_id = OD.order_id\n"
-            + "WHERE \n"
-            + "    O.order_date >= @OneMonthAgo \n"
-            + "    AND O.order_date < @Today\n"
-            + "    AND O.status_id != 0  -- Excluding orders with status_id = 0\n"
-            + "GROUP BY \n"
-            + "    O.order_date\n"
-            + "ORDER BY \n"
-            + "    O.order_date;";
+        Vector<OrderChart> vector = new Vector<>();
+        String query = "DECLARE @Today DATE = GETDATE();\n"
+                + "DECLARE @OneMonthAgo DATE = DATEADD(WEEK, -8, GETDATE() );\n"
+                + "\n"
+                + "SELECT \n"
+                + "    O.order_date AS date,\n"
+                + "    COUNT(CASE WHEN O.status_id != 0 THEN 1 END) AS done_order,\n"
+                + "    COUNT(*) AS total_order,\n"
+                + "       CASE WHEN COUNT(*) > 0 THEN COUNT(CASE WHEN O.status_id != 0 THEN 1 END) * 100.0 / COUNT(*) ELSE 0 END AS success_rate,\n"
+                + "    SUM(O.total_amount) AS revenue\n"
+                + "FROM \n"
+                + "    [dbo].[Orders] O\n"
+                + "JOIN \n"
+                + "    [dbo].[OrderDetails] OD ON O.order_id = OD.order_id\n"
+                + "WHERE \n"
+                + "    O.order_date >= @OneMonthAgo \n"
+                + "    AND O.order_date < @Today\n"
+                + "    AND O.status_id != 0  -- Excluding orders with status_id = 0\n"
+                + "GROUP BY \n"
+                + "    O.order_date\n"
+                + "ORDER BY \n"
+                + "    O.order_date;";
 
-    try (Connection connection = getConnection();
-         PreparedStatement st = connection.prepareStatement(query);
-         ResultSet rs = st.executeQuery()) {
+        try (Connection connection = getConnection(); PreparedStatement st = connection.prepareStatement(query); ResultSet rs = st.executeQuery()) {
 
-        while (rs.next()) {
-            vector.add(new OrderChart(rs.getDate("date"), 
-                                      rs.getInt("done_order"), 
-                                      rs.getInt("total_order"), 
-                                      rs.getDouble("success_rate"), 
-                                      rs.getDouble("revenue")));
+            while (rs.next()) {
+                vector.add(new OrderChart(rs.getDate("date"),
+                        rs.getInt("done_order"),
+                        rs.getInt("total_order"),
+                        rs.getDouble("success_rate"),
+                        rs.getDouble("revenue")));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-    } catch (Exception e) {
-        e.printStackTrace();
+        return vector;
     }
-    return vector;
-}
-
-
 
     public Vector<OrderChart> get7OrderChartByDay() {
         connection = getConnection();
@@ -636,4 +648,126 @@ public class OrdersDAO extends DBContext {
         }
     }
 
+    public int numberOfOrder() {
+        int orderCount = 0; // Initialize the count variable
+
+        try {
+            connection = getConnection(); // Obtain database connection
+            String sql = "SELECT COUNT([order_id]) AS order_count FROM [dbo].[Orders]";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            // Retrieve the count from the result set
+            if (resultSet.next()) {
+                orderCount = resultSet.getInt("order_count");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Close resources
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return orderCount; // Return the count
+    }
+
+    public int numberOfOrderWithStatusId(int status_id) {
+        int orderCount = 0; // Initialize the count variable
+
+        try {
+            connection = getConnection(); // Obtain database connection
+            String sql = "SELECT COUNT([order_id]) AS order_count FROM [dbo].[Orders] WHERE status_id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, status_id); // Set the status_id parameter
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            // Retrieve the count from the result set
+            if (resultSet.next()) {
+                orderCount = resultSet.getInt("order_count");
+            }
+
+            resultSet.close(); // Close ResultSet
+            preparedStatement.close(); // Close PreparedStatement
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Close resources
+            try {
+                if (connection != null) {
+                    connection.close(); // Close the database connection
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return orderCount; // Return the count
+    }
+
+    public int numberOfOrderWithAccountId(int accountId) {
+        int orderCount = 0; // Initialize the count variable
+
+        try {
+            connection = getConnection(); // Obtain database connection
+            String sql = "SELECT COUNT(order_id) AS order_count FROM Orders WHERE account_id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, accountId); // Set the account_id parameter
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            // Retrieve the count from the result set
+            if (resultSet.next()) {
+                orderCount = resultSet.getInt("order_count");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Close resources
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return orderCount; // Return the count
+    }
+
+    public int numberOfOrderWithAccountIdAndStatusId(int accountId, int statusId) {
+        int orderCount = 0; // Initialize the count variable
+
+        try {
+            connection = getConnection(); // Obtain database connection
+            String sql = "SELECT COUNT(order_id) AS order_count FROM Orders WHERE account_id = ? AND status_id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, accountId); // Set the account_id parameter
+            preparedStatement.setInt(2, statusId); // Set the status_id parameter
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            // Retrieve the count from the result set
+            if (resultSet.next()) {
+                orderCount = resultSet.getInt("order_count");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Close resources
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return orderCount; // Return the count
+    }
 }

@@ -51,34 +51,56 @@
 
         <!-- Navbar start -->
         <div class="container-fluid fixed-top">
-            <jsp:include page="../common/homePage/header-start.jsp"></jsp:include>
+
+            <div class="container topbar bg-primary d-none d-lg-block">    
+                <div class="d-flex justify-content-between">
+                    <c:if test="${sessionScope.acc==null}">                                                                    
+                        <div class="top-info ps-2">
+                            <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#" class="text-white">Lê Thái Tổ, Hàng Trống, Quận Hoàn Kiếm, Hà Nội</a></small>
+                            <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i><a href="#" class="text-white">dreamycoffee@gmail.com</a></small>            
+                        </div>
+                        <div class="top-link pe-2">            
+                            <a href="${pageContext.request.contextPath}/Signup.jsp" class="text-white"><small class="text-white mx-2">Đăng ký</small>/</a>
+                            <a href="${pageContext.request.contextPath}/login" class="text-white"><small class="text-white mx-2">Đăng nhập</small></a>                 
+                        </div>           
+                    </c:if>
+                    <c:if test="${sessionScope.acc!=null}">
+                        <div class="top-info ps-2">
+                            <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#" class="text-white">Lê Thái Tổ, Hàng Trống, Quận Hoàn Kiếm, Hà Nội</a></small>
+                            <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i><a href="#" class="text-white">dreamycoffee@gmail.com</a></small>            
+                        </div>
+                        <div class="top-link pe-2">            
+                            <a href="#" class="text-white"><small class="text-white mx-2"> Welcome ${sessionScope.acc.user_name}</small>/</a>
+                            <a href="logout" class="text-white"><small class="text-white ms-2">Đăng xuất</small></a>               
+                        </div>           
+                    </c:if>
+                </div>
+            </div>
+
             <div class="container px-0">
                 <nav class="navbar navbar-light bg-white navbar-expand-xl">
-                    <a href="index.html" class="navbar-brand"><h1 class="text-primary display-6"></h1></a>
-                    <h1 class="text-primary display-6">Dreamy Coffee</h1>
-
+                    <a href="home" class="navbar-brand"><h1 class="text-primary display-6"  >Dreamy Coffee</h1></a>
                     <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                         <span class="fa fa-bars text-primary"></span>
-
-
                     </button>
                     <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                         <div class="navbar-nav mx-auto">
-                            <a href="${pageContext.request.contextPath}/home" class="nav-item nav-link">Home</a>
-                            <a href ="${pageContext.request.contextPath}/blog" class="nav-item nav-link">Blog</a>
-                            <a href="${pageContext.request.contextPath}/shop" class="nav-item nav-link">Shop</a>
+                            <a href="home" class="nav-item nav-link">Home</a>
+                            <a href ="blog" class="nav-item nav-link">Blog</a>
+                            <a href="shop" class="nav-item nav-link">Shop</a>
                         </div>
+
                         <div class="d-flex m-3 me-0">
                             <%
-                int count = 0;
-                Enumeration<String> em = session.getAttributeNames();
-                while (em.hasMoreElements()) {
-                    String key = em.nextElement();
+                        int count = 0;
+                        Enumeration<String> em = session.getAttributeNames();
+                        while (em.hasMoreElements()) {
+                            String key = em.nextElement();
 
-                    if (key.startsWith("cartItem")) {
-                        count++;
-                    }
-                } 
+                            if (key.startsWith("cartItem")) {
+                                count++;
+                            }
+                        } 
                             %>
                             <a href="CartDetails?service=showcart" class="position-relative me-4 my-auto">
                                 <i class="fa fa-shopping-bag fa-2x" style="color: orange;"></i>
@@ -86,26 +108,23 @@
                                 <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;"><%=count%></span>
                                 <%}%>
                             </a>
-                            <% 
-    Integer accountId = (Integer) session.getAttribute("accountId");
-    if (accountId != null) {
-                            %>
-                            <div class="nav-item dropdown">
-                                <a href="#" class="nav-link" data-bs-toggle="dropdown" style="color: black;">
+                            <c:if test="${sessionScope.acc!=null}">  
+                                <div class="nav-item dropdown">
+                                    <a href="#" class="nav-link" data-bs-toggle="dropdown" style="color: black;">
+                                        <i class="fas fa-user fa-2x" style="color: black;"></i>
+                                    </a>
+                                    <div class="dropdown-menu m-0 bg-secondary rounded-0">
+                                        <a href="userprofile?email=${sessionScope.acc.email}" class="dropdown-item">Thông tin</a>
+                                        <a href="MyOrder" class="dropdown-item">Đơn hàng</a>
+                                        <a href="orderCompelete" class="dropdown-item">Đánh giá của bạn</a>
+                                    </div>
+                                </div>
+                            </c:if> 
+                            <c:if test="${sessionScope.acc==null}"> 
+                                <a href="login" class="nav-link" style="color: black;">
                                     <i class="fas fa-user fa-2x" style="color: black;"></i>
                                 </a>
-                                <div class="dropdown-menu m-0 bg-secondary rounded-0">
-                                    <a href="userprofile" class="dropdown-item">Thông tin</a>
-                                    <a href="MyOrder" class="dropdown-item">Đơn hàng</a>
-                                </div>
-                            </div>
-                            <% 
-                                } else { 
-                            %>
-                            <a href="login"><i class="fas fa-user fa-2x" style="color: black;"></i></a>
-                                <% 
-                                    } 
-                                %>
+                            </c:if>
                         </div>
                     </div>
                 </nav>
@@ -174,17 +193,8 @@
                                             <h2>Thanh toán bằng VNPay</h2>
                                             <div class="col-md-12 col-lg-12 col-xl-12 mb-4">
                                                 <div class="p-4 border border-secondary rounded">
-                                                    <c:choose>
-                                                        <c:when test="${not empty sessionScope.acc}">
-                                                            <p>Họ và tên:</p>
-                                                            <p>${sessionScope.acc.full_name}</p>
-                                                            <input type="hidden" id="fullname" name="fullname" value="${sessionScope.acc.full_name}">
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            <p>Họ và tên:</p>
-                                                            <input type="text" id="fullname" name="fullname" value="${fullname}">
-                                                        </c:otherwise>
-                                                    </c:choose>
+                                                    <p>Họ và tên:</p>
+                                                    <input type="text" id="fullname" name="fullname" value="${fullname}" class="form-control">
                                                 </div>
                                             </div>
                                             <div class="col-md-12 col-lg-12 col-xl-12 mb-4">
@@ -206,16 +216,17 @@
                                                             <option value="Quận Nam Từ Liêm" ${district == 'Quận Nam Từ Liêm' ? 'selected' : ''}>Nam Từ Liêm</option>
                                                             <option value="Quận Hà Đông" ${district == 'Quận Hà Đông' ? 'selected' : ''}>Hà Đông</option>
                                                         </select>
-                                                    </p>                                               
+                                                    </p>
                                                     <p>Phường: 
                                                         <select id="ward" name="ward">
                                                             <option value="">Chọn phường</option>
                                                         </select>
                                                     </p>
                                                     <p>Số nhà và Tên đường:</p>
-                                                    <input type="text" id="address" name="address" value="${address}">   
+                                                    <textarea id="address" name="address" class="form-control" rows="2">${address}</textarea>
                                                 </div>
                                             </div>
+
                                             <script>
                                                 const wards = {
                                                     "Quận Ba Đình": ["Cống Vị", "Điện Biên", "Đội Cấn", "Giảng Võ", "Kim Mã", "Liễu Giai", "Ngọc Hà", "Ngọc Khánh", "Nguyễn Trung Trực", "Phúc Xá", "Quán Thánh", "Thành Công", "Trúc Bạch", "Vĩnh Phúc"],
@@ -274,17 +285,8 @@
                                             </script>
                                             <div class="col-md-12 col-lg-12 col-xl-12 mb-4">
                                                 <div class="p-4 border border-secondary rounded">
-                                                    <c:choose>
-                                                        <c:when test="${not empty sessionScope.acc}">
-                                                            <p>Số điện thoại:</p>
-                                                            <p>${sessionScope.acc.phone_number}</p>
-                                                            <input type="hidden" id="phonenumber" name="phone_number" value="${sessionScope.acc.phone_number}">
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            <p>Số điện thoại:</p>
-                                                            <input type="text" id="phonenumber" name="phone_number" value="${phone_number}">
-                                                        </c:otherwise>
-                                                    </c:choose>
+                                                    <p>Số điện thoại:</p>
+                                                    <input type="text" id="phonenumber" name="phone_number" value="${phone_number}" class="form-control">
                                                 </div>
                                             </div>
                                             <div class="col-md-12 col-lg-12 col-xl-12 mb-4">
@@ -301,7 +303,8 @@
                                                 // Regex patterns
                                                 const namePattern = /^[a-zA-ZÀ-ỹ]+\s+[a-zA-ZÀ-ỹ]+(?:\s+[a-zA-ZÀ-ỹ]+)*$/;
                                                 const addressPattern = /^.{1,200}$/;
-                                                const phonePattern = /^\d{10}$/;
+                                                const phonePattern = /^0\d{9}$/;
+
 
                                                 // Form values
                                                 const fullname = document.getElementById('fullname').value.trim();
@@ -335,7 +338,7 @@
 
                                                 // Validate phone number
                                                 if (!phonePattern.test(phonenumber)) {
-                                                    alert("Số điện thoại phải là số chứa đúng 10 chữ số.");
+                                                    alert("Số điện thoại phải là số chứa đúng 10 chữ số và có số 0 ở đầu.");
                                                     return false;
                                                 }
 

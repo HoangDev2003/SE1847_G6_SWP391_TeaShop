@@ -6,6 +6,7 @@ package controller;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import entity.Accounts;
 import entity.CartDetails;
 import java.io.IOException;
 import java.net.URLEncoder;
@@ -37,35 +38,56 @@ import java.util.logging.Logger;
  */
 @WebServlet(name = "Payment", urlPatterns = {"/Payment"})
 public class PaymentController extends HttpServlet {
-
+    
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession(true);
-
+        
+        boolean itemexist = false;
         List<CartDetails> cartInfo = new ArrayList<>();
         Enumeration<String> em = session.getAttributeNames();
         while (em.hasMoreElements()) {
             String key = em.nextElement();
-
+            
             if (key.startsWith("cartItem")) {
                 CartDetails cartItem = (CartDetails) session.getAttribute(key);
                 cartInfo.add(cartItem);
+                itemexist = true;
             }
         }
-
+        
+        if (!itemexist) {
+            response.sendRedirect("CartDetails");
+            return;
+        }
+        
         int totalCartAmount = 0;
         for (CartDetails item : cartInfo) {
             int price = item.product.getPrice();
             int quantity = item.getQuantity();
             totalCartAmount += price * quantity;
         }
-
+        
         String service = request.getParameter("service");
         if (service.equals("pay-online")) {
+            Accounts acc = (Accounts) session.getAttribute("acc");
+            if (acc != null) {
+                String phone_number = acc.getPhone_number();
+                String fullname = acc.getFull_name();
+                session.setAttribute("phone_number", phone_number);
+                session.setAttribute("fullname", fullname);
+            }
             request.setAttribute("totalCartAmount", totalCartAmount);
             request.getRequestDispatcher("view/cart/pay-via-online.jsp").forward(request, response);
         }
         if (service.equals("pay-on-delivery")) {
+            Accounts acc = (Accounts) session.getAttribute("acc");
+            if (acc != null) {
+                String phone_number = acc.getPhone_number();
+                String fullname = acc.getFull_name();
+                session.setAttribute("phone_number", phone_number);
+                session.setAttribute("fullname", fullname);
+            }
             request.setAttribute("totalCartAmount", totalCartAmount);
             request.getRequestDispatcher("view/cart/pay-on-delivery.jsp").forward(request, response);
         }
@@ -93,17 +115,17 @@ public class PaymentController extends HttpServlet {
             String vnp_TxnRef = Config.getRandomNumber(8);
             String vnp_IpAddr = Config.getIpAddress(request);
             String vnp_TmnCode = Config.vnp_TmnCode;
-
+            
             String address = request.getParameter("address");
             String district = request.getParameter("district");
             String ward = request.getParameter("ward");
             String phonenumber = request.getParameter("phone_number");
-
+            
             session.setAttribute("address", address);
             session.setAttribute("district", district);
             session.setAttribute("ward", ward);
             session.setAttribute("phone_number", phonenumber);
-
+            
             int amount = totalCartAmount * 100;
             Map vnp_Params = new HashMap<>();
             vnp_Params.put("vnp_Version", vnp_Version);
@@ -118,7 +140,7 @@ public class PaymentController extends HttpServlet {
             vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
             vnp_Params.put("vnp_OrderInfo", vnp_OrderInfo);
             vnp_Params.put("vnp_OrderType", orderType);
-
+            
             String locate = request.getParameter("language");
             if (locate != null && !locate.isEmpty()) {
                 vnp_Params.put("vnp_Locale", locate);
@@ -128,10 +150,10 @@ public class PaymentController extends HttpServlet {
             vnp_Params.put("vnp_ReturnUrl", Config.vnp_ReturnUrl);
             vnp_Params.put("vnp_IpAddr", vnp_IpAddr);
             Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
-
+            
             SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
             String vnp_CreateDate = formatter.format(cld.getTime());
-
+            
             vnp_Params.put("vnp_CreateDate", vnp_CreateDate);
             cld.add(Calendar.MINUTE, 15);
             String vnp_ExpireDate = formatter.format(cld.getTime());

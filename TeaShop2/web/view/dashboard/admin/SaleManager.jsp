@@ -24,7 +24,7 @@
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
 
-            <a class="navbar-brand ps-3" href="productmanager">Product Management</a>
+            <a class="navbar-brand ps-3" href="productmanager">Quản lý Sale</a>
 
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
 
@@ -32,7 +32,7 @@
                 <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0" action="saleManager" id="searchByName">
                     <input type="hidden" name="service" value="searchByKeywords"/>
                     <div class="input-group">
-                        <input class="form-control" type="text" placeholder="Search by Keywords" aria-label="Search by Keywords" aria-describedby="btnNavbarSearch" name="keywords"
+                        <input class="form-control" type="text" placeholder="Nhập tên sản phẩm..." aria-label="Search by Keywords" aria-describedby="btnNavbarSearch" name="keywords"
                                value="${keywords}"/>
                         <button class="search-header" id="btnNavbarSearch" type="submit"><i class="fas fa-search"></i></button>
                     </div>
@@ -69,22 +69,19 @@
                                 ${notFoundProduct}
                             </h4>
                         </c:if>
-                        <div class="card mb-4">
+                        
 
                             <c:if test="${not empty listAllProduct}">
                                 <div class="card mb-4">
-                                    <div class="card-header">
-                                        <i class="fas fa-table me-1"></i>
-                                        Quản lý Sale
-                                    </div>
+                                    
                                     <div class="card-header">
                                         <h6><ion-icon name="filter-outline"></ion-icon> Lọc theo giá sản phẩm</h6>
                                         <form action="productmanager" method="get">
                                             <input type="hidden" name="service" value="searchByPriceRange" />
                                             <label for="priceFrom">Mức giá</label>
-                                            <input type="number" id="priceFrom" name="priceFrom" step="0.01" required />
+                                            <input type="number" id="priceFrom" name="priceFrom" step="1" min="1" placeholder="Từ" required />
                                             <label for="priceTo">~</label>
-                                            <input type="number" id="priceTo" name="priceTo" step="0.01" required />
+                                            <input type="number" id="priceTo" name="priceTo" step="1" min="1" placeholder="Đến" required />
                                             <button class="filerByPrice" type="submit">Tìm kiếm</button>
                                         </form>
                                     </div>
@@ -123,6 +120,11 @@
                                     ${UpdateDone}
                                 </h3>
                             </c:if>
+                            <c:if test="${errorMessage ne null}">
+                                <h5 class="font-weight-semi-bold text-uppercase mb-3 text-center text-danger">
+                                    ${errorMessage}
+                                </h5>
+                            </c:if>
                             <c:if test="${productUpdate ne null}">
                                 <form action="saleManager" id="updatedDiscount">
                                     <input type="hidden" name="service" value="sendUpdateDetail"/>
@@ -139,7 +141,7 @@
                                                     <tr>
                                                         <td><input type="number" name="id" style="height: 35px; width: 60px" value="${productUpdate.product_id}" readonly />
                                                         </td>
-                                                        <td><input type="number" name="discount" size="50" style="height: 35px" value="${productUpdate.discount}"/>
+                                                        <td><input type="number" name="discount" size="50" style="height: 35px" value="${param.discount != null ? param.discount : productUpdate.discount}"/>
                                                     </tr>  
                                                 </tbody>         
                                             </table>
@@ -154,7 +156,7 @@
                                     </div>
                                 </form>
                             </c:if>    
-                        </div>                    
+                                           
                 </main>
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid px-4">
@@ -164,6 +166,20 @@
                     </div>
                 </footer>
                 <style>
+                    .card-header input[type="number"] {
+                        border: 2px solid #37697a; /* Màu border */
+                        border-radius: 15px; /* Bo tròn border */
+                        padding: 6px; /* Padding bên trong */
+                        font-size: 16px; /* Kích thước font chữ */
+                        outline: none; /* Loại bỏ viền outline khi focus */
+                        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Hiệu ứng đổ bóng nhẹ */
+                        transition: border-color 0.3s, box-shadow 0.3s; /* Hiệu ứng chuyển đổi mượt */
+                    }
+
+                    .card-header input[type="number"]:focus {
+                        border-color: #37697a; /* Màu border khi focus */
+                        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Hiệu ứng đổ bóng khi focus */
+                    }
                     .search-header {
                         background-color: #37697a; /* Màu nền */
                         border: none; /* Bỏ viền */

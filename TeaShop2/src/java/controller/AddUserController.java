@@ -7,6 +7,7 @@ package controller;
 import dal.AccountDAO;
 import dal.AdminDAO;
 import entity.Accounts;
+import entity.Email;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -65,7 +66,7 @@ public class AddUserController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("AddUser.jsp").forward(request, response);
+        request.getRequestDispatcher("view/dashboard/admin/AddUser.jsp").forward(request, response);
     }
 
     /**
@@ -89,7 +90,7 @@ public class AddUserController extends HttpServlet {
         String role = request.getParameter("role");
         String status = request.getParameter("status");
         String errorMessage = null;
-        
+
         if (name == null || name.trim().isEmpty()) {
             errorMessage = "Tên người dùng không được để trống hoặc chỉ có khoảng trắng";
         } else if (name.matches("\\d+")) {
@@ -109,7 +110,7 @@ public class AddUserController extends HttpServlet {
             request.setAttribute("phone", phone);
             request.setAttribute("address", address);
             request.setAttribute("gender", gender);
-            request.getRequestDispatcher("AddUser.jsp").forward(request, response);
+            request.getRequestDispatcher("view/dashboard/admin/AddUser.jsp").forward(request, response);
             return;
         } else {
             AdminDAO dao = new AdminDAO();
@@ -129,9 +130,33 @@ public class AddUserController extends HttpServlet {
             if (a == null) {
                 if (role_id == 3) {
                     dao.addUser(email, pass, name, role_id, status_id, phone, gender, address);
+                    Email e = new Email();
+                    e.sendEmail(email, "Dreamy Coffee xin chào!!!", "<html lang=\"en\">\n"
+                            + "<body>\n"
+                            + "<h1> Dreamy Coffee gửi bạn tài khoản nhân viên để sử dụng" + "</h1>"
+                            + "  <p>Chúng mình rất mong chờ được làm việc cùng bạn</p>\n"
+                            + "    <p><strong>Chi tiết tài khoản của bạn:</strong></p>"
+                            + "<ul>"
+                            + " <li><strong>Email:</strong></li>\n" + email
+                            + "<li><strong>Mật khẩu:</strong> </li>" + pass
+                            + " </ul>"
+                            + "</body>\n"
+                            + "</html>");                 
                     response.sendRedirect("staffmanager");
                 } else if (role_id == 4) {
                     dao.addUser(email, pass, name, role_id, status_id, phone, gender, address);
+                    Email e = new Email();
+                    e.sendEmail(email, "Dreamy Coffee xin chào!!!", "<html lang=\"en\">\n"
+                            + "<body>\n"
+                            + "<h1> Dreamy Coffee gửi bạn tài khoản shipper để sử dụng" + "</h1>"
+                            + "  <p>Chúng mình rất mong chờ được làm việc cùng bạn</p>\n"
+                            + "    <p><strong>Chi tiết tài khoản của bạn:</strong></p>"
+                            + "<ul>"
+                            + " <li><strong>Email:</strong></li>\n" + email
+                            + "<li><strong>Mật khẩu:</strong> </li>" + pass
+                            + " </ul>"
+                            + "</body>\n"
+                            + "</html>");                 
                     response.sendRedirect("shippermanager");
                 }
             } else {
@@ -142,7 +167,7 @@ public class AddUserController extends HttpServlet {
                 request.setAttribute("phone", phone);
                 request.setAttribute("address", address);
                 request.setAttribute("gender", gender);
-                request.getRequestDispatcher("AddUser.jsp").forward(request, response);
+                request.getRequestDispatcher("view/dashboard/admin/AddUser.jsp").forward(request, response);
                 return;
             }
         }

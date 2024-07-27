@@ -7,6 +7,7 @@ package controller;
 import dal.AccountDAO;
 import entity.Accounts;
 import entity.Email;
+import entity.EncodePassword;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -88,62 +89,37 @@ public class SignupController extends HttpServlet {
         String phone_number = request.getParameter("phone_number");
         String address = request.getParameter("address");
         String gender = request.getParameter("gender");
+        String errorMessage = null;
 
-        // Kiểm tra khoảng trắng trong email, tên người dùng, mật khẩu và nhập lại mật khẩu
-        if (containsSpace(email) || containsSpace(user_name) || containsSpace(pass_word) || containsSpace(re_pass)) {
-            request.setAttribute("mess", "Check Space!");
+        if (user_name == null || user_name.trim().isEmpty()) {
+            errorMessage = "Tên người dùng không được để trống hoặc chỉ có khoảng trắng";
+        } else if (user_name.matches("\\d+")) {
+            errorMessage = "Tên người dùng không được chỉ chứa các số";
+        } else if (phone_number == null || phone_number.trim().isEmpty() || !phone_number.matches("0\\d{9}")) {
+            errorMessage = "Số điện thoại phải bắt đầu bằng 0 và bao gồm 10 số";
+        } else if (pass_word == null || pass_word.trim().isEmpty() || pass_word.length() < 8 || pass_word.length() > 32) {
+            errorMessage = "Mật khẩu phải chứa từ 8-32 ký tự";
+        } else if (pass_word != null && !(pass_word.equals(re_pass))) {
+            errorMessage = "Mật khẩu phải khớp với mật khẩu được nhập lại ở bên dưới";
+        }
+        if (errorMessage != null) {
+            request.setAttribute("errorMessage", errorMessage);
             request.setAttribute("email", email);
             request.setAttribute("pass", pass_word);
-            request.setAttribute("re_pass", re_pass);
             request.setAttribute("user", user_name);
             request.setAttribute("phone_number", phone_number);
             request.setAttribute("address", address);
             request.setAttribute("gender", gender);
             request.getRequestDispatcher(SIGNUP_JSP).forward(request, response);
-
-        }
-        // Kiểm tra số điện thoại không hợp lệ
-        if (phone_number == null || !phone_number.matches("0\\d{9}")) {
-            // Số điện thoại không hợp lệ
-            request.setAttribute("mess", "Your Phone Number must begin with 0 and contains 10 numbers");
-            request.setAttribute("email", email);
-            request.setAttribute("pass", pass_word);
-            request.setAttribute("re_pass", re_pass);
-            request.setAttribute("user", user_name);
-            request.setAttribute("phone_number", phone_number);
-            request.setAttribute("address", address);
-            request.setAttribute("gender", gender);
-            request.getRequestDispatcher(SIGNUP_JSP).forward(request, response);
-        }
-
-        // check password
-        if (pass_word.length() < 8 || pass_word.length() > 32) {
-            // pass_word không hợp lệ
-            request.setAttribute("mess", "Password must have 8 - 32 chars");
-            request.setAttribute("email", email);
-            request.setAttribute("pass", pass_word);
-            request.setAttribute("re_pass", re_pass);
-            request.setAttribute("user", user_name);
-            request.setAttribute("phone_number", phone_number);
-            request.setAttribute("address", address);
-            request.setAttribute("gender", gender);
-            request.getRequestDispatcher(SIGNUP_JSP).forward(request, response);
-        }
-
-        //Check password and repassword
-        if (pass_word != null && !(pass_word.equals(re_pass))) {
-            request.setAttribute("mess", "Password and Re-enter Password are not the same!");
-            request.setAttribute("email", email);
-
-            request.getRequestDispatcher(SIGNUP_JSP).forward(request, response);
+            return;
         } else {
+            pass_word = EncodePassword.toSHA1(pass_word);
             AccountDAO dao = new AccountDAO();
             Accounts a = dao.checkAccountExist(email);
             if (a == null) {
-
                 Accounts a1 = dao.checkAccountName(user_name);
                 if (a1 == null) {
-                    HttpSession session = request.getSession();
+                    HttpSession session = request.getSession();                 
                     session.setAttribute("user", user_name);
                     session.setAttribute("pass", pass_word);
                     session.setAttribute("phone_number", phone_number);
@@ -159,23 +135,23 @@ public class SignupController extends HttpServlet {
                             + "<head>\n"
                             + "</head>\n"
                             + "<body>\n"
-                            + "<p>Please verify your email by clicking the following link:</p>\n"
+                            + "<p>Hãy click vào link dưới đây để xác nhận email và trở thành một thành viên của Dreamy Coffee nhé!</p>\n"
                             + "<a href=\"" + verifyLink + "\">Verify Email</a>\n"
                             + "\n"
                             + "</body>\n"
                             + "</html>";
 
                     e.sendEmail(email, "Verify your email", emailContent);
-                    request.setAttribute("Notification", "You need confirm Email to login");
+                    request.setAttribute("Notification", "Bạn cần xác nhận email để đăng nhập");
                     request.getRequestDispatcher(LOGIN_JSP).forward(request, response);
                 } else {
-                    request.setAttribute("error", "This username is exist!");
+                    request.setAttribute("error", "Tài khoản này đã tồn tại");
                     request.getRequestDispatcher(SIGNUP_JSP).forward(request, response);
                 }
 
             } else {
 
-                request.setAttribute("mess", "Email are exist! Please enter another email!");
+                request.setAttribute("errorMessage", "Email này đã được đăng ký, hãy nhập một email khác"); 
                 request.getRequestDispatcher(SIGNUP_JSP).forward(request, response);
             }
         }

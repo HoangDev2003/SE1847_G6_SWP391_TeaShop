@@ -31,9 +31,9 @@ public class DeleteProductController extends HttpServlet {
 
             int n = (new ProductDAO()).deleteProduct(productId);
             if (n == 1) {
-                req.setAttribute("deleteDone", "Delete Product (Id = " + productId + ") done!\nClick Product Management to see all changes");
+                req.setAttribute("deleteDone", "Xóa Sản phẩm (Id = " + productId + ") done!\nClick 'Quản lý sản phẩm' để xem những thay đối mới nhất");
             } else {
-                req.setAttribute("deleteDone", "Failed to delete Product (Id  = " + productId + ") because this product is asociated with an order.");
+                req.setAttribute("deleteDone", "Xóa Sản phẩm thất bại (Id  = " + productId + ") vì Sản phẩm này được liên kết với một đơn hàng.");
             }
             List<Product> products = (new ProductDAO()).findAll();
             

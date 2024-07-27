@@ -85,9 +85,6 @@
                                             <c:when test="${current_status_id == 4}">
                                                 <h4>Hiện tại không có đơn hàng đã hoàn thành</h4>
                                             </c:when>
-                                            <c:when test="${current_status_id == 5}">
-                                                <h4>Hiện tại không có đơn hàng đã hoàn thành</h4>
-                                            </c:when>
                                             <c:when test="${current_status_id == 6}">
                                                 <h4>Hiện tại không có đơn hàng đã bị hủy</h4>
                                             </c:when>
@@ -95,20 +92,31 @@
                                     </div>
                                 </div>
                             </c:if>
-                            <c:choose>
-                                <c:when test="${current_status_id == '0'}">
-                                    <h5>Số đơn hàng: ${fn:length(listOrders)}</h5>
-                                </c:when>
-                                <c:when test="${current_status_id == '1'}">
-                                    <h5>Số đơn hàng cần xác nhận: ${fn:length(listOrders)}</h5>
-                                </c:when>
-                                <c:when test="${current_status_id == '2'}">
-                                    <h5>Số đơn hàng cần làm: ${fn:length(listOrders)}</h5>
-                                </c:when>
-                                <c:otherwise>
-                                    <h5>Số đơn hàng: ${fn:length(listOrders)}</h5>
-                                </c:otherwise>
-                            </c:choose>
+                            
+                                <div style="text-align: center;">
+                                    <c:choose>
+                                        <c:when test="${current_status_id == 0}">
+                                            <h4>Tất cả đơn hàng</h4>
+                                        </c:when>
+                                        <c:when test="${current_status_id == 1}">
+                                            <h4>Đơn hàng cần xác nhận</h4>
+                                        </c:when>
+                                        <c:when test="${current_status_id == 2}">
+                                            <h4>Đơn hàng cần làm</h4>
+                                        </c:when>
+                                        <c:when test="${current_status_id == 3}">
+                                            <h4>Đơn hàng cần được giao</h4>
+                                        </c:when>
+                                        <c:when test="${current_status_id == 4}">
+                                            <h4>Đơn hàng đã hoàn thành</h4>
+                                        </c:when>
+                                        <c:when test="${current_status_id == 6}">
+                                            <h4>Đơn hàng đã bị hủy</h4>
+                                        </c:when>
+                                    </c:choose>
+                                </div>
+                            
+                            <h5>Số đơn hàng: ${number_of_orders}</h5>
 
                             <c:forEach items="${listOrders}" var="p">
 
@@ -318,6 +326,26 @@
                                     }
                                 </style>
                             </c:forEach>
+                            <div class="pagination-container" style="text-align: center; padding-top: 50px; padding-bottom: 50px; overflow-x: auto; white-space: nowrap;">
+                                <div class="pagination" style="display: inline-block;">
+                                    <c:forEach var="pageNumber" begin="1" end="${number_of_page}">
+                                        <a href="Staff?current_status_id=${current_status_id}&current_page=${pageNumber}" 
+                                           class="page-link ${current_page == pageNumber ? 'active' : ''}" 
+                                           style="
+                                           margin: 0 5px;
+                                           display: inline-block;
+                                           padding: 10px 15px;
+                                           border: 2px solid green;
+                                           background-color: lightyellow;
+                                           color: black;
+                                           text-decoration: none;
+                                           border-radius: 5px;
+                                           ">
+                                            ${pageNumber}
+                                        </a>
+                                    </c:forEach>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </main>

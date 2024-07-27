@@ -42,7 +42,7 @@ public class EditShipperController extends HttpServlet {
             int account_id = Integer.parseInt(id);
             Accounts a = dao.getAccountById(account_id);
             request.setAttribute("acc", a);
-            request.getRequestDispatcher("EditShipper.jsp").forward(request, response);
+            request.getRequestDispatcher("view/dashboard/admin/EditShipper.jsp").forward(request, response);
         }
     }
 

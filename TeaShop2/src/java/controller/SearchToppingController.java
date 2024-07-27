@@ -6,7 +6,7 @@
 package controller;
 
 import dal.AdminDAO;
-import entity.Accounts;
+import entity.Topping;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -19,7 +19,7 @@ import java.util.List;
  *
  * @author Huyen Tranq
  */
-public class SearchStaffController extends HttpServlet {
+public class SearchToppingController extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -33,12 +33,12 @@ public class SearchStaffController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-           AdminDAO dao = new AdminDAO();
+             AdminDAO dao = new AdminDAO();
            String search = request.getParameter("search");
             System.out.println(search);
-           List<Accounts> searchStaff = dao.searchStaff(search);
-           request.setAttribute("listStaff", searchStaff);
-           request.getRequestDispatcher("./view/dashboard/admin/staffManagement.jsp").forward(request, response);
+           List<Topping> searchtopping = dao.searchTopping(search);
+           request.setAttribute("listTopping", searchtopping);
+           request.getRequestDispatcher("./view/dashboard/admin/toppingManagement.jsp").forward(request, response);
         }
     } 
 

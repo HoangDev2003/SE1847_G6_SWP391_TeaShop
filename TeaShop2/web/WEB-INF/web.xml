@@ -286,6 +286,14 @@
         <servlet-name>AddToppingController</servlet-name>
         <servlet-class>controller.AddToppingController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SearchToppingController</servlet-name>
+        <servlet-class>controller.SearchToppingController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SearchRoleController</servlet-name>
+        <servlet-class>controller.SearchRoleController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ShopController</servlet-name>
         <url-pattern>/shop</url-pattern>
@@ -550,4 +558,16 @@
         <servlet-name>AddToppingController</servlet-name>
         <url-pattern>/addtopping</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SearchToppingController</servlet-name>
+        <url-pattern>/searchtopping</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SearchRoleController</servlet-name>
+        <url-pattern>/searchrole</url-pattern>
+    </servlet-mapping>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/view/homepage/404.jsp</location>
+    </error-page>
 </web-app>

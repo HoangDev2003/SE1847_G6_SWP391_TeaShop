@@ -44,7 +44,7 @@ public class BlogController extends HttpServlet {
             
             BlogDAO topblogs= new BlogDAO();
             List<Blog> topblog = topblogs.getTop3Newest();
-            session.setAttribute("listCategory", CategoryBlog);
+            session.setAttribute("listBlogCategory", CategoryBlog);
             session.setAttribute("topblog", topblog);
 
             //nếu không tim kiem

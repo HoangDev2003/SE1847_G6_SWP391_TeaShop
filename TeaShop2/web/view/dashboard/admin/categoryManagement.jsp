@@ -24,16 +24,21 @@
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
-            <a class="navbar-brand ps-3" href="categorymanager">Admin Manager</a>
+            <a class="navbar-brand ps-3" href="categorymanager">Quản lý danh mục</a>
             <!-- Sidebar Toggle-->
             <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
             <!-- Navbar Search-->
-            <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-                <div class="input-group">
-                    
-                </div>
-            </form>
+            <c:if test="${showSearchCategory ne null}">
+                <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0" action="categorymanager" id="searchByName">
+                    <input type="hidden" name="service" value="searchByKeywords"/>
+                    <div class="input-group">
+                        <input class="form-control" type="text" placeholder="Nhập tên danh mục..." aria-label="Search by Keywords" aria-describedby="btnNavbarSearch" name="keywords"
+                               value="${keywords}"/>
+                        <button class="search-header" id="btnNavbarSearch" type="submit"><ion-icon name="search-outline"></ion-icon></button>
+                    </div>
+                </form>
+            </c:if>
             <!-- Navbar-->
             <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
                 <li class="nav-item dropdown">
@@ -69,7 +74,7 @@
                     <main>                   
                         <div class="container-fluid px-4">
                             <ol class="breadcrumb mb-4" style="padding-top: 24px">
-                                <li class="breadcrumb-item"><a href="dashboardAdmin.jsp">Dashboard</a></li>
+                                <li class="breadcrumb-item"><a href="chartorderday">Dashboard</a></li>
                                 <li class="breadcrumb-item active">Quản lý danh mục</li>
                             </ol>    
                         <c:if test="${deleteDone ne null}">
@@ -122,12 +127,19 @@
                                 ${InsertDone}
                             </h3>
                         </c:if>
+
+                        <c:if test="${errorMessage ne null}">
+                            <h4 class="font-weight-semi-bold text-uppercase mb-3 text-center text-danger">
+                                ${errorMessage}
+                            </h4>
+                        </c:if>
+
                         <c:if test="${insertCategory ne null}">
                             <form action="categorymanager" id="insertCategory">
                                 <input type="hidden" name="service" value="sendInsertDetail" />
                                 <div class="card mb-4">
                                     <div class="card-body">
-                                        <table >
+                                        <table>
                                             <thead>
                                                 <tr>
                                                     <th>Tên danh mục</th>
@@ -136,7 +148,7 @@
                                             <tbody>                                       
                                                 <tr>
                                                     <td>
-                                                        <input type="text" name="name" size="70" style="height: 35px" />
+                                                        <input type="text" name="name" size="70" style="height: 35px" value="${param.name}"/>
                                                     </td> 
                                                 </tr>                                         
                                             </tbody>
@@ -145,7 +157,7 @@
 
                                     <button
                                         class="button-insert"
-                                        style="transform: translateX(70vw) ; width: 10%"
+                                        style="transform: translateX(70vw); width: 10%"
                                         onclick="document.getElementById('insertCategory').submit();">
                                         Thêm danh mục
                                     </button>                                
@@ -179,7 +191,7 @@
                                                         <input type="text" name="id" size="50" style="height: 35px" value="${categoryUpdate.category_id}" readonly/>
                                                     </td> 
                                                     <td>
-                                                        <input type="text" name="name" size="50" style="height: 35px" value="${categoryUpdate.category_name}"/>
+                                                        <input type="text" name="name" size="50" style="height: 35px" value="${param.name != null ? param.name : categoryUpdate.category_name}"/>
                                                     </td> 
                                                 </tr>                                         
                                             </tbody>
@@ -188,9 +200,9 @@
 
                                     <button
                                         class="button-insert"
-                                        style="transform: translateX(70vw) ; width: 10%"
+                                        style="transform: translateX(70vw); width: 10%"
                                         onclick="document.getElementById('updatedCategory').submit();">
-                                        Chỉnh sửa danh mục
+                                        Chỉnh sửa 
                                     </button>                                
                                 </div>
                             </form>
@@ -209,6 +221,16 @@
                     </div>
                 </footer>
                 <style>
+                    .search-header {
+                        background-color: #37697a; /* Màu nền */
+                        border: none; /* Bỏ viền */
+                        color: white;
+                        padding: 8px 12px;
+                    }
+                    .search-header:hover{
+                        background-color: #0B3649; /* Màu nền khi hover */
+                        color: white;
+                    }
                     .datatable-category
                     {
                         font-family: 'Verdana', sans-serif; /* Bạn có thể thay đổi phông chữ nếu muốn */
@@ -336,7 +358,7 @@
                         justify-content: center;
                     }
 
-                    
+
 
                 </style>
             </div>

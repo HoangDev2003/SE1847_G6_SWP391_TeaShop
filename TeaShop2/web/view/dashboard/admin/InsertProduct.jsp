@@ -36,9 +36,8 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#!">Cài đặt</a></li>
-                        <li><a class="dropdown-item" href="#!">Hồ sơ</a></li>                      
-                        <li><a class="dropdown-item" href="#!">Đăng xuất</a></li>
+                        <li><a class="dropdown-item" href="home">Home</a></li>                                          
+                        <li><a class="dropdown-item" href="logout">Logout</a></li>
                     </ul>
                 </li>
             </ul>
@@ -62,9 +61,9 @@
                             </h3>
                         </c:if>
                         <c:if test="${errorMessage ne null}">
-                            <h3 class="error-message">
+                            <h4 class="error-message">
                                 ${errorMessage}
-                            </h3>
+                            </h4>
                         </c:if>
                         <c:if test="${insertProduct ne null}">
                             <form action="addProductManager" id="insertProduct" enctype="multipart/form-data" method="post">
@@ -105,10 +104,14 @@
                                                         </select>
                                                     </td>
                                                     <td>
-                                                        <input type="file" name="image_url" size="5" style="height: 35px"/>
+                                                        <div class="file-input-wrapper">
+                                                            <input type="file" name="image_url" id="file-upload" />
+                                                            <label for="file-upload" class="custom-file-label">Chọn ảnh</label>
+                                                            <span id="file-name" class="file-name-label">Không có tệp nào được chọn</span>
+                                                        </div>
                                                     </td>
                                                     <td>
-                                                        <input type="number" name="price" style="height: 35px" value="${param.price}"/>
+                                                        <input type="number" name="price" style="height: 35px" step="1" min="1" value="${param.price}"/>
                                                     </td>
                                                     <td>
                                                         <input type="date" name="create_at" style="height: 35px" value="${param.create_at}"/>
@@ -140,7 +143,13 @@
                     </div>
                 </footer>
                 <style>
-
+                    .error-message{
+                        display: flex; /* Sử dụng flexbox */
+                        justify-content: center; /* Căn giữa ngang */
+                        align-items: center; /* Căn giữa dọc */
+                        color: #ff0000;
+                        text-align: center; /* Căn giữa nội dung bên trong (nếu cần) */
+                    }
                     .insert-done {
 
 
@@ -192,6 +201,59 @@
                     .card-body {
                         display: flex;
                         justify-content: center;
+                    }
+                    .file-input-wrapper {
+                        position: relative;
+                        display: inline-block;
+                        width: 100%;
+                    }
+
+                    .file-input-wrapper input[type="file"] {
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        opacity: 0;
+                        cursor: pointer;
+                    }
+
+                    .custom-file-label {
+                        background-color: #37697a; /* Màu nền */
+                        border: none; /* Bỏ viền */
+                        color: white; /* Màu chữ */
+                        padding: 7px 11px; /* Khoảng cách trong */
+                        text-align: center; /* Canh giữa văn bản */
+                        text-decoration: none; /* Bỏ gạch chân */
+                        display: inline-block; /* Hiển thị dạng khối nội tuyến */
+                        font-size: 16px; /* Cỡ chữ */
+                        margin: 10px 0; /* Khoảng cách ngoài */
+                        cursor: pointer; /* Con trỏ chuột */
+                        border-radius: 13px; /* Bo góc */
+                        transition: background-color 0.3s ease; /* Hiệu ứng chuyển màu nền */
+                        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Hiệu ứng đổ bóng nhẹ */
+                    }
+
+                    .file-input-wrapper .file-name-label {
+                        display: inline-block;
+                        padding: 2px 2px;
+                        font-size: 16px;
+                        color: #333;
+                        vertical-align: middle;
+                        max-width: 150px; /* Giới hạn chiều rộng tối đa */
+                        white-space: nowrap; /* Không cho phép xuống dòng */
+                        overflow: hidden; /* Ẩn phần nội dung tràn */
+                        text-overflow: ellipsis;
+                    }
+
+                    .custom-file-label:hover {
+                        background-color: #0B3649; /* Màu nền khi hover */
+                        color: white;
+                    }
+
+                    .custom-file-label:active {
+                        background-color: #3e8e41; /* Màu nền khi nhấn giữ */
+                        transform: translateY(2px); /* Hiệu ứng nhấn xuống */
                     }
 
                 </style>

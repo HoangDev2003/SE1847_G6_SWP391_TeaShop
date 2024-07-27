@@ -36,8 +36,8 @@ public class SearchShipperController extends HttpServlet {
             AdminDAO dao = new AdminDAO();
            String search = request.getParameter("search");
             System.out.println(search);
-           List<Accounts> searchUser = dao.searchUser(search);
-           request.setAttribute("listShipper", searchUser);
+           List<Accounts> searchShipper = dao.searchShipper(search);
+           request.setAttribute("listShipper", searchShipper);
            request.getRequestDispatcher("./view/dashboard/admin/shipperManagement.jsp").forward(request, response);
         }
     } 

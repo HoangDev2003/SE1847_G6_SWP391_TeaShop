@@ -20,7 +20,7 @@
             <div class="signup-content">
                 <div class="signup-form">
 
-                    <h4 style="color: red">${mess}</h4>
+                    <h4 style="color: red">${errorMessage}</h4>
                     <h2 class="form-title">Sign up</h2>
                     <form action="signup" method="POST" class="register-form" id="register-form">
                         <div class="form-group">

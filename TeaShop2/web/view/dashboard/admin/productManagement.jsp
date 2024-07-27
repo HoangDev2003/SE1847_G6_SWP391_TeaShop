@@ -83,7 +83,7 @@
                             <div class="card mb-4">
                                 <div class="h1">                                
                                     <a  
-                                        href="addProductManager"><ion-icon name="add-circle-outline" ></ion-icon>  Thêm sản phẩm mới</a>                                   
+                                        href="addProductManager"><ion-icon name="add-circle-outline" ></ion-icon> Thêm sản phẩm mới</a>                                   
                                 </div>  
                             </div>
                             <div class="card mb-4">
@@ -91,10 +91,10 @@
                                     <h6><ion-icon name="filter-outline"></ion-icon> Lọc theo giá sản phẩm</h6>
                                     <form action="productmanager" method="get">
                                         <input type="hidden" name="service" value="searchByPriceRange" />
-                                        <label for="priceFrom">Mức giá</label>
-                                        <input type="number" id="priceFrom" name="priceFrom" step="0.01" required />
+                                        <label for="priceFrom"></label>
+                                        <input type="number" id="priceFrom" name="priceFrom" step="1" min="1" placeholder="Từ" value="${param.priceFrom}" required />
                                         <label for="priceTo">~</label>
-                                        <input type="number" id="priceTo" name="priceTo" step="0.01" required />
+                                        <input type="number" id="priceTo" name="priceTo"  step="1" min="1" placeholder="Đến" value="${param.priceTo}" required />
                                         <button class="filerByPrice" type="submit">Tìm kiếm</button>
                                     </form>
                                 </div>
@@ -149,7 +149,7 @@
                         background-color: #37697a; /* Màu nền */
                         border: none; /* Bỏ viền */
                         color: white;
-                        padding: 7px 12px;
+                        padding: 8px 12px;
                     }
                     .search-header:hover{
                         background-color: #0B3649; /* Màu nền khi hover */
@@ -159,15 +159,17 @@
                         background-color: #37697a; /* Màu nền */
                         border: none; /* Bỏ viền */
                         color: white; /* Màu chữ */
-                        padding: 7px 12px; /* Khoảng cách trong */
+                        padding: 7px 11px; /* Khoảng cách trong */
                         text-align: center; /* Canh giữa văn bản */
                         text-decoration: none; /* Bỏ gạch chân */
                         display: inline-block; /* Hiển thị dạng khối nội tuyến */
                         font-size: 16px; /* Cỡ chữ */
                         margin: 10px 0; /* Khoảng cách ngoài */
                         cursor: pointer; /* Con trỏ chuột */
-                        border-radius: 5px; /* Bo góc */
+                        border-radius: 13px; /* Bo góc */
                         transition: background-color 0.3s ease; /* Hiệu ứng chuyển màu nền */
+                        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Hiệu ứng đổ bóng nhẹ */
+                        
                     }
 
                     .filerByPrice:hover {
@@ -258,13 +260,27 @@
                         width: 25%;
                         color: #00a5bb;
                     }
-                    
+
                     h6 ion-icon {
                         font-size: 26px;
                         text-align: center; /* Căn giữa ngang */
                         vertical-align: middle; /* Căn giữa dọc */
                         margin-right: 5px; /* Khoảng cách giữa icon và chữ */
-                        
+
+                    }
+                    .card-header input[type="number"] {
+                        border: 2px solid #37697a; /* Màu border */
+                        border-radius: 15px; /* Bo tròn border */
+                        padding: 6px; /* Padding bên trong */
+                        font-size: 16px; /* Kích thước font chữ */
+                        outline: none; /* Loại bỏ viền outline khi focus */
+                        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Hiệu ứng đổ bóng nhẹ */
+                        transition: border-color 0.3s, box-shadow 0.3s; /* Hiệu ứng chuyển đổi mượt */
+                    }
+
+                    .card-header input[type="number"]:focus {
+                        border-color: #37697a; /* Màu border khi focus */
+                        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Hiệu ứng đổ bóng khi focus */
                     }
 
                 </style>
