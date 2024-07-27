@@ -89,21 +89,22 @@ public class StaffController extends HttpServlet {
                 } else if (search.equals("byInfo")) {
                     List<Orders> listOrders;
                     int count = 7;
-                    int account_id, lowerAmount, upperAmount, status_id;
-                    String payment_method;
+                    int lowerAmount, upperAmount, status_id;
+                    String full_name, payment_method;
                     LocalDate lowerDate = null;
                     LocalDate upperDate = null;
 
-                    if (request.getParameter("account_id") == null || request.getParameter("account_id").isEmpty()) {
-                        account_id = -1;
+                    String full_nameParam = request.getParameter("full_name");
+
+                    if (full_nameParam == null || full_nameParam.isEmpty()) {
+                        full_name = null;
                         count--;
+                    } else if (!full_nameParam.matches("[a-zA-Z ]+")) {
+                        count--;
+                        full_name = null;                     
                     } else {
-                        account_id = Integer.parseInt(request.getParameter("account_id"));
-                        if (account_id > -1) {
-                            request.setAttribute("account_id", account_id);
-                        } else {
-                            count--;
-                        }
+                        full_name = full_nameParam;
+                        request.setAttribute("full_name", full_name);
                     }
 
                     if (request.getParameter("lower_amount") == null || request.getParameter("lower_amount").isEmpty()) {
@@ -176,7 +177,7 @@ public class StaffController extends HttpServlet {
                         upperDay = Timestamp.valueOf(upperDateStr + " 23:59:59");
                     }
                     if (count > 0) {
-                        listOrders = staffDAO.getOrderByInfo(account_id, lowerAmount, upperAmount, lowerDay, upperDay, status_id, payment_method);
+                        listOrders = staffDAO.getOrderByInfo(full_name, lowerAmount, upperAmount, lowerDay, upperDay, status_id, payment_method);
                         request.setAttribute("listOrders", listOrders);
                     }
                     request.getRequestDispatcher("view/dashboard/staff1/search-order.jsp").forward(request, response);
