@@ -7,6 +7,7 @@ package controller;
 import dal.AccountDAO;
 import entity.Accounts;
 import entity.Email;
+import entity.EncodePassword;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -35,24 +36,7 @@ public class ResetPasswordController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            //     String email = request.getParameter("emailc");
-            //     AccountDAO dao = new AccountDAO();
-            //    Accounts a = dao.checkAccountExist(email);
-            //   if(a == null){
-            //   request.setAttribute("mess", "Can not find this account");
-            //     request.getRequestDispatcher("login.jsp").forward(request, response);
-            //   }else{
-            //       Email e = new Email();
-//                e.sendEmail(email, "Your password was changed successfully!!!", "<html lang=\"en\">\n"
-//                    + "<body>\n"
-//                    + "<h1> We send you your password" + "</h1>"
-//                    + "The password : " + a.getPass_word()
-//                    + "</body>\n"
-//                    + "</html>");
-//                
-//                request.getRequestDispatcher("login.jsp").forward(request, response);
-//            }
-//        }
+
         }
     }
 
@@ -83,7 +67,7 @@ public class ResetPasswordController extends HttpServlet {
                     + "<head>\n"
                     + "</head>\n"
                     + "<body>\n"
-                    + "<p>Please Reset your password by clicking the following link:</p>\n"
+                    + "<p>Hãy nhấn vào link dưới đây để reset mật khẩu của bạn nhé!</p>\n"
                     + "<a href=\"" + verifyLink + "\">Reset Password</a>\n"
                     + "\n"
                     + "</body>\n"
@@ -116,22 +100,26 @@ public class ResetPasswordController extends HttpServlet {
         String emailc = (String) session.getAttribute("emailReset"); // Retrieve email from request
         System.out.println(newpass);
         System.out.println(re_newpass);
-        System.out.println(emailc);     
+        System.out.println(emailc);
+
         if (!newpass.equals(re_newpass)) {
-            request.setAttribute("error", "Password and re-enter password are not the same");
+            request.setAttribute("error", "Mật khẩu và mật khẩu bạn nhập lại phải giống nhau");
             request.getRequestDispatcher("newpass.jsp").forward(request, response);
         } else {
+            // Mã hóa mật khẩu mới trước khi lưu vào database
+            String encodedNewPass = EncodePassword.toSHA1(newpass);
             AccountDAO dao = new AccountDAO();
-            boolean isUpdated = dao.changePass(emailc, newpass);
+            boolean isUpdated = dao.changePass(emailc, encodedNewPass);
             if (isUpdated) {
-                request.setAttribute("Notification", "Reset password successfully");
+                request.setAttribute("Notification", "Reset mật khẩu thành công");
                 session.removeAttribute("emailReset");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
             } else {
-                request.setAttribute("error", "Failed to reset password. Please try again.");
+                request.setAttribute("error", "Reset mật khẩu thất bại. Hãy thử lại");
                 request.getRequestDispatcher("newpass.jsp").forward(request, response);
             }
         }
+
     }
 
     /**
