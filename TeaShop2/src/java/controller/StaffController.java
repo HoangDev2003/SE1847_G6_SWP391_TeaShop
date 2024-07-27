@@ -52,16 +52,16 @@ public class StaffController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession(true);
-//        Accounts acc = (Accounts) session.getAttribute("acc");
-//        if (acc == null) {
-//            response.sendRedirect("home");
-//            return;
-//        }
-//        int status = acc.getRole_id();
-//        if (status == 1 || status == 2 || status == 4) {
-//            response.sendRedirect("home");
-//            return;
-//        }
+        Accounts acc = (Accounts) session.getAttribute("acc");
+        if (acc == null) {
+            response.sendRedirect("home");
+            return;
+        }
+        int status = acc.getRole_id();
+        if (status == 1 || status == 2 || status == 4) {
+            response.sendRedirect("home");
+            return;
+        }
 
         StaffDAO staffDAO = new StaffDAO();
         try (PrintWriter out = response.getWriter()) {
