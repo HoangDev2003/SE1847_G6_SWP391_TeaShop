@@ -139,7 +139,7 @@ public class StaffDAO extends DBContext {
         return ordersList; // Return the list of orders
     }
 
-    public List<Orders> getOrderByInfo(int account_id, int lowerAmount, int upperAmount, Timestamp lowerDate, Timestamp upperDate, int status_id, String payment_method) {
+    public List<Orders> getOrderByInfo(String full_name, int lowerAmount, int upperAmount, Timestamp lowerDate, Timestamp upperDate, int status_id, String payment_method) {
         List<Orders> ordersList = new ArrayList<>();
         Orders order;
 
@@ -147,13 +147,9 @@ public class StaffDAO extends DBContext {
             connection = getConnection(); // Obtain database connection
             StringBuilder sql = new StringBuilder("SELECT * FROM Orders WHERE 1=1");
 
-            // Add optional parameters to the query
-            if (account_id > 0) {
-                sql.append(" AND account_id = ?");
-            } else if (account_id == 0) {
-                sql.append(" AND account_id is null");
-            }
-            
+            if (full_name != null) {
+                sql.append(" AND full_name LIKE ?");;
+            }           
             if (lowerAmount > 0) {
                 sql.append(" AND total_amount >= ?");
             }
@@ -177,8 +173,8 @@ public class StaffDAO extends DBContext {
 
             // Set parameter values
             int paramIndex = 1;
-            if (account_id > 0) {
-                pre.setInt(paramIndex++, account_id);
+            if (full_name != null) {
+                pre.setString(paramIndex++, "%" + full_name + "%");
             }
             if (lowerAmount > 0) {
                 pre.setInt(paramIndex++, lowerAmount);
