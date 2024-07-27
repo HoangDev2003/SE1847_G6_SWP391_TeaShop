@@ -83,9 +83,9 @@
 
                                 <h6>Chỉ điền vào nhứng ô mà bạn cần lọc</h6>
                                 <div class="form-group row" style="padding-top : 10px">
-                                    <label for="account_id" class="col-sm-5 col-form-label">ID tài khoản (Điền 0 để tìm hóa đơn không có ID tài khoản):</label>
+                                    <label for="full_name" class="col-sm-3 col-form-label">Họ và tên:</label>
                                     <div class="col-sm-3">
-                                        <input type="number" class="form-control" id="account_id" name="account_id" value="${account_id}">
+                                        <input type="text" class="form-control" id="full_name" name="full_name" value="${full_name}">
                                     </div>
                                 </div>
 
