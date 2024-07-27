@@ -357,7 +357,7 @@ public class AdminDAO extends DBContext {
         return list;
     }
 
-    public List<Accounts> getAllAccountMaleShipper(int index) {
+    public List<Accounts> getAllAccountMaleShipper() {
         List<Accounts> list = new ArrayList<>();
         String query = "SELECT a.account_id,\n"
                 + "a.user_name,\n"
@@ -372,12 +372,10 @@ public class AdminDAO extends DBContext {
                 + "JOIN AccountStatuses acs ON a.status_id = acs.status_id\n"
                 + "JOIN Role r ON a.role_id = r.role_id\n"
                 + "where gender = 'Male' and a.role_id = 4\n"
-                + "ORDER BY created_at DESC\n"
-                + "OFFSET ? rows FETCH next 12 rows only;";
+                + "ORDER BY created_at DESC";
         try {
             connection = getConnection();
             statement = connection.prepareStatement(query);
-            statement.setInt(1, (index - 1) * 12);
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 list.add(new Accounts(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3),
@@ -452,7 +450,7 @@ public class AdminDAO extends DBContext {
         return list;
     }
 
-    public List<Accounts> getAllAccountFemaleShipper(int index) {
+    public List<Accounts> getAllAccountFemaleShipper() {
         List<Accounts> list = new ArrayList<>();
         String query = "SELECT a.account_id,\n"
                 + "a.user_name,\n"
@@ -467,12 +465,10 @@ public class AdminDAO extends DBContext {
                 + "JOIN AccountStatuses acs ON a.status_id = acs.status_id\n"
                 + "JOIN Role r ON a.role_id = r.role_id\n"
                 + "where gender = 'Female' and a.role_id = 4\n"
-                + "ORDER BY created_at DESC\n"
-                + "OFFSET ? rows FETCH next 12 rows only;";
+                + "ORDER BY created_at DESC";
         try {
             connection = getConnection();
             statement = connection.prepareStatement(query);
-            statement.setInt(1, (index - 1) * 12);
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 list.add(new Accounts(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3),
@@ -548,7 +544,7 @@ public class AdminDAO extends DBContext {
         return list;
     }
 
-    public List<Accounts> getAccountsActiveShipper(int index) {
+    public List<Accounts> getAccountsActiveShipper() {
         List<Accounts> list = new ArrayList<>();
         String query = "SELECT a.account_id,\n"
                 + "a.user_name,\n"
@@ -563,12 +559,10 @@ public class AdminDAO extends DBContext {
                 + "JOIN AccountStatuses acs ON a.status_id = acs.status_id\n"
                 + "JOIN Role r ON a.role_id = r.role_id\n"
                 + "where a.status_id = 1 and a.role_id = 4\n"
-                + "ORDER BY created_at DESC\n"
-                + "OFFSET ? rows FETCH next 12 rows only;";
+                + "ORDER BY created_at DESC";
         try {
             connection = getConnection();
             statement = connection.prepareStatement(query);
-            statement.setInt(1, (index - 1) * 12);
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 list.add(new Accounts(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3),
@@ -643,7 +637,7 @@ public class AdminDAO extends DBContext {
         return list;
     }
 
-    public List<Accounts> getAccountsInActiveShipper(int index) {
+    public List<Accounts> getAccountsInActiveShipper() {
         List<Accounts> list = new ArrayList<>();
         String query = "SELECT a.account_id,\n"
                 + "a.user_name,\n"
@@ -658,12 +652,10 @@ public class AdminDAO extends DBContext {
                 + "JOIN AccountStatuses acs ON a.status_id = acs.status_id\n"
                 + "JOIN Role r ON a.role_id = r.role_id\n"
                 + "where a.status_id = 2 and a.role_id = 4\n"
-                + "ORDER BY created_at DESC\n"
-                + "OFFSET ? rows FETCH next 12 rows only;";
+                + "ORDER BY created_at DESC";
         try {
             connection = getConnection();
             statement = connection.prepareStatement(query);
-            statement.setInt(1, (index - 1) * 12);
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 list.add(new Accounts(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3),
@@ -674,23 +666,6 @@ public class AdminDAO extends DBContext {
             e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
         }
         return list;
-    }
-
-    public int countAccountByGenderAndStatusShipper(String gender, int status) {
-        String query = "select count(*) from Accounts where gender = ? and status_id = ? and a.role_id = 4";
-        try {
-            connection = getConnection();
-            statement = connection.prepareStatement(query);
-            statement.setString(1, gender);
-            statement.setInt(2, status);
-            resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                return resultSet.getInt(1);
-            }
-        } catch (Exception e) {
-            e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
-        }
-        return 0;
     }
 
     public List<Accounts> getAccountByGenderAndStatus(String gender, int status) {
@@ -746,7 +721,6 @@ public class AdminDAO extends DBContext {
             connection = getConnection();
             statement = connection.prepareStatement(query);
             statement.setString(1, gender);
-            statement.setInt(3, (index - 1) * 12);
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 list.add(new Accounts(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3),
@@ -759,7 +733,7 @@ public class AdminDAO extends DBContext {
         return list;
     }
 
-    public List<Accounts> getAccountByGenderAndStatusShipper(String gender, int status, int index) {
+    public List<Accounts> getAccountByGenderAndStatusShipper(String gender, int status) {
         List<Accounts> list = new ArrayList<>();
         String query = "SELECT a.account_id,\n"
                 + "a.user_name,\n"
@@ -774,14 +748,12 @@ public class AdminDAO extends DBContext {
                 + "JOIN AccountStatuses acs ON a.status_id = acs.status_id\n"
                 + "JOIN Role r ON a.role_id = r.role_id\n"
                 + "where a.gender = ? and a.status_id = ? and a.role_id = 4\n"
-                + "ORDER BY created_at DESC\n"
-                + "OFFSET ? rows FETCH next 12 rows only;";
+                + "ORDER BY created_at DESC";
         try {
             connection = getConnection();
             statement = connection.prepareStatement(query);
             statement.setString(1, gender);
             statement.setInt(2, status);
-            statement.setInt(3, (index - 1) * 12);
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 list.add(new Accounts(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3),

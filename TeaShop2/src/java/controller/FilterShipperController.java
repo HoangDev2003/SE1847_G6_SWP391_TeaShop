@@ -59,34 +59,34 @@ public class FilterShipperController extends HttpServlet {
 
             // Xử lý lọc dựa trên gender và status
             if (gender.isEmpty() && status.isEmpty()) {
-                response.sendRedirect("customerManagement");
+                response.sendRedirect("shippermanager");
             } else if (!gender.isEmpty() && status.isEmpty()) {
-                List<Accounts> listByGender = gender.equals("Male") ? dao.getAllAccountMaleStaff() : dao.getAllAccountFemaleStaff();
+                List<Accounts> listByGender = gender.equals("Male") ? dao.getAllAccountMaleShipper() : dao.getAllAccountFemaleShipper();
                 if (listByGender.isEmpty()) {
                     request.setAttribute("error", "Không tìm thấy kết quả");
                 } else {
-                    request.setAttribute("listStaff", listByGender);
+                    request.setAttribute("listShipper", listByGender);
                 }
-                request.getRequestDispatcher("./view/dashboard/staff1/customerManagement.jsp").forward(request, response);
+                request.getRequestDispatcher("./view/dashboard/admin/shipperManagement.jsp").forward(request, response);
             } else if (gender.isEmpty() && !status.isEmpty()) {
-                List<Accounts> listByStatus = status.equals("1") ? dao.getAccountsActiveStaff() : dao.getAccountsInActiveStaff();
+                List<Accounts> listByStatus = status.equals("1") ? dao.getAccountsActiveShipper() : dao.getAccountsInActiveShipper();
                 if (listByStatus.isEmpty()) {
                     request.setAttribute("error", "Không tìm thấy kết quả");
                 } else {
-                    request.setAttribute("listUser", listByStatus);
+                    request.setAttribute("listShipper", listByStatus);
                 }
                 request.setAttribute("status", status);
-                request.getRequestDispatcher("./view/dashboard/staff1/customerManagement.jsp").forward(request, response);
+                request.getRequestDispatcher("./view/dashboard/admin/shipperManagement.jsp").forward(request, response);
             } else {
                 int status_id = Integer.parseInt(status);
-                List<Accounts> listByGenderAndStatus = dao.getAccountByGenderAndStatusStaff(gender, status_id);
+                List<Accounts> listByGenderAndStatus = dao.getAccountByGenderAndStatusShipper(gender, status_id);
                 if (listByGenderAndStatus.isEmpty()) {
                     request.setAttribute("error", "Không tìm thấy kết quả");
                 } else {
-                    request.setAttribute("listUser", listByGenderAndStatus);
+                    request.setAttribute("listShipper", listByGenderAndStatus);
                 }
                 request.setAttribute("status", status_id);
-                request.getRequestDispatcher("./view/dashboard/staff1/customerManagement.jsp").forward(request, response);
+                request.getRequestDispatcher("./view/dashboard/admin/shipperManagement.jsp").forward(request, response);
             }
     }
     } 
