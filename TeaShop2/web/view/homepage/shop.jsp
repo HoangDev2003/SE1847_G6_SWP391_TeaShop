@@ -246,19 +246,24 @@
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="mb-3">
-                                        <h4 class="mb-2">Khoảng Giá</h4>
+                                        <h4 class="mb-3">Khoảng Giá</h4>
 
                                         <div class="input-group">
-                                            <form action="shop" method="GET">
+                                            <form action="shop" method="GET" class="d-flex">
                                                 <input type="hidden" name="search" value="searchByPriceRange">
-                                                <input type="number" class="form-control" id="priceFrom" name="priceFrom" placeholder="Từ">
-                                                <span class="input-group-text">-</span>
-                                                <input type="number" class="form-control" id="priceTo" name="priceTo" placeholder="Đến">
-                                                <span type="submit" class="btn btn-success" onclick="return this.closest('form').submit()">Áp Dụng</span>
+                                                <input type="number" class="form-control" id="priceFrom" name="priceFrom" placeholder="Từ"
+                                                       aria-label="Giá từ" value="${param.priceFrom}">
+                                                <span class="input-group-text bg-white border-0">-</span>
+                                                <input type="number" class="form-control" id="priceTo" name="priceTo" placeholder="Đến"
+                                                       aria-label="Giá đến" value="${param.priceTo}">
+                                                <button type="submit" class="btn btn-success ms-2">Áp Dụng</button>
                                             </form>
                                         </div>
+
                                         <c:if test="${not empty priceErrorMessage}">
-                                            <div class="error-message">${priceErrorMessage}</div>
+                                            <div class="alert alert-danger mt-3" role="alert">
+                                                ${priceErrorMessage}
+                                            </div>
                                         </c:if>
                                     </div>
                                 </div>
