@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
+<!DOCTYPE html><!DOCTYPE html><%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <html lang="en-US" dir="ltr">
 
     <head>
@@ -54,7 +55,7 @@
                 userLinkRTL.setAttribute('disabled', true);
             }
         </script>
-        
+
     </head>
 
 
@@ -167,14 +168,30 @@
                                                 <tr class="border-200">
                                                     <td class="align-middle">
                                                         <h6 class="mb-0 text-nowrap">${lod.product.product_name}</h6>
-                                                        <p class="mb-0">none topping</p>
+                                                        <p class="mb-0">
+                                                            <c:set var="toppingsList" value="" />
+                                                            <c:forEach items="${lod.topping}" var="topping" varStatus="status">
+                                                                <c:set var="toppingsList" value="${toppingsList}${topping.topping_name}${status.last ? '' : ', '}" />
+                                                            </c:forEach>
+                                                            <c:choose>
+                                                                <c:when test="${empty toppingsList}">
+                                                                    Không có
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                                    ${toppingsList}
+                                                                </c:otherwise>
+                                                            </c:choose>
+                                                        </p>
                                                     </td>
                                                     <td class="align-middle text-center">${lod.quantity}</td>
-                                                    <td class="align-middle text-end">${lod.product.price} đ</td>
+                                                    <td class="align-middle text-end"><fmt:formatNumber value="${lod.product.price}" type="number" groupingUsed="true"/> đồng</td>
                                                     <td class="align-middle text-end">
-                                                        <c:set var="itemTotal" value="${lod.quantity * lod.product.price}" />
+                                                        <c:set var="toppingCount" value="${fn:length(lod.topping)}" />
+                                                        <c:set var="toppingTotal" value="${toppingCount * 6000}" />
+                                                        <c:set var="itemTotal" value="${lod.quantity * (lod.product.price + toppingTotal)}" />
                                                         <c:set var="totalAmount" value="${totalAmount + itemTotal}" />
-                                                        ${itemTotal} đ
+                                                        <fmt:formatNumber value="${itemTotal}" type="number" groupingUsed="true"/> đồng
+
                                                     </td>
                                                     <td class="align-middle text-end">
                                                         <img src="${pageContext.request.contextPath}/${lod.image}"  width="100" class="mt-2"/>
@@ -195,17 +212,26 @@
                                                             </c:if>
                                                         </form>
                                                     </td>
+                                                    
                                                 </tr>
                                             </c:forEach>
-                                        </tbody>
+
+                                        <style>
+                                            .img-thumbnail {
+                                                max-width: 100%;
+                                                height: auto;
+                                                object-fit: cover;
+                                            }
+                                        </style>
+
                                     </table>
                                 </div>
                                 <div class="row g-0 justify-content-end">
                                     <div class="col-auto">
                                         <table class="table table-sm table-borderless fs--1 text-end">
                                             <tr>
-                                                <th class="text-900">Tổng thanh toán:</th>
-                                                <td class="fw-semi-bold">${totalAmount} đ</td>
+                                                <th class="text-900">Tổng thanh toán: <fmt:formatNumber value="${orders.total_amount}" type="number" groupingUsed="true"/> đồng</th>
+
                                             </tr>
                                         </table>
                                     </div>
