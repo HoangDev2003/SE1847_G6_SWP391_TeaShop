@@ -8,6 +8,7 @@ import dal.OrderDetailsDAO;
 import dal.OrdersDAO;
 import entity.OrderDetails;
 import entity.Orders;
+import entity.Topping;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -35,7 +36,7 @@ public class ShipDetailController extends HttpServlet {
         int order_id = Integer.parseInt(request.getParameter("order_id"));
         List<OrderDetails> listOrderDetails = orderDetailsDAO.findByOrderId(order_id);
         Orders orders = orderDAO.findByOrderId(order_id);
-
+   
         HttpSession session = request.getSession();
         session.setAttribute("listOrderDetails", listOrderDetails);
         session.setAttribute("orders", orders);
