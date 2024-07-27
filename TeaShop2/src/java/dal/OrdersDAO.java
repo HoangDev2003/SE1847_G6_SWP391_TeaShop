@@ -882,5 +882,57 @@ public class OrdersDAO extends DBContext {
         return total;
 
     }
-    
+    public List<Orders> findOrdersOrderId(String orderId) {
+        List<Orders> ordersList = new ArrayList<>();
+        Orders order = null;
+        String sql = "SELECT * FROM Orders \n"
+                + "WHERE order_id = ?\n";
+
+        try {
+            connection = getConnection();
+            PreparedStatement pre = connection.prepareStatement(
+                    sql,
+                    ResultSet.TYPE_SCROLL_SENSITIVE,
+                    ResultSet.CONCUR_READ_ONLY);
+            pre.setString(1, orderId);
+
+            ResultSet rs = pre.executeQuery();
+
+            while (rs.next()) {
+                order = new Orders();
+                order.setOrder_id(rs.getInt("order_id"));
+
+                order.setAccount(new AccountDAO().getAccountByAccountID(rs.getInt("account_id")));
+                order.setStatus(new StatusDAO().getStatusByStatusID(rs.getInt("status_id")));
+                order.setTotal_amount(rs.getInt("total_amount"));
+                order.setOrder_date(rs.getTimestamp("order_date")); // Set order_date directly
+                order.setEstimated_delivery_date(rs.getTimestamp("estimated_delivery_date"));
+                order.setNote(rs.getString("note"));
+                order.setShipper_note(rs.getString("shipper_note"));
+                order.setStaff_note(rs.getString("staff_note"));
+                order.setAddress(rs.getString("address"));
+                order.setFull_name(rs.getString("full_name"));
+                order.setPayment_method(rs.getString("payment_method"));
+                order.setPhone_number(rs.getString("phone_number"));
+
+                ordersList.add(order);
+            }
+
+            rs.close(); // Close ResultSet
+            pre.close(); // Close PreparedStatement
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception ex) { // Catch any parsing exceptions
+            Logger.getLogger(OrdersDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close(); // Close the database connection
+                }
+            } catch (SQLException e) {
+                Logger.getLogger(OrdersDAO.class.getName()).log(Level.SEVERE, null, e);
+            }
+        }
+        return ordersList; // Return the list of orders
+    }
 }
