@@ -298,7 +298,6 @@
                                                                 <c:otherwise>
                                                                     <fmt:formatNumber value="${special.price}" type="currency" currencySymbol="₫" />
                                                                 </c:otherwise>
-
                                                             </c:choose>
                                                         </a>
                                                     </div>
