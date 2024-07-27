@@ -67,17 +67,17 @@ public class ProductManagerController extends HttpServlet {
                     req.setAttribute("listAllProduct", products);
                 } 
                 else if (products == null || products.isEmpty()) {
-                        req.setAttribute("errorMessageFilter", "Không có sản phẩm nào trong khoảng giá");
+                        req.setAttribute("errorMessageFilter", "Giá trị không hợp lệ. Vui lòng nhập giá sản phẩm trong khoảng hợp lệ.");
                     }
                 else{
-                    req.setAttribute("errorMessageFilter", "Giá trị không hợp lệ. Vui lòng nhập giá sản phẩm trong khoảng hợp lệ.");
+                    req.setAttribute("errorMessageFilter", "Không có sản phẩm nào trong khoảng giá.");
                 }
 
                 req.setAttribute("priceFrom", priceFrom);
                 req.setAttribute("priceTo", priceTo);
                 req.setAttribute("showSearchProduct", "Yes");
             } catch (NumberFormatException e) {
-                req.setAttribute("errorMessageFilter", "Giá trị không hợp lệ. Vui lòng nhập giá sản phẩm trong khoảng hợp lệ.");
+                req.setAttribute("errorMessageFilter", "Không có sản phẩm nào trong khoảng giá.");
             }
             req.setAttribute("showSearchProduct", "Yes");
             req.getRequestDispatcher("view/dashboard/admin/productManagement.jsp").forward(req, resp);
