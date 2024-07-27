@@ -39,7 +39,7 @@
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="home">Home</a></li>                    
                         <li><hr class="dropdown-divider" /></li>
-                        <li><a class="dropdown-item" href="logout">Logout</a></li>
+                        <li><a class="dropdown-item" href="logout">Đăng xuất</a></li>
                     </ul>
                 </li>
             </ul>

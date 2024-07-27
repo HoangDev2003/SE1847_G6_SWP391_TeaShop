@@ -7,7 +7,7 @@
 
     <head>
         <meta charset="utf-8">
-        <title>Tea Shop</title>
+        <title>Dreamy Tea Shop</title>
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
         <meta content="" name="keywords">
         <meta content="" name="description">
@@ -82,87 +82,87 @@
 
 
     <!-- Navbar start -->
-        <div class="container-fluid fixed-top">
+    <div class="container-fluid fixed-top">
 
-            <div class="container topbar bg-primary d-none d-lg-block">    
-                <div class="d-flex justify-content-between">
-                    <c:if test="${sessionScope.acc==null}">                                                                    
-                        <div class="top-info ps-2">
-                            <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#" class="text-white">Lê Thái Tổ, Hàng Trống, Quận Hoàn Kiếm, Hà Nội</a></small>
-                            <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i><a href="#" class="text-white">dreamycoffee@gmail.com</a></small>            
-                        </div>
-                        <div class="top-link pe-2">            
-                            <a href="${pageContext.request.contextPath}/Signup.jsp" class="text-white"><small class="text-white mx-2">Đăng ký</small>/</a>
-                            <a href="${pageContext.request.contextPath}/login" class="text-white"><small class="text-white mx-2">Đăng nhập</small></a>                 
-                        </div>           
-                    </c:if>
-                    <c:if test="${sessionScope.acc!=null}">
-                        <div class="top-info ps-2">
-                            <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#" class="text-white">Lê Thái Tổ, Hàng Trống, Quận Hoàn Kiếm, Hà Nội</a></small>
-                            <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i><a href="#" class="text-white">dreamycoffee@gmail.com</a></small>            
-                        </div>
-                        <div class="top-link pe-2">            
-                            <a href="#" class="text-white"><small class="text-white mx-2"> Welcome ${sessionScope.acc.user_name}</small>/</a>
-                            <a href="logout" class="text-white"><small class="text-white ms-2">Đăng xuất</small></a>               
-                        </div>           
-                    </c:if>
-                </div>
-            </div>
-
-            <div class="container px-0">
-                <nav class="navbar navbar-light bg-white navbar-expand-xl">
-                    <a href="home" class="navbar-brand"><h1 class="text-primary display-6"  >Dreamy Coffee</h1></a>
-                    <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                        <span class="fa fa-bars text-primary"></span>
-                    </button>
-                    <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
-                        <div class="navbar-nav mx-auto">
-                            <a href="home" class="nav-item nav-link">Home</a>
-                            <a href ="blog" class="nav-item nav-link">Blog</a>
-                            <a href="shop" class="nav-item nav-link active">Shop</a>
-                        </div>
-
-                        <div class="d-flex m-3 me-0">
-                            <%
-                        int count = 0;
-                        Enumeration<String> em = session.getAttributeNames();
-                        while (em.hasMoreElements()) {
-                            String key = em.nextElement();
-
-                            if (key.startsWith("cartItem")) {
-                                count++;
-                            }
-                        } 
-                            %>
-                            <a href="CartDetails?service=showcart" class="position-relative me-4 my-auto">
-                                <i class="fa fa-shopping-bag fa-2x"></i>
-                                <%if(count>0){%>
-                                <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;"><%=count%></span>
-                                <%}%>
-                            </a>
-                            <c:if test="${sessionScope.acc!=null}">  
-                                <div class="nav-item dropdown">
-                                    <a href="#" class="nav-link" data-bs-toggle="dropdown" style="color: black;">
-                                        <i class="fas fa-user fa-2x" style="color: black;"></i>
-                                    </a>
-                                    <div class="dropdown-menu m-0 bg-secondary rounded-0">
-                                        <a href="userprofile?email=${sessionScope.acc.email}" class="dropdown-item">Thông tin</a>
-                                        <a href="MyOrder" class="dropdown-item">Đơn hàng</a>
-                                        <a href="orderCompelete" class="dropdown-item">Đánh giá của bạn</a>
-                                    </div>
-                                </div>
-                            </c:if> 
-                            <c:if test="${sessionScope.acc==null}"> 
-                                <a href="login" class="nav-link" style="color: black;">
-                                    <i class="fas fa-user fa-2x" style="color: black;"></i>
-                                </a>
-                            </c:if>
-                        </div>
+        <div class="container topbar bg-primary d-none d-lg-block">    
+            <div class="d-flex justify-content-between">
+                <c:if test="${sessionScope.acc==null}">                                                                    
+                    <div class="top-info ps-2">
+                        <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#" class="text-white">Đại học FPT Hà Nội</a></small>
+                        <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i><a href="#" class="text-white">dreamycoffee@gmail.com</a></small>            
                     </div>
-                </nav>
+                    <div class="top-link pe-2">            
+                        <a href="${pageContext.request.contextPath}/Signup.jsp" class="text-white"><small class="text-white mx-2">Đăng ký</small>/</a>
+                        <a href="${pageContext.request.contextPath}/login" class="text-white"><small class="text-white mx-2">Đăng nhập</small></a>                 
+                    </div>           
+                </c:if>
+                <c:if test="${sessionScope.acc!=null}">
+                    <div class="top-info ps-2">
+                        <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#" class="text-white">Đại học FPT Hà Nội</a></small>
+                        <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i><a href="#" class="text-white">dreamycoffee@gmail.com</a></small>            
+                    </div>
+                    <div class="top-link pe-2">            
+                        <a href="#" class="text-white"><small class="text-white mx-2"> Welcome ${sessionScope.acc.user_name}</small>/</a>
+                        <a href="logout" class="text-white"><small class="text-white ms-2">Đăng xuất</small></a>               
+                    </div>           
+                </c:if>
             </div>
         </div>
-        <!-- Navbar End -->
+
+        <div class="container px-0">
+            <nav class="navbar navbar-light bg-white navbar-expand-xl">
+                <a href="home" class="navbar-brand"><h1 class="text-primary display-6"  >Dreamy Coffee</h1></a>
+                <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                    <span class="fa fa-bars text-primary"></span>
+                </button>
+                <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
+                    <div class="navbar-nav mx-auto">
+                        <a href="home" class="nav-item nav-link">Home</a>
+                        <a href ="blog" class="nav-item nav-link">Blog</a>
+                        <a href="shop" class="nav-item nav-link active">Shop</a>
+                    </div>
+
+                    <div class="d-flex m-3 me-0">
+                        <%
+                    int count = 0;
+                    Enumeration<String> em = session.getAttributeNames();
+                    while (em.hasMoreElements()) {
+                        String key = em.nextElement();
+
+                        if (key.startsWith("cartItem")) {
+                            count++;
+                        }
+                    } 
+                        %>
+                        <a href="CartDetails?service=showcart" class="position-relative me-4 my-auto">
+                            <i class="fa fa-shopping-bag fa-2x"></i>
+                            <%if(count>0){%>
+                            <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;"><%=count%></span>
+                            <%}%>
+                        </a>
+                        <c:if test="${sessionScope.acc!=null}">  
+                            <div class="nav-item dropdown">
+                                <a href="#" class="nav-link" data-bs-toggle="dropdown" style="color: black;">
+                                    <i class="fas fa-user fa-2x" style="color: black;"></i>
+                                </a>
+                                <div class="dropdown-menu m-0 bg-secondary rounded-0">
+                                    <a href="userprofile?email=${sessionScope.acc.email}" class="dropdown-item">Thông tin</a>
+                                    <a href="MyOrder" class="dropdown-item">Đơn hàng</a>
+                                    <a href="orderCompelete" class="dropdown-item">Đánh giá của bạn</a>
+                                </div>
+                            </div>
+                        </c:if> 
+                        <c:if test="${sessionScope.acc==null}"> 
+                            <a href="login" class="nav-link" style="color: black;">
+                                <i class="fas fa-user fa-2x" style="color: black;"></i>
+                            </a>
+                        </c:if>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <!-- Navbar End -->
 
 
     <!-- Modal Search Start -->
@@ -287,11 +287,18 @@
                                                     <fmt:setLocale value="vi_VN" />
                                                     <div class="d-flex mb-2">
                                                         <a class="text-dark fs-5 fw-bold mb-0" href="product-details?id=${special.product_id}">
-                                                            <span style="text-decoration: line-through; opacity: 0.6; font-style: italic;">
-                                                                <fmt:formatNumber value="${special.price}" type="currency" currencySymbol="₫" />
-                                                            </span>
-                                                            &nbsp;
-                                                            <fmt:formatNumber value="${special.price - (special.price * (special.discount / 100))}" type="currency" currencySymbol="₫" />
+                                                            <c:choose>
+                                                                <c:when test="${p.discount > 0}">
+                                                                    <span style="text-decoration: line-through; opacity: 0.6; font-style: italic;">
+                                                                        <fmt:formatNumber value="${special.price}" type="currency" currencySymbol="₫" />
+                                                                    </span>
+                                                                    &nbsp;
+                                                                    <fmt:formatNumber value="${special.price - (special.price * (special.discount / 100))}" type="currency" currencySymbol="₫" />
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                                    <fmt:formatNumber value="${special.price}" type="currency" currencySymbol="₫" />
+                                                                </c:otherwise>
+                                                            </c:choose>
                                                         </a>
                                                     </div>
                                                 </div>

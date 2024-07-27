@@ -62,10 +62,12 @@ public class SaleManagerController extends HttpServlet {
                     req.setAttribute("errorMessageFilter", errorMessage);
                     products = (new ProductDAO()).findAll();
                     req.setAttribute("listAllProduct", products);
-                } else {
-                    if (products == null || products.isEmpty()) {
-                        req.setAttribute("errorMessageFilter", "Không có sản phẩm nào trong khoảng giá");
+                } 
+                else if (products == null || products.isEmpty()) {
+                        req.setAttribute("errorMessageFilter", "Giá trị không hợp lệ. Vui lòng nhập giá sản phẩm trong khoảng hợp lệ.");
                     }
+                else{
+                    req.setAttribute("errorMessageFilter", "Không có sản phẩm nào trong khoảng giá.");
                 }
 
                 req.setAttribute("priceFrom", priceFrom);

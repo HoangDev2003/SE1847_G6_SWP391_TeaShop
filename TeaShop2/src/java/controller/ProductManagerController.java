@@ -6,12 +6,14 @@ package controller;
 
 import dal.CategoryDAO;
 import dal.ProductDAO;
+import entity.Accounts;
 import entity.Category;
 import entity.Product;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
@@ -63,18 +65,20 @@ public class ProductManagerController extends HttpServlet {
                     req.setAttribute("errorMessageFilter", errorMessage);
                     products = (new ProductDAO()).findAll();
                     req.setAttribute("listAllProduct", products);
-                } else {
-                    if (products == null || products.isEmpty()) {
-                        req.setAttribute("errorMessageFilter", "Không có sản phẩm nào trong khoảng giá");                     
-                    }                
+                } 
+                else if (products == null || products.isEmpty()) {
+                        req.setAttribute("errorMessageFilter", "Giá trị không hợp lệ. Vui lòng nhập giá sản phẩm trong khoảng hợp lệ.");
+                    }
+                else{
+                    req.setAttribute("errorMessageFilter", "Không có sản phẩm nào trong khoảng giá.");
                 }
-                
+
                 req.setAttribute("priceFrom", priceFrom);
                 req.setAttribute("priceTo", priceTo);
                 req.setAttribute("showSearchProduct", "Yes");
             } catch (NumberFormatException e) {
-                req.setAttribute("errorMessageFilter", "Giá trị không hợp lệ. Vui lòng nhập giá sản phẩm trong khoảng hợp lệ.");
-            } 
+                req.setAttribute("errorMessageFilter", "Không có sản phẩm nào trong khoảng giá.");
+            }
             req.setAttribute("showSearchProduct", "Yes");
             req.getRequestDispatcher("view/dashboard/admin/productManagement.jsp").forward(req, resp);
         }
@@ -88,4 +92,10 @@ public class ProductManagerController extends HttpServlet {
             req.getRequestDispatcher("view/dashboard/admin/UpdateProduct.jsp").forward(req, resp);
         }
     }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        
+    }
+
 }

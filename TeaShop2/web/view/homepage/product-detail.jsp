@@ -13,7 +13,7 @@
 
     <head>
         <meta charset="utf-8">
-        <title>Dreamy Coffee</title>
+        <title>Dreamy Tea Shop</title>
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
         <meta content="" name="Tìm kiếm bằng tên sản phẩm">
         <meta content="" name="description">
@@ -120,44 +120,44 @@
         <!-- Navbar End -->
 
 
-            <!-- Modal Search Start -->
-            <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-fullscreen">
-                    <div class="modal-content rounded-0">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Tìm kiếm bằng tên sản phẩm</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body d-flex align-items-center">
-                            <div class="input-group w-75 mx-auto d-flex">
-                                <input type="search" class="form-control p-3" placeholder="Tìm kiếm bằng tên sản phẩm" aria-describedby="search-icon-1">
-                                <span id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></span>
-                            </div>
+        <!-- Modal Search Start -->
+        <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-fullscreen">
+                <div class="modal-content rounded-0">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Tìm kiếm bằng tên sản phẩm</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body d-flex align-items-center">
+                        <div class="input-group w-75 mx-auto d-flex">
+                            <input type="search" class="form-control p-3" placeholder="Tìm kiếm bằng tên sản phẩm" aria-describedby="search-icon-1">
+                            <span id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></span>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- Modal Search End -->
+        </div>
+        <!-- Modal Search End -->
 
 
-            <!-- Single Page Header start -->
-            <div class="container-fluid page-header bg-primary py-5">
-                <h1 class="text-center text-white display-6">Shop Details</h1>
+        <!-- Single Page Header start -->
+        <div class="container-fluid page-header bg-primary py-5">
+            <h1 class="text-center text-white display-6">Shop Details</h1>
 
-            </div>
-            <!-- Single Page Header End -->
+        </div>
+        <!-- Single Page Header End -->
 
 
-            <!-- Single Product Start -->
-            <div class="container-fluid py-5 mt-5">
-                <div class="container py-5">
-                    <div class="row g-4 mb-5">
-                        <div class="col-lg-8 col-xl-9">
-                            <div class="row g-4">
-                                <div class="col-lg-6">
-                                    <div class="border rounded">
-                                        <a href="#">
-                                            <img src="${product.image}" class="img-fluid rounded" alt="Image">
+        <!-- Single Product Start -->
+        <div class="container-fluid py-5 mt-5">
+            <div class="container py-5">
+                <div class="row g-4 mb-5">
+                    <div class="col-lg-8 col-xl-9">
+                        <div class="row g-4">
+                            <div class="col-lg-6">
+                                <div class="border rounded">
+                                    <a href="#">
+                                        <img src="${product.image}" class="img-fluid rounded" alt="Image">
                                     </a>
                                 </div>
                             </div>
@@ -305,11 +305,19 @@
                                             <div class="d-flex mb-2">
                                                 <fmt:setLocale value="vi_VN" />
                                                 <a class="text-dark fs-5 fw-bold mb-0" href="product-details?id=${special.product_id}">
-                                                    <span style="text-decoration: line-through; opacity: 0.6; font-style: italic;">
-                                                        <fmt:formatNumber value="${special.price}" type="currency" currencySymbol="₫" />
-                                                    </span>
-                                                    &nbsp;
-                                                    <fmt:formatNumber value="${special.price - (special.price * (special.discount / 100))}" type="currency" currencySymbol="₫" />
+                                                    <c:choose>
+                                                        <c:when test="${p.discount > 0}">
+                                                            <span style="text-decoration: line-through; opacity: 0.6; font-style: italic;">
+                                                                <fmt:formatNumber value="${special.price}" type="currency" currencySymbol="₫" />
+                                                            </span>
+                                                            &nbsp;
+                                                            <fmt:formatNumber value="${special.price - (special.price * (special.discount / 100))}" type="currency" currencySymbol="₫" />
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <fmt:formatNumber value="${special.price}" type="currency" currencySymbol="₫" />
+                                                        </c:otherwise>
+
+                                                    </c:choose>
                                                 </a>
                                             </div>
                                         </div>
