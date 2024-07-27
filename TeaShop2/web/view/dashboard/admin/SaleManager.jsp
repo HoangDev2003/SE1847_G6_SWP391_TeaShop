@@ -47,7 +47,6 @@
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="#!">Cài đặt</a></li>
                         <li><a class="dropdown-item" href="#!">Hồ sơ</a></li>
-                        <li><hr class="dropdown-divider" /></li>
                         <li><a class="dropdown-item" href="#!">Đăng xuất</a></li>
                     </ul>
                 </li>
@@ -78,10 +77,8 @@
 
                         <c:if test="${not empty listAllProduct}">
                             <div class="card mb-4">
-
                                 <div class="card-header">
                                     <h6><ion-icon name="filter-outline"></ion-icon> Lọc theo giá sản phẩm</h6>
-
                                     <form action="saleManager" method="get">
                                         <input type="hidden" name="service" value="searchByPriceRange" />
                                         <label for="priceFrom"></label>
@@ -133,8 +130,8 @@
                             </h5>
                         </c:if>
                         <c:if test="${productUpdate ne null}">
-                            <form action="saleManager" id="updatedDiscount">
-                                <input type="hidden" name="service" value="sendUpdateDetail"/>
+                            <form action="saleManager" id="updatedDiscount" method="get">
+                                <input type="hidden" name="service" value="sendUpdateDetail" />
                                 <div class="card mb-4">
                                     <div class="card-discount">
                                         <table id="datatables-Discount">
@@ -163,7 +160,6 @@
                                 </div>
                             </form>
                         </c:if>    
-
                 </main>
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid px-4">

@@ -112,7 +112,7 @@ public class SaleManagerController extends HttpServlet {
 
             Product product = (new ProductDAO()).getProductsById(id);
             product.setDiscount(discount);
-            (new ProductDAO()).updateProduct(product, id);
+            (new ProductDAO()).updateDiscount(product, id);
             req.setAttribute("UpdateDone", "Chỉnh sửa giảm giá cho sản phẩm (ID = " + id + ") thành công!\nClick quản lý Sale để xem những thay đổi mới nhất");
             req.getRequestDispatcher("view/dashboard/admin/SaleManager.jsp").forward(req, resp);
         }
