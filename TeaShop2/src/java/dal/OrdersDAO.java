@@ -935,4 +935,32 @@ public class OrdersDAO extends DBContext {
         }
         return ordersList; // Return the list of orders
     }
+    public int findTotalRecordByStatusIdAndOrderId(int statusOrder, String orderId) {
+        int total = 0;
+        //ket noi duoc voi database
+        connection = getConnection();
+        //co cau lenh de goi xuong database
+        String sql = "SELECT count(*)\n"
+                + "  FROM [dbo].[Orders]\n"
+                + "  where status_id = ?";
+        try {
+            //Tạo đối tượng PrepareStatement
+            PreparedStatement statement = connection.prepareStatement(sql);
+            // Set the parameters
+
+            statement.setInt(1, statusOrder);
+            //thuc thi cau lenh o tren => tra ve ket qua
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                total = resultSet.getInt(1);
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("Error " + ex.getMessage());
+
+        }
+
+        return total;
+    }
 }
