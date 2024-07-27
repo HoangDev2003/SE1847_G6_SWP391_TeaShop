@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
+<!DOCTYPE html><%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <html lang="en-US" dir="ltr">
 
     <head>
@@ -28,7 +29,7 @@
         <script src="${pageContext.request.contextPath}/assets/js/config.js"></script>
         <script src="${pageContext.request.contextPath}/vendors/overlayscrollbars/OverlayScrollbars.min.js"></script>
 
-
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRDeE++r8/CFALvR8DRQ/DFy0J7ofzy1YFPGhy5X+" crossorigin="anonymous">
         <!-- ===============================================-->
         <!--    Stylesheets-->
         <!-- ===============================================-->
@@ -88,6 +89,26 @@
                 white-space: normal; /* Cho phép xuống dòng */
             }
         </style>
+        <style>
+            @media (max-width: 576px) {
+                .card-header h5 {
+                    font-size: 1.5rem; /* Tăng kích thước chữ cho dễ nhìn */
+                }
+                .card-header .btn-group {
+                    flex-wrap: wrap;
+                    justify-content: center; /* Canh giữa các nút */
+                }
+                .card-header .btn-group .btn {
+                    flex: 1 1 auto;
+                    margin: 0.25rem; /* Thêm khoảng cách ngang giữa các nút */
+                }
+            }
+            @media (min-width: 576px) {
+                .card-header h5 {
+                    font-size: 2rem; /* Tăng kích thước chữ trên màn hình lớn */
+                }
+            }
+        </style>
     </head>
 
 
@@ -120,17 +141,24 @@
                 <div class="content">
                     <jsp:include page="../../common/dashboard/shipper/topbar.jsp"></jsp:include>
                         <div class="card mb-3" id="ordersTable" data-list='{"valueNames":["order","status","amount"],"page":10,"pagination":true}'>
-                            <div class="card-header">
-                                <div class="row flex-between-center">
-                                    <div class="col-4 col-sm-auto d-flex align-items-center pe-0">
-                                        <h5 class="fs-0 mb-0 text-nowrap py-2 py-xl-0">Đơn hàng</h5>
-                                    </div>
-                                    <div class="col-8 col-sm-auto ms-auto text-end ps-0">
-                                        <div class="d-none" id="orders-bulk-actions"></div>
-                                        <div id="orders-actions">
-                                            <button class="btn ${statusOrder == 3 ? 'btn-primary' : 'btn'}" onclick="filterOrders(3)">Chờ giao hàng</button>
-                                        <button class="btn ${statusOrder == 4 ? 'btn-primary' : 'btn'}" onclick="filterOrders(4)">Hoàn thành</button>
-                                        <button class="btn ${statusOrder == 5 ? 'btn-primary' : 'btn'}" onclick="filterOrders(5)">Đơn hàng bị hủy</button>
+                            <div class="card mb-3" id="ordersTable" data-list='{"valueNames":["order","status","amount"],"page":10,"pagination":true}'>
+                                <div class="card-header text-center">
+                                    <div class="row flex-column align-items-start">
+                                        <h5 class="fs-2 mb-3 text-nowrap py-2 py-xl-0">Đơn hàng</h5>
+                                        <form action="ship" method="GET">
+                                            <div class="input-group mb-3">
+                                                <select class="form-select" name="searchType" required>
+                                                    <option value="searchByOrderId">Tìm theo ID đơn hàng</option>
+                                                    <option value="searchByUsername">Tìm theo tên khách hàng</option>
+                                                </select>
+                                                <input type="text" class="form-control" name="keyword" placeholder="Nhập từ khóa tìm kiếm...">
+                                                <button class="btn btn-outline-secondary" type="submit" onclick="return this.closest('form').submit()">Tìm kiếm</button>
+                                            </div>
+                                        </form>
+                                        <div class="btn-group w-100 d-flex justify-content-center">
+                                            <button class="btn ${statusOrder == 3 ? 'btn-primary' : 'btn-outline-primary'}" onclick="filterOrders(3)">Chờ giao hàng</button>
+                                        <button class="btn ${statusOrder == 4 ? 'btn-primary' : 'btn-outline-primary'}" onclick="filterOrders(4)">Hoàn thành</button>
+                                        <button class="btn ${statusOrder == 5 ? 'btn-primary' : 'btn-outline-primary'}" onclick="filterOrders(5)">Đơn hàng bị hủy</button>
                                     </div>
                                 </div>
                                 <script>
@@ -145,6 +173,12 @@
                                 <div class="alert alert-danger" role="alert">
                                     ${errorMessage}
                                 </div>
+                            </c:if>
+                            <c:if test="${not empty sessionScope.successMessage}">
+                                <div class="alert alert-success" role="alert">
+                                    ${sessionScope.successMessage}
+                                </div>
+                                <c:set var="successMessage" value="${null}" scope="session"/>
                             </c:if>
                             <div class="table-responsive scrollbar">
                                 <table class="table table-sm table-striped fs--1 mb-0 overflow-hidden">
@@ -176,7 +210,7 @@
                                                             <div>${lo.formattedOrderDate}</div>
                                                             <div>${lo.phone_number}</div>
                                                             <div class="address">${lo.address}</div>
-                                                            <div>${lo.total_amount} đ</div>
+                                                            <p>Tổng tiền hóa đơn: <fmt:formatNumber value="${lo.total_amount}" type="number" groupingUsed="true"/> đồng</p>
                                                         </td>
                                                         <td class="py-2 align-middle text-center fs-0 white-space-nowrap">
                                                             <c:choose>
@@ -234,27 +268,50 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <script>
-                    function confirmUpdateStatus(orderId, statusId) {
-                        var form = document.getElementById("updateStatusForm_" + orderId + "_" + statusId);
-                        if (statusId == 4) { // Giả sử 4 là id của trạng thái "Hoàn thành"
-                            if (confirm("Bạn có chắc chắn muốn cập nhật trạng thái đơn hàng này thành Hoàn thành?")) {
+                    <div class="card-footer">
+                        <div class="card-footer">
+                            <ul class="pagination d-flex align-items-center justify-content-center">
+                                <c:forEach begin="1" end="${pageControl.totalPage}" var="pageNumber">
+                                    <c:set var="currentPage" value="${pageControl.page}" />
+                                    <c:choose>
+                                        <c:when test="${currentPage eq pageNumber}">
+                                            <li class="page-item active mx-1">
+                                                <a href="#" class="page-link rounded">${pageNumber}</a>
+                                            </li>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <li class="page-item mx-1">
+                                                <a href="${pageControl.urlPattern}page=${pageNumber}" class="page-link rounded">${pageNumber}</a>
+                                            </li>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </c:forEach>
+                            </ul>
+                        </div>
+
+                        <!-- Link to Bootstrap CSS -->
+                        <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRDeE++r8/CFALvR8DRQ/DFy0J7ofzy1YFPGhy5X+" crossorigin="anonymous">
+                    </div>
+                    <script>
+                        function confirmUpdateStatus(orderId, statusId) {
+                            var form = document.getElementById("updateStatusForm_" + orderId + "_" + statusId);
+                            if (statusId == 4) { // Giả sử 4 là id của trạng thái "Hoàn thành"
+                                if (confirm("Bạn có chắc chắn muốn cập nhật trạng thái đơn hàng này thành Hoàn thành?")) {
+                                    form.submit();
+                                }
+                            } else if (statusId == 5) { // Giả sử 5 là id của trạng thái "Đơn hàng bị hủy"
+                                if (confirm("Bạn có chắc chắn muốn hủy đơn hàng này?")) {
+                                    form.submit();
+                                }
+                            } else {
                                 form.submit();
                             }
-                        } else if (statusId == 5) { // Giả sử 5 là id của trạng thái "Đơn hàng bị hủy"
-                            if (confirm("Bạn có chắc chắn muốn hủy đơn hàng này?")) {
-                                form.submit();
-                            }
-                        } else {
-                            form.submit();
                         }
-                    }
-                </script>
+                    </script>
 
 
 
-            </div>
+                </div>
         </main>
         <!-- ===============================================-->
         <!--    End of Main Content-->
