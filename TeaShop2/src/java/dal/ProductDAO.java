@@ -125,7 +125,20 @@ public class ProductDAO extends DBContext {
         }
         return list;
     }
-
+    
+    public void updateSalesNumber(int productId, int quantity) {
+        connection = getConnection();
+        PreparedStatement stm = null;
+        String sql = "UPDATE Product SET sales_numbers = sales_numbers + ? WHERE product_id = ?";
+        try {
+             stm = connection.prepareStatement(sql);
+            stm.setInt(1, quantity);
+            stm.setInt(2, productId);
+            stm.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
     public List<Product> findProductByName(String keyword, int page, String sort) {
         List<Product> list = new ArrayList<>();
         Category category = null;
