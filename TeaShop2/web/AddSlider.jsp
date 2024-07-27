@@ -215,7 +215,7 @@
             
             </script>
         <script type="text/javascript">
-            function validateForm() {
+function validateForm() {
   // Get the input values
   const nameInput = document.getElementById('name');
   const imageInput = document.getElementById('image');
@@ -229,6 +229,9 @@
   const nameValue = nameInput.value.trim();
   if (nameValue.length === 0) {
     showError('nameError', 'Tên không được để trống');
+    return false;
+  } else if (/^\s*$/.test(nameValue)) {
+    showError('nameError', 'Tên không được chỉ chứa khoảng trắng');
     return false;
   } else if (nameValue.match(/[^a-zA-Z0-9\s]/g)) {
     showError('nameError', 'Tên chỉ được chứa chữ cái, số và dấu cách');
@@ -263,7 +266,7 @@
   if (urlValue.length === 0) {
     showError('urlError', 'URL không được để trống');
     return false;
-  } else if (!urlValue.match(/^(https?:\/\/)(www.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+~#?&//=]*)$/)) {
+  } else if (!urlValue.match(/^(https?:\/\/)(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+~#?&//=]*)$/)) {
     showError('urlError', 'URL không hợp lệ');
     return false;
   }
@@ -285,8 +288,8 @@ function showError(errorId, errorMessage) {
   const errorElement = document.getElementById(errorId);
   errorElement.textContent = errorMessage;
 }
+</script>
 
-        </script>
     </body>
 </html>
 
