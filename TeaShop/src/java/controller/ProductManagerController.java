@@ -59,25 +59,27 @@ public class ProductManagerController extends HttpServlet {
             try {
                 int priceFrom = Integer.parseInt(req.getParameter("priceFrom"));
                 int priceTo = Integer.parseInt(req.getParameter("priceTo"));
-                List<Product> products = (new ProductDAO()).getProductByPriceRange(priceFrom, priceTo);
+
+                // Kiểm tra khoảng giá nhập vào
                 if (priceFrom <= 0 || priceTo <= 0 || priceFrom >= priceTo) {
-                    String errorMessage = "Khoảng giá không hợp lệ. Đảm bảo rằng 'khoảng giá bắt đầu' nhỏ hơn 'khoảng giá kết thúc' muốn lọc và cả hai đều lớn hơn 0.";
+                    String errorMessage = "Khoảng giá không hợp lệ. Đảm bảo rằng 'khoảng giá bắt đầu' nhỏ hơn 'khoảng giá kết thúc' và cả hai đều lớn hơn 0.";
                     req.setAttribute("errorMessageFilter", errorMessage);
-                    products = (new ProductDAO()).findAll();
-                    req.setAttribute("listAllProduct", products);
-                } 
-                else if (products == null || products.isEmpty()) {
-                        req.setAttribute("errorMessageFilter", "Giá trị không hợp lệ. Vui lòng nhập giá sản phẩm trong khoảng hợp lệ.");
+                } else {
+                    List<Product> products = (new ProductDAO()).getProductByPriceRange(priceFrom, priceTo);
+
+                    // Kiểm tra xem có sản phẩm nào trong khoảng giá hay không
+                    if (products == null || products.isEmpty()) {
+                        req.setAttribute("errorMessageFilter", "Không có sản phẩm nào trong khoảng giá.");
+                    } else {
+                        req.setAttribute("listAllProduct", products); // Gán danh sách sản phẩm tìm được vào request
                     }
-                else{
-                    req.setAttribute("errorMessageFilter", "Không có sản phẩm nào trong khoảng giá.");
                 }
 
                 req.setAttribute("priceFrom", priceFrom);
                 req.setAttribute("priceTo", priceTo);
                 req.setAttribute("showSearchProduct", "Yes");
             } catch (NumberFormatException e) {
-                req.setAttribute("errorMessageFilter", "Không có sản phẩm nào trong khoảng giá.");
+                req.setAttribute("errorMessageFilter", "Giá trị không hợp lệ. Vui lòng nhập số nguyên dương cho khoảng giá.");
             }
             req.setAttribute("showSearchProduct", "Yes");
             req.getRequestDispatcher("view/dashboard/admin/productManagement.jsp").forward(req, resp);
@@ -95,7 +97,7 @@ public class ProductManagerController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        
+
     }
 
 }
