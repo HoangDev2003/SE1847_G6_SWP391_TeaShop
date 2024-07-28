@@ -39,7 +39,7 @@
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="home">Home</a></li>                    
                         <li><hr class="dropdown-divider" /></li>
-                        <li><a class="dropdown-item" href="logout">Logout</a></li>
+                        <li><a class="dropdown-item" href="logout">Đăng xuất</a></li>
                     </ul>
                 </li>
             </ul>
@@ -78,6 +78,9 @@
                                                 </c:forEach>
                                             </select>
                                             <input type="submit" value="Tìm kiếm" class="filter-submit"/>
+                                              <c:if test="${not empty error}">
+                                                <b class="filter-select">${error}</b>
+                                            </c:if>
                                         </div>
                                     </form>                             
                                 </div>

@@ -16,7 +16,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Admin Management</title>
+        <title>Staff Management</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="${pageContext.request.contextPath}/css/admin.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -24,7 +24,7 @@
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
 
-            <a class="navbar-brand ps-3" href="productmanager">Quản lý Sale</a>
+            <a class="navbar-brand ps-3" href="saleManager">Quản lý Sale</a>
 
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
 
@@ -45,10 +45,9 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#!">Cài đặt</a></li>
-                        <li><a class="dropdown-item" href="#!">Hồ sơ</a></li>
+                        <li><a class="dropdown-item" href="home">Home</a></li>                    
                         <li><hr class="dropdown-divider" /></li>
-                        <li><a class="dropdown-item" href="#!">Đăng xuất</a></li>
+                        <li><a class="dropdown-item" href="logout">Đăng xuất</a></li>
                     </ul>
                 </li>
             </ul>
@@ -69,94 +68,98 @@
                                 ${notFoundProduct}
                             </h4>
                         </c:if>
-                        
+                        <c:if test="${errorMessageFilter ne null}">
+                            <h5 class="font-weight-semi-bold text-uppercase mb-3 text-center text-danger">
+                                ${errorMessageFilter}
+                            </h5>
+                        </c:if>    
 
-                            <c:if test="${not empty listAllProduct}">
+
+                        <c:if test="${not empty listAllProduct}">
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <h6><ion-icon name="filter-outline"></ion-icon> Lọc theo giá sản phẩm</h6>
+                                    <form action="saleManager" method="get">
+                                        <input type="hidden" name="service" value="searchByPriceRange" />
+                                        <label for="priceFrom"></label>
+                                        <input type="number" id="priceFrom" name="priceFrom" step="1" min="1" placeholder="Từ" required />
+                                        <label for="priceTo">~</label>
+                                        <input type="number" id="priceTo" name="priceTo" step="1" min="1" placeholder="Đến" required />
+                                        <button class="filerByPrice" type="submit">Tìm kiếm</button>
+                                    </form>
+
+                                </div>
+                                <div class="card-body">
+                                    <table id="datatablesSimple" >
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Tên sản phẩm</th>
+                                                <th>Danh mục</th>
+                                                <th>Giá</th>
+                                                <th>Giảm giá (%)</th>
+                                                <th>Chỉnh sửa</th> 
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <c:forEach items="${listAllProduct}" var="product">
+                                                <tr>
+                                                    <td>${product.product_id}</td>
+                                                    <td>${product.product_name}</td>
+                                                    <td>${product.category.category_name}</td>
+                                                    <fmt:setLocale value="vi_VN" />
+                                                    <td><fmt:formatNumber value="${product.price}" type="currency" currencySymbol="₫"/></td>
+                                                    <td>${product.discount}</td>
+                                                    <td><a href="saleManager?service=requestUpdate&productId=${product.product_id}"><ion-icon name="create-outline"></ion-icon></a></td>
+                                                </tr>  
+                                            </c:forEach>
+                                        </tbody>                                   
+                                    </table>
+                                </div>
+                            </div>
+                        </c:if>
+                        <c:if test="${UpdateDone ne null}">
+                            <h3 class="font-weight-semi-bold text-uppercase mb-3 text-center">
+                                ${UpdateDone}
+                            </h3>
+                        </c:if>
+
+                        <c:if test="${errorMessage ne null}">
+                            <h5 class="font-weight-semi-bold text-uppercase mb-3 text-center text-danger">
+                                ${errorMessage}
+                            </h5>
+                        </c:if>
+                        <c:if test="${productUpdate ne null}">
+                            <form action="saleManager" id="updatedDiscount" method="get">
+                                <input type="hidden" name="service" value="sendUpdateDetail" />
                                 <div class="card mb-4">
-                                    
-                                    <div class="card-header">
-                                        <h6><ion-icon name="filter-outline"></ion-icon> Lọc theo giá sản phẩm</h6>
-                                        <form action="productmanager" method="get">
-                                            <input type="hidden" name="service" value="searchByPriceRange" />
-                                            <label for="priceFrom">Mức giá</label>
-                                            <input type="number" id="priceFrom" name="priceFrom" step="1" min="1" placeholder="Từ" required />
-                                            <label for="priceTo">~</label>
-                                            <input type="number" id="priceTo" name="priceTo" step="1" min="1" placeholder="Đến" required />
-                                            <button class="filerByPrice" type="submit">Tìm kiếm</button>
-                                        </form>
-                                    </div>
-                                    <div class="card-body">
-                                        <table id="datatablesSimple" >
+                                    <div class="card-discount">
+                                        <table id="datatables-Discount">
                                             <thead>
                                                 <tr>
-                                                    <th>ID</th>
-                                                    <th>Tên sản phẩm</th>
-                                                    <th>Danh mục</th>
-                                                    <th>Giá</th>
+                                                    <th> ID</th>
                                                     <th>Giảm giá (%)</th>
-                                                    <th>Chỉnh sửa</th> 
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <c:forEach items="${listAllProduct}" var="product">
-                                                    <tr>
-                                                        <td>${product.product_id}</td>
-                                                        <td>${product.product_name}</td>
-                                                        <td>${product.category.category_name}</td>
-                                                        <fmt:setLocale value="vi_VN" />
-                                                        <td><fmt:formatNumber value="${product.price}" type="currency" currencySymbol="₫"/></td>
-                                                        <td>${product.discount}</td>
-                                                        <td><a href="saleManager?service=requestUpdate&productId=${product.product_id}"><ion-icon name="create-outline"></ion-icon></a></td>
-                                                    </tr>  
-                                                </c:forEach>
-                                            </tbody>                                   
+                                                <tr>
+                                                    <td><input type="number" name="id" style="height: 35px; width: 60px" value="${productUpdate.product_id}" readonly />
+                                                    </td>
+                                                    <td><input type="number" name="discount" size="50" style="height: 35px" value="${param.discount != null ? param.discount : productUpdate.discount}"/>
+                                                </tr>  
+                                            </tbody>         
                                         </table>
                                     </div>
+
+                                    <button
+                                        class="button-update"
+                                        style="transform: translateX(70vw) ; width: 10%"
+                                        onclick="document.getElementById('updatedDiscount').submit();">
+                                        Chỉnh sửa
+                                    </button>                                
                                 </div>
-                            </c:if>
-
-                            <c:if test="${UpdateDone ne null}">
-                                <h3 class="font-weight-semi-bold text-uppercase mb-3 text-center">
-                                    ${UpdateDone}
-                                </h3>
-                            </c:if>
-                            <c:if test="${errorMessage ne null}">
-                                <h5 class="font-weight-semi-bold text-uppercase mb-3 text-center text-danger">
-                                    ${errorMessage}
-                                </h5>
-                            </c:if>
-                            <c:if test="${productUpdate ne null}">
-                                <form action="saleManager" id="updatedDiscount">
-                                    <input type="hidden" name="service" value="sendUpdateDetail"/>
-                                    <div class="card mb-4">
-                                        <div class="card-discount">
-                                            <table id="datatables-Discount">
-                                                <thead>
-                                                    <tr>
-                                                        <th> ID</th>
-                                                        <th>Giảm giá (%)</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td><input type="number" name="id" style="height: 35px; width: 60px" value="${productUpdate.product_id}" readonly />
-                                                        </td>
-                                                        <td><input type="number" name="discount" size="50" style="height: 35px" value="${param.discount != null ? param.discount : productUpdate.discount}"/>
-                                                    </tr>  
-                                                </tbody>         
-                                            </table>
-                                        </div>
-
-                                        <button
-                                            class="button-update"
-                                            style="transform: translateX(70vw) ; width: 10%"
-                                            onclick="document.getElementById('updatedDiscount').submit();">
-                                            Chỉnh sửa
-                                        </button>                                
-                                    </div>
-                                </form>
-                            </c:if>    
-                                           
+                            </form>
+                        </c:if>    
                 </main>
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid px-4">

@@ -79,6 +79,7 @@ public class ShopController extends HttpServlet {
         String requestURL = request.getRequestURI().toString();
 
         int totalRecord = 0;
+
         switch (actionSearch) {
             case "category":
                 String categoryId = request.getParameter("category_id");
@@ -94,24 +95,45 @@ public class ShopController extends HttpServlet {
                 break;
             case "searchByPriceRange":
                 try {
-                int priceFrom = Integer.parseInt(request.getParameter("priceFrom"));
-                int priceTo = Integer.parseInt(request.getParameter("priceTo"));
+                    // Get price range from request
+                    String priceFromStr = request.getParameter("priceFrom");
+                    String priceToStr = request.getParameter("priceTo");
 
-                if (priceFrom < 0 || priceTo < 0 || priceFrom > priceTo) {
+                    // Set default values
+                    int priceFrom = 0;
+                    int priceTo = 500000;
+
+                    // Check and set values for priceFrom
+                    if (priceFromStr != null && !priceFromStr.isEmpty()) {
+                        priceFrom = Integer.parseInt(priceFromStr);
+                    }
+
+                    // Check and set values for priceTo
+                    if (priceToStr != null && !priceToStr.isEmpty()) {
+                        priceTo = Integer.parseInt(priceToStr);
+                    }
+
+                    // Handle cases where both values are null
+                    if (priceFromStr == null && priceToStr == null) {
+                        request.setAttribute("priceErrorMessage", "Vui lòng nhập khoảng giá.");
+                        totalRecord = productDAO.findTotalRecord();
+                        listProduct = productDAO.findByPage(page, sort);
+                        pageControl.setUrlPattern(requestURL + "?sort=" + sort + "&");
+                    } else if (priceFrom < 0 || priceTo < 0 || priceFrom > priceTo) {
+                        request.setAttribute("priceErrorMessage", "Vui lòng điền khoảng giá phù hợp.");
+                        totalRecord = productDAO.findTotalRecord();
+                        listProduct = productDAO.findByPage(page, sort);
+                        pageControl.setUrlPattern(requestURL + "?sort=" + sort + "&");
+                    } else {
+                        totalRecord = productDAO.findTotalRecordByPriceRange(priceFrom, priceTo);
+                        listProduct = productDAO.findProductByPriceRange(priceFrom, priceTo, page, sort);
+                        pageControl.setUrlPattern(requestURL + "?search=searchByPriceRange&priceFrom=" + priceFrom + "&priceTo=" + priceTo + "&sort=" + sort + "&");
+                    }
+                } catch (NumberFormatException e) {
                     request.setAttribute("priceErrorMessage", "Vui lòng điền khoảng giá phù hợp.");
                     totalRecord = productDAO.findTotalRecord();
                     listProduct = productDAO.findByPage(page, sort);
                     pageControl.setUrlPattern(requestURL + "?sort=" + sort + "&");
-                } else {
-                    totalRecord = productDAO.findTotalRecordByPriceRange(priceFrom, priceTo);
-                    listProduct = productDAO.findProductByPriceRange(priceFrom, priceTo, page, sort);
-                    pageControl.setUrlPattern(requestURL + "?search=searchByPriceRange&priceFrom=" + priceFrom + "&priceTo=" + priceTo + "&sort=" + sort + "&");
-                }
-                } catch (NumberFormatException e) {
-                request.setAttribute("priceErrorMessage", "Vui lòng điền khoảng giá phù hợp.");
-                totalRecord = productDAO.findTotalRecord();
-                listProduct = productDAO.findByPage(page, sort);
-                pageControl.setUrlPattern(requestURL + "?sort=" + sort + "&");
                 }
                 break;
             default:
@@ -120,14 +142,12 @@ public class ShopController extends HttpServlet {
                 pageControl.setUrlPattern(requestURL + "?sort=" + sort + "&");
         }
 
-        //total page
-        //6 is total record/page
-        int totalPage = (totalRecord % 6) == 0
-                ? (totalRecord / 6)
-                : (totalRecord / 6) + 1;
+        // Calculate total pages
+        int totalPage = (totalRecord % 6) == 0 ? (totalRecord / 6) : (totalRecord / 6) + 1;
         pageControl.setPage(page);
         pageControl.setTotalPage(totalPage);
         pageControl.setTotalRecord(totalRecord);
+
         return listProduct;
     }
 }

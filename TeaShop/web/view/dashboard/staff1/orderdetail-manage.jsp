@@ -160,7 +160,7 @@
                                                     <tr>
                                                         <th class="border-0">Sản phẩm</th>
                                                         <th class="border-0 text-center">Số lượng</th>
-                                                        <th class="border-0 text-end">Giá</th>
+                                                        <th class="border-0 text-end">Giá sản phẩm</th>
                                                         <th class="border-0 text-end">Số tiền</th>
                                                         <th class="border-0 text-center">Ảnh trước khi giao</th>
                                                         <th class="border-0 text-center">Ảnh sau khi giao</th>
@@ -171,14 +171,30 @@
                                                         <tr class="border-200">
                                                             <td class="align-middle">
                                                                 <h6 class="mb-0 text-nowrap">${lod.product.product_name}</h6>
-                                                                <p class="mb-0">none topping</p>
+                                                                <p class="mb-0">
+                                                                    <c:set var="toppingsList" value="" />
+                                                                    <c:forEach items="${lod.topping}" var="topping" varStatus="status">
+                                                                        <c:set var="toppingsList" value="${toppingsList}${topping.topping_name}${status.last ? '' : ', '}" />
+                                                                    </c:forEach>
+                                                                    <c:choose>
+                                                                        <c:when test="${empty toppingsList}">
+                                                                            Không có
+                                                                        </c:when>
+                                                                        <c:otherwise>
+                                                                            ${toppingsList}
+                                                                        </c:otherwise>
+                                                                    </c:choose>
+                                                                </p>
                                                             </td>
                                                             <td class="align-middle text-center">${lod.quantity}</td>
-                                                            <td class="align-middle text-end">${lod.product.price} đ</td>
+                                                            <td class="align-middle text-end"><fmt:formatNumber value="${lod.product.price}" type="number" groupingUsed="true"/> đồng</td>
                                                             <td class="align-middle text-end">
-                                                                <c:set var="itemTotal" value="${lod.quantity * lod.product.price}" />
+                                                                <c:set var="toppingCount" value="${fn:length(lod.topping)}" />
+                                                                <c:set var="toppingTotal" value="${toppingCount * 6000}" />
+                                                                <c:set var="itemTotal" value="${lod.quantity * (lod.product.price + toppingTotal)}" />
                                                                 <c:set var="totalAmount" value="${totalAmount + itemTotal}" />
-                                                                ${itemTotal} đ
+                                                                <fmt:formatNumber value="${itemTotal}" type="number" groupingUsed="true"/> đồng
+                                                                
                                                             </td>
                                                             <td class="align-middle text-center">
                                                                 <form action="stafforderdetails" method="post" enctype="multipart/form-data" class="d-inline" onsubmit="return validateForm(this);">
@@ -199,10 +215,8 @@
                                                             <td class="align-middle text-end">
                                                                 <img src="${pageContext.request.contextPath}/${lod.image_after_ship}" class="img-fluid img-thumbnail" width="100" />
                                                             </td>
-
                                                         </tr>
                                                     </c:forEach>
-                                                </tbody>
 
                                                 <style>
                                                     .img-thumbnail {
@@ -218,8 +232,8 @@
                                             <div class="col-auto">
                                                 <table class="table table-sm table-borderless fs--1 text-end">
                                                     <tr>
-                                                        <th class="text-900">Tổng thanh toán:</th>
-                                                        <td class="fw-semi-bold">${totalAmount} đ</td>
+                                                        <th class="text-900">Tổng thanh toán: <fmt:formatNumber value="${orders.total_amount}" type="number" groupingUsed="true"/> đồng</th>
+
                                                     </tr>
                                                 </table>
                                             </div>

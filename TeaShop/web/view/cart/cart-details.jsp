@@ -58,7 +58,7 @@
                 <div class="d-flex justify-content-between">
                     <c:if test="${sessionScope.acc==null}">                                                                    
                         <div class="top-info ps-2">
-                            <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#" class="text-white">Lê Thái Tổ, Hàng Trống, Quận Hoàn Kiếm, Hà Nội</a></small>
+                            <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#" class="text-white">Đại học FPT Hà Nội</a></small>
                             <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i><a href="#" class="text-white">dreamycoffee@gmail.com</a></small>            
                         </div>
                         <div class="top-link pe-2">            
@@ -68,7 +68,7 @@
                     </c:if>
                     <c:if test="${sessionScope.acc!=null}">
                         <div class="top-info ps-2">
-                            <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#" class="text-white">Lê Thái Tổ, Hàng Trống, Quận Hoàn Kiếm, Hà Nội</a></small>
+                            <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#" class="text-white">Đại học FPT Hà Nội</a></small>
                             <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i><a href="#" class="text-white">dreamycoffee@gmail.com</a></small>            
                         </div>
                         <div class="top-link pe-2">            
@@ -183,11 +183,19 @@
                                                             <fmt:setLocale value="vi_VN" />
                                                             <div class="d-flex mb-2">
                                                                 <a class="text-dark fs-5 fw-bold mb-0" href="product-details?id=${special.product_id}">
-                                                                    <span style="text-decoration: line-through; opacity: 0.6; font-style: italic;">
-                                                                        <fmt:formatNumber value="${special.price}" type="currency" currencySymbol="₫" />
-                                                                    </span>
-                                                                    &nbsp;
-                                                                    <fmt:formatNumber value="${special.price - (special.price * (special.discount / 100))}" type="currency" currencySymbol="₫" />
+                                                                    <c:choose>
+                                                                        <c:when test="${p.discount > 0}">
+                                                                            <span style="text-decoration: line-through; opacity: 0.6; font-style: italic;">
+                                                                                <fmt:formatNumber value="${special.price}" type="currency" currencySymbol="₫" />
+                                                                            </span>
+                                                                            &nbsp;
+                                                                            <fmt:formatNumber value="${special.price - (special.price * (special.discount / 100))}" type="currency" currencySymbol="₫" />
+                                                                        </c:when>
+                                                                        <c:otherwise>
+                                                                            <fmt:formatNumber value="${special.price}" type="currency" currencySymbol="₫" />
+                                                                        </c:otherwise>
+
+                                                                    </c:choose>
                                                                 </a>
                                                             </div>
                                                         </div>

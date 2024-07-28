@@ -198,8 +198,9 @@
                         <h5 class="modal-title" id="feedbackModalLabel">Gửi Đánh Giá</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
+                    <form id="feedbackForm" method="get" action="feedback">
                     <div class="modal-body">
-                        <form id="feedbackForm" method="get" action="feedback">
+                        
                             <input type="hidden" name="product_id" id="product_id" value="">
                             <input type="hidden" name="order_details_id" id="order_details_id" value="">
                             <input type="hidden" name="account_id" value="${sessionScope.acc.account_id}">
@@ -210,11 +211,11 @@
                             <div class="mb-3">
                                 <label for="rating" class="form-label">Đánh giá bằng sao</label>
                                 <select class="form-select" id="rating" name="rating" required>
-                                    <option value="1">1 sao</option>
-                                    <option value="2">2 sao</option>
-                                    <option value="3">3 sao</option>
-                                    <option value="4">4 sao</option>
                                     <option value="5">5 sao</option>
+                                    <option value="4">4 sao</option>
+                                    <option value="3">3 sao</option>
+                                    <option value="2">2 sao</option>
+                                    <option value="1">1 sao</option>
                                 </select>
                             </div>
                     </div>

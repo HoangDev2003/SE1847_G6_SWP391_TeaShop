@@ -7,6 +7,7 @@ package controller;
 import dal.AccountDAO;
 import dal.AdminDAO;
 import entity.Accounts;
+import entity.EncodePassword;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -26,11 +27,7 @@ import java.util.HashMap;
  *
  * @author Huyen Tranq
  */
-@MultipartConfig(
-        fileSizeThreshold = 1024 * 1024 * 1,
-        maxFileSize = 1024 * 1024 * 10,
-        maxRequestSize = 1024 * 1024 * 50
-)
+@MultipartConfig
 public class UserProfileController extends HttpServlet {
 
     /**
@@ -142,16 +139,26 @@ public class UserProfileController extends HttpServlet {
                                         request.setAttribute("a", a);
                                         request.setAttribute("updateAvtFailed", "Cập nhật avatar thất bại");
                                     }
-
-                                    request.getRequestDispatcher("view/homepage/UserProfile.jsp").forward(request, response);
                                 } catch (IOException ex) {
                                     ex.printStackTrace();
+                                    request.setAttribute("a", a);
+                                    request.setAttribute("updateAvtFailed", "Cập nhật avatar thất bại do lỗi");
                                 }
+                            } else {
+                                request.setAttribute("a", a);
+                                request.setAttribute("updateAvtFailed", "Tên tệp không hợp lệ");
                             }
+                        } else {
+                            request.setAttribute("a", a);
+                            request.setAttribute("updateAvtFailed", "Không có tệp nào được tải lên");
                         }
                     } catch (IOException | ServletException ex) {
                         ex.printStackTrace();
+                        request.setAttribute("a", a);
+                        request.setAttribute("updateAvtFailed", "Cập nhật avatar thất bại do lỗi");
                     }
+
+                    request.getRequestDispatcher("view/homepage/UserProfile.jsp").forward(request, response);
                 }
                 break;
 
@@ -170,7 +177,11 @@ public class UserProfileController extends HttpServlet {
                     String oldPassword = request.getParameter("oldpass");
                     String newPassword = request.getParameter("newpass");
                     String reNewPassword = request.getParameter("re_newpass");
-                    if (!oldPassword.equals(a.getPass_word())) {
+
+                    // Mã hóa mật khẩu cũ để so sánh
+                    String encodedOldPassword = EncodePassword.toSHA1(oldPassword);
+
+                    if (!encodedOldPassword.equals(a.getPass_word())) {
                         errorsList.put("wrongOldPass", "Bạn đã nhập sai mật khẩu cũ");
                     }
                     if (newPassword == null || newPassword.trim().isEmpty() || newPassword.length() < 8 || newPassword.length() > 32) {
@@ -188,7 +199,9 @@ public class UserProfileController extends HttpServlet {
                         request.getRequestDispatcher("view/homepage/UserProfile.jsp").forward(request, response);
                         return;
                     } else {
-                        int check = accountDAO.updatePassword(newPassword, email);
+                        // Mã hóa mật khẩu mới trước khi cập nhật
+                        String encodedNewPassword = EncodePassword.toSHA1(newPassword);
+                        int check = accountDAO.updatePassword(encodedNewPassword, email);
                         System.out.println(check);
                         if (check > 0) {
                             request.setAttribute("updateSuccess", "Cập nhật mật khẩu mới thành công");
@@ -204,7 +217,6 @@ public class UserProfileController extends HttpServlet {
                             request.setAttribute("newpass", newPassword);
                             request.setAttribute("re_newpass", reNewPassword);
                             request.getRequestDispatcher("view/homepage/UserProfile.jsp").forward(request, response);
-
                         }
                     }
                 }

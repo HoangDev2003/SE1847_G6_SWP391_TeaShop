@@ -6,7 +6,7 @@
 
     <head>
         <meta charset="utf-8">
-        <title>TeaShop - Website Template</title>
+        <title>Dreamy Tea Shop</title>
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
         <meta content="" name="keywords">
         <meta content="" name="description">
@@ -69,11 +69,15 @@
                                             <div class="col-lg-12">
                                                 <div class="mb-3">
                                                     <h4>Loại Bài Đăng</h4>
+<<<<<<< HEAD:TeaShop/web/view/homepage/blogDetail.jsp
                                                 <c:forEach items="${listBlogCategory}" var="cate">
+=======
+                                                <c:forEach items="${listBlogCategory}" var="lbc">
+>>>>>>> 0615c6c48c527dd116a21bb5f562894794372693:TeaShop2/web/view/homepage/blogDetail.jsp
                                                     <ul class="list-styled fruite-categorie">
                                                         <li>
                                                             <div class="d-flex justify-content-between fruite-name">
-                                                                <a href="blogdetail?bid=${cate.getCategoryID()}"><i class="fas fa-alt me-2"></i>${cate.getCategoryName()}</a>
+                                                                <a href="blogdetail?bid=${lbc.getCategoryID()}"><i class="fas fa-alt me-2"></i>${lbc.getCategoryName()}</a>
 
                                                             </div>
                                                         </li>

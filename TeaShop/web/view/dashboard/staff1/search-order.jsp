@@ -69,9 +69,9 @@
                                     <input type="hidden" name="service" value="search">
                                     <input type="hidden" name="search" value="byOrderId">     
                                     <div class="form-group row">
-                                        <label for="order_id" class="col-sm-2 col-form-label">ID hóa đơn:</label>
+                                        <label for="order_id_search" class="col-sm-2 col-form-label">ID hóa đơn:</label>
                                         <div class="col-sm-3">
-                                            <input type="number" class="form-control" id="order_id" name="order_id" value="${order_id}">
+                                            <input type="number" class="form-control" id="order_id_search" name="order_id_search" value="${order_id_search}">
                                     </div>
                                 </div>                        
                                 <button type="submit" class="btn btn-primary mt-3">Tìm kiếm</button>
@@ -114,27 +114,27 @@
                                 </div>
 
                                 <div class="form-group row" style="padding-top : 10px">
-                                    <label for="status_id" class="col-sm-3 col-form-label">Trạng thái hóa đơn:</label>
+                                    <label for="status_id_search" class="col-sm-3 col-form-label">Trạng thái hóa đơn:</label>
                                     <div class="col-sm-3">
-                                        <select class="form-control" id="status_id" name="status_id">
+                                        <select class="form-control" id="status_id_search" name="status_id_search">
                                             <option value="">Tất cả</option>
-                                            <option value="1" ${status_id == 1 ? 'selected' : ''}>Chờ xác nhận</option>
-                                            <option value="2" ${status_id == 2 ? 'selected' : ''}>Chờ làm đơn hàng</option>
-                                            <option value="3" ${status_id == 3 ? 'selected' : ''}>Chờ giao hàng</option>
-                                            <option value="4" ${status_id == 4 ? 'selected' : ''}>Hoàn thành</option>
-                                            <option value="5" ${status_id == 5 ? 'selected' : ''}>Đơn hàng giao không thành công</option>
-                                            <option value="6" ${status_id == 6 ? 'selected' : ''}>Đã hủy đơn hàng</option>
+                                            <option value="1" ${status_id_search == 1 ? 'selected' : ''}>Chờ xác nhận</option>
+                                            <option value="2" ${status_id_search == 2 ? 'selected' : ''}>Chờ làm đơn hàng</option>
+                                            <option value="3" ${status_id_search == 3 ? 'selected' : ''}>Chờ giao hàng</option>
+                                            <option value="4" ${status_id_search == 4 ? 'selected' : ''}>Hoàn thành</option>
+                                            <option value="5" ${status_id_search == 5 ? 'selected' : ''}>Đơn hàng giao không thành công</option>
+                                            <option value="6" ${status_id_search == 6 ? 'selected' : ''}>Đã hủy đơn hàng</option>
                                         </select>
                                     </div>
                                 </div>
 
                                 <div class="form-group row" style="padding-top : 10px">
-                                    <label for="payment_method" class="col-sm-3 col-form-label">Phương thức thanh toán:</label>
+                                    <label for="payment_method_search" class="col-sm-3 col-form-label">Phương thức thanh toán:</label>
                                     <div class="col-sm-3">
-                                        <select class="form-control" id="payment_method" name="payment_method">
+                                        <select class="form-control" id="payment_method_search" name="payment_method_search">
                                             <option value="">Tất cả</option>
-                                            <option value="COD" ${payment_method == 'COD' ? 'selected' : ''}>COD</option>
-                                            <option value="VNPay" ${payment_method == 'VNPay' ? 'selected' : ''}>VNPay</option>
+                                            <option value="COD" ${payment_method_search == 'COD' ? 'selected' : ''}>COD</option>
+                                            <option value="VNPay" ${payment_method_search == 'VNPay' ? 'selected' : ''}>VNPay</option>
                                         </select>
                                     </div>
                                 </div>
@@ -167,6 +167,11 @@
                                 }
                             </script>
 
+                            <c:if test="${not empty errorMessage}">
+                                <div class="alert alert-danger " role="alert" style="text-align: center; padding-top:10px">
+                                    ${errorMessage}
+                                </div>
+                            </c:if>
                             <c:if test="${empty listOrders}">
                                 <div class="row justify-content-center align-items-top" style="height: 100vh;">
                                     <div class="col-auto">
@@ -244,10 +249,110 @@
                                         </div>
                                         <div class="col-lg-3">
                                             <h5>Trạng thái: ${p.status.status_name}</h5>
+                                            <c:choose>
+                                                <c:when test="${p.status.status_id == 1}">
+                                                    <!-- Confirm Order Form -->
+                                                    <form action="Staff" method="post" onsubmit="return confirm('Bạn có chắc chắn muốn xác nhận đơn hàng?')">
+                                                        <input type="hidden" name="service" value="updateInSearchOrder">
+                                                        <input type="hidden" name="order_id" value="${p.order_id}">
+                                                        <input type="hidden" name="status_id" value="2">
+                                                        <input type="hidden" name="search" value="${search}">
+                                                        <input type="hidden" name="order_id_search" value=${order_id_search}>
+                                                        <input type="hidden" name="full_name" value="${full_name}">
+                                                        <input type="hidden" name="lower_amount" value="${lower_amount}">
+                                                        <input type="hidden" name="upper_amount" value="${upper_amount}">
+                                                        <input type="hidden" name="status_id_search" value="${status_id_search}">
+                                                        <input type="hidden" name="payment_method_search" value="${payment_method_search}">
+                                                        <input type="hidden" name="lower_date" value="${lower_date}">
+                                                        <input type="hidden" name="upper_date" value="${upper_date}">
+                                                        <div style="display: flex; align-items: center;">
+                                                            <button type="submit" class="btn border border-secondary rounded-pill px-3 confirm-green custom-btn">Xác nhận đơn hàng</button>
+                                                        </div>
+                                                    </form>
 
+                                                    <!-- Cancel Order Form -->
+                                                    <form action="Staff" method="post" onsubmit="return validateRefundForm(this)">
+                                                        <input type="hidden" name="service" value="refund">
+                                                        <input type="hidden" name="order_id" value="${p.order_id}">
+                                                        <input type="hidden" name="amount" value="${p.total_amount}">
+                                                        <input type="hidden" name="payment_method" value="${p.payment_method}">
+                                                        <input type="hidden" name="status_id" value="6">
+                                                        <input type="hidden" name="link_id" value="2">
+                                                        <input type="hidden" name="search" value="${search}">
+                                                        <input type="hidden" name="order_id_search" value=${order_id_search}>
+                                                        <input type="hidden" name="full_name" value="${full_name}">
+                                                        <input type="hidden" name="lower_amount" value="${lower_amount}">
+                                                        <input type="hidden" name="upper_amount" value="${upper_amount}">
+                                                        <input type="hidden" name="status_id_search" value="${status_id_search}">
+                                                        <input type="hidden" name="payment_method_search" value="${payment_method_search}">
+                                                        <input type="hidden" name="lower_date" value="${lower_date}">
+                                                        <input type="hidden" name="upper_date" value="${upper_date}">
+                                                        <div style="display: flex; align-items: center; margin-top: 16px;">
+                                                            <button type="submit" class="btn border border-secondary rounded-pill px-3 confirm-red custom-btn">Huỷ đơn hàng</button>
+                                                        </div>
+                                                    </form>
 
+                                                    <!-- Complete Order Button -->
+                                                    <div style="display: flex; align-items: center; margin-top: 16px;">
+                                                        <button type="submit" class="btn border border-secondary rounded-pill px-3 custom-btn" disabled>Đã xong đơn hàng</button>
+                                                        <span style="color: red; margin-left: 10px;">Chờ xác nhận</span>
+                                                    </div>
+                                                </c:when>
 
+                                                <c:when test="${p.status.status_id == 2}">
+                                                    <!-- Confirm Order Form (Already Confirmed) -->
+                                                    <div style="display: flex; align-items: center;">
+                                                        <button type="submit" class="btn border border-secondary rounded-pill px-3 custom-btn" disabled>Xác nhận đơn hàng</button>
+                                                        <span style="color: red; margin-left: 10px;">Đã xác nhận</span>
+                                                    </div>
 
+                                                    <!-- Complete Order Form -->
+                                                    <form action="Staff" method="post" onsubmit="return confirm('Bạn có chắc chắn rằng đơn hàng đã hoàn thành?')">
+                                                        <input type="hidden" name="service" value="updateInSearchOrder">
+                                                        <input type="hidden" name="order_id" value="${p.order_id}">
+                                                        <input type="hidden" name="status_id" value="3">
+                                                        <input type="hidden" name="search" value="${search}">
+                                                        <input type="hidden" name="order_id_search" value=${order_id_search}>
+                                                        <input type="hidden" name="full_name" value="${full_name}">
+                                                        <input type="hidden" name="lower_amount" value="${lower_amount}">
+                                                        <input type="hidden" name="upper_amount" value="${upper_amount}">
+                                                        <input type="hidden" name="status_id_search" value="${status_id_search}">
+                                                        <input type="hidden" name="payment_method_search" value="${payment_method_search}">
+                                                        <input type="hidden" name="lower_date" value="${lower_date}">
+                                                        <input type="hidden" name="upper_date" value="${upper_date}">
+                                                        <div style="display: flex; align-items: center; margin-top: 16px;">
+                                                            <button type="submit" class="btn border border-secondary rounded-pill px-3 custom-btn confirm-green">Đã xong đơn hàng</button>
+                                                        </div>
+                                                    </form>
+                                                </c:when>
+                                            </c:choose>
+                                            <script>
+                                                function confirmUpdateStatus(orderId, statusId) {
+                                                    var form = document.getElementById("updateStatusForm_" + orderId + "_" + statusId);
+                                                    if (statusId === 2) {
+                                                        if (confirm("Bạn có chắc chắn muốn cập nhật trạng thái đơn hàng này thành Hoàn thành?")) {
+                                                            form.submit();
+                                                        }
+                                                    } else {
+                                                        form.submit();
+                                                    }
+                                                }
+                                                function validateRefundForm(form) {
+                                                    const staffNote = prompt("Vui lòng nhập lý do huỷ đơn hàng:");
+                                                    if (staffNote && staffNote.trim() !== "") {
+                                                        // Add the staff_note to the form
+                                                        const noteInput = document.createElement('input');
+                                                        noteInput.type = 'hidden';
+                                                        noteInput.name = 'staff_note';
+                                                        noteInput.value = staffNote.trim();
+                                                        form.appendChild(noteInput);
+                                                        return true; // Allow form submission
+                                                    } else {
+                                                        alert("Bạn phải nhập lý do huỷ đơn hàng.");
+                                                        return false; // Prevent form submission
+                                                    }
+                                                }
+                                            </script>
                                         </div>
                                     </div>
                                 </div>

@@ -12,14 +12,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.Part;
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -50,7 +43,7 @@ public class SaleManagerController extends HttpServlet {
             List<Product> products = (new ProductDAO()).getProductByKeyWords(keywords);
 
             if (products == null || products.isEmpty()) {
-                req.setAttribute("notFoundProduct", "Your keywords do not match with any Product Name");
+                req.setAttribute("notFoundProduct", "Từ khóa bạn tìm kiếm không khớp với tên sản phẩm nào");
                 products = (new ProductDAO()).findAll();
             }
             req.setAttribute("listAllProduct", products);
@@ -63,29 +56,26 @@ public class SaleManagerController extends HttpServlet {
             try {
                 int priceFrom = Integer.parseInt(req.getParameter("priceFrom"));
                 int priceTo = Integer.parseInt(req.getParameter("priceTo"));
-
-                // Validate priceFrom and priceTo
+                List<Product> products = (new ProductDAO()).getProductByPriceRange(priceFrom, priceTo);
                 if (priceFrom <= 0 || priceTo <= 0 || priceFrom >= priceTo) {
                     String errorMessage = "Khoảng giá không hợp lệ. Đảm bảo rằng 'khoảng giá bắt đầu' nhỏ hơn 'khoảng giá kết thúc' muốn lọc và cả hai đều lớn hơn 0.";
-                    req.setAttribute("errorMessage", errorMessage);
-                } else {
-                    List<Product> products = (new ProductDAO()).getProductByPriceRange(priceFrom, priceTo);
-
-                    if (products == null || products.isEmpty()) {
-                        req.setAttribute("notFoundProduct", "Không có sản phẩm nào trong khoảng giá");
-                        products = (new ProductDAO()).findAll();
-                    }
-
+                    req.setAttribute("errorMessageFilter", errorMessage);
+                    products = (new ProductDAO()).findAll();
                     req.setAttribute("listAllProduct", products);
+                } 
+                else if (products == null || products.isEmpty()) {
+                        req.setAttribute("errorMessageFilter", "Giá trị không hợp lệ. Vui lòng nhập giá sản phẩm trong khoảng hợp lệ.");
+                    }
+                else{
+                    req.setAttribute("errorMessageFilter", "Không có sản phẩm nào trong khoảng giá.");
                 }
 
                 req.setAttribute("priceFrom", priceFrom);
                 req.setAttribute("priceTo", priceTo);
                 req.setAttribute("showSearchProduct", "Yes");
             } catch (NumberFormatException e) {
-                req.setAttribute("errorMessage", "Giá trị không hợp lệ. Vui lòng nhập giá sản phẩm trong khoảng hợp lệ.");
+                req.setAttribute("errorMessageFilter", "Giá trị không hợp lệ. Vui lòng nhập giá sản phẩm trong khoảng hợp lệ.");
             }
-
             req.getRequestDispatcher("view/dashboard/admin/SaleManager.jsp").forward(req, resp);
         }
 
@@ -97,14 +87,12 @@ public class SaleManagerController extends HttpServlet {
             req.setAttribute("productUpdate", product);
             req.getRequestDispatcher("view/dashboard/admin/SaleManager.jsp").forward(req, resp);
         }
+
         if (service.equals("sendUpdateDetail")) {
             int id = Integer.parseInt(req.getParameter("id"));
             String discountStr = req.getParameter("discount");
-
-            // Initialize error message
             String errorMessage = null;
             float discount = 0;
-
             try {
                 discount = Float.parseFloat(discountStr);
                 if (discount < 0 || discount > 100) {
@@ -115,7 +103,6 @@ public class SaleManagerController extends HttpServlet {
             }
 
             if (errorMessage != null) {
-                // If there is an error, re-fetch the product and categories to repopulate the form
                 List<Category> listCategorys = (new CategoryDAO().findAll());
                 Product product = (new ProductDAO()).getProductsById(id);
                 req.setAttribute("allCategorys", listCategorys);
@@ -127,10 +114,7 @@ public class SaleManagerController extends HttpServlet {
 
             Product product = (new ProductDAO()).getProductsById(id);
             product.setDiscount(discount);
-
-            // Set new value for product
-            (new ProductDAO()).updateProduct(product, id);
-
+            (new ProductDAO()).updateDiscount(product, id);
             req.setAttribute("UpdateDone", "Chỉnh sửa giảm giá cho sản phẩm (ID = " + id + ") thành công!\nClick quản lý Sale để xem những thay đổi mới nhất");
             req.getRequestDispatcher("view/dashboard/admin/SaleManager.jsp").forward(req, resp);
         }

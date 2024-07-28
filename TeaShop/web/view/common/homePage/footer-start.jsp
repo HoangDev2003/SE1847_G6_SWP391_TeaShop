@@ -20,7 +20,7 @@
                 <div class="row g-5">
                     <div class="col-lg-5 col-md-6">
                         <div class="footer-item">
-                            <h4 class="text-light mb-3">Why People Like us!</h4>
+                            <h4 class="text-light mb-3">Tại sao khách hàng chọn chúng tôi!</h4>
                             <p class="mb-4">Chúng tôi mang đến cho bạn những sản phẩm/dịch vụ chất lượng tốt nhất.</p>
                             <p class="mb-4">Luôn đặt lợi ích của khách hàng lên hàng đầu.</p>
                             <p class="mb-4">Mang đến cho bạn trải nghiệm thưởng thức nước uống tuyệt vời .</p>
@@ -36,7 +36,7 @@
                     <div class="col-lg-3 col-md-6">
                         <div class="footer-item">
                             <h4 class="text-light mb-3">Contact</h4>
-                            <p>Address: Lê Thái Tổ, Phường Hàng Trống, Quận Hoàn Kiếm, Hà Nội</p>
+                            <p>Address: Đại học FPT Hà Nội</p>
                             <p>Email: dreammycoffee@gmail.com</p>
                         </div>
                     </div>
