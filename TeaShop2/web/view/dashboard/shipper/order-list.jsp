@@ -160,7 +160,7 @@
                                         <button class="btn ${statusOrder == 4 ? 'btn-primary' : 'btn-outline-primary'}" onclick="filterOrders(4)">Hoàn thành</button>
                                         <button class="btn ${statusOrder == 5 ? 'btn-primary' : 'btn-outline-primary'}" onclick="filterOrders(5)">Đơn hàng bị hủy</button>
                                     </div>
-                                </div>
+                                    </div>
                                 <script>
                                     function filterOrders(statusOrder) {
                                         window.location.href = 'ship?statusOrder=' + statusOrder;

@@ -125,7 +125,11 @@ public class ShippingController extends HttpServlet {
         String searchType = request.getParameter("searchType") == null
                 ? "default"
                 : request.getParameter("searchType");
-
+        
+        String sort = request.getParameter("sort") == null
+                ? "order_id"
+                : request.getParameter("sort");
+        
         OrdersDAO orderDAO = new OrdersDAO();
         int totalRecord = 0;
         String requestURL = request.getRequestURI().toString();

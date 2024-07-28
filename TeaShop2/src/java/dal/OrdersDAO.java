@@ -771,13 +771,20 @@ public class OrdersDAO extends DBContext {
 
         return orderCount; // Return the count
     }
+
     public List<Orders> findOrdersStatusId(int statusId, int page) {
         List<Orders> ordersList = new ArrayList<>();
         Orders order = null;
         String sql = "SELECT * FROM Orders \n"
                 + "WHERE status_id = ?\n"
-                + "ORDER BY order_id\n"
-                + "OFFSET ? ROWS \n"
+                + "ORDER BY order_id";
+
+        // Thay đổi ORDER BY nếu status_id là 4 hoặc 5
+        if (statusId == 4 || statusId == 5) {
+            sql += " DESC";
+        }
+
+        sql += "\nOFFSET ? ROWS \n"
                 + "FETCH NEXT ? ROWS ONLY";
 
         try {
@@ -828,6 +835,7 @@ public class OrdersDAO extends DBContext {
         }
         return ordersList; // Return the list of orders
     }
+
     public int findTotalRecordByStatusId(int status_id) {
         int total = 0;
         //ket noi duoc voi database
@@ -856,6 +864,7 @@ public class OrdersDAO extends DBContext {
 
         return total;
     }
+
     public int findTotalRecord() {
         int total = 0;
         //ket noi duoc voi database
@@ -882,6 +891,7 @@ public class OrdersDAO extends DBContext {
         return total;
 
     }
+
     public List<Orders> findOrdersOrderId(String orderId) {
         List<Orders> ordersList = new ArrayList<>();
         Orders order = null;
@@ -935,6 +945,7 @@ public class OrdersDAO extends DBContext {
         }
         return ordersList; // Return the list of orders
     }
+
     public int findTotalRecordByStatusIdAndOrderId(int statusOrder, String orderId) {
         int total = 0;
         //ket noi duoc voi database
@@ -963,6 +974,7 @@ public class OrdersDAO extends DBContext {
 
         return total;
     }
+
     public List<Orders> findOrdersUserName(String key_word, int page) {
         List<Orders> ordersList = new ArrayList<>();
         Orders order = null;
@@ -1020,7 +1032,6 @@ public class OrdersDAO extends DBContext {
         }
         return ordersList; // Return the list of orders    }
     }
-    
 
     public int findTotalRecordByUserName(String key_word) {
         int total = 0;
