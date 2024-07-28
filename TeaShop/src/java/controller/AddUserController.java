@@ -8,6 +8,7 @@ import dal.AccountDAO;
 import dal.AdminDAO;
 import entity.Accounts;
 import entity.Email;
+import entity.EncodePassword;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -81,7 +82,7 @@ public class AddUserController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String name = request.getParameter("name");
+       String name = request.getParameter("name");
         String email = request.getParameter("email");
         String pass = request.getParameter("pass");
         String phone = request.getParameter("phone");
@@ -128,8 +129,9 @@ public class AddUserController extends HttpServlet {
             Accounts a = da.checkAccountExist(email);
             System.out.println(a);
             if (a == null) {
+                String hashedPass = EncodePassword.toSHA1(pass);
                 if (role_id == 3) {
-                    dao.addUser(email, pass, name, role_id, status_id, phone, gender, address);
+                    dao.addUser(email, hashedPass, name, role_id, status_id, phone, gender, address);
                     Email e = new Email();
                     e.sendEmail(email, "Dreamy Coffee xin chào!!!", "<html lang=\"en\">\n"
                             + "<body>\n"
@@ -141,10 +143,10 @@ public class AddUserController extends HttpServlet {
                             + "<li><strong>Mật khẩu:</strong> </li>" + pass
                             + " </ul>"
                             + "</body>\n"
-                            + "</html>");                 
+                            + "</html>");
                     response.sendRedirect("staffmanager");
                 } else if (role_id == 4) {
-                    dao.addUser(email, pass, name, role_id, status_id, phone, gender, address);
+                    dao.addUser(email, hashedPass, name, role_id, status_id, phone, gender, address);
                     Email e = new Email();
                     e.sendEmail(email, "Dreamy Coffee xin chào!!!", "<html lang=\"en\">\n"
                             + "<body>\n"
@@ -156,7 +158,7 @@ public class AddUserController extends HttpServlet {
                             + "<li><strong>Mật khẩu:</strong> </li>" + pass
                             + " </ul>"
                             + "</body>\n"
-                            + "</html>");                 
+                            + "</html>");
                     response.sendRedirect("shippermanager");
                 }
             } else {

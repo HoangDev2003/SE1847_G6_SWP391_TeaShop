@@ -92,15 +92,15 @@ public class SignupController extends HttpServlet {
         String errorMessage = null;
 
         if (user_name == null || user_name.trim().isEmpty()) {
-            errorMessage = "Tên người dùng không được để trống hoặc chỉ có khoảng trắng";
+            errorMessage = "Ten nguoi dung khong duoc de chi khoảng trang";
         } else if (user_name.matches("\\d+")) {
-            errorMessage = "Tên người dùng không được chỉ chứa các số";
+            errorMessage = "Ten nguoi dung khong duoc chi chua cac so";
         } else if (phone_number == null || phone_number.trim().isEmpty() || !phone_number.matches("0\\d{9}")) {
-            errorMessage = "Số điện thoại phải bắt đầu bằng 0 và bao gồm 10 số";
+            errorMessage = "So dien thoai phai bat dau bang 0 va bao gom 10 so";
         } else if (pass_word == null || pass_word.trim().isEmpty() || pass_word.length() < 8 || pass_word.length() > 32) {
-            errorMessage = "Mật khẩu phải chứa từ 8-32 ký tự";
+            errorMessage = "Mat khau phai chua 8-32 ky tu";
         } else if (pass_word != null && !(pass_word.equals(re_pass))) {
-            errorMessage = "Mật khẩu phải khớp với mật khẩu được nhập lại ở bên dưới";
+            errorMessage = "Mat khau phai khop voi mat khau duoc nhap lai";
         }
         if (errorMessage != null) {
             request.setAttribute("errorMessage", errorMessage);
@@ -142,16 +142,16 @@ public class SignupController extends HttpServlet {
                             + "</html>";
 
                     e.sendEmail(email, "Verify your email", emailContent);
-                    request.setAttribute("Notification", "Bạn cần xác nhận email để đăng nhập");
+                    request.setAttribute("Notification", "Ban can xac nhan email de dang nhap");
                     request.getRequestDispatcher(LOGIN_JSP).forward(request, response);
                 } else {
-                    request.setAttribute("error", "Tài khoản này đã tồn tại");
+                    request.setAttribute("error", "Tai khoan nay da ton tai");
                     request.getRequestDispatcher(SIGNUP_JSP).forward(request, response);
                 }
 
             } else {
 
-                request.setAttribute("errorMessage", "Email này đã được đăng ký, hãy nhập một email khác"); 
+                request.setAttribute("errorMessage", "Email nay da duoc dang ky, hay thu mot email khac"); 
                 request.getRequestDispatcher(SIGNUP_JSP).forward(request, response);
             }
         }
