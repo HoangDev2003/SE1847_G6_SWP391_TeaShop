@@ -94,13 +94,12 @@ public class LoginController extends HttpServlet {
                 request.setAttribute("showForgotPassword", true);
             }
             request.setAttribute("email", email);
-            request.setAttribute("pass", password);
-            request.setAttribute("mess", "Email hoặc mật khẩu của bạn không đúng");
+            request.setAttribute("mess", "Email hoac mat khau cua ban khong dung");
             request.getRequestDispatcher(LOGIN_JSP).forward(request, response);
 
         } else {
             if (a.getStatus_id() == 2) {
-                request.setAttribute("mess", "Tài khoản của bạn đã bị khóa");
+                request.setAttribute("mess", "Tai khoan cua ban da bi khoa");
                 request.getRequestDispatcher(LOGIN_JSP).forward(request, response);
             } else {
                 session.setAttribute(FAILED_ATTEMPTS, 0);

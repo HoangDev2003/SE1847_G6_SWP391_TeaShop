@@ -60,7 +60,7 @@ public class VerifyAccountController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        request.setAttribute("Notification", "Bạn đã xác nhận email thành công!");
+        request.setAttribute("Notification", "Ban da xac minh email thanh cong");
        
         HttpSession session = request.getSession();       
         String user_name = (String) session.getAttribute("user");
@@ -79,7 +79,6 @@ public class VerifyAccountController extends HttpServlet {
             // duoc sign up
             dao.Signup(user_name, pass_word, email, gender, address, phone_number);
             request.setAttribute("email", email);
-            request.setAttribute("pass", pass_word);
             System.out.println(pass_word);
             request.getRequestDispatcher("login.jsp").forward(request, response);
         }
