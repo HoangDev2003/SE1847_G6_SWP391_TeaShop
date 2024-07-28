@@ -35,9 +35,7 @@
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
             <!-- Navbar Search-->
             <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-                <div class="input-group">
-
-                </div>
+                <div class="input-group"></div>
             </form>
             <!-- Navbar-->
             <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
@@ -146,39 +144,39 @@
                     <div class="container-fluid px-4">
                         <h3>Thêm bài viết</h3>
                         <form method="post" id="addBlogForm" action="addblog" enctype="multipart/form-data" onsubmit="return validateBlogForm()">
-  <div class="modal-body">
-    <div class="form-group">
-      <label for="category">Loại:</label>
-      <select id="category" name="categoryID">
-        <option value="1">Sản phẩm Reviews</option>
-        <option value="2">Giảm giá</option>
-        <option value="3">Giải thưởng</option>
-        <option value="4">Khác</option>
-      </select>
-    </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label for="category">Loại:</label>
+                                    <select id="category" name="categoryID">
+                                        <option value="1">Sản phẩm Reviews</option>
+                                        <option value="2">Giảm giá</option>
+                                        <option value="3">Giải thưởng</option>
+                                        <option value="4">Khác</option>
+                                    </select>
+                                </div>
 
-    <div class="form-group">
-      <label>Chủ đề</label>
-      <input type="text" id="title" name="title" required class="form-control">
-      <span id="titleError" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-      <label>Ảnh</label>
-      <input type="file" id="image" name="image" size="60" class="form-control" required>
-      <span id="imageError" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-      <label>Nội dung:</label>
-      <textarea id="content" name="content" class="form-control" required></textarea>
-      <span id="contentError" class="text-danger"></span>
-    </div>
-  </div>
-  <br />
-  <div style="justify-content: flex-start;">
-    <input type="submit" name="submit" class="btn btn-success" value="Thêm">
-    <button type="button" class="btn btn-secondary" onclick="cancelAdd()">Hủy</button>
-  </div>
-</form>
+                                <div class="form-group">
+                                    <label>Chủ đề</label>
+                                    <input type="text" id="title" name="title" required class="form-control">
+                                    <span id="titleError" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label>Ảnh</label>
+                                    <input type="file" id="image" name="image" size="60" class="form-control" required>
+                                    <span id="imageError" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label>Nội dung:</label>
+                                    <textarea id="content" name="content" class="form-control" required></textarea>
+                                    <span id="contentError" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <br />
+                            <div style="justify-content: flex-start;">
+                                <input type="submit" name="submit" class="btn btn-success" value="Thêm">
+                                <button type="button" class="btn btn-secondary" onclick="cancelAdd()">Hủy</button>
+                            </div>
+                        </form>
                     </div>
                     <br/>
                     <div class="container-fluid px-4">
@@ -216,52 +214,52 @@
                             }
         </script>
         <script>
-  function validateBlogForm() {
-    // Clear any previous error messages
-    clearErrorMessages();
+            function validateBlogForm() {
+                // Clear any previous error messages
+                clearErrorMessages();
 
-    // Validate title
-    const title = document.getElementById('title').value.trim();
-    if (title.length === 0) {
-      showError('titleError', 'Chủ đề không được để trống');
-      return false;
-    } else if (title.length > 255) {
-      showError('titleError', 'Chủ đề tối đa 255 ký tự');
-      return false;
-    }
+                // Validate title
+                const title = document.getElementById('title').value.trim();
+                if (title.length === 0) {
+                    showError('titleError', 'Chủ đề không được để trống');
+                    return false;
+                } else if (title.length > 255) {
+                    showError('titleError', 'Chủ đề tối đa 255 ký tự');
+                    return false;
+                }
 
-    // Validate image (basic check for presence, you can add more)
-    const image = document.getElementById('image').files[0];
-    if (!image) {
-      showError('imageError', 'Vui lòng chọn ảnh');
-      return false;
-    }
+                // Validate image (basic check for presence, you can add more)
+                const image = document.getElementById('image').files[0];
+                if (!image) {
+                    showError('imageError', 'Vui lòng chọn ảnh');
+                    return false;
+                }
 
-    // Validate content
-    const content = document.getElementById('content').value.trim();
-    if (content.length === 0) {
-      showError('contentError', 'Nội dung không được để trống');
-      return false;
-    }
+                // Validate content
+                const content = document.getElementById('content').value.trim();
+                if (content.length === 0) {
+                    showError('contentError', 'Nội dung không được để trống');
+                    return false;
+                }
 
-    // If all validations pass, return true to allow form submission
-    return true;
-  }
+                // If all validations pass, return true to allow form submission
+                return true;
+            }
 
-  // Function to clear error messages (same as previous example)
-  function clearErrorMessages() {
-    const errorElements = document.querySelectorAll('.text-danger');
-    for (const errorElement of errorElements) {
-      errorElement.textContent = '';
-    }
-  }
+            // Function to clear error messages (same as previous example)
+            function clearErrorMessages() {
+                const errorElements = document.querySelectorAll('.text-danger');
+                for (const errorElement of errorElements) {
+                    errorElement.textContent = '';
+                }
+            }
 
-  // Function to show error message (same as previous example)
-  function showError(errorId, errorMessage) {
-    const errorElement = document.getElementById(errorId);
-    errorElement.textContent = errorMessage;
-  }
-</script>
+            // Function to show error message (same as previous example)
+            function showError(errorId, errorMessage) {
+                const errorElement = document.getElementById(errorId);
+                errorElement.textContent = errorMessage;
+            }
+        </script>
 
 </html>
 

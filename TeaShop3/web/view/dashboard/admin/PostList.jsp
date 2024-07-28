@@ -1,13 +1,8 @@
-<%-- 
-    Document   : MangageSlider
-    Created on : Feb 24, 2024, 8:57:41 PM
-    Author     : Acer
---%>
 
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <html lang="en">
     <head>
         <meta charset="utf-8" />
@@ -60,101 +55,119 @@
             </ul>
         </nav>
         <div id="layoutSidenav">
-  <jsp:include page="../../common/admin/sidebarAdmin.jsp"></jsp:include>
+             <jsp:include page="../../common/admin/sidebarAdmin.jsp"></jsp:include>
+<!--            <div id="layoutSidenav_nav">
+                <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                    <div class="sb-sidenav-menu">
+                        <div class="nav">
+                            <div class="sb-sidenav-menu-heading">Menu</div>
+                            <a class="nav-link" href="#">
+                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                Dashboard
+                            </a>
+                            
+                            
+
+                            
+                            <a class="nav-link" href="postlist">
+                                <div class="sb-nav-link-icon"><i class="fa-regular fa-address-card"></i></div>
+                                Post Management
+
+                            </a>
+                            
+                          
+                            
+                        </div>
+                    </div>
+                    <div class="sb-sidenav-footer">
+                        <div class="small">Logged in as:</div>
+                       Marketing
+                    </div>
+                </nav>
+            </div>-->
             <div id="layoutSidenav_content">
+                <form action="postlist" method="post" >
                 <main>
                     <div class="container-fluid px-4">
                         <h1 class="mt-4"></h1>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item"><a href="UserChartByDay">Dashboard</a></li>
-                            <li class="breadcrumb-item active"> Danh sách Slider </li>
+                            <li class="breadcrumb-item"><a href="chartorderday">Dashboard</a></li>
+                            <li class="breadcrumb-item active">Danh sách bài viết</li>
                         </ol>
-                        <div id="checkbox_div">
-                            <p>MỞ / Ẩn Cột:</p>                           
-                        </div>
+                        
                         <br/>
-                        <form action="filterslide" method="post" class="filter-form" onsubmit="return handleFormSubmit(event)">
-                            <label for="status-filter">Status:</label>
-                            <select id="status-filter" name="status">
-                                <option value="">Tất cả</option>
-                                <option value="true">Hoạt động</option>
-                                <option value="false">Không hoạt động</option>
-                            </select>
-                            <button type="submit" class="btn btn-secondary btn-number">Lọc</button>
-                        </form>
+                       <div style="margin-left: 15px; margin-bottom: 20px">
+                                <a href="addBlog.jsp"><button type="button" class="btn btn-danger">Thêm bài viết</button> </a>
+                            </div>
                         <br/>
                         <div class="card mb-4">
-                            <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+                            <div class="card-header">
                                 <i class="fas fa-table me-1"></i>
-                                <a href="AddSlider.jsp" class="btn btn-success" style="display: flex; justify-content: center; align-items: center;">
-                                    <i class="material-icons"></i> <span>Thêm mới slide</span>
-                                </a>
                             </div>
-
                             <div class="card-body">                              
                                 <table id="datatablesSimple">
                                     <thead>
                                         <tr>
                                             <th>ID</th>
                                             <th>Ảnh</th>
-                                            <th>Tên</th>
+                                            <th>Nội dung</th>
+                                            
+                                            <th>Ngày tạo</th>
+                                            
                                             <th>Status</th>
                                             <th>Hành động</th>
-                                            <th>Xóa</th>
-                                            <th>Sửa</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
                                         <tr>
-                                            <th>ID</th>
+                                           <th>ID</th>
                                             <th>Ảnh</th>
-                                            <th>Tên</th>
+                                            <th>Nội dung</th>
+                                            
+                                            <th>Ngày tạo</th>
+                                            
                                             <th>Status</th>
                                             <th>Hành động</th>
-                                            <th>Xóa</th>
-                                            <th>Sửa</th>
                                         </tr>
                                     </tfoot>
+
                                     <tbody>
-                                        <c:forEach items="${list}" var="s">
+                                        <c:forEach items="${data}" var="b">
                                             <tr>
-                                                <td>${s.id}</td>
+                                                <td>${b.getId()}</td>                                
                                                 <td>
-                                                    <img src="/TeaShop/img/${s.image}">
+                                                    <img src="${b.getImg()}">
                                                 </td>
-                                                <td><a href="slidedetail?id=${s.id}">${s.name}</a></td>
-                                                <td>${s.status ? 'Active' : 'Inactive'}</td>
+                                                <td><a href="postdetail?id=${b.getId()}">${b.getBlog_name()}</a></td>
+                                                                             
+                                                <td>${b.getCreated_at()}</td>                                                           
+                                                                             
+                                                
+                                                <td>${b.isIs_deleted()==0 ? 'Inactive' :'Active'}</td>
                                                 <td>
-                                                    <c:if test="${s.status == true}">
+                                                    <c:if test="${b.isIs_deleted() == 0}">
                                                         <div class="col">
-                                                            <a href="inactiveslider?id=${s.id}" class="btn btn-danger btn-block" style="color: white;">Ẩn</a>
+                                                            <a href="inactivepost?id=${b.getId()}" class="btn btn-danger btn-block" style="color: white;">Hide</a>
                                                         </div>
                                                     </c:if>
-                                                    <c:if test="${s.status == false}">
+                                                    <c:if test="${b.isIs_deleted() == 1}">
                                                         <div class="col">
-                                                            <a href="activeslider?id=${s.id}" class="btn btn-success btn-block" style="color: white;">MỞ</a>
+                                                            <a href="activepost?id=${b.getId()}" class="btn btn-success btn-block" style="color: white;">Show</a>
                                                         </div>
                                                     </c:if>
-                                                </td>
-                                                <td>
-                                                    <a href="#" onclick="doDelete('${s.id}')">
-                                                        <i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i>
-                                                    </a>
-                                                </td>
-                                                <td>
-                                                    <a href="updatesliderdetail?id=${s.id}" class="edit" data-toggle="modal">
-                                                        <i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i>
-                                                    </a>
-                                                </td>
+<!--                                                    <a href="deletepost?id=${b.getId()}" class="delete" onclick="return confirm('Do you really want to delete this post?');">
+                                                        <i class="material-icons" data-toggle="tooltip" title="Delete">delete</i>  Garbage bin icon 
+                                                    </a>-->
+                                                </td> 
                                             </tr>
                                         </c:forEach>
                                     </tbody>
                                 </table>
-
                             </div>
                         </div>
                     </div>
                 </main>
+                    </form>
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid px-4">
                         <div class="d-flex align-items-center justify-content-between small">
@@ -168,56 +181,6 @@
         <script src="js/scripts.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         <script src="js/datatables-simple-demo.js"></script>
-        <script src="js/manager.js" type="text/javascript"></script>
-        <script type="text/javascript">
-                                                        function doDelete(id) {
-                                                            if (confirm("Bạn có thật sự muốn xóa slider này?")) {
-                                                                window.location.href = "deleteslider?id=" + id;
-                                                            }
-                                                        }
-        </script>
-        <script>
-            function handleFormSubmit(event) {
-                var statusFilter = document.getElementById('status-filter');
-                if (statusFilter.value === "") {
-                    // Call the function to display all posts
-                    displayAllPosts();
-                    // Prevent the form submission
-                    event.preventDefault();
-                }
-            }
-            function displayAllPosts() {
-                window.location.href = "manageslide";
-            }
-        </script>
-
-        <script>
-            window.onload = function () {
-                var table = document.getElementById("datatablesSimple");
-                var headerRow = table.getElementsByTagName("thead")[0].getElementsByTagName("tr")[0];
-                var headerCells = headerRow.getElementsByTagName("th");
-                var checkboxContainer = document.getElementById("checkbox_div");
-
-                for (var i = 0; i < headerCells.length; i++) {
-                    var checkboxDiv = document.createElement("div");
-                    checkboxDiv.className = "checkbox-option";
-
-                    var checkbox = document.createElement("input");
-                    checkbox.type = "checkbox";
-                    checkbox.id = "checkbox" + i; // Đặt id cho checkbox
-                    checkbox.onchange = new Function("toggleColumn(" + i + ");");
-
-                    var label = document.createElement("label");
-                    label.htmlFor = "checkbox" + i; // Liên kết label với checkbox
-                    label.innerText = headerCells[i].innerText;
-
-                    checkboxDiv.appendChild(checkbox);
-                    checkboxDiv.appendChild(label);
-                    checkboxContainer.appendChild(checkboxDiv);
-                }
-            };
-</script>
-
         <script>
             function toggleColumn(columnIndex) {
                 var table = document.getElementById("datatablesSimple");
@@ -235,5 +198,18 @@
                 }
             }
         </script>
+        <script>
+            function handleFormSubmit(event) {
+                var statusFilter = document.getElementById('status-filter');
+                if (statusFilter.value === "") {
+                    // Call the function to display all posts
+                    displayAllPosts();
+                    // Prevent the form submission
+                    event.preventDefault();
+                }
+            }
+            
+        </script>
     </body>
 </html>
+

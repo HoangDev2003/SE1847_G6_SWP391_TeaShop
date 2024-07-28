@@ -189,7 +189,7 @@
                                                 <div class="rounded position-relative fruite-item">
                                                     <a href="blogdetail?bid=${b.getId()}">
                                                         <div class="fruite-img">
-                                                            <img src="/TeaShop/img/${b.getImg()}" class="img-fluid w-100 rounded-top" alt="">
+                                                            <img src="${b.getImg()}" class="img-fluid w-100 rounded-top" alt="">
                                                         </div>
                                                         
                                                         <div class="p-4  border-top-0  rounded-bottom">

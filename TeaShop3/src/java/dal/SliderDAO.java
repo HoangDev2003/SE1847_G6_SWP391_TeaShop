@@ -25,7 +25,7 @@ public class SliderDAO extends DBContext {
                 + "      ,[url]\n"
                 + "      ,[image]\n"
                 + "      ,[status]\n"
-                + "  FROM [dbo].[Slider] ";
+               + "  FROM [dbo].[Slider] WHERE status = 1 or status=0 \n";
         PreparedStatement pre;
         connection = getConnection();
 

@@ -15,6 +15,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 
 
@@ -22,12 +24,12 @@ import jakarta.servlet.http.Part;
                  maxFileSize = 1024 * 1024 * 50,      // 50MB
                  maxRequestSize = 1024 * 1024 * 50)   // 50MB
 public class addSlider extends HttpServlet {
-
+    private static final String UPLOAD_DIR = "uploadslide";
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-//        request.getRequestDispatcher("./view/dashboard/admin/AddSlider.jsp").forward(request, response);
+
         // Retrieves form data
         String name = request.getParameter("name");
         String description = request.getParameter("description");
@@ -37,20 +39,23 @@ public class addSlider extends HttpServlet {
         // Retrieves the file part
         Part filePart = request.getPart("image");
         
-        // Obtains the file name
-        String fileName = extractFileName(filePart);
-        
-        // Refines the file name
-        fileName = new File(fileName).getName();
-        
-        // Writes the file to disk
-        String uploadPath = getFolderUpload().getAbsolutePath();
-        filePart.write(uploadPath + File.separator + fileName);
-        
-        // Saves slider data to the database
+
+        // Handle file upload
+            String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+            String uploadPath = getServletContext().getRealPath("") + File.separator + UPLOAD_DIR;
+            File uploadDir = new File(uploadPath);
+            if (!uploadDir.exists()) {
+                uploadDir.mkdir();
+            }
+
+            String filePath = uploadPath + File.separator + fileName;
+            Files.copy(filePart.getInputStream(), Paths.get(filePath));
+
+            // Construct the URL for the uploaded image
+            String image = UPLOAD_DIR + "/" + fileName;
+         // Saves slider data to the database
         SliderDAO sd = new SliderDAO();
-        sd.insertSlider(name, description, url, fileName, status);
-        
+        sd.insertSlider(name, description, url, image, status);
         request.setAttribute("updateMessage", "Add Successfully!");
         // Redirects to the management page
         //response.sendRedirect("manageSlider");  
@@ -69,26 +74,7 @@ public class addSlider extends HttpServlet {
         processRequest(request, response);
     }
     
-   // Extracts file name from HTTP header content-disposition
-    private String extractFileName(Part part) {
-        String contentDisp = part.getHeader("content-disposition");
-        String[] items = contentDisp.split(";");
-        for (String s : items) {
-            if (s.trim().startsWith("filename")) {
-                return s.substring(s.indexOf("=") + 2, s.length() - 1);
-            }
-        }
-        return "";
-    }
-    
-    // Defines the upload directory
-    public File getFolderUpload() {
-        File folderUpload = new File("F:\\Swp\\git clone\\SE1847_G6_SWP391_TeaShop\\TeaShop\\web\\img");
-        if (!folderUpload.exists()) {
-            folderUpload.mkdirs();
-        }
-        return folderUpload;
-    }
+ 
 
     @Override
     public String getServletInfo() {

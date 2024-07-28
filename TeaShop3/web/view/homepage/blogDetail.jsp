@@ -69,7 +69,7 @@
                                             <div class="col-lg-12">
                                                 <div class="mb-3">
                                                     <h4>Loại Bài Đăng</h4>
-                                                <c:forEach items="${listCategory}" var="cate">
+                                                <c:forEach items="${listBlogCategory}" var="cate">
                                                     <ul class="list-styled fruite-categorie">
                                                         <li>
                                                             <div class="d-flex justify-content-between fruite-name">
@@ -84,7 +84,7 @@
                                         <div class="col-lg-12">
                                             <div class="mb-3">
                                                 <h4>Bài viết mới</h4>
-                                                <c:forEach items="${topBog}" var="b">
+                                                <c:forEach items="${topblog}" var="b">
                                                     <ul class="list-styled fruite-categorie">
                                                         <li>
                                                             <div class="d-flex justify-content-between fruite-name">
@@ -110,7 +110,7 @@
 
                                             <div class=" border rounded">
                                                 <a href="">
-                                                    <img src="/TeaShop/img/${b.getImg()}" class="img-fluid" rounded alt=""/>
+                                                    <img src="${b.getImg()}" class="img-fluid" rounded alt=""/>
                                                 </a>
                                             </div>
                                             <h4 class="fw-bold mb-3">${b.getBlog_name()}</h4>

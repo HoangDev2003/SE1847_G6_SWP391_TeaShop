@@ -42,10 +42,8 @@
         </div>
         <!-- Spinner End -->
 
-<<<<<<< HEAD
-
         <!-- Navbar start -->
-         
+
         <div class="container-fluid fixed-top">
 
             <div class="container topbar bg-primary d-none d-lg-block">    
@@ -108,7 +106,7 @@
                                 <%}%>
                             </a>
                             <c:if test="${sessionScope.acc!=null}">
-                                 <span>Welcome ${sessionScope.acc.user_name} <i class="arrow_carrot-down"></i></span>
+                                <span>Welcome ${sessionScope.acc.user_name} <i class="arrow_carrot-down"></i></span>
                                 <a href="userprofile?email=${sessionScope.acc.email}" class="my-auto">
                                     <i class="fas fa-user fa-2x"></i>
                                 </a>
@@ -121,36 +119,41 @@
 
         <!-- Navbar end -->     
 
-
-
-
-=======
-<!-- Header Start -->
+        <!-- Header Start -->
         <jsp:include page="../common/homePage/header-start.jsp"></jsp:include>
             <!-- Header End -->
 
-        <!-- Hero header Start -->
-         <div class="card mb-4">
-                                <div class="h1">                                
-                                    <b>${message}</b>                                                                    
-                                </div>  
-                            </div>     
+            <!-- Hero header Start -->
+            <div class="card mb-4">
+                <div class="h1">                                
+                    <b>${message}</b>                                                                    
+            </div>  
+        </div>     
         <div class="container-fluid py-5 mb-5 hero-header">
             <div class="container-fluid py-5 ">
                 <div class="row g-5 align-items-center">
 
                     <div id="carouselId" class="carousel slide position-relative" data-bs-ride="carousel">
-                        <div class="carousel-inner py-5" role="listbox">         
-                            <div class="carousel-item active rounded">
-                                <img src="${pageContext.request.contextPath}/img/anh1.jpg" class=" w-100 h-100 bg-secondary rounded" alt=" slide1">
-                            </div>
-                            <div class="carousel-item  rounded">
-                                <img src="${pageContext.request.contextPath}/img/anh2.jpg" class=" w-100 h-100 bg-secondary rounded" alt=" slide2">
-                            </div>
-                            <div class="carousel-item  rounded">
-                                <img src="${pageContext.request.contextPath}/img/anh3.jpg" class=" w-100 h-100 bg-secondary rounded" alt=" slide3">
-                            </div>
+                        <c:set var="firstActiveSet" value="false" />
+
+                        <div class="carousel-inner py-5" role="listbox">
+                            <!-- Start of carousel-item section -->
+                            <c:forEach items="${listslider}" var="s" varStatus="status">
+                                <c:if test="${s.status == 1}">
+                                    <div class="carousel-item ${!firstActiveSet ? 'active' : ''}  rounded">
+                                        <a href="/TeaShop/${s.url}" >
+                                            <img src="${s.image}" class="w-100 h-100 bg-secondary rounded" alt="${s.name}">
+                                        </a>
+                                    </div>
+                                    <c:if test="${!firstActiveSet}">
+                                        <c:set var="firstActiveSet" value="true" />
+                                    </c:if>
+                                </c:if>
+                            </c:forEach>
+                            <!-- End of carousel-item section -->
                         </div>
+
+
 
                         <button class="carousel-control-prev" type="button" data-bs-target="#carouselId" data-bs-slide="prev">
                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -212,12 +215,14 @@
                         <div id="tab-1" class="tab-pane fade show p-0 active">
                             <div class="row g-4">
                                 <div class="col-lg-12">
-                                    <div class="row g-4">
+                                    <div class="row g-4 ">
                                         <c:forEach var="special" items="${listSpecialProduct}">
-                                            <div class="col-md-6 col-lg-4 col-xl-3">
-                                                <div class="rounded position-relative fruite-item">
+                                            <div class="col-md-6 col-lg-4 col-xl-4">
+                                                <div class="rounded position-relative fruite-item text-center ">
                                                     <div class="fruite-img">
-                                                        <img src="${special.image}" class="img-fluid w-100 rounded-top" alt="${special.product_name}">
+                                                        <a href="product-details?id=${special.product_id}">
+                                                        <img src="${special.image}" class="img-fluid w-100 rounded-top center-block" alt="${special.product_name}">
+                                                        </a>
                                                     </div>
                                                     <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;"></div>
                                                     <div class="p-4 border border-secondary border-top-0 rounded-bottom">
@@ -252,21 +257,21 @@
 
                 <div class="row g-4 justify-content-center">
 
-                   <c:forEach items="${topBog}" var="b">
-  <div class="col-md-6 col-lg-4 " >
-    <a href="blogdetail?bid=${b.getId()}">
-      <div class="service-item bg-secondary rounded border border-secondary" >
-        <img src="/TeaShop/img/${b.getImg()}"  alt="${b.getBlog_name()}"style="width: 100%; height: 200px; object-fit: cover;">
-        <div class=" fix-bottom">
-          <div class=" bg-primary text-center p-4 rounded">
-            <h5 class="text-white">${b.getBlog_name()}</h5>
-          </div>
-        </div>
-      </div>
-    </a>
-  </div>
-</c:forEach>
-  
+                    <c:forEach items="${topBog}" var="b">
+                        <div class="col-md-6 col-lg-4 " >
+                            <a href="blogdetail?bid=${b.getId()}">
+                                <div class="service-item bg-secondary rounded border border-secondary" >
+                                    <img src="${b.getImg()}"  alt="${b.getBlog_name()}"style="width: 100%; height: 200px; object-fit: cover;">
+                                    <div class=" fix-bottom">
+                                        <div class=" bg-primary text-center p-4 ">
+                                            <h5 class="text-white">${b.getBlog_name()}</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </c:forEach>
+
                 </div>
             </div>
         </div>
