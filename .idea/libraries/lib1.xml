@@ -1,0 +1,16 @@
+<component name="libraryTable">
+  <library name="lib1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/TeaShop2/lib/sqljdbc42 (3).jar!/" />
+      <root url="jar://$PROJECT_DIR$/TeaShop2/lib/mssql-jdbc-9.2.1.jre8.jar!/" />
+      <root url="jar://$PROJECT_DIR$/TeaShop2/lib/jakarta.servlet.jsp.jstl-api-2.0.0 (1).jar!/" />
+      <root url="jar://$PROJECT_DIR$/TeaShop2/lib/gson-2.3.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/TeaShop2/lib/lombok-1.18.24.jar!/" />
+      <root url="jar://$PROJECT_DIR$/TeaShop2/lib/javax.activation-1.2.0.redhat-00002.jar!/" />
+      <root url="jar://$PROJECT_DIR$/TeaShop2/lib/jakarta.servlet.jsp.jstl-2.0.0 (2).jar!/" />
+      <root url="jar://$PROJECT_DIR$/TeaShop2/lib/javax.mail.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
