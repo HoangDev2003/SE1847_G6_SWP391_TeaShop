@@ -39,7 +39,7 @@ public class BlogCategoryDAO extends DBContext  {
     }
     
     public List<BlogCategory> getCategoryByID(int categoryID) {
-        String sql = "SELECT * FROM BlogCategory WHERE categoryID = ?";
+        String sql = "SELECT * FROM Blog WHERE categoryID = ?";
         connection = getConnection();
         try {
             PreparedStatement st = connection.prepareStatement(sql);

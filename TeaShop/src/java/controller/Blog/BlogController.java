@@ -39,7 +39,9 @@ public class BlogController extends HttpServlet {
 
         HttpSession session = request.getSession();
         String search = request.getParameter("search");
+        String cateblog = request.getParameter("cateblog");
         try {
+            if (cateblog==null){
             List<BlogCategory> CategoryBlog = blogCategoryDao.getAll();
             
             BlogDAO topblogs= new BlogDAO();
@@ -63,6 +65,19 @@ public class BlogController extends HttpServlet {
                     session.setAttribute("listBlog", searchBlog);
                     request.getRequestDispatcher("view/homepage/blog.jsp").forward(request, response);
                 }
+            }
+            }
+            else{
+                int cateblogs = Integer.parseInt(cateblog);
+                List<BlogCategory> CategoryBlog = blogCategoryDao.getAll();
+                List<Blog> CategoryBlogs = blogDAO.getCategoryByID(cateblogs);
+            
+            BlogDAO topblogs= new BlogDAO();
+            List<Blog> topblog = topblogs.getTop3Newest();
+            session.setAttribute("listBlogCategory", CategoryBlog);
+            session.setAttribute("listBlog", CategoryBlogs);
+            session.setAttribute("topblog", topblog);
+            request.getRequestDispatcher("view/homepage/blog.jsp").forward(request, response);
             }
 
         } catch (Exception e) {

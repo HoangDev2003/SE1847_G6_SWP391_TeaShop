@@ -69,15 +69,13 @@
                                             <div class="col-lg-12">
                                                 <div class="mb-3">
                                                     <h4>Loại Bài Đăng</h4>
-<<<<<<< HEAD:TeaShop/web/view/homepage/blogDetail.jsp
-                                                <c:forEach items="${listBlogCategory}" var="cate">
-=======
+
                                                 <c:forEach items="${listBlogCategory}" var="lbc">
->>>>>>> 0615c6c48c527dd116a21bb5f562894794372693:TeaShop2/web/view/homepage/blogDetail.jsp
+
                                                     <ul class="list-styled fruite-categorie">
                                                         <li>
                                                             <div class="d-flex justify-content-between fruite-name">
-                                                                <a href="blogdetail?bid=${lbc.getCategoryID()}"><i class="fas fa-alt me-2"></i>${lbc.getCategoryName()}</a>
+                                                                <a href="blog?cateblog=${lbc.getCategoryID()}"><i class="fas fa-alt me-2"></i>${lbc.getCategoryName()}</a>
 
                                                             </div>
                                                         </li>
@@ -119,11 +117,7 @@
                                             </div>
                                             <h4 class="fw-bold mb-3">${b.getBlog_name()}</h4>
 
-                                            <pre class="mb-4 pre">${b.getContent()}</pre>
-
-
-
-
+                                            <pre class="mb-4 ">${b.getContent()}</pre>
 
                                         </div>
 

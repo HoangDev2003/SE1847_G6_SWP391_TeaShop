@@ -43,11 +43,11 @@
         <!-- Spinner End -->
 
         <!-- Navbar start -->
-        
-            <div class="container-fluid fixed-top">
 
-                <div class="container topbar bg-primary d-none d-lg-block">    
-                    <div class="d-flex justify-content-between">
+        <div class="container-fluid fixed-top">
+
+            <div class="container topbar bg-primary d-none d-lg-block">    
+                <div class="d-flex justify-content-between">
 
                     <c:if test="${sessionScope.acc==null}">                                                                    
                         <div class="top-info ps-2">
@@ -129,14 +129,14 @@
         <!-- Blog Start-->
         <div class="container-fluid fruite py-5">
             <div class="container py-5">
-                
+
                 <h1 class="mb-4">Tin Tức & Sự Kiện</h1>
-<form action="blog" method="get" class="search-form">
-  <div class="position-relative mx-auto d-flex align-items-center">
-    <input class="form-control border-2 border-secondary w-75 py-3 px-4" type="text" name="search" id="search-box" placeholder="Search" required aria-label="Search for blog posts">
-    <button type="submit" class="btn btn-primary border-2 border-secondary py-3 px-4 ms-2" aria-label="Submit search">Search</button>
-  </div>
-</form>
+                <form action="blog" method="get" class="search-form">
+                    <div class="position-relative mx-auto d-flex align-items-center">
+                        <input class="form-control border-2 border-secondary w-75 py-3 px-4" type="text" name="search" id="search-box" placeholder="Search" required aria-label="Search for blog posts">
+                        <button type="submit" class="btn btn-primary border-2 border-secondary py-3 px-4 ms-2" aria-label="Submit search">Search</button>
+                    </div>
+                </form>
 
                 <div class="row g-4">
                     <div class="col-lg-12">
@@ -149,11 +149,11 @@
                                         <div class="col-lg-12">
                                             <div class="mb-3">
                                                 <h4>Loại Bài Đăng</h4>
-                                                <c:forEach items="${listBlogCategory}" var="cate">
+                                                <c:forEach items="${listBlogCategory}" var="lbc">
                                                     <ul class="list-styled fruite-categorie">
                                                         <li>
                                                             <div class="d-flex justify-content-between fruite-name">
-                                                                <a href="blogdetail?bid=${cate.getCategoryID()}"><i class="fas fa-alt me-2"></i>${cate.getCategoryName()}</a>
+                                                                <a href="blog?cateblog=${lbc.getCategoryID()}"><i class="fas fa-alt me-2"></i>${lbc.getCategoryName()}</a>
 
                                                             </div>
                                                         </li>
@@ -191,7 +191,7 @@
                                                         <div class="fruite-img">
                                                             <img src="${b.getImg()}" class="img-fluid w-100 rounded-top" alt="">
                                                         </div>
-                                                        
+
                                                         <div class="p-4  border-top-0  rounded-bottom">
                                                             <h4>${b.getBlog_name()}</h4>
 
@@ -236,29 +236,29 @@
         <!-- Template Javascript -->
         <script src="${pageContext.request.contextPath}/js/main.js"></script>
         <script> const searchForm = document.querySelector('.search-form');
-const searchBox = document.getElementById('search-box');
+            const searchBox = document.getElementById('search-box');
 
-searchForm.addEventListener('submit', (event) => {
-  const searchTerm = searchBox.value.trim();
+            searchForm.addEventListener('submit', (event) => {
+                const searchTerm = searchBox.value.trim();
 
-  // Basic validation
-  if (!searchTerm) {
-    event.preventDefault();
-    searchBox.classList.add('is-invalid'); // Add Bootstrap class for visual feedback
-    searchBox.nextElementSibling.textContent = 'Please enter a search term.'; // Set error message next to input
-    return false; // Prevent form submission
-  } else {
-    searchBox.classList.remove('is-invalid'); // Remove error class if search term is entered
-  }
+                // Basic validation
+                if (!searchTerm) {
+                    event.preventDefault();
+                    searchBox.classList.add('is-invalid'); // Add Bootstrap class for visual feedback
+                    searchBox.nextElementSibling.textContent = 'Please enter a search term.'; // Set error message next to input
+                    return false; // Prevent form submission
+                } else {
+                    searchBox.classList.remove('is-invalid'); // Remove error class if search term is entered
+                }
 
-  // Additional validation (optional)
-  // You could perform further validation here, such as checking for minimum search term length, allowed characters, etc.
-  // If validation fails, prevent submission and display an appropriate error message.
+                // Additional validation (optional)
+                // You could perform further validation here, such as checking for minimum search term length, allowed characters, etc.
+                // If validation fails, prevent submission and display an appropriate error message.
 
-  // Submit form if validation passes
-  // event.preventDefault() is not needed here as validation already handles it
-});
-</script>
+                // Submit form if validation passes
+                // event.preventDefault() is not needed here as validation already handles it
+            });
+        </script>
     </body>
 
 </html>

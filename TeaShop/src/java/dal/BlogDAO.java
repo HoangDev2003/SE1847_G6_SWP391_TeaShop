@@ -5,6 +5,7 @@
 package dal;
 
 import entity.Blog;
+import entity.BlogCategory;
 import entity.Product;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +57,35 @@ public class BlogDAO extends DBContext {
 
         return listblog;
     }
+   public List<Blog> getCategoryByID(int categoryID) {
+    List<Blog> blogs = new ArrayList<>();
+    String sql = "SELECT * FROM Blog WHERE categoryID = ?";
+    connection = getConnection();
+    try {
+        PreparedStatement pre = connection.prepareStatement(sql);
+        pre.setInt(1, categoryID);  // Đặt giá trị cho tham số đầu tiên
+        ResultSet resultSet = pre.executeQuery();
+        while (resultSet.next()) {
+            int id = resultSet.getInt(1);
+            int role_id = resultSet.getInt(2);
+            String content = resultSet.getString(3);
+            String img = resultSet.getString(4);
+            String blog_name = resultSet.getString(5);
+            String created_at = resultSet.getString(6);
+            int categoryid = resultSet.getInt(7);
+            int status = resultSet.getInt(8);
+
+            Blog blog = new Blog(id, role_id, content, img, blog_name, created_at, categoryid, status);
+            blogs.add(blog);
+        }
+    } catch (SQLException e) {
+        System.out.println(e);
+    } finally {
+        // Đóng kết nối và các tài nguyên khác ở đây nếu cần
+    }
+    return blogs;
+}
+
     // tìm tất cả thuộc tính for Admin
     public List<Blog> getForList() {
 

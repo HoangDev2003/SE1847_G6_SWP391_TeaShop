@@ -41,7 +41,7 @@
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
-            <a class="navbar-brand ps-3" href="index.html">Marketing Page</a>
+            <a class="navbar-brand ps-3" href="index.html">Quản lí Slide</a>
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
             <!-- Navbar-->
@@ -70,16 +70,16 @@
                                 <td>${detail.id}</td>
                             </tr>
                             <tr>
-                                <td class="title">Name</td>
+                                <td class="title">Tên</td>
                                 <td>${detail.name}</td>
                             </tr>
                             <tr>
                                 <td class="title">Status</td>
-                                <td>${detail.status ? 'Active' : 'Inactive'}</td>
+                                <td>${detail.status==1 ? 'Active' : 'Inactive'}</td>
                             </tr>
                             <tr>
-                                <td class="title">Image</td>
-                                <td><img src="img/${detail.image}"></td>
+                                <td class="title">Ảnh</td>
+                                <td><img src="${detail.image}"></td>
                             </tr>
                         </table>
                     </div>
