@@ -205,7 +205,7 @@
                                                     </div>
 
                                                     <div class="col-md-6 col-lg-6 col-xl-6">
-                                                        <p>Họ vầ tên: ${accInfo.full_name}</p>
+                                                        <p>Họ và tên: ${orderInfo.full_name}</p>
                                                         <p>Giới tính: ${accInfo.gender}</p>
                                                         <p>Email: ${accInfo.email}</p>
                                                         <p>Số điện thoại: ${accInfo.phone_number}</p>

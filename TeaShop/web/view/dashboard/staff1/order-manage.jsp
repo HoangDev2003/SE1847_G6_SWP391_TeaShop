@@ -79,6 +79,9 @@
                                             <c:when test="${current_status_id == 2}">
                                                 <h4>Hiện tại không có đơn hàng nào cần làm</h4>
                                             </c:when>
+                                            <c:when test="${current_status_id == 7}">
+                                                <h4>Hiện tại không có đơn hàng nào</h4>
+                                            </c:when>
                                             <c:when test="${current_status_id == 3}">
                                                 <h4>Hiện tại không có đơn hàng nào cần được giao</h4>
                                             </c:when>
@@ -92,30 +95,33 @@
                                     </div>
                                 </div>
                             </c:if>
-                            
-                                <div style="text-align: center;">
-                                    <c:choose>
-                                        <c:when test="${current_status_id == 0}">
-                                            <h4>Tất cả đơn hàng</h4>
-                                        </c:when>
-                                        <c:when test="${current_status_id == 1}">
-                                            <h4>Đơn hàng cần xác nhận</h4>
-                                        </c:when>
-                                        <c:when test="${current_status_id == 2}">
-                                            <h4>Đơn hàng cần làm</h4>
-                                        </c:when>
-                                        <c:when test="${current_status_id == 3}">
-                                            <h4>Đơn hàng cần được giao</h4>
-                                        </c:when>
-                                        <c:when test="${current_status_id == 4}">
-                                            <h4>Đơn hàng đã hoàn thành</h4>
-                                        </c:when>
-                                        <c:when test="${current_status_id == 6}">
-                                            <h4>Đơn hàng đã bị hủy</h4>
-                                        </c:when>
-                                    </c:choose>
-                                </div>
-                            
+
+                            <div style="text-align: center;">
+                                <c:choose>
+                                    <c:when test="${current_status_id == 0}">
+                                        <h4>Tất cả đơn hàng</h4>
+                                    </c:when>
+                                    <c:when test="${current_status_id == 1}">
+                                        <h4>Đơn hàng cần xác nhận</h4>
+                                    </c:when>
+                                    <c:when test="${current_status_id == 2}">
+                                        <h4>Đơn hàng cần làm</h4>
+                                    </c:when>
+                                    <c:when test="${current_status_id == 7}">
+                                        <h4>Chọn nhân viên giao hàng</h4>
+                                    </c:when>
+                                    <c:when test="${current_status_id == 3}">
+                                        <h4>Đơn hàng cần được giao</h4>
+                                    </c:when>
+                                    <c:when test="${current_status_id == 4}">
+                                        <h4>Đơn hàng đã hoàn thành</h4>
+                                    </c:when>
+                                    <c:when test="${current_status_id == 6}">
+                                        <h4>Đơn hàng đã bị hủy</h4>
+                                    </c:when>
+                                </c:choose>
+                            </div>
+
                             <h5>Số đơn hàng: ${number_of_orders}</h5>
 
                             <c:forEach items="${listOrders}" var="p">
@@ -138,6 +144,7 @@
                                             <p>Tổng tiền hóa đơn: <fmt:formatNumber value="${p.total_amount}" type="number" groupingUsed="true"/> đồng</p>
                                             <p>Phương thức thanh toán: ${p.payment_method}</p>
                                             <p>Ghi chú của nhân viên: ${p.staff_note}</p>
+                                            <p>Nhân viên giao hàng: ${p.accountShip.user_name}</p>
                                             <p>Ghi chú của khách: ${p.note}</p>
                                             <c:if  test="${current_status_id == 4 || current_status_id == 5}">
                                                 <p>Ghi chú của người giao hàng: ${p.shipper_note}</p>
@@ -227,6 +234,97 @@
                                                                 <span style="color: red; margin-left: 10px;">Đã xác nhận</span>
                                                             </div>
 
+
+                                                            <!-- Complete Order Form -->
+                                                            <form action="Staff" method="post" onsubmit="return confirm('Bạn có chắc chắn rằng đơn hàng đã hoàn thành?')">
+                                                                <input type="hidden" name="service" value="update">
+                                                                <input type="hidden" name="order_id" value="${p.order_id}">
+                                                                <input type="hidden" name="current_status_id" value="${current_status_id}">
+                                                                <input type="hidden" name="status_id" value="7">
+                                                                <div style="display: flex; align-items: center; margin-top: 16px;">
+                                                                    <button type="submit" class="btn border border-secondary rounded-pill px-3 custom-btn confirm-green">Đã xong đơn hàng</button>
+                                                                </div>
+                                                            </form>
+                                                        </c:when>
+                                                        <c:when test="${p.status.status_id == 7}">
+                                                            <!-- Confirm Order Form (Already Confirmed) -->
+                                                            <div style="display: flex; align-items: center;">
+                                                                <button type="submit" class="btn border border-secondary rounded-pill px-3 custom-btn" disabled>Xác nhận đơn hàng</button>
+                                                                <span style="color: red; margin-left: 10px;">Đã xác nhận</span>
+
+                                                            </div>
+                                                            <div style="display: flex; align-items: center; margin-top: 16px;">
+                                                                <button type="submit" class="btn border border-secondary rounded-pill px-3 custom-btn" disabled>Đơn hàng cần làm</button>
+                                                                <span style="color: red; margin-left: 10px;">Đã làm xong</span>
+                                                            </div>
+                                                            <button class="btn btn-md bg-light border mt-4" data-bs-toggle="modal" data-bs-target="#feedbackModal"
+                                                                    onclick="setOrderId(${p.order_id})">
+                                                                Chọn nhân viên giao hàng
+                                                            </button>
+                                                            <script>
+                                                                function setOrderId(order_id) {
+                                                                    var orderIdInput = document.getElementById('order_id');
+                                                                    if (orderIdInput) {
+                                                                        orderIdInput.value = order_id;
+                                                                    }
+                                                                }
+
+                                                                function selectShipper(shipper_id) {
+                                                                    // Cập nhật giá trị của shipper_id
+                                                                    var shipperIdInput = document.getElementById('shipper_id');
+                                                                    if (shipperIdInput) {
+                                                                        shipperIdInput.value = shipper_id;
+                                                                    }
+
+                                                                    // Submit form
+                                                                    document.getElementById('feedbackForm').submit();
+                                                                }
+                                                            </script>
+
+
+
+                                                            <!-- Modal -->
+                                                            <!-- Modal -->
+                                                            <div class="modal fade" id="feedbackModal" tabindex="-1" aria-labelledby="feedbackModalLabel" aria-hidden="true">
+                                                                <div class="modal-dialog">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title" id="feedbackModalLabel">Danh sách nhân viên giao hàng</h5>
+                                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            <ul class="list-group">
+                                                                                <form id="feedbackForm" method="post" action="Staff">
+                                                                                    <!-- Dynamic content -->
+                                                                                    <c:forEach items="${listAccountShipper}" var="las">
+                                                                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                                                            <div>
+                                                                                                <strong>${las.user_name}</strong><br>
+                                                                                                <small>${las.phone_number}</small><br>
+                                                                                                <small>${las.email}</small><br>
+                                                                                                <input type="hidden" name="service" value="updateShipOrder">
+                                                                                                <input type="hidden" name="order_id" id="order_id" value="">
+                                                                                                <!-- Input for shipper_id, will be updated by JavaScript -->
+                                                                                                <input type="hidden" name="shipper_id" id="shipper_id" value="">
+                                                                                                <input type="hidden" name="current_status_id" value="${current_status_id}">
+                                                                                                <input type="hidden" name="status_id" value="7">
+                                                                                                <small>Số lượng đơn hàng đang giao: ${las.listOrderShipper.size()}</small>
+                                                                                            </div>
+                                                                                            <!-- Nút chọn và submit form -->
+                                                                                            <button type="button" class="btn btn-outline-primary btn-sm" onclick="selectShipper('${las.account_id}')">Chọn</button>
+                                                                                        </li>
+                                                                                    </c:forEach>
+                                                                                </form>
+                                                                            </ul>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+
                                                             <!-- Complete Order Form -->
                                                             <form action="Staff" method="post" onsubmit="return confirm('Bạn có chắc chắn rằng đơn hàng đã hoàn thành?')">
                                                                 <input type="hidden" name="service" value="update">
@@ -234,7 +332,7 @@
                                                                 <input type="hidden" name="current_status_id" value="${current_status_id}">
                                                                 <input type="hidden" name="status_id" value="3">
                                                                 <div style="display: flex; align-items: center; margin-top: 16px;">
-                                                                    <button type="submit" class="btn border border-secondary rounded-pill px-3 custom-btn confirm-green">Đã xong đơn hàng</button>
+                                                                    <button type="submit" class="btn border border-secondary rounded-pill px-3 custom-btn confirm-green">Hoàn thành đơn hàng</button>
                                                                 </div>
                                                             </form>
                                                         </c:when>
@@ -271,8 +369,90 @@
                                                         <input type="hidden" name="service" value="update">
                                                         <input type="hidden" name="order_id" value="${p.order_id}">
                                                         <input type="hidden" name="current_status_id" value="${current_status_id}">
-                                                        <input type="hidden" name="status_id" value="3">
+                                                        <input type="hidden" name="status_id" value="7">
                                                         <button type="submit" class="btn border border-secondary rounded-pill px-3 custom-btn confirm-green" onclick="confirmUpdateStatus('${p.order_id}', '${p.status.status_id}')">Đã xong đơn hàng</button>
+                                                    </form>
+                                                </c:when>
+                                                <c:when test="${p.status.status_id == 7}">
+
+                                                    <button class="btn btn-md bg-light border mt-4" data-bs-toggle="modal" data-bs-target="#feedbackModal"
+                                                            onclick="setOrderId(${p.order_id})">
+                                                        Chọn nhân viên giao hàng
+                                                    </button>
+                                                    <script>
+                                                        function setOrderId(order_id) {
+                                                            var orderIdInput = document.getElementById('order_id');
+                                                            if (orderIdInput) {
+                                                                orderIdInput.value = order_id;
+                                                            }
+                                                        }
+
+                                                        function selectShipper(shipper_id) {
+                                                            // Cập nhật giá trị của shipper_id
+                                                            var shipperIdInput = document.getElementById('shipper_id');
+                                                            if (shipperIdInput) {
+                                                                shipperIdInput.value = shipper_id;
+                                                            }
+
+                                                            // Submit form
+                                                            document.getElementById('feedbackForm').submit();
+                                                        }
+                                                    </script>
+
+
+
+                                                    <!-- Modal -->
+                                                    <!-- Modal -->
+                                                    <div class="modal fade" id="feedbackModal" tabindex="-1" aria-labelledby="feedbackModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="feedbackModalLabel">Danh sách nhân viên giao hàng</h5>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <ul class="list-group">
+                                                                        <form id="feedbackForm" method="post" action="Staff">
+                                                                            <!-- Dynamic content -->
+                                                                            <c:forEach items="${listAccountShipper}" var="las">
+                                                                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                                                    <div>
+                                                                                        <strong>${las.user_name}</strong><br>
+                                                                                        <small>${las.phone_number}</small><br>
+                                                                                        <small>${las.email}</small><br>
+                                                                                        <input type="hidden" name="service" value="updateShipOrder">
+                                                                                        <input type="hidden" name="order_id" id="order_id" value="">
+                                                                                        <!-- Input for shipper_id, will be updated by JavaScript -->
+                                                                                        <input type="hidden" name="shipper_id" id="shipper_id" value="">
+                                                                                        <input type="hidden" name="current_status_id" value="${current_status_id}">
+                                                                                        <input type="hidden" name="status_id" value="7">
+                                                                                        <small>Số lượng đơn hàng đang giao: ${las.listOrderShipper.size()}</small>
+                                                                                    </div>
+                                                                                    <!-- Nút chọn và submit form -->
+                                                                                    <button type="button" class="btn btn-outline-primary btn-sm" onclick="selectShipper('${las.account_id}')">Chọn</button>
+                                                                                </li>
+                                                                            </c:forEach>
+                                                                        </form>
+                                                                    </ul>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+
+                                                    <!-- Complete Order Form -->
+                                                    <form action="Staff" method="post" onsubmit="return confirm('Bạn có chắc chắn rằng đơn hàng đã hoàn thành?')">
+                                                        <input type="hidden" name="service" value="update">
+                                                        <input type="hidden" name="order_id" value="${p.order_id}">
+                                                        <input type="hidden" name="current_status_id" value="${current_status_id}">
+                                                        <input type="hidden" name="status_id" value="3">
+                                                        <div style="display: flex; align-items: center; margin-top: 16px;">
+                                                            <button type="submit" class="btn border border-secondary rounded-pill px-3 custom-btn confirm-green">Hoàn thành đơn hàng</button>
+                                                        </div>
                                                     </form>
                                                 </c:when>
                                             </c:choose>
