@@ -125,13 +125,13 @@ public class ProductDAO extends DBContext {
         }
         return list;
     }
-    
+
     public void updateSalesNumber(int productId, int quantity) {
         connection = getConnection();
         PreparedStatement stm = null;
         String sql = "UPDATE Product SET sales_numbers = sales_numbers + ? WHERE product_id = ?";
         try {
-             stm = connection.prepareStatement(sql);
+            stm = connection.prepareStatement(sql);
             stm.setInt(1, quantity);
             stm.setInt(2, productId);
             stm.executeUpdate();
@@ -139,6 +139,7 @@ public class ProductDAO extends DBContext {
             e.printStackTrace();
         }
     }
+
     public List<Product> findProductByName(String keyword, int page, String sort) {
         List<Product> list = new ArrayList<>();
         Category category = null;
@@ -227,11 +228,11 @@ public class ProductDAO extends DBContext {
         List<Product> list = new ArrayList<>();
         connection = getConnection();
         Category category = null;
-        String sql = "SELECT  *\n"
-                + "  FROM [TeaShop].[dbo].[Product]\n"
-                + "  Where price >= ? AND price <= ?\n"
+        String sql = "SELECT *\n"
+                + "FROM [TeaShop].[dbo].[Product]\n"
+                + "WHERE price - (discount / 100.0 * price) >= ? AND price - (discount / 100.0 * price) <= ?\n"
                 + getSortQuery(sort)
-                + "  OFFSET ? ROWS \n" //(Page - 1) * numberRecord/page
+                + "  OFFSET ? ROWS \n"
                 + "  FETCH NEXT ? ROWS ONLY\n"; //numberRecord/page;
         try {
             //Tạo đối tượng PrepareStatement
@@ -322,8 +323,8 @@ public class ProductDAO extends DBContext {
         String sql = "SELECT *\n"
                 + "  FROM [dbo].[Product]\n"
                 + getSortQuery(sort)
-                + "  OFFSET ? ROWS \n" 
-                + "  FETCH NEXT ? ROWS ONLY\n"; 
+                + "  OFFSET ? ROWS \n"
+                + "  FETCH NEXT ? ROWS ONLY\n";
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, (page - 1) * 6);
@@ -406,7 +407,7 @@ public class ProductDAO extends DBContext {
         connection = getConnection();
         String sql = "SELECT  count(*)\n"
                 + "  FROM [TeaShop].[dbo].[Product]\n"
-                + "  Where price >= ? AND price <= ?";
+                + "WHERE price - (discount / 100.0 * price) >= ? AND price - (discount / 100.0 * price) <= ?";
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, priceFrom);
