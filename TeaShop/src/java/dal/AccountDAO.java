@@ -6,13 +6,17 @@ package dal;
 
 import dal.DBContext;
 import entity.Accounts;
+import entity.Orders;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -220,6 +224,52 @@ public class AccountDAO extends DBContext {
             e.printStackTrace(); // Xử lý ngoại lệ bằng cách in ra stack trace
         }
         return -1;
+    }
+
+    public List<Accounts> findAccountsShipperByRoleId() {
+        ArrayList<Accounts> listAccount = new ArrayList<>();
+        String query = "SELECT *\n"
+                + "  FROM [dbo].[Accounts]\n"
+                + "  Where role_id = 4";
+        Accounts account = null;
+        connection = getConnection();
+        try {
+            PreparedStatement pre = connection.prepareStatement(
+                    query,
+                    ResultSet.TYPE_SCROLL_SENSITIVE,
+                    ResultSet.CONCUR_READ_ONLY);
+
+            ResultSet rs = pre.executeQuery();
+
+            while (rs.next()) {
+
+                account = new Accounts();
+                
+                account.setAccount_id(rs.getInt("account_id"));
+                account.listOrderShipper = (new OrdersDAO().findOrderByShiperId(rs.getInt("account_id")));
+                account.setUser_name(rs.getString("user_name"));
+                account.setEmail(rs.getString("email"));
+                account.setGender(rs.getString("gender"));
+                account.setPhone_number(rs.getString("phone_number"));
+                listAccount.add(account);
+            }
+
+            rs.close(); // Close ResultSet
+            pre.close(); // Close PreparedStatement
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception ex) { // Catch any parsing exceptions
+            Logger.getLogger(OrdersDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close(); // Close the database connection
+                }
+            } catch (SQLException e) {
+                Logger.getLogger(OrdersDAO.class.getName()).log(Level.SEVERE, null, e);
+            }
+        }
+        return listAccount;
     }
 
 }
