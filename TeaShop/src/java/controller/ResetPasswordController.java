@@ -73,12 +73,12 @@ public class ResetPasswordController extends HttpServlet {
                     + "</body>\n"
                     + "</html>";
 
-            e.sendEmail(emailc, "Reset mật khẩu của bạn", emailContent);
-            request.setAttribute("Notification", "Bạn cần xác nhận email để reset mật khẩu!");
+            e.sendEmail(emailc, "Reset Passworf", emailContent);
+            request.setAttribute("Notification", "Ban can xac minh tai khoan!");
             session.setAttribute("emailReset", emailc);
             request.getRequestDispatcher("login.jsp").forward(request, response);
         } else {
-            request.setAttribute("error", "Email không tồn tại!");
+            request.setAttribute("error", "Email khong ton tai");
             request.getRequestDispatcher("resetpass.jsp").forward(request, response);
         }
     }
@@ -102,8 +102,15 @@ public class ResetPasswordController extends HttpServlet {
         System.out.println(re_newpass);
         System.out.println(emailc);
 
+      if (newpass == null || newpass.trim().isEmpty()) {
+            request.setAttribute("error", "Mat khau khong duoc de trang");
+            request.getRequestDispatcher("newpass.jsp").forward(request, response);
+        }else if (newpass == null || newpass.trim().isEmpty() || newpass.length() < 8 || newpass.length() > 32) {
+            request.setAttribute("error", "Mat khau phai chua 8-32 ky tu");
+             request.getRequestDispatcher("newpass.jsp").forward(request, response);
+        }
         if (!newpass.equals(re_newpass)) {
-            request.setAttribute("error", "Mật khẩu và mật khẩu bạn nhập lại phải giống nhau");
+            request.setAttribute("error", "Mat khau va mat khau nhap lai phai giong nhau");
             request.getRequestDispatcher("newpass.jsp").forward(request, response);
         } else {
             // Mã hóa mật khẩu mới trước khi lưu vào database
@@ -111,11 +118,11 @@ public class ResetPasswordController extends HttpServlet {
             AccountDAO dao = new AccountDAO();
             boolean isUpdated = dao.changePass(emailc, encodedNewPass);
             if (isUpdated) {
-                request.setAttribute("Notification", "Reset mật khẩu thành công");
+                request.setAttribute("Notification", "Reset mat khau thanh cong");
                 session.removeAttribute("emailReset");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
             } else {
-                request.setAttribute("error", "Reset mật khẩu thất bại. Hãy thử lại");
+                request.setAttribute("error", "Reset mat khau that bai, hay thu lai");
                 request.getRequestDispatcher("newpass.jsp").forward(request, response);
             }
         }

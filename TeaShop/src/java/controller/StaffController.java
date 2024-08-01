@@ -5,6 +5,7 @@
 package controller;
 
 import com.google.gson.JsonObject;
+import dal.AccountDAO;
 import dal.OrderDetailsDAO;
 import dal.OrdersDAO;
 import dal.StaffDAO;
@@ -53,6 +54,7 @@ public class StaffController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession(true);
         Accounts acc = (Accounts) session.getAttribute("acc");
+        AccountDAO accountDAO = new AccountDAO();
         if (acc == null) {
             response.sendRedirect("view/homepage/404.jsp");
             return;
@@ -85,6 +87,8 @@ public class StaffController extends HttpServlet {
                         listOrders = staffDAO.getOrderByOrderId(order_id);
                         request.setAttribute("listOrders", listOrders);
                         request.setAttribute("order_id_search", order_id);
+                    } else {
+                        request.setAttribute("message", "Id hoá đơn không hợp lệ");
                     }
                     request.getRequestDispatcher("view/dashboard/staff1/search-order.jsp").forward(request, response);
                 } else if (search.equals("byInfo")) {
@@ -94,6 +98,7 @@ public class StaffController extends HttpServlet {
                     String full_name, payment_method;
                     LocalDate lowerDate = null;
                     LocalDate upperDate = null;
+                    StringBuilder message = new StringBuilder(); // Initialize message here
 
                     String full_nameParam = request.getParameter("full_name");
 
@@ -103,6 +108,7 @@ public class StaffController extends HttpServlet {
                     } else if (!full_nameParam.matches("[a-zA-Z ]+")) {
                         count--;
                         full_name = null;
+                        message.append("Họ và tên, ");
                     } else {
                         full_name = full_nameParam;
                         request.setAttribute("full_name", full_name);
@@ -116,6 +122,7 @@ public class StaffController extends HttpServlet {
                         if (lowerAmount > 0) {
                             request.setAttribute("lower_amount", lowerAmount);
                         } else {
+                            message.append("Số tiền tối thiểu, ");
                             count--;
                         }
                     }
@@ -124,10 +131,11 @@ public class StaffController extends HttpServlet {
                         upperAmount = 0;
                         count--;
                     } else {
-                        upperAmount = Integer.parseInt(request.getParameter("upper_amount"));
+upperAmount = Integer.parseInt(request.getParameter("upper_amount"));
                         if (upperAmount > lowerAmount) {
                             request.setAttribute("upper_amount", upperAmount);
                         } else {
+                            message.append("Số tiền tối đa, ");
                             count--;
                         }
                     }
@@ -148,6 +156,7 @@ public class StaffController extends HttpServlet {
                         if (upperDate.isAfter(lowerDate)) {
                             request.setAttribute("upper_date", upperDateStr);
                         } else {
+                            message.append("Ngày kết thúc, ");
                             count--;
                         }
                     }
@@ -168,6 +177,12 @@ public class StaffController extends HttpServlet {
                         request.setAttribute("payment_method_search", payment_method);
                     }
 
+                    if (message.length() > 0) { // Check if message has content
+                        message.delete(message.length() - 2, message.length());
+                        message.append(" không hợp lệ");
+                        request.setAttribute("message", message.toString());
+                    }
+
                     // Convert date strings to Timestamp
                     Timestamp lowerDay = null;
                     Timestamp upperDay = null;
@@ -175,7 +190,7 @@ public class StaffController extends HttpServlet {
                         lowerDay = Timestamp.valueOf(lowerDateStr + " 00:00:00");
                     }
                     if (upperDateStr != null && !upperDateStr.isEmpty()) {
-                        upperDay = Timestamp.valueOf(upperDateStr + " 23:59:59");
+upperDay = Timestamp.valueOf(upperDateStr + " 23:59:59");
                     }
                     if (count > 0) {
                         listOrders = staffDAO.getOrderByInfo(full_name, lowerAmount, upperAmount, lowerDay, upperDay, status_id, payment_method);
@@ -193,7 +208,7 @@ public class StaffController extends HttpServlet {
                 int status_id = Integer.parseInt(request.getParameter("status_id"));
 
                 Orders order = orderDAO.findByOrderId(order_id);
-                if (status_id == 3) {  // Kiểm tra khi chuyển sang trạng thái hoàn thành
+                if (status_id == 7) {  // Kiểm tra khi chuyển sang trạng thái hoàn thành
                     List<OrderDetails> listOrderDetails = orderDetailsDAO.findByOrderId(order_id);
                     boolean imageMissing = false;
                     for (OrderDetails od : listOrderDetails) {
@@ -204,7 +219,7 @@ public class StaffController extends HttpServlet {
                     }
                     if (order.getFormattedEstimated_delivery_date() == null) {
 
-                        request.setAttribute("errorMessage", "Vui lòng điền thời gian giao hàng dự kiến.");
+                        request.setAttribute("errorMessage", "Vui lòng điền thời gian giao hàng dự kiến cho đơn hàng #" + order_id);
                         String link = "Staff?service=show&current_status_id=" + 2;
                         request.getRequestDispatcher(link).forward(request, response); // Hiển thị lại danh sách đơn hàng với thông báo lỗi
                         return;
@@ -216,9 +231,30 @@ public class StaffController extends HttpServlet {
                         return;
                     }
                 }
+                if(status_id == 3){
+                   String shiperID = orderDAO.getShipperIdByOrderId(order_id);
+                   
+                   if( shiperID == null){
+                       request.setAttribute("errorMessage", "Vui lòng chọn nhân viên giao hàng cho đơn hàng #" + order_id);
+                        String link = "Staff?service=show&current_status_id=" + 7;
+                        request.getRequestDispatcher(link).forward(request, response); // Hiển thị lại danh sách đơn hàng với thông báo lỗi
+                        return;
+                   }
+                }
 
                 staffDAO.updateOrderStatus(order_id, status_id);
 
+                String link = "Staff?service=show&current_status_id=" + current_status_id;
+                request.getRequestDispatcher(link).forward(request, response);
+            }
+            if(service.equals("updateShipOrder")){
+                OrdersDAO orderDAO = new OrdersDAO();
+                String current_status_id = request.getParameter("current_status_id");
+                int order_id = Integer.parseInt(request.getParameter("order_id"));
+                int shipper_id = Integer.parseInt(request.getParameter("shipper_id")); 
+                orderDAO.UpdateShiper_IdByOrder_Id(order_id, shipper_id);
+                System.out.println(order_id);
+                System.out.println(shipper_id);
                 String link = "Staff?service=show&current_status_id=" + current_status_id;
                 request.getRequestDispatcher(link).forward(request, response);
             }
@@ -289,6 +325,8 @@ public class StaffController extends HttpServlet {
                 int number_of_page;
                 int number_of_orders;
                 List<Orders> listOrders;
+              
+                List<Accounts> listAccountShipper = accountDAO.findAccountsShipperByRoleId();
                 if (current_status_id == null || current_status_id.isEmpty()) {
                     current_status_id = "0";
                 }
@@ -306,6 +344,7 @@ public class StaffController extends HttpServlet {
                     number_of_orders = new OrdersDAO().numberOfOrderWithStatusId(statusId);
                     number_of_page = (int) Math.ceil((double) new OrdersDAO().numberOfOrderWithStatusId(statusId) / 10);
                 }
+                request.setAttribute("listAccountShipper", listAccountShipper);
                 request.setAttribute("listOrders", listOrders);
                 request.setAttribute("current_status_id", current_status_id);
                 request.setAttribute("number_of_page", number_of_page);
@@ -317,7 +356,7 @@ public class StaffController extends HttpServlet {
                 String current_status_id = request.getParameter("current_status_id");
                 int status_id = Integer.parseInt(request.getParameter("status_id"));
                 String order_id = request.getParameter("order_id");
-
+                
                 if (payment_method.equals("VNPay")) {
                     String vnp_RequestId = Config.getRandomNumber(8);
                     String vnp_Version = "2.1.0";
