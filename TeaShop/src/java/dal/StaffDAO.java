@@ -47,6 +47,7 @@ public class StaffDAO extends DBContext {
             while (rs.next()) {
                 order = new Orders();
                 order.order_id = rs.getInt("order_id");
+                
                 order.setAccount(new AccountDAO().getAccountByAccountID(rs.getInt("account_id")));
                 order.phone_number = rs.getString("phone_number");
                 order.full_name = rs.getString("full_name");
@@ -61,6 +62,7 @@ public class StaffDAO extends DBContext {
                 order.setStaff_note(rs.getString("staff_note"));
                 order.payment_method = rs.getString("payment_method");
                 order.address = rs.getString("address");
+                order.setAccountShip(new AccountDAO().getAccountByAccountID(rs.getInt("shiper_id")));
                 ordersList.add(order);
             }
         } catch (SQLException e) {
@@ -121,6 +123,7 @@ public class StaffDAO extends DBContext {
                 order.full_name = rs.getString("full_name");
                 order.address = rs.getString("address");
                 order.payment_method = rs.getString("payment_method");
+                order.setAccountShip(new AccountDAO().getAccountByAccountID(rs.getInt("shiper_id")));
                 ordersList.add(order);
             }
         } catch (SQLException e) {
