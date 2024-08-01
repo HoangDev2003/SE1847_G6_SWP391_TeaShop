@@ -8,6 +8,7 @@ import dal.OrderDetailsDAO;
 import dal.OrdersDAO;
 import dal.ProductDAO;
 import dal.StatusDAO;
+import entity.Accounts;
 import entity.OrderDetails;
 import entity.Orders;
 import entity.PageControl;
@@ -73,14 +74,14 @@ public class ShippingController extends HttpServlet {
                 }
                 if (imageMissing) {
                     // Nếu không có ảnh sau khi giao hàng, hiển thị thông báo lỗi
-                    request.setAttribute("errorMessage", "Vui lòng tải lên ảnh sau khi giao hàng trước khi hoàn thành đơn hàng.");
+                    request.setAttribute("errorMessage", "Vui lòng tải lên ảnh sau khi giao hàng trước khi hoàn thành đơn hàng #" + orderId);
                     doGet(request, response); // Hiển thị lại danh sách đơn hàng với thông báo lỗi
                     return;
                 }
             } else if (statusId == 5) { // Giả sử 5 là id của trạng thái "Đơn hàng bị hủy"
                 Orders order = orderDAO.findByOrderId(orderId);
                 if (order.getShipper_note() == null || order.getShipper_note().isEmpty()) {
-                    request.setAttribute("errorMessage", "Vui lòng thêm ghi chú cho đơn hàng trước khi hủy.");
+                    request.setAttribute("errorMessage", "Vui lòng thêm ghi chú cho đơn hàng #"+ orderId +" trước khi hủy.");
                     doGet(request, response); // Hiển thị lại danh sách đơn hàng với thông báo lỗi
                     return;
                 }
@@ -100,7 +101,7 @@ public class ShippingController extends HttpServlet {
             }
 
             HttpSession session = request.getSession();
-            session.setAttribute("successMessage", "Cập nhật trạng thái đơn hàng thành công.");
+            session.setAttribute("successMessage", "Cập nhật trạng thái đơn hàng #"+ orderId +" thành công.");
             response.sendRedirect("ship"); // Redirect lại trang danh sách đơn hàng
         } else {
             doGet(request, response); // Chuyển lại doGet cho các hành động khác
@@ -108,6 +109,10 @@ public class ShippingController extends HttpServlet {
     }
 
     private List<Orders> findOrdersDoGet(HttpServletRequest request, PageControl pageControl) {
+       HttpSession session = request.getSession(true);
+        Accounts acc = (Accounts) session.getAttribute("acc");
+        int shiper_id = acc.getAccount_id();
+        
         String statusOrderParam = request.getParameter("statusOrder");
         int statusOrder = (statusOrderParam != null) ? Integer.parseInt(statusOrderParam) : 3;
         //get ve page
@@ -134,7 +139,7 @@ public class ShippingController extends HttpServlet {
         switch (searchType) {
             case "searchByOrderId":
 
-                listOrders = orderDAO.findOrdersOrderId(key_word);
+                listOrders = orderDAO.findOrdersOrderId(key_word, shiper_id);
 
                 totalRecord = 1;
                 pageControl.setUrlPattern(requestURL + "?search=searchByOrderId&orderId=" + key_word + "&");
@@ -142,13 +147,13 @@ public class ShippingController extends HttpServlet {
 
             case "searchByUsername":
 
-                listOrders = orderDAO.findOrdersUserName(key_word, page);
+                listOrders = orderDAO.findOrdersUserName(key_word, page, shiper_id);
                 totalRecord = orderDAO.findTotalRecordByUserName(key_word);
                 pageControl.setUrlPattern(requestURL + "?search=searchByUsername&userName=" + key_word + "&");
                 break;
 
             default:
-                listOrders = orderDAO.findOrdersStatusId(statusOrder, page);
+                listOrders = orderDAO.findOrdersStatusId(statusOrder, page, shiper_id);
                 totalRecord = orderDAO.findTotalRecordByStatusId(statusOrder);
                 pageControl.setUrlPattern(requestURL + "?statusOrder=" + statusOrder + "&");
         }
