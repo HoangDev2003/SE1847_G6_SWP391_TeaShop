@@ -21,7 +21,9 @@ import java.io.File;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  *
@@ -121,28 +123,40 @@ public class UserProfileController extends HttpServlet {
                         if (filePart != null && filePart.getSize() > 0) {
                             String fileName = getFileName(filePart);
                             if (!fileName.equals("unknown.jpg") && !fileName.isEmpty()) {
-                                String savePath = getServletContext().getRealPath("/") + "img/";
-                                File fileSaveDir = new File(savePath);
-                                if (!fileSaveDir.exists()) {
-                                    fileSaveDir.mkdirs(); // Tạo các thư mục con nếu chưa tồn tại
-                                }
-                                File file = new File(savePath + fileName);
-                                try (InputStream fileContent = filePart.getInputStream()) {
-                                    Files.copy(fileContent, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
-                                    uploadedFilePath = "/img/" + fileName; // Đường dẫn để lưu vào cơ sở dữ liệu
-                                    AccountDAO accountDAO = new AccountDAO();
-                                    int rowsUpdated = accountDAO.updateAvatar(uploadedFilePath, email);
-                                    if (rowsUpdated > 0) {
-                                        request.setAttribute("a", a);
-                                        request.setAttribute("updateAvtSuccess", "Cập nhật avatar thành công");
-                                    } else {
-                                        request.setAttribute("a", a);
-                                        request.setAttribute("updateAvtFailed", "Cập nhật avatar thất bại");
+
+                                String fileType = filePart.getContentType();
+                                String fileExtension = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
+
+                                List<String> allowedExtensions = Arrays.asList("jpg", "jpeg", "png", "gif", "bmp");
+                                List<String> allowedMimeTypes = Arrays.asList("image/jpeg", "image/png", "image/gif", "image/bmp");
+
+                                if (allowedExtensions.contains(fileExtension) && allowedMimeTypes.contains(fileType)) {
+                                    String savePath = getServletContext().getRealPath("/") + "img/";
+                                    File fileSaveDir = new File(savePath);
+                                    if (!fileSaveDir.exists()) {
+                                        fileSaveDir.mkdirs();
                                     }
-                                } catch (IOException ex) {
-                                    ex.printStackTrace();
+                                    File file = new File(savePath + fileName);
+                                    try (InputStream fileContent = filePart.getInputStream()) {
+                                        Files.copy(fileContent, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                                        uploadedFilePath = "/img/" + fileName;
+                                        AccountDAO accountDAO = new AccountDAO();
+                                        int rowsUpdated = accountDAO.updateAvatar(uploadedFilePath, email);
+                                        if (rowsUpdated > 0) {
+                                            request.setAttribute("a", a);
+                                            request.setAttribute("updateAvtSuccess", "Cập nhật avatar thành công");
+                                        } else {
+                                            request.setAttribute("a", a);
+                                            request.setAttribute("updateAvtFailed", "Cập nhật avatar thất bại");
+                                        }
+                                    } catch (IOException ex) {
+                                        ex.printStackTrace();
+                                        request.setAttribute("a", a);
+                                        request.setAttribute("updateAvtFailed", "Cập nhật avatar thất bại do lỗi");
+                                    }
+                                } else {
                                     request.setAttribute("a", a);
-                                    request.setAttribute("updateAvtFailed", "Cập nhật avatar thất bại do lỗi");
+                                    request.setAttribute("updateAvtFailed", "File tải lên phải là ảnh (jpg, jpeg, png, gif, bmp)");
                                 }
                             } else {
                                 request.setAttribute("a", a);
@@ -159,6 +173,7 @@ public class UserProfileController extends HttpServlet {
                     }
 
                     request.getRequestDispatcher("view/homepage/UserProfile.jsp").forward(request, response);
+
                 }
                 break;
 

@@ -65,7 +65,7 @@ public class VerifyAccountController extends HttpServlet {
         HttpSession session = request.getSession();       
         String user_name = (String) session.getAttribute("user");
         String pass_word = (String) session.getAttribute("pass");
-        session.setAttribute("pass", pass_word);
+        
         String phone_number = (String) session.getAttribute("phone_number");
         String email = (String) session.getAttribute("email");
         String address = (String) session.getAttribute("address");
