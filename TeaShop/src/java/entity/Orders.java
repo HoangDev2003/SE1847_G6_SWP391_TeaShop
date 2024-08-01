@@ -30,12 +30,13 @@ import lombok.ToString;
 
 public class Orders {
 
-    public int order_id, total_amount;
+    public int order_id, total_amount ;
     public Timestamp order_date;
     public String note, shipper_note, staff_note, payment_method, phone_number, full_name, address, vnp_TxnRef;
     public Status status;
     public Product product;
     public Accounts account;
+    public Accounts accountShip;
     public int status_feedback_id;
     public Timestamp estimated_delivery_date, shipper_delivery_time;
     public String formattedOrderDate, formattedEstimated_delivery_date, formattedShipper_delivery_time;
