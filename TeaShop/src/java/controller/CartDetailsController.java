@@ -4,10 +4,14 @@
  */
 package controller;
 
+import Service.CalculateDiscount;
 import dal.CartDetailsDAO;
+import dal.CouponDAO;
 import dal.OrderDetailsDAO;
+import dal.PointDAO;
+import entity.Accounts;
 import entity.CartDetails;
-import entity.Orders;
+import entity.Coupon;
 import entity.Product;
 import entity.Topping;
 import java.io.IOException;
@@ -19,7 +23,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -49,7 +55,7 @@ public class CartDetailsController extends HttpServlet {
             if (service == null || service.isEmpty()) {
                 service = "showcart";
             }
-
+            double totalCartAmount = 0;
             if (service.equals("add2cart")) {
                 String order_id = request.getParameter("order_id");
                 String product_id = request.getParameter("product_id");
@@ -135,7 +141,6 @@ public class CartDetailsController extends HttpServlet {
                 List<String> toppingList = cartDetailsDAO.getTopping();
 
                 // Calculate total cart amount
-                int totalCartAmount = 0;
                 for (CartDetails item : cartInfo) {
                     int price = item.product.getPrice();
                     int quantities = item.getQuantity();
@@ -180,7 +185,6 @@ public class CartDetailsController extends HttpServlet {
                         cartInfo.add(cartItems);
                     }
                 }
-                int totalCartAmount = 0;
                 for (CartDetails item : cartInfo) {
                     int itemPrice = item.product.getPrice();
                     int quantities = item.getQuantity();
@@ -206,7 +210,12 @@ public class CartDetailsController extends HttpServlet {
             }
             if (service.equals("showcart")) {
                 // Show cart details
-
+                PointDAO pointDAO = new PointDAO();
+                Accounts acc = (Accounts) session.getAttribute("acc");
+                if (acc != null) {
+                    int points = pointDAO.getUserPoints(acc.getAccount_id());
+                    request.setAttribute("points", points);
+                }
                 // Retrieve cart information and topping list
                 List<CartDetails> cartInfo = new ArrayList<>();
                 Enumeration<String> em = session.getAttributeNames();
@@ -221,13 +230,12 @@ public class CartDetailsController extends HttpServlet {
                 List<String> toppingList = cartDetailsDAO.getTopping();
 
                 // Calculate total cart amount
-                int totalCartAmount = 0;
                 for (CartDetails item : cartInfo) {
                     int price = item.product.getPrice();
                     int quantity = item.getQuantity();
                     totalCartAmount += price * quantity;
                 }
-
+                System.out.println("TotalCartShowCart: " + totalCartAmount);
                 // Set attributes for access in the JSP page
                 request.setAttribute("totalCartAmount", totalCartAmount);
                 request.setAttribute("toppingList", toppingList);
@@ -236,38 +244,83 @@ public class CartDetailsController extends HttpServlet {
                 // Forward the request to the "cart-details.jsp" page for rendering
                 request.getRequestDispatcher("view/cart/cart-details.jsp").forward(request, response);
             }
-            if (service.equals("selectpayment")) {
-                // Show cart details
-
-                String note = request.getParameter("note");
-                session.setAttribute("note", note);
-                // Retrieve cart information and topping list
+            if (service.equals("ApplyCoupon")) {
+                PointDAO pointDAO = new PointDAO();
+                Accounts acc = (Accounts) session.getAttribute("acc");
+                if (acc != null) {
+                    int points = pointDAO.getUserPoints(acc.getAccount_id());
+                    request.setAttribute("points", points);
+                }
+                List<String> toppingList = cartDetailsDAO.getTopping();
+                String couponMessage = null;
+                CouponDAO couponDAO = new CouponDAO();
+                String couponCode = request.getParameter("coupon");
                 List<CartDetails> cartInfo = new ArrayList<>();
+
+                // Lấy thông tin giỏ hàng từ session
                 Enumeration<String> em = session.getAttributeNames();
                 while (em.hasMoreElements()) {
                     String key = em.nextElement();
-
                     if (key.startsWith("cartItem")) {
                         CartDetails cartItem = (CartDetails) session.getAttribute(key);
                         cartInfo.add(cartItem);
                     }
                 }
 
-                // Calculate total cart amount
-                int totalCartAmount = 0;
-                for (CartDetails item : cartInfo) {
-                    int price = item.product.getPrice();
-                    int quantity = item.getQuantity();
-                    totalCartAmount += price * quantity;
+                CalculateDiscount calculateDiscount = new CalculateDiscount();
+                Coupon couponDetails = couponDAO.getCouponDetails(couponCode);
+                if (couponCode == null || couponCode.isEmpty()) {
+                    totalCartAmount = calculateDiscount.calculateTotalCartAmount(cartInfo);
+                } else {
+                    totalCartAmount = calculateDiscount.processDiscount(couponDetails, couponCode, cartInfo);
+                    session.setAttribute("couponCodeAppied", couponCode);
+                    List<String> errors = calculateDiscount.getErrorMessages();
+                    if (!errors.isEmpty()) {
+                        couponMessage = String.join(", ", errors);
+                    } else {
+                        couponMessage = "Mã giảm giá đã được áp dụng";
+                    }
+                }
+
+                System.out.println("TotalCartApplyCoupon: " + totalCartAmount);
+                session.setAttribute("totalCartAmountWithCoupon", totalCartAmount);
+
+                request.setAttribute("cartInfo", cartInfo);
+                request.setAttribute("totalCartAmount", totalCartAmount);
+                request.setAttribute("couponMessage", couponMessage);
+                request.setAttribute("toppingList", toppingList);
+                request.getRequestDispatcher("view/cart/cart-details.jsp").forward(request, response);
+            }
+
+            if (service.equals("selectpayment")) {
+                // Show cart details
+                String note = request.getParameter("note");
+                session.setAttribute("note", note);
+
+                Double totalCart = (Double) session.getAttribute("totalCartAmountWithCoupon");
+                if (totalCart == null) {
+                    totalCart = 0.0;
+                }
+                System.out.println("TotalCartabcabc: " + totalCart);
+                // Retrieve cart information
+                List<CartDetails> cartInfo = new ArrayList<>();
+                Enumeration<String> em = session.getAttributeNames();
+                while (em.hasMoreElements()) {
+                    String key = em.nextElement();
+                    if (key.startsWith("cartItem")) {
+                        CartDetails cartItem = (CartDetails) session.getAttribute(key);
+                        cartInfo.add(cartItem);
+                    }
                 }
 
                 // Set attributes for access in the JSP page
-                request.setAttribute("totalCartAmount", totalCartAmount);
+                request.setAttribute("totalCartAmount", totalCart);
                 request.setAttribute("cartInfo", cartInfo);
 
-                // Forward the request to the "cart-details.jsp" page for rendering
+                // Forward the request to the "select-payment.jsp" page for rendering
                 request.getRequestDispatcher("view/cart/select-payment.jsp").forward(request, response);
             }
+
         }
     }
 

@@ -441,6 +441,26 @@
                                     <div class="row g-4 justify-content-center"> 
                                         <div class="col-md-6 col-lg-6 col-xl-12">
                                             <div class="p-4 border border-secondary rounded">
+                                                <form action="CartDetails?service=ApplyCoupon" method="POST">
+                                                    <div class="coupon-section mt-3">
+                                                        <c:if test="${sessionScope.acc!=null}">
+                                                        <%if(request.getAttribute("points") == null){%>
+                                                        <p id="coupon-message" style="color: red;">Số điểm tích lũy của bạn: 0</p>
+                                                        <%}else{%>
+                                                        <p id="coupon-message" style="color: red;">Số điểm tích lũy của bạn: <%=request.getAttribute("points")%></p>
+                                                        <%}%>
+                                                        </c:if>
+                                                        <p>Nhập mã giảm giá cho hóa đơn:</p>
+                                                        <div class="input-group">
+                                                            <input type="text" name="coupon" class="form-control" id="coupon-code" placeholder="Nhập mã giảm giá">
+                                                            <button class="btn btn-primary" style="margin-top: 0" type="submit" id="apply-coupon-btn">Áp dụng</button>
+                                                        </div>
+                                                        <%if(request.getAttribute("couponMessage") != null){%>
+                                                        <p style="color: red; font-weight: bold"><%=request.getAttribute("couponMessage")%></p>
+                                                        <%}%>
+                                                    </div>
+                                                </form>
+
                                                 <p id="total-cart-amount">Tổng tiền hóa đơn: <fmt:formatNumber value="${totalCartAmount}" type="number" groupingUsed="true"/> đồng</p>
                                                 <c:if test="${not empty cartInfo}">
                                                     <form action="CartDetails" method="post" style="max-width: 600px; margin: auto;">

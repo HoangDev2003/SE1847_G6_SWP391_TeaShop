@@ -1,7 +1,9 @@
 package controller;
 
+import dal.CouponDAO;
 import dal.OrderDetailsDAO;
 import dal.OrdersDAO;
+import dal.PointDAO;
 import entity.CartDetails;
 import entity.Topping;
 import java.io.IOException;
@@ -50,7 +52,7 @@ public class PaymentResultController extends HttpServlet {
             HttpSession session = request.getSession(true);
             OrdersDAO orderDAO = new OrdersDAO();
             OrderDetailsDAO orderDetailsDAO = new OrderDetailsDAO();
-
+            PointDAO pointDAO = new PointDAO();
             boolean itemexist = false;
             Enumeration<String> check = session.getAttributeNames();
             while (check.hasMoreElements()) {
@@ -80,7 +82,7 @@ public class PaymentResultController extends HttpServlet {
                 String OrderInfo = "Thanh toan hoa don Dream Coffee. So tien: " + amount + " dong";
 
                 String fullAddress = address + ", Phường " + ward + ", " + district;
-                session.setAttribute("fullAddress",fullAddress);
+                session.setAttribute("fullAddress", fullAddress);
                 String note = (String) session.getAttribute("note");
                 List<CartDetails> billInfo = new ArrayList<>();
 
@@ -168,7 +170,7 @@ public class PaymentResultController extends HttpServlet {
                 String district = (String) session.getAttribute("district");
                 String ward = (String) session.getAttribute("ward");
                 String fullAddress = address + ", Phường " + ward + ", " + district;
-                session.setAttribute("fullAddress",fullAddress);
+                session.setAttribute("fullAddress", fullAddress);
                 String fullname = (String) session.getAttribute("fullname");
                 String phonenumber = (String) session.getAttribute("phone_number");
                 String note = (String) session.getAttribute("note");
@@ -226,6 +228,16 @@ public class PaymentResultController extends HttpServlet {
                                 order_id = orderDAO.insertOrder(null, sqlDateTime, null, amount, 1, note, "VNPay", phonenumber, fullname, fullAddress, vnp_TxnRef);
                             } else {
                                 order_id = orderDAO.insertOrder(accoundId, sqlDateTime, null, amount, 1, note, "VNPay", phonenumber, fullname, fullAddress, vnp_TxnRef);
+                                if (amount >= 100) {
+                                    String couponApplied = (String) session.getAttribute("couponCodeApplied");
+                                    System.out.println("Code Applied: " + couponApplied);
+                                    if (pointDAO.getUserPoints(accoundId) == 0) {
+                                        pointDAO.addPointsForUser(accoundId);
+                                        pointDAO.BonusPointsAfterBuy(accoundId);
+                                    } else {
+                                        pointDAO.BonusPointsAfterBuy(accoundId);
+                                    }
+                                }
                             }
                             Enumeration<String> bill = session.getAttributeNames();
                             while (bill.hasMoreElements()) {
