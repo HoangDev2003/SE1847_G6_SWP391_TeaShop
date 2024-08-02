@@ -17,6 +17,9 @@
                 <nav class="sb-sidenav-menu-nested nav">
                     <a class="nav-link" href="customerManagement">Khách hàng</a>
                 </nav>
+                 <nav class="sb-sidenav-menu-nested nav">
+                    <a class="nav-link" href="CouponManagement">Coupon</a>
+                </nav>
                 <nav class="sb-sidenav-menu-nested nav">
                     <a class="nav-link" href="#" data-bs-toggle="collapse" data-bs-target="#collapseOrderManagement" aria-expanded="true" aria-controls="collapseOrderManagement">
                         Đơn hàng
