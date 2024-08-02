@@ -46,7 +46,7 @@
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="home">Home</a></li>
-                        
+
                         <li><hr class="dropdown-divider" /></li>
                         <li><a class="dropdown-item" href="logout">Đăng xuất</a></li>
                     </ul>
@@ -78,18 +78,19 @@
                                 ${deleteDone}
                             </h4>
                         </c:if>
-                        <div class="card mb-4">
-                            <div class="h1">                                
-                                <a  
-                                    href="addProductManager"><ion-icon name="add-circle-outline" ></ion-icon> Thêm sản phẩm mới</a>                                   
-                            </div>  
-                        </div>
+
                         <c:if test="${errorMessageFilter ne null}">
                             <h5 class="font-weight-semi-bold text-uppercase mb-3 text-center text-danger">
                                 ${errorMessageFilter}
                             </h5>
                         </c:if> 
                         <c:if test="${not empty listAllProduct}">
+                            <div class="card mb-4">
+                                <div class="h1">                                
+                                    <a  
+                                        href="addProductManager"><ion-icon name="add-circle-outline" ></ion-icon> Thêm sản phẩm mới</a>                                   
+                                </div>  
+                            </div>
                             <div class="card mb-4">
                                 <div class="card-header">
                                     <h6><ion-icon name="filter-outline"></ion-icon> Lọc theo giá sản phẩm</h6>

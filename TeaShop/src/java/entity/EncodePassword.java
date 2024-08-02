@@ -29,7 +29,7 @@ public class EncodePassword {
         return result;
     }
     public static void main(String[] args) {
-        System.out.println(toSHA1("staff123"));
+        System.out.println(toSHA1("admin123"));
     }
     
 }

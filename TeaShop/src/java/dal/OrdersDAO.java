@@ -283,7 +283,7 @@ public class OrdersDAO extends DBContext {
                 order.setShipper_note(rs.getString("shipper_note"));
                 order.setStaff_note(rs.getString("staff_note"));
                 order.setAddress(rs.getString("address"));
-                order.setFull_name(rs.getString("full_name"));
+                order.full_name = rs.getString("full_name");
                 order.setPayment_method(rs.getString("payment_method"));
                 order.setPhone_number(rs.getString("phone_number"));
 
@@ -419,58 +419,7 @@ public class OrdersDAO extends DBContext {
         return ordersList;
     }
 
-    public List<Orders> findOrdersStatusId(int statusId) {
-        List<Orders> ordersList = new ArrayList<>();
-        Orders order = null;
-        String sql = "SELECT * FROM Orders WHERE status_id = ?";
-
-        try {
-            connection = getConnection();
-            PreparedStatement pre = connection.prepareStatement(
-                    sql,
-                    ResultSet.TYPE_SCROLL_SENSITIVE,
-                    ResultSet.CONCUR_READ_ONLY);
-            pre.setInt(1, statusId);
-
-            ResultSet rs = pre.executeQuery();
-
-            while (rs.next()) {
-                order = new Orders();
-                order.setOrder_id(rs.getInt("order_id"));
-
-                order.setAccount(new AccountDAO().getAccountByAccountID(rs.getInt("account_id")));
-                order.setStatus(new StatusDAO().getStatusByStatusID(rs.getInt("status_id")));
-                order.setTotal_amount(rs.getInt("total_amount"));
-                order.setOrder_date(rs.getTimestamp("order_date")); // Set order_date directly
-                order.setEstimated_delivery_date(rs.getTimestamp("estimated_delivery_date"));
-                order.setNote(rs.getString("note"));
-                order.setShipper_note(rs.getString("shipper_note"));
-                order.setStaff_note(rs.getString("staff_note"));
-                order.setAddress(rs.getString("address"));
-                order.setFull_name(rs.getString("full_name"));
-                order.setPayment_method(rs.getString("payment_method"));
-                order.setPhone_number(rs.getString("phone_number"));
-
-                ordersList.add(order);
-            }
-
-            rs.close(); // Close ResultSet
-            pre.close(); // Close PreparedStatement
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (Exception ex) { // Catch any parsing exceptions
-            Logger.getLogger(OrdersDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            try {
-                if (connection != null) {
-                    connection.close(); // Close the database connection
-                }
-            } catch (SQLException e) {
-                Logger.getLogger(OrdersDAO.class.getName()).log(Level.SEVERE, null, e);
-            }
-        }
-        return ordersList; // Return the list of orders
-    }
+    
 
     public void updateDeliveryTime(int orderId, Timestamp deliveryTime) {
         String query = "UPDATE Orders SET estimated_delivery_date = ? WHERE order_id = ?";
@@ -778,129 +727,21 @@ public class OrdersDAO extends DBContext {
 
         return orderCount; // Return the count
     }
-    public List<Orders> findOrdersStatusId(int statusId, int page) {
-    List<Orders> ordersList = new ArrayList<>();
-    Orders order = null;
-    String sql = "SELECT * FROM Orders \n"
-            + "WHERE status_id = ?\n"
-            + "ORDER BY order_id";
 
-    // Thay đổi ORDER BY nếu status_id là 4 hoặc 5
-    if (statusId == 4 || statusId == 5) {
-        sql += " DESC";
-    }
-
-    sql += "\nOFFSET ? ROWS \n"
-         + "FETCH NEXT ? ROWS ONLY";
-
-    try {
-        connection = getConnection();
-        PreparedStatement pre = connection.prepareStatement(
-                sql,
-                ResultSet.TYPE_SCROLL_SENSITIVE,
-                ResultSet.CONCUR_READ_ONLY);
-        pre.setInt(1, statusId);
-        pre.setInt(2, (page - 1) * 6);
-        pre.setInt(3, 6);
-        ResultSet rs = pre.executeQuery();
-
-        while (rs.next()) {
-            order = new Orders();
-            order.setOrder_id(rs.getInt("order_id"));
-
-            order.setAccount(new AccountDAO().getAccountByAccountID(rs.getInt("account_id")));
-            order.setStatus(new StatusDAO().getStatusByStatusID(rs.getInt("status_id")));
-            order.setTotal_amount(rs.getInt("total_amount"));
-            order.setOrder_date(rs.getTimestamp("order_date")); // Set order_date directly
-            order.setEstimated_delivery_date(rs.getTimestamp("estimated_delivery_date"));
-            order.setNote(rs.getString("note"));
-            order.setShipper_note(rs.getString("shipper_note"));
-            order.setStaff_note(rs.getString("staff_note"));
-            order.setAddress(rs.getString("address"));
-            order.setFull_name(rs.getString("full_name"));
-            order.setPayment_method(rs.getString("payment_method"));
-            order.setPhone_number(rs.getString("phone_number"));
-
-            ordersList.add(order);
-        }
-
-        rs.close(); // Close ResultSet
-        pre.close(); // Close PreparedStatement
-    } catch (SQLException e) {
-        e.printStackTrace();
-    } catch (Exception ex) { // Catch any parsing exceptions
-        Logger.getLogger(OrdersDAO.class.getName()).log(Level.SEVERE, null, ex);
-    } finally {
-        try {
-            if (connection != null) {
-                connection.close(); // Close the database connection
-            }
-        } catch (SQLException e) {
-            Logger.getLogger(OrdersDAO.class.getName()).log(Level.SEVERE, null, e);
-        }
-    }
-    return ordersList; // Return the list of orders
-}
-    
-    public int findTotalRecordByStatusId(int status_id) {
-        int total = 0;
-        //ket noi duoc voi database
-        connection = getConnection();
-        //co cau lenh de goi xuong database
-        String sql = "SELECT count(*)\n"
-                + "  FROM [dbo].[Orders]\n"
-                + "  where status_id = ?";
-        try {
-            //Tạo đối tượng PrepareStatement
-            PreparedStatement statement = connection.prepareStatement(sql);
-            // Set the parameters
-
-            statement.setInt(1, status_id);
-            //thuc thi cau lenh o tren => tra ve ket qua
-            ResultSet resultSet = statement.executeQuery();
-
-            if (resultSet.next()) {
-                total = resultSet.getInt(1);
-            }
-
-        } catch (SQLException ex) {
-            System.out.println("Error " + ex.getMessage());
-
-        }
-
-        return total;
-    }
-    public int findTotalRecord() {
-        int total = 0;
-        //ket noi duoc voi database
-        connection = getConnection();
-        //co cau lenh de goi xuong database
-        String sql = "SELECT count(*)\n"
-                + "  FROM [dbo].[Orders]";
-        try {
-            //Tạo đối tượng PrepareStatement
-            PreparedStatement statement = connection.prepareStatement(sql);
-
-            //thuc thi cau lenh o tren => tra ve ket qua
-            ResultSet resultSet = statement.executeQuery();
-
-            if (resultSet.next()) {
-                total = resultSet.getInt(1);
-            }
-
-        } catch (SQLException ex) {
-            System.out.println("Error " + ex.getMessage());
-
-        }
-
-        return total;
-
-    }
-    public List<Orders> findOrdersOrderId(String orderId) {
+    public List<Orders> findOrdersStatusId(int statusId, int page, int shiper_id) {
         List<Orders> ordersList = new ArrayList<>();
         Orders order = null;
         String sql = "SELECT * FROM Orders \n"
-                + "WHERE order_id = ?\n";
+                + "WHERE status_id = ? and shiper_id = ?\n"
+                + "ORDER BY order_id";
+
+        // Thay đổi ORDER BY nếu status_id là 4 hoặc 5
+        if (statusId == 4 || statusId == 5) {
+            sql += " DESC";
+        }
+
+        sql += "\nOFFSET ? ROWS \n"
+                + "FETCH NEXT ? ROWS ONLY";
 
         try {
             connection = getConnection();
@@ -908,8 +749,10 @@ public class OrdersDAO extends DBContext {
                     sql,
                     ResultSet.TYPE_SCROLL_SENSITIVE,
                     ResultSet.CONCUR_READ_ONLY);
-            pre.setString(1, orderId);
-
+            pre.setInt(1, statusId);
+            pre.setInt(2, shiper_id);
+            pre.setInt(3, (page - 1) * 6);
+            pre.setInt(4, 6);
             ResultSet rs = pre.executeQuery();
 
             while (rs.next()) {
@@ -949,6 +792,117 @@ public class OrdersDAO extends DBContext {
         }
         return ordersList; // Return the list of orders
     }
+
+    public int findTotalRecordByStatusId(int status_id) {
+        int total = 0;
+        //ket noi duoc voi database
+        connection = getConnection();
+        //co cau lenh de goi xuong database
+        String sql = "SELECT count(*)\n"
+                + "  FROM [dbo].[Orders]\n"
+                + "  where status_id = ?";
+        try {
+            //Tạo đối tượng PrepareStatement
+            PreparedStatement statement = connection.prepareStatement(sql);
+            // Set the parameters
+
+            statement.setInt(1, status_id);
+            //thuc thi cau lenh o tren => tra ve ket qua
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                total = resultSet.getInt(1);
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("Error " + ex.getMessage());
+
+        }
+
+        return total;
+    }
+
+    public int findTotalRecord() {
+        int total = 0;
+        //ket noi duoc voi database
+        connection = getConnection();
+        //co cau lenh de goi xuong database
+        String sql = "SELECT count(*)\n"
+                + "  FROM [dbo].[Orders]";
+        try {
+            //Tạo đối tượng PrepareStatement
+            PreparedStatement statement = connection.prepareStatement(sql);
+
+            //thuc thi cau lenh o tren => tra ve ket qua
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                total = resultSet.getInt(1);
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("Error " + ex.getMessage());
+
+        }
+
+        return total;
+
+    }
+
+    public List<Orders> findOrdersOrderId(String orderId, int shiper_id) {
+        List<Orders> ordersList = new ArrayList<>();
+        Orders order = null;
+        String sql = "SELECT * FROM Orders \n"
+                + "WHERE order_id = ? and shiper_id = ?\n";
+
+        try {
+            connection = getConnection();
+            PreparedStatement pre = connection.prepareStatement(
+                    sql,
+                    ResultSet.TYPE_SCROLL_SENSITIVE,
+                    ResultSet.CONCUR_READ_ONLY);
+            pre.setString(1, orderId);
+            pre.setInt(2, shiper_id);
+            ResultSet rs = pre.executeQuery();
+
+            while (rs.next()) {
+                order = new Orders();
+                order.setOrder_id(rs.getInt("order_id"));
+
+                order.setAccount(new AccountDAO().getAccountByAccountID(rs.getInt("account_id")));
+                order.setStatus(new StatusDAO().getStatusByStatusID(rs.getInt("status_id")));
+                order.setTotal_amount(rs.getInt("total_amount"));
+                order.setOrder_date(rs.getTimestamp("order_date")); // Set order_date directly
+                order.setEstimated_delivery_date(rs.getTimestamp("estimated_delivery_date"));
+                order.setNote(rs.getString("note"));
+                order.setShipper_note(rs.getString("shipper_note"));
+                order.setStaff_note(rs.getString("staff_note"));
+                order.setAddress(rs.getString("address"));
+                order.setFull_name(rs.getString("full_name"));
+                order.setPayment_method(rs.getString("payment_method"));
+                order.setPhone_number(rs.getString("phone_number"));
+
+                ordersList.add(order);
+            }
+
+            rs.close(); // Close ResultSet
+            pre.close(); // Close PreparedStatement
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception ex) { // Catch any parsing exceptions
+            Logger.getLogger(OrdersDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close(); // Close the database connection
+                }
+            } catch (SQLException e) {
+                Logger.getLogger(OrdersDAO.class.getName()).log(Level.SEVERE, null, e);
+            }
+        }
+        return ordersList; // Return the list of orders
+    }
+
     public int findTotalRecordByStatusIdAndOrderId(int statusOrder, String orderId) {
         int total = 0;
         //ket noi duoc voi database
@@ -977,11 +931,12 @@ public class OrdersDAO extends DBContext {
 
         return total;
     }
-    public List<Orders> findOrdersUserName(String key_word, int page) {
+
+    public List<Orders> findOrdersUserName(String key_word, int page, int shiper_id) {
         List<Orders> ordersList = new ArrayList<>();
         Orders order = null;
         String sql = "SELECT * FROM Orders \n"
-                + "Where full_name like ?\n"
+                + "Where full_name like ? and shiper_id= ? \n"
                 + "ORDER BY order_id\n"
                 + "OFFSET ? ROWS \n"
                 + "FETCH NEXT ? ROWS ONLY";
@@ -993,8 +948,9 @@ public class OrdersDAO extends DBContext {
                     ResultSet.TYPE_SCROLL_SENSITIVE,
                     ResultSet.CONCUR_READ_ONLY);
             pre.setString(1, "%" + key_word + "%");
-            pre.setInt(2, (page - 1) * 6);
-            pre.setInt(3, 6);
+             pre.setInt(2, shiper_id);
+            pre.setInt(3, (page - 1) * 6);
+            pre.setInt(4, 6);
             ResultSet rs = pre.executeQuery();
 
             while (rs.next()) {
@@ -1034,7 +990,6 @@ public class OrdersDAO extends DBContext {
         }
         return ordersList; // Return the list of orders    }
     }
-    
 
     public int findTotalRecordByUserName(String key_word) {
         int total = 0;
@@ -1064,20 +1019,119 @@ public class OrdersDAO extends DBContext {
 
         return total;
     }
-    public class Main {
-    public static void main(String[] args) {
-        // Tạo đối tượng của lớp chứa hàm DAO (giả sử tên lớp là OrderDAO)
-        OrdersDAO orderDAO = new OrdersDAO();
-        
-        // Gọi hàm get7OrderChartByDay()
-        Vector<OrderChart> orderCharts = orderDAO.get7OrderChartByMonth();
-        
-        
-         // In ra kết quả
-        for (OrderChart orderChart : orderCharts) {
-            System.out.println(orderChart); // Sử dụng toString() để in ra toàn bộ đối tượng
-            System.out.println("---------------------------");
+
+
+    public List<Orders> findOrderByShiperId(int shipper_id) {
+        List<Orders> ordersList = new ArrayList<>();
+        Orders order = null;
+        String sql = "SELECT *\n"
+                + "  FROM [dbo].[Orders] where shiper_id = ?";
+
+        try {
+            connection = getConnection();
+            PreparedStatement pre = connection.prepareStatement(
+                    sql,
+                    ResultSet.TYPE_SCROLL_SENSITIVE,
+                    ResultSet.CONCUR_READ_ONLY);
+            pre.setInt(1, shipper_id);
+
+            ResultSet rs = pre.executeQuery();
+
+            while (rs.next()) {
+                order = new Orders();
+                order.setOrder_id(rs.getInt("order_id"));
+
+                order.setAccount(new AccountDAO().getAccountByAccountID(rs.getInt("account_id")));
+                order.setStatus(new StatusDAO().getStatusByStatusID(rs.getInt("status_id")));
+                order.setTotal_amount(rs.getInt("total_amount"));
+                order.setOrder_date(rs.getTimestamp("order_date")); // Set order_date directly
+                order.setEstimated_delivery_date(rs.getTimestamp("estimated_delivery_date"));
+                order.setNote(rs.getString("note"));
+                order.setShipper_note(rs.getString("shipper_note"));
+                order.setStaff_note(rs.getString("staff_note"));
+                order.setAddress(rs.getString("address"));
+                order.setFull_name(rs.getString("full_name"));
+                order.setPayment_method(rs.getString("payment_method"));
+                order.setPhone_number(rs.getString("phone_number"));
+
+                ordersList.add(order);
+            }
+
+            rs.close(); // Close ResultSet
+            pre.close(); // Close PreparedStatement
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception ex) { // Catch any parsing exceptions
+            Logger.getLogger(OrdersDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close(); // Close the database connection
+                }
+            } catch (SQLException e) {
+                Logger.getLogger(OrdersDAO.class.getName()).log(Level.SEVERE, null, e);
+            }
+        }
+        return ordersList; // Return the list of orders    }
+    }
+
+    public void UpdateShiper_IdByOrder_Id(int order_id, int shipper_id) {
+        connection = getConnection();
+        PreparedStatement stm = null;
+        String sql = "UPDATE [dbo].[Orders]\n"
+                + "   SET \n"
+                + "      [shiper_id] = ?\n"
+                + " WHERE order_id = ?";
+        try {
+            stm = connection.prepareStatement(sql);
+            stm.setInt(1, shipper_id);
+            stm.setInt(2, order_id);
+            stm.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
-}
+
+    public String getShipperIdByOrderId(int orderId) {
+        String shipper_id = null;
+        String sql = "SELECT \n"
+                + "     [shiper_id]\n"
+                + "  FROM [dbo].[Orders]\n"
+                + "  Where order_id = ?";
+        try {
+            connection = getConnection();
+            PreparedStatement pre = connection.prepareStatement(
+                    sql,
+                    ResultSet.TYPE_SCROLL_SENSITIVE,
+                    ResultSet.CONCUR_READ_ONLY);
+            pre.setInt(1, orderId);
+
+            ResultSet rs = pre.executeQuery();
+
+            while (rs.next()) {
+               
+               shipper_id = rs.getString("shiper_id");
+
+                
+            }
+
+            rs.close(); // Close ResultSet
+            pre.close(); // Close PreparedStatement
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception ex) { // Catch any parsing exceptions
+            Logger.getLogger(OrdersDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close(); // Close the database connection
+                }
+            } catch (SQLException e) {
+                Logger.getLogger(OrdersDAO.class.getName()).log(Level.SEVERE, null, e);
+            }
+        }
+        return shipper_id;
+    }
+;
+
 }

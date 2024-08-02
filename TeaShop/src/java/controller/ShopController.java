@@ -88,7 +88,7 @@ public class ShopController extends HttpServlet {
                 pageControl.setUrlPattern(requestURL + "?search=category&category_id=" + categoryId + "&sort=" + sort + "&");
                 break;
             case "searchByName":
-                String keyword = request.getParameter("keyword");
+                String keyword = request.getParameter("keyword").trim();
                 totalRecord = productDAO.findTotalRecordByName(keyword);
                 listProduct = productDAO.findProductByName(keyword, page, sort);
                 pageControl.setUrlPattern(requestURL + "?search=searchByName&keyword=" + keyword + "&sort=" + sort + "&");

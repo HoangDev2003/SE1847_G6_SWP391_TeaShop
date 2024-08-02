@@ -61,6 +61,11 @@
                         <div class="mt-4">
 
                             <div class="container-fluid px-4">
+                                <c:if test="${not empty message}">
+                                <div class="alert alert-danger " role="alert" style="text-align: center; padding-top:10px">
+                                    ${message}
+                                </div>
+                            </c:if>
                                 <div class="mt-3 mb-3">
                                     <button class="btn btn-primary" onclick="toggleForm('byOrderId')">Tìm kiếm theo ID hóa đơn</button>
                                     <button class="btn btn-primary" onclick="toggleForm('byInfo')">Tìm kiếm theo thông tin</button>

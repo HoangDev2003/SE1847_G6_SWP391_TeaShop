@@ -80,6 +80,7 @@ public class PaymentResultController extends HttpServlet {
                 String OrderInfo = "Thanh toan hoa don Dream Coffee. So tien: " + amount + " dong";
 
                 String fullAddress = address + ", Phường " + ward + ", " + district;
+                session.setAttribute("fullAddress",fullAddress);
                 String note = (String) session.getAttribute("note");
                 List<CartDetails> billInfo = new ArrayList<>();
 
@@ -167,6 +168,7 @@ public class PaymentResultController extends HttpServlet {
                 String district = (String) session.getAttribute("district");
                 String ward = (String) session.getAttribute("ward");
                 String fullAddress = address + ", Phường " + ward + ", " + district;
+                session.setAttribute("fullAddress",fullAddress);
                 String fullname = (String) session.getAttribute("fullname");
                 String phonenumber = (String) session.getAttribute("phone_number");
                 String note = (String) session.getAttribute("note");

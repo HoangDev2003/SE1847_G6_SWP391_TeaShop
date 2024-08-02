@@ -12,7 +12,6 @@
         <filter-name>AdminFilter</filter-name>
         <filter-class>Filter.AdminFilter</filter-class>
     </filter>
-    
     <filter-mapping>
         <filter-name>AdminFilter</filter-name>
         <url-pattern>/adduser </url-pattern>
@@ -29,9 +28,7 @@
         <url-pattern>/categorymanager</url-pattern>
         <url-pattern>/addProductManager</url-pattern>
         <url-pattern>/updateProductManager </url-pattern>
-        
     </filter-mapping>
-    
     <filter-mapping>
         <filter-name>StaffFilter</filter-name>
         <url-pattern>/stafforderdetails</url-pattern>
@@ -46,7 +43,6 @@
         <url-pattern>/view/dashboard/staff1/order-detail.jsp</url-pattern>
         <url-pattern>/saleManager</url-pattern>
     </filter-mapping>
-    
     <filter-mapping>
         <filter-name>ShipperFilter</filter-name>
         <url-pattern>/ship</url-pattern>
@@ -348,6 +344,10 @@
         <servlet-name>SearchRoleController</servlet-name>
         <servlet-class>controller.SearchRoleController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CouponManagement</servlet-name>
+        <servlet-class>controller.CouponManagement</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ShopController</servlet-name>
         <url-pattern>/shop</url-pattern>
@@ -620,6 +620,7 @@
         <servlet-name>SearchRoleController</servlet-name>
         <url-pattern>/searchrole</url-pattern>
     </servlet-mapping>
+    
     <error-page>
         <error-code>404</error-code>
         <location>/view/homepage/404.jsp</location>

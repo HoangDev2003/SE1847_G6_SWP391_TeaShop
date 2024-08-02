@@ -6,7 +6,8 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="entity.CartDetails, java.util.Enumeration"%>
+<%@page import="entity.CartDetails, java.util.Enumeration, entity.RedeemedCoupon, java.util.List"%>
+<%@page import="entity.Coupon, dal.CouponDAO, java.text.SimpleDateFormat"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -247,19 +248,19 @@ if (accountId != null) {
                                         <c:if test="${a.role_id == 1}">
                                             <input name="role" class="form-control" value="Admin" readonly="">
                                             <h9 class="mb-0"> (Bạn không thể thay đổi vai trò của mình)</h9>
-                                        </c:if>
-                                        <c:if test="${a.role_id == 2}">
+                                            </c:if>
+                                            <c:if test="${a.role_id == 2}">
                                             <input name="role" class="form-control" value="Khách hàng" readonly />
                                             <h9 class="mb-0"> (Bạn không thể thay đổi vai trò của mình)</h9>
-                                        </c:if>
-                                          <c:if test="${a.role_id == 3}">
+                                            </c:if>
+                                            <c:if test="${a.role_id == 3}">
                                             <input name="role" class="form-control" value="Staff" readonly />
                                             <h9 class="mb-0"> (Bạn không thể thay đổi vai trò của mình)</h9>
-                                        </c:if>
-                                          <c:if test="${a.role_id == 4}">
+                                            </c:if>
+                                            <c:if test="${a.role_id == 4}">
                                             <input name="role" class="form-control" value="Shipper" readonly />
                                             <h9 class="mb-0"> (Bạn không thể thay đổi vai trò của mình)</h9>
-                                        </c:if>
+                                            </c:if>
                                     </div>
                                 </div>
                                 <div class="row mb-3">
@@ -278,8 +279,60 @@ if (accountId != null) {
                                 </div>
                                 <h4 style="color: green ; margin-top: 20px">${errorMessage}</h4>
                             </form>
+                            <div class="row mb-3">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Số điểm tích lũy của bạn</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    <input name="email" class="form-control" value="${points}" readonly>
+                                    <h9 class="mb-0"></h9>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-3"></div>
+                                    <div class="col-sm-9 text-secondary">
+                                        <button type="button" class="btn btn-primary px-4" data-bs-toggle="modal" data-bs-target="#pointsModal">
+                                            Đổi điểm
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <%
+                                            String message = (String) session.getAttribute("pointsMessage");
+                                            if (message != null) {
+                            %>
+                            <div class="alert alert-danger">
+                                <%= message %>
+                            </div>
+                            <%
+                                session.removeAttribute("pointsMessage");
+                            }
+                            %>
+                            <%
+                                            String messages = (String) session.getAttribute("couponMessage");
+                                            if (messages != null) {
+                            %>
+                            <div class="alert alert-success">
+                                <%= messages %>
+                            </div>
+                            <%
+                                session.removeAttribute("couponMessage");
+                            }
+                            %>
+                            <div class="row mb-3">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Coupon của bạn</h6>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-3"></div>
+                                    <div class="col-sm-9 text-secondary">
+                                        <button type="button" class="btn btn-primary px-4" data-bs-toggle="modal" data-bs-target="#MyCouponModal">
+                                            Xem
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div></form>
+                    </div>
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="card">
@@ -339,47 +392,145 @@ if (accountId != null) {
 
         </div>
     </div>
+    <div class="modal fade" id="pointsModal" tabindex="-1" aria-labelledby="pointsModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="pointsModalLabel">Đổi điểm từ Coupon</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Nội dung modal để đổi điểm -->
+                    <form action="userprofile?service=RedeemPoints" method="post">
+                        <input type="hidden" name="email" value="${a.email}">
+                        <div class="mb-3">
+                            <label for="couponCode" class="form-label">Thể loại coupon</label>
+                            <select name="discountType" class="form-control" required>
+                                <c:forEach items="${discountsType}" var="dis">
+                                    <option value="${dis.discountTypeID}">
+                                        ${dis.discountTypeName}
+                                    </option>
+                                </c:forEach>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="pointsToRedeem" class="form-label">Số điểm cần đổi</label>
+                            <input type="number" class="form-control" id="pointsToRedeem" name="pointsToRedeem" min="1" value="5" readonly="">
+                        </div>
+                        <div class="text-end">
+                            <button type="submit" name="buttonSubmit" class="btn btn-primary">Đổi điểm</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="MyCouponModal" tabindex="-1" aria-labelledby="pointsModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="pointsModalLabel">Đổi điểm từ Coupon</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Mã Coupon</th>
+                                    <th scope="col">Thể loại</th>
+                                    <th scope="col">Ngày đổi</th>
+                                    <th scope="col">Ngày hết hạn</th>
+                                    <th scope="col">Trạng thái</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <%
+                                List<RedeemedCoupon> cp = (List<RedeemedCoupon>) request.getAttribute("redeemedCoupons");
+                                CouponDAO daoCoupon = new CouponDAO();
+                                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                                %>
+                                <%for(RedeemedCoupon coupons : cp){
+                                    String couponCode = coupons.getCouponCode();
+                                    Coupon couponDetails = daoCoupon.getCouponDetails(couponCode);
+                                    int discountType = couponDetails.getDiscountType();
+                                    String discountName = daoCoupon.getDiscountNameByDiscountType(discountType);
+                                    String validUltilFormatted = sdf.format(couponDetails.getValidUltil());
+                                %>
+                                <tr>
+                                    <td><%=coupons.getCouponCode()%></td>
+                                    <td><%=discountName%></td>
+                                    <td><%=coupons.getRedeemedAt()%></td>
+                                    <td><%=validUltilFormatted%></td>
+                                    <%if(couponDetails.getTimeUsed() == 1){%>
+                                    <td>Đã sử dụng</td>
+                                    <%}else{%>
+                                    <td>Chưa sử dụng</td>
+                                    <%}%>
+                                </tr>
+                                <%}%>
+                                <%if(cp == null){%>
+                                <tr>
+                                    <td>Không có coupon nào</td>
+                                </tr>
+                                <%}%>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
-<!-- Fruits Shop End-->
+
+    <!-- Fruits Shop End-->
 
 
-<!-- Footer Start -->
-<jsp:include page="../common/homePage/footer-start.jsp"></jsp:include>
-    <!-- Footer End -->
+    <!-- Footer Start -->
+    <jsp:include page="../common/homePage/footer-start.jsp"></jsp:include>
+        <!-- Footer End -->
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <!-- JavaScript Libraries -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="${pageContext.request.contextPath}/lib/easing/easing.min.js"></script>
-<script src="${pageContext.request.contextPath}/lib/waypoints/waypoints.min.js"></script>
-<script src="${pageContext.request.contextPath}/lib/lightbox/js/lightbox.min.js"></script>
-<script src="${pageContext.request.contextPath}/lib/owlcarousel/owl.carousel.min.js"></script>
-<script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
+        <!-- JavaScript Libraries -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="${pageContext.request.contextPath}/lib/easing/easing.min.js"></script>
+    <script src="${pageContext.request.contextPath}/lib/waypoints/waypoints.min.js"></script>
+    <script src="${pageContext.request.contextPath}/lib/lightbox/js/lightbox.min.js"></script>
+    <script src="${pageContext.request.contextPath}/lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.min.js"></script>
+    <!-- Template Javascript -->
+    <script src="${pageContext.request.contextPath}/js/main.js"></script>
+    <script>
+            function displayImage(input, imgId) {
+                var preview = document.getElementById(imgId);
+                var file = input.files[0];
+                var reader = new FileReader();
 
-<!-- Template Javascript -->
-<script src="${pageContext.request.contextPath}/js/main.js"></script>
-<script>
-                function displayImage(input, imgId) {
-                    var preview = document.getElementById(imgId);
-                    var file = input.files[0];
-                    var reader = new FileReader();
-
-                    reader.onloadend = function () {
-                        preview.src = reader.result;
-                    }
-
-                    if (file) {
-                        reader.readAsDataURL(file);
-                    } else {
-                        preview.src = "";
-                    }
+                reader.onloadend = function () {
+                    preview.src = reader.result;
                 }
-</script>
+
+                if (file) {
+                    reader.readAsDataURL(file);
+                } else {
+                    preview.src = "";
+                }
+            }
+    </script>
 </body>
 
 </html>

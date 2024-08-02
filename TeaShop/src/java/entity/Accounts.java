@@ -5,11 +5,13 @@
 package entity;
 
 import java.sql.Date;
+import java.util.List;
 
 /**
  *
  * @author Huyen Tranq
  */
+
 public class Accounts {
     
     private int account_id;
@@ -26,8 +28,17 @@ public class Accounts {
     private Date created_at;
     private String full_name;
     private String avartar;
-
+    public List<Orders> listOrderShipper;
+    
     public Accounts() {
+    }
+
+    public List<Orders> getListOrderShipper() {
+        return listOrderShipper;
+    }
+
+    public void setListOrderShipper(List<Orders> listOrderShipper) {
+        this.listOrderShipper = listOrderShipper;
     }
 
     public Accounts(int account_id, String user_name, String pass_word, int role_id, String email, int status_id, String gender, String address, String phone_number, Date created_at, String full_name, String avartar) {
@@ -189,11 +200,7 @@ public class Accounts {
         this.status_name = status_name;
     }
 
-    @Override
-    public String toString() {
-        return "Accounts{" + "account_id=" + account_id + ", user_name=" + user_name + ", pass_word=" + pass_word + ", role_id=" + role_id + ", role_name=" + role_name + ", status_name=" + status_name + ", email=" + email + ", status_id=" + status_id + ", gender=" + gender + ", address=" + address + ", phone_number=" + phone_number + ", created_at=" + created_at + ", full_name=" + full_name + ", avartar=" + avartar + '}';
-    }
-    
+   
     
 
 

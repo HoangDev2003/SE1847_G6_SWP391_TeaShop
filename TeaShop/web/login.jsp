@@ -82,7 +82,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="your_pass"><i class="zmdi zmdi-lock"></i></label>
-                                    <input type="password" value="${pass}" name="password" id="pass" placeholder="Password" required=""/>
+                                    <input type="password" value="" name="password" id="pass" placeholder="Password" required=""/>
                                 </div>
                                 <c:if test="${showForgotPassword == true}">
                                     <a href="resetpass.jsp">Forgot Password?</a>

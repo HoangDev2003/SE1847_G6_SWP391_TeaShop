@@ -275,7 +275,7 @@ public class OrderDetailsDAO extends DBContext {
     public Accounts accInfo(int orderId) {
         Accounts info = new Accounts();
         connection = getConnection(); // Obtain database connection
-        String sql = "SELECT a.full_name, a.gender, a.email, a.phone_number FROM Orders o "
+        String sql = "SELECT a.gender, a.email, a.phone_number FROM Orders o "
                 + "JOIN Accounts a ON o.account_id = a.account_id WHERE o.order_id = ?";
 
         try {
@@ -288,7 +288,6 @@ public class OrderDetailsDAO extends DBContext {
 
             if (rs.next()) {
                 // Populate the Accounts object with data from the ResultSet
-                info.setFull_name(rs.getString("full_name"));
                 info.setGender(rs.getString("gender"));
                 info.setEmail(rs.getString("email"));
                 info.setPhone_number(rs.getString("phone_number"));
