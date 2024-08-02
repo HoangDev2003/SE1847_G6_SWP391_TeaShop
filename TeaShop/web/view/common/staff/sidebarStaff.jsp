@@ -13,7 +13,7 @@
         <div class="sb-sidenav-menu">
             <div class="nav">
                 <div class="sb-sidenav-menu-heading">Interface</div>
-                
+
                 <nav class="sb-sidenav-menu-nested nav">
                     <a class="nav-link" href="customerManagement">Khách hàng</a>
                 </nav>
@@ -33,6 +33,9 @@
                             </a>
                             <a class="nav-link ${current_status_id == '2' ? 'text-white' : ''}" href="Staff?current_status_id=2">
                                 Đơn hàng cần làm
+                            </a>
+                            <a class="nav-link ${current_status_id == '7' ? 'text-white' : ''}" href="Staff?current_status_id=7">
+                                Chọn nhân viên giao hàng
                             </a>
                             <a class="nav-link ${current_status_id == '3' ? 'text-white' : ''}" href="Staff?current_status_id=3">
                                 Đơn hàng cần được giao
