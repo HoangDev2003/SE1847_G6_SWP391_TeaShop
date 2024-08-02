@@ -37,7 +37,7 @@ public class PostDetail extends HttpServlet {
         Blog blog = bd.getBlogById(id);
 
         request.setAttribute("blog", blog);
-        request.getRequestDispatcher("PostDetail.jsp").forward(request, response);
+        request.getRequestDispatcher("./view/dashboard/admin/PostDetail.jsp").forward(request, response);
     } 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

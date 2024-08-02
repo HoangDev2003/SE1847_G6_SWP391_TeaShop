@@ -85,6 +85,18 @@
                                     <div class="card-body"><canvas id="myOrderChart" width="100%" height="40"></canvas></div>
                                 </div>
                             </div>
+                            
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-6">
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        <i class="fas fa-chart-area me-1"></i>
+                                        Quản lí quỹ theo ngày
+                                    </div>
+                                    <div class="card-body"><canvas id="myFundChart" width="100%" height="40"></canvas></div>
+                                </div>
+                            </div>
                         </div>
                         
                     </div>
@@ -215,6 +227,111 @@
                 }
             });
         </script>
+        <script type="text/javascript">
+    var ctx = document.getElementById("myFundChart");
+    var labels = [
+        <c:forEach items="${listf}" var="fund">
+            '<c:out value="${fund.getDay()}" />',
+        </c:forEach>
+    ];
+    var inputData = [
+        <c:forEach items="${listf}" var="fund">
+            <c:out value="${fund.getInput_money()}" />,
+        </c:forEach>
+    ];
+    var closeData = [
+        <c:forEach items="${listf}" var="fund">
+            <c:out value="${fund.getClose_money()}" />,
+        </c:forEach>
+    ];
+    var profitData = [
+        <c:forEach items="${listf}" var="fund">
+            <c:out value="${fund.getProfit_loss()}" />,
+        </c:forEach>
+    ];
+
+    var myMixedChart = new Chart(ctx, {
+        type: 'bar', // Default chart type
+        data: {
+            labels: labels,
+            datasets: [{
+                    label: "Input Money",
+                    type: 'bar', // Set the chart type to 'bar'
+                    backgroundColor: "rgba(75, 192, 192, 0.2)",
+                    borderColor: "rgba(75, 192, 192, 1)",
+                    pointRadius: 5,
+                    pointBackgroundColor: "rgba(75, 192, 192, 1)",
+                    pointBorderColor: "rgba(255,255,255,0.8)",
+                    pointHoverRadius: 5,
+                    pointHoverBackgroundColor: "rgba(75, 192, 192, 1)",
+                    pointHitRadius: 50,
+                    pointBorderWidth: 2,
+                    data: inputData,
+                    minBarLength: 5, // Minimum bar length
+                },
+                {
+                    label: "Close Money",
+                    type: 'bar', // Set the chart type to 'bar'
+                    backgroundColor: "rgba(2, 117, 216, 0.2)",
+                    borderColor: "rgba(2, 117, 216, 1)",
+                    pointRadius: 5,
+                    pointBackgroundColor: "rgba(2, 117, 216, 1)",
+                    pointBorderColor: "rgba(255,255,255,0.8)",
+                    pointHoverRadius: 5,
+                    pointHoverBackgroundColor: "rgba(2, 117, 216, 1)",
+                    pointHitRadius: 50,
+                    pointBorderWidth: 2,
+                    data: closeData,
+                    minBarLength: 5, // Minimum bar length
+                },
+                {
+                    label: "Profit/Loss",
+                    type: 'line', // Set the chart type to 'line'
+                    lineTension: 0.3,
+                    backgroundColor: "rgba(255, 99, 132, 0.2)",
+                    borderColor: "rgba(255, 99, 132, 1)",
+                    pointRadius: 5,
+                    pointBackgroundColor: "rgba(255, 99, 132, 1)",
+                    pointBorderColor: "rgba(255,255,255,0.8)",
+                    pointHoverRadius: 5,
+                    pointHoverBackgroundColor: "rgba(255, 99, 132, 1)",
+                    pointHitRadius: 50,
+                    pointBorderWidth: 2,
+                    data: profitData,
+                }
+            ],
+        },
+        options: {
+            scales: {
+                xAxes: [{
+                    time: {
+                        unit: 'date'
+                    },
+                    gridLines: {
+                        display: false
+                    },
+                    ticks: {
+                        maxTicksLimit: 7
+                    }
+                }],
+                yAxes: [{
+                    ticks: {
+                        min: 0,
+                        max: 100000000000,
+                        maxTicksLimit: 7
+                    },
+                    gridLines: {
+                        color: "rgba(0, 0, 0, .125)",
+                    }
+                }],
+            },
+            legend: {
+                display: true
+            }
+        }
+    });
+</script>
+
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="js/scripts.js"></script>
