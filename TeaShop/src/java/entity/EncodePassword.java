@@ -12,11 +12,13 @@ import org.apache.tomcat.util.codec.binary.Base64;
  * @author Huyen Tranq
  */
 public class EncodePassword {
+    
     public static String toSHA1(String string){
         String salt = "shadhaskdjwieqowejqwihewjdhsajd";
         String result = null;
         
         string = string + salt;
+        
         try {
             byte[] dataBytes = string.getBytes("UTF-8");
             MessageDigest md = MessageDigest.getInstance("SHA-1");
@@ -29,4 +31,5 @@ public class EncodePassword {
     public static void main(String[] args) {
         System.out.println(toSHA1("staff123"));
     }
+    
 }

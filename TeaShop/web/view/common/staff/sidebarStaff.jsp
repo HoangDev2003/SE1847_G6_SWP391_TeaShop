@@ -50,6 +50,7 @@
                     </div>
                 </nav>
                 <a class="nav-link" href="saleManager">Sale</a>
+                <a class="nav-link" href="fund">Quỹ</a>
             </div>
         </div>
     </nav>

@@ -5,7 +5,9 @@
 
 package controller.chart;
 
+import dal.FundDAO;
 import dal.OrdersDAO;
+import entity.Fundchart;
 import entity.OrderChart;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,6 +15,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
 import java.util.Vector;
 
 /**
@@ -32,9 +35,13 @@ public class chartOrderWeek extends HttpServlet {
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         OrdersDAO dao = new OrdersDAO();
+        FundDAO daof = new FundDAO();
+        
         Vector<OrderChart> list = dao.get7OrderChartByMonth();  
+          List<Fundchart> listf= daof.get8weekago();
         
         request.setAttribute("list", list); 
+        request.setAttribute("listf", listf);
         request.getRequestDispatcher("./view/dashboard/admin/DashboardByWeek.jsp").forward(request, response);
     }
      

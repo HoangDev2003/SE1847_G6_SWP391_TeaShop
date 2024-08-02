@@ -175,8 +175,8 @@
             <div class="container py-1">
                 <div class="row g-5 align-items-center">
                     <div class="col-md-12 col-lg-7">
-                        <h4 class="mb-3 text-secondary">Cà Phê Tự Hào: Niềm Kiêu Hãnh Của Việt Nam</h4>
-                        <h1 class="mb-1 text-primary">
+                        <h3 class="mb-3 text-secondary">Cà Phê Tự Hào: Niềm Kiêu Hãnh Của Việt Nam</h4>
+                        <h4 class="mb-1 text-primary">
                             Hạt cà phê vàng óng, căng tròn: Nổi bật trên nền xanh mướt của những đồi chè, những trái cà phê chín mọng như những viên ngọc quý, mang theo niềm tự hào về một thức uống đã làm say mê biết bao con người.
 
                         </h1>
@@ -278,44 +278,7 @@
 
         <!-- Featurs End -->
 
-        <!-- Fact Start -->
-        <div class="container-fluid py-2">
-            <div class="container">
-                <div class="bg-light p-5 rounded">
-                    <div class="row g-4 justify-content-center">
-                        <div class="col-md-6 col-lg-6 col-xl-3">
-                            <div class="counter bg-white rounded p-5">
-                                <i class="fa fa-users text-secondary"></i>
-                                <h4>KHÁCH HÀNG HÀI LÒNG</h4>
-                                <h1>2003</h1>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-lg-6 col-xl-3">
-                            <div class="counter bg-white rounded p-5" >
-                                <i class="fa fa-users text-secondary"></i>
-                                <h4>CHẤT LƯỢNG DỊCH VỤ</h4>
-                                <h1>99%</h1>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-lg-6 col-xl-3">
-                            <div class="counter bg-white rounded p-5">
-                                <i class="fa fa-users text-secondary"></i>
-                                <h4>GIẤY CHỨNG NHẬN CHẤT LƯỢNG</h4>
-                                <h1>10</h1>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-lg-6 col-xl-3">
-                            <div class="counter bg-white rounded p-5">
-                                <i class="fa fa-users text-secondary"></i>
-                                <h4>SẢN PHẨM CÓ SẴN</h4>
-                                <h1>25</h1>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Fact Start -->
+        
 
 
         <!-- Tastimonial Start -->
@@ -333,53 +296,35 @@
 
                     <h1 class="display-5 mb-5 text-dark">Khách hàng của chúng tôi nói!!</h1>
                 </div>
-                <div class="owl-carousel testimonial-carousel">
-                    <div class="testimonial-item img-border-radius bg-light rounded p-4 ">
-                        <div class="position-relative ">
-                            <i class="fa fa-quote-right fa-2x text-secondary position-absolute " style="bottom: 30px; right: 0;"></i>
+                <div class="tab-content mb-5">
 
-                            <div class="d-flex align-items-center flex-nowrap ">
-                                <div class="bg-secondary rounded">
-                                    <img src="img/clien1.jpg" class="img-fluid rounded" style="width: 100px; height: 100px;" alt="">
-                                </div>
-                                <div class="ms-4 d-block">
-                                    <h4 class="text-dark">N.X Hoàng</h4>
-                                    <p class="m-0 pb-3">Giao hàng nhanh, nước ngon ạ</p>
-                                    <div class="d-flex pe-5">
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star"></i>
+                                    <div class="tab-pane" id="nav-mission" role="tabpanel" aria-labelledby="nav-mission-tab">
+                                        <c:forEach items="${feedbackList}" var="fb">
+                                            <div class="d-flex">
+                                                <img src="${pageContext.request.contextPath}${fb.account.avartar}" class="img-fluid rounded-circle p-3" style="width: 100px; height: 100px;" alt="">
+                                                <div class="">
+                                                    <p class="mb-2" style="font-size: 14px;">${fb.formattedCreatedAt}</p>
+                                                    <div class="d-flex justify-content-between">
+                                                        <h5>${fb.account.full_name}</h5>
+
+                                                    </div>
+                                                    <div class="d-flex mb-2 text-warning">
+                                                        <c:forEach begin="1" end="${fb.rating}" var="star">
+                                                            <i class="fa fa-star"></i>
+                                                        </c:forEach>
+                                                        <c:forEach begin="${fb.rating + 1}" end="5" var="star">
+                                                            <i class="fa fa-star-o"></i>
+                                                        </c:forEach>
+                                                    </div>
+                                                    <p>${fb.comment}</p>
+                                                </div>
+                                            </div>
+                                        </c:forEach>
+                                    </div>
+                                    <div class="tab-pane" id="nav-vision" role="tabpanel">
+
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="testimonial-item img-border-radius bg-light rounded p-4">
-                        <div class="position-relative">
-                            <i class="fa fa-quote-right fa-2x text-secondary position-absolute" style="bottom: 30px; right: 0;"></i>
-
-                            <div class="d-flex align-items-center flex-nowrap">
-                                <div class="bg-secondary rounded">
-                                    <img src="img/clien2.jpg" class="img-fluid rounded" style="width: 100px; height: 100px;" alt="">
-                                </div>
-                                <div class="ms-4 d-block">
-                                    <h4 class="text-dark">P.X Hoà</h4>
-                                    <p class="m-0 pb-3">Nước ngon , dịch vụ tốt xứng đáng 6 sao nếu có</p>
-                                    <div class="d-flex pe-5">
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star text-primary"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
             </div>
         </div>
         <!-- Tastimonial End -->

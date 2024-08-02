@@ -557,7 +557,9 @@ public class OrdersDAO extends DBContext {
                 + "ORDER BY \n"
                 + "    O.order_date;";
 
-        try (Connection connection = getConnection(); PreparedStatement st = connection.prepareStatement(query); ResultSet rs = st.executeQuery()) {
+        try (Connection connection = getConnection();
+                PreparedStatement st = connection.prepareStatement(query);
+                ResultSet rs = st.executeQuery()) {
 
             while (rs.next()) {
                 vector.add(new OrderChart(rs.getDate("date"),
@@ -573,40 +575,45 @@ public class OrdersDAO extends DBContext {
     }
 
     public Vector<OrderChart> get7OrderChartByDay() {
-        connection = getConnection();
-        Vector<OrderChart> vector = new Vector<>();
-        String query = "DECLARE @Today DATE = CONVERT(DATE, GETDATE());\n"
-                + "DECLARE @SevenDaysAgo DATE = DATEADD(DAY, -7, @Today);\n"
-                + "\n"
-                + "SELECT \n"
-                + "    CONVERT(DATE, O.order_date) AS date,\n"
-                + "    COUNT(CASE WHEN O.status_id != 0 THEN 1 END) AS done_order,\n"
-                + "    COUNT(*) AS total_order,\n"
-                + "    CASE WHEN COUNT(*) > 0 THEN COUNT(CASE WHEN O.status_id != 0 THEN 1 END) * 100.0 / COUNT(*) ELSE 0 END AS success_rate,\n"
-                + "    SUM(O.total_amount) AS revenue\n"
-                + "FROM \n"
-                + "    [dbo].[Orders] O\n"
-                + "JOIN \n"
-                + "    [dbo].[OrderDetails] OD ON O.order_id = OD.order_id\n"
-                + "WHERE \n"
-                + "    CONVERT(DATE, O.order_date) >= @SevenDaysAgo \n"
-                + "    AND CONVERT(DATE, O.order_date) <= @Today\n"
-                + "    AND O.status_id != 0  -- Excluding orders with status_id = 0\n"
-                + "GROUP BY \n"
-                + "    CONVERT(DATE, O.order_date)\n"
-                + "ORDER BY \n"
-                + "    CONVERT(DATE, O.order_date);";
-        try {
-            PreparedStatement st = connection.prepareStatement(query);
-            ResultSet rs = st.executeQuery();
-            while (rs.next()) {
-                vector.add(new OrderChart(rs.getDate("date"), rs.getInt("done_order"), rs.getInt("total_order"), rs.getDouble("success_rate"), rs.getDouble("revenue")));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+    Vector<OrderChart> vector = new Vector<>();
+    String query = "SELECT \n"
+                 + "    CONVERT(DATE, O.order_date) AS date,\n"
+                 + "    COUNT(CASE WHEN O.status_id != 0 THEN 1 END) AS done_order,\n"
+                 + "    COUNT(*) AS total_order,\n"
+                 + "    CASE WHEN COUNT(*) > 0 THEN \n"
+                 + "        COUNT(CASE WHEN O.status_id != 0 THEN 1 END) * 100.0 / COUNT(*) \n"
+                 + "    ELSE \n"
+                 + "        0 \n"
+                 + "    END AS success_rate,\n"
+                 + "    SUM(O.total_amount) AS revenue\n"
+                 + "FROM \n"
+                 + "    dbo.Orders O\n"
+                 + "WHERE \n"
+                 + "    O.order_date >= DATEADD(day, -7, GETDATE())\n"
+                 + "GROUP BY \n"
+                 + "    CONVERT(DATE, O.order_date)\n"
+                 + "ORDER BY \n"
+                 + "    date DESC;";
+
+    try (Connection connection = getConnection(); 
+         PreparedStatement st = connection.prepareStatement(query); 
+         ResultSet rs = st.executeQuery()) {
+
+        while (rs.next()) {
+            vector.add(new OrderChart(
+                rs.getDate("date"),
+                rs.getInt("done_order"),
+                rs.getInt("total_order"),
+                rs.getDouble("success_rate"),
+                rs.getDouble("revenue")
+            ));
         }
-        return vector;
+    } catch (Exception e) {
+        e.printStackTrace();
     }
+    return vector;
+}
+
 
     public boolean checkDuplicatevnp_TxnRef(String vnp_TxnRef) {
         boolean flag = false;
@@ -1057,4 +1064,20 @@ public class OrdersDAO extends DBContext {
 
         return total;
     }
+    public class Main {
+    public static void main(String[] args) {
+        // Tạo đối tượng của lớp chứa hàm DAO (giả sử tên lớp là OrderDAO)
+        OrdersDAO orderDAO = new OrdersDAO();
+        
+        // Gọi hàm get7OrderChartByDay()
+        Vector<OrderChart> orderCharts = orderDAO.get7OrderChartByMonth();
+        
+        
+         // In ra kết quả
+        for (OrderChart orderChart : orderCharts) {
+            System.out.println(orderChart); // Sử dụng toString() để in ra toàn bộ đối tượng
+            System.out.println("---------------------------");
+        }
+    }
+}
 }

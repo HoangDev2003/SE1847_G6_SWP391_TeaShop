@@ -550,6 +550,7 @@ public class ProductDAO extends DBContext {
             Logger.getLogger(ProductDAO.class
                     .getName()).log(Level.SEVERE, null, ex);
         }
+       // connection.close();
         return generatedId;
     }
 
